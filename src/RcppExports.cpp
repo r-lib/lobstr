@@ -16,14 +16,3 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// prim_type
-std::string prim_type(SEXP x);
-RcppExport SEXP lobstr_prim_type(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject __result;
-    Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    __result = Rcpp::wrap(prim_type(x));
-    return __result;
-END_RCPP
-}

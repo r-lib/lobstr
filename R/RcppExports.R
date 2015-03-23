@@ -5,7 +5,3 @@ prim_length <- function(x) {
     .Call('lobstr_prim_length', PACKAGE = 'lobstr', x)
 }
 
-prim_type <- function(x) {
-    .Call('lobstr_prim_type', PACKAGE = 'lobstr', x)
-}
-
