@@ -3,7 +3,7 @@ prim_children <- function(x) {
 }
 
 #' @export
-print.primlist <- function(x) {
+print.primlist <- function(x, ...) {
   if (length(x) == 0) {
     cat("<empty>\n")
     return()
@@ -15,7 +15,7 @@ print.primlist <- function(x) {
   if (is.null(names(x))) {
     labels <- rep("", length = x)
   } else {
-    labels <- format(ifelse(names(x) == "", seq_along(x), names(x)))
+    labels <- format(ifelse(names(x) == "", "", names(x)))
   }
 
   cat(paste0("* ", labels, " ", types, " [", lengths, "]", collapse = "\n"))

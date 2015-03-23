@@ -7,7 +7,7 @@ class GList {
   int i_, n_;
 
 public:
-  GList(int n = 0): i_(0), n_(n) {
+  GList(int n = 10): i_(0), n_(n) {
     contents_ = Rcpp::List(n);
     names_ = Rcpp::CharacterVector(n, "");
   }
@@ -31,12 +31,28 @@ public:
     ++i_;
   }
 
+  void push_back(const char* name, Rcpp::RObject x) {
+    push_back(std::string(name), x);
+  }
+
   void push_back(Rcpp::RObject x) {
     if (i_ >= n_)
       grow();
 
     contents_[i_] = x;
     ++i_;
+  }
+
+  void push_back(Rcpp::RObject name, Rcpp::RObject x) {
+    if (name == R_NilValue) {
+      push_back(x);
+      return;
+    }
+
+    if (TYPEOF(name) != SYMSXP)
+      Rcpp::stop("Expecting SYMSXP, got %s", Rf_type2char(TYPEOF(name)));
+
+    push_back(CHAR(PRINTNAME(x)), x);
   }
 
   Rcpp::List list() {

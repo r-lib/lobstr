@@ -22,9 +22,9 @@ test_that("length of list is length of children + attributes", {
   expect_equal(prim_length(y), 11)
 })
 
-test_that("length of call is number of arguments", {
-  expect_equal(prim_length(quote(f())), 0)
-  expect_equal(prim_length(quote(f(1, 2, 3))), 3)
+test_that("length of call is number of arguments + 1", {
+  expect_equal(prim_length(quote(f())), 0 + 1)
+  expect_equal(prim_length(quote(f(1, 2, 3))), 3 + 1)
 })
 
 test_that("length of env is length of elements", {

@@ -33,7 +33,7 @@ int prim_length(SEXP x) {
     return Rf_length(x) + hasAttrib(x);
 
   case LANGSXP:
-    return Rf_length(x) - 1;
+    return Rf_length(x);
 
   case EXPRSXP:
   case LISTSXP:
