@@ -24,6 +24,7 @@ RObject prim_children_(SEXP x) {
   case CPLXSXP:
   case RAWSXP:
   case STRSXP:
+  case S4SXP: // slots = attributes
     break;
 
   case CLOSXP:    // body + env + args
@@ -82,8 +83,6 @@ RObject prim_children_(SEXP x) {
     warning("Unimplemented type %s", prim_type(x));
 
 //   case EXPRSXP:
-//   case S4SXP:
-//     return Rf_length(x);
 //
   }
   if (IS_S4_OBJECT(x)) {
@@ -92,7 +91,6 @@ RObject prim_children_(SEXP x) {
     if (hasAttrib(x))
       out.push_back("__attributes", ATTRIB(x));
   }
-
 
   return out.list();
 }
