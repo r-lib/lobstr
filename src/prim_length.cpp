@@ -38,15 +38,19 @@ int prim_length(SEXP x) {
     return 3;
 
   case VECSXP:
+    return Rf_length(x) + hasAttrib(x);
+
+  case LANGSXP:
+    return Rf_length(x) - 1;
+
   case EXPRSXP:
   case LISTSXP:
-  case LANGSXP:
   case BCODESXP:
   case S4SXP:
     return Rf_length(x);
 
   case ENVSXP:
-    return envlength(x) + (ENCLOS(x) != R_EmptyEnv); // elements + parent
+    return envlength(x) + (ENCLOS(x) != R_EmptyEnv) + hasAttrib(x);
 
   default:
     break;
@@ -61,8 +65,8 @@ int prim_length(SEXP x) {
 int FrameSize(SEXP frame) {
   int count = 0;
 
-  for(SEXP cur = frame; frame != R_NilValue; cur = CDR(cur)) {
-    if (CAR(frame) != R_UnboundValue)
+  for(SEXP cur = frame; cur != R_NilValue; cur = CDR(cur)) {
+    if (CAR(cur) != R_UnboundValue)
       count++;
   }
   return count;
