@@ -45,9 +45,9 @@ int prim_length(SEXP x) {
     return envlength(x) + (ENCLOS(x) != R_EmptyEnv) + hasAttrib(x);
 
   default:
+    warning("Unimplemented type %s", Rf_type2char(TYPEOF(x)));
     break;
   }
 
-  stop("Unimplemented type %s", prim_type(x));
   return 0;
 }

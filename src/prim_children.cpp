@@ -81,7 +81,7 @@ RObject prim_children_(SEXP x) {
     break;
 
   default:
-    warning("Unimplemented type %s", prim_type(x));
+    warning("Unimplemented type %s", Rf_type2char(TYPEOF(x)));
 
   }
   if (IS_S4_OBJECT(x)) {

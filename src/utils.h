@@ -1,7 +1,3 @@
-inline std::string prim_type(SEXP x) {
-  return std::string(Rf_type2char(TYPEOF(x)));
-}
-
 inline bool hasAttrib(SEXP x) {
   return Rf_length(ATTRIB(x)) > 0;
 }
