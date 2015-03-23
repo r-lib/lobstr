@@ -11,6 +11,8 @@ int prim_length(SEXP x) {
   case BUILTINSXP:
   case SPECIALSXP:
   case SYMSXP:
+  case CHARSXP:
+  case WEAKREFSXP:
     return 0;
 
   // Atomic vectors
@@ -21,10 +23,6 @@ int prim_length(SEXP x) {
   case RAWSXP:
   case STRSXP:
     return hasAttrib(x);
-
-  case CHARSXP:
-  case WEAKREFSXP:
-    return 1;
 
   case CLOSXP:    // body + env + args
   case PROMSXP:   // expr + env + value
