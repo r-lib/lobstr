@@ -4,6 +4,11 @@ prim_children <- function(x) {
 
 #' @export
 print.primlist <- function(x) {
+  if (length(x) == 0) {
+    cat("<empty>\n")
+    return()
+  }
+
   types <- vapply(x, typeof, character(1))
   lengths <- vapply(x, prim_length, integer(1))
 

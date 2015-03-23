@@ -1,9 +1,12 @@
 #include <Rcpp.h>
+#include "GList.h"
 #include "utils.h"
 using namespace Rcpp;
 
 // [[Rcpp::export]]
 RObject prim_children_(SEXP x) {
+  GList out;
+
   switch(TYPEOF(x)) {
 
   // No children and can't have attributes
@@ -13,7 +16,7 @@ RObject prim_children_(SEXP x) {
   case SYMSXP:
   case CHARSXP:
   case WEAKREFSXP:
-    return R_NilValue;
+    break;
 
   // Atomic vectors
   case LGLSXP:
@@ -22,18 +25,20 @@ RObject prim_children_(SEXP x) {
   case CPLXSXP:
   case RAWSXP:
   case STRSXP:
-    return List::create(_["__attributes"] = ATTRIB(x));
+    if (hasAttrib(x))
+      out.push_back("__attributes", ATTRIB(x));
+    break;
 
   case CLOSXP:    // body + env + args
-    return List::create(
-      _["__body"] = BODY(x),
-      _["__formals"] = FORMALS(x),
-      _["__enclosure"] = CLOENV(x),
-      _["__attributes"] = ATTRIB(x)
-    );
+    out.push_back("__body", BODY(x));
+    out.push_back("__formals", FORMALS(x));
+    out.push_back("__enclosure", CLOENV(x));
+    if (hasAttrib(x))
+      out.push_back("__attributes", ATTRIB(x));
+    break;
 
   default:
-    stop("Unimplemented type %s", prim_type(x));
+    warning("Unimplemented type %s", prim_type(x));
 
 //   case CLOSXP:    // body + env + args
 //   case PROMSXP:   // expr + env + value
@@ -56,5 +61,5 @@ RObject prim_children_(SEXP x) {
 //     return envlength(x) + (ENCLOS(x) != R_EmptyEnv) + hasAttrib(x);
   }
 
-  return 0;
+  return out.list();
 }
