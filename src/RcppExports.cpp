@@ -16,6 +16,17 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// prim_desc_
+std::string prim_desc_(RObject x);
+RcppExport SEXP lobstr_prim_desc_(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< RObject >::type x(xSEXP);
+    __result = Rcpp::wrap(prim_desc_(x));
+    return __result;
+END_RCPP
+}
 // prim_length
 int prim_length(SEXP x);
 RcppExport SEXP lobstr_prim_length(SEXP xSEXP) {

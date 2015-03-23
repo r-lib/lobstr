@@ -19,8 +19,8 @@ print.primlist <- function(x, ...) {
     return()
   }
 
-  types <- vapply(x, typeof, character(1))
-  lengths <- vapply(x, prim_length, integer(1))
+  types <- vapply(x, prim_type, character(1))
+  descs <- vapply(x, prim_desc_, character(1))
 
   if (is.null(names(x))) {
     labels <- rep("", length = x)
@@ -28,7 +28,7 @@ print.primlist <- function(x, ...) {
     labels <- format(ifelse(names(x) == "", "", names(x)))
   }
 
-  cat(paste0("* ", labels, " ", types, " [", lengths, "]", collapse = "\n"))
+  cat(paste0("*", labels, " ", types, " ", descs, collapse = "\n"))
   cat("\n")
 }
 
