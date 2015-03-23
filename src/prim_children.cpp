@@ -86,8 +86,13 @@ RObject prim_children_(SEXP x) {
 //     return Rf_length(x);
 //
   }
-  if (hasAttrib(x))
-    out.push_back("__attributes", ATTRIB(x));
+  if (IS_S4_OBJECT(x)) {
+    out.push_back("__slots", ATTRIB(x));
+  } else {
+    if (hasAttrib(x))
+      out.push_back("__attributes", ATTRIB(x));
+  }
+
 
   return out.list();
 }
