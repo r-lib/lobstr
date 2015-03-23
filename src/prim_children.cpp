@@ -42,7 +42,7 @@ RObject prim_children_(SEXP x) {
     SEXP names = Rf_getAttrib(x, Rf_install("names"));
     int n = Rf_length(x);
     out.resize(n);
-    // Handle names
+
     if (names == R_NilValue) {
       for (int i = 0; i < n; ++i)
         out.push_back(VECTOR_ELT(x, i));
