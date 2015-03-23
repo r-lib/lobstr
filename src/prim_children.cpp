@@ -3,6 +3,8 @@
 #include "utils.h"
 using namespace Rcpp;
 
+void collectEnv(SEXP x, GList& out);
+
 // [[Rcpp::export]]
 RObject prim_children_(SEXP x) {
   GList out;
@@ -70,6 +72,12 @@ RObject prim_children_(SEXP x) {
     out.push_back("__tag", EXTPTR_TAG(x));
     break;
 
+  case ENVSXP:
+    collectEnv(x, out);
+    if (ENCLOS(x) != R_EmptyEnv)
+      out.push_back("__enclosure", ENCLOS(x));
+    break;
+
   default:
     warning("Unimplemented type %s", prim_type(x));
 
@@ -77,11 +85,32 @@ RObject prim_children_(SEXP x) {
 //   case S4SXP:
 //     return Rf_length(x);
 //
-//   case ENVSXP:
-//     return envlength(x) + (ENCLOS(x) != R_EmptyEnv) + hasAttrib(x);
   }
   if (hasAttrib(x))
     out.push_back("__attributes", ATTRIB(x));
 
   return out.list();
+}
+
+
+void collectFrame(SEXP frame, GList& out) {
+  for(SEXP cur = frame; cur != R_NilValue; cur = CDR(cur)) {
+    if (CAR(cur) != R_UnboundValue)
+      out.push_back(TAG(cur), CAR(cur));
+  }
+}
+
+void collectHashtable(SEXP table, GList& out) {
+  int n = Rf_length(table);
+  for (int i = 0; i < n; ++i)
+    collectFrame(VECTOR_ELT(table, i), out);
+}
+
+void collectEnv(SEXP x, GList& out) {
+  bool isHashed = HASHTAB(x) != R_NilValue;
+  if (isHashed) {
+    collectHashtable(HASHTAB(x), out);
+  } else {
+    collectFrame(FRAME(x), out);
+  }
 }
