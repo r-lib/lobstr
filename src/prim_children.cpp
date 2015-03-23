@@ -41,6 +41,7 @@ RObject prim_children_(SEXP x) {
     }
     break;
 
+  case EXPRSXP:
   case VECSXP: {
     SEXP names = Rf_getAttrib(x, Rf_install("names"));
     int n = Rf_length(x);
@@ -82,8 +83,6 @@ RObject prim_children_(SEXP x) {
   default:
     warning("Unimplemented type %s", prim_type(x));
 
-//   case EXPRSXP:
-//
   }
   if (IS_S4_OBJECT(x)) {
     out.push_back("__slots", ATTRIB(x));
