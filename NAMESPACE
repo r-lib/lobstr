@@ -2,5 +2,6 @@
 
 S3method("$",primlist)
 S3method(print,primlist)
+export(prim_children)
 importFrom(Rcpp,sourceCpp)
 useDynLib(lobstr)
