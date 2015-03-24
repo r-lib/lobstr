@@ -35,11 +35,13 @@ RObject prim_children_(SEXP x) {
     break;
 
   case LISTSXP: // pair list
+    for(SEXP cur = x; cur != R_NilValue; cur = CDR(cur))
+      out.push_back(TAG(cur), CAR(cur));
+   break;
+
   case LANGSXP: // quoted call
-    for(SEXP cur = x; cur != R_NilValue; cur = CDR(cur)) {
-      if (CAR(cur) != R_UnboundValue)
-        out.push_back(TAG(cur), CAR(cur));
-    }
+    for(SEXP cur = x; cur != R_NilValue; cur = CDR(cur))
+      out.push_back(CAR(cur));
     break;
 
   case EXPRSXP:
@@ -90,6 +92,9 @@ RObject prim_children_(SEXP x) {
 }
 
 
+// [R-Internals]: Hashing is principally designed for fast searching of
+// environments, which  are from time to time added to but rarely deleted from,
+// so items are not actually deleted but have their value set to R_UnboundValue.
 void collectFrame(SEXP frame, GList& out) {
   for(SEXP cur = frame; cur != R_NilValue; cur = CDR(cur)) {
     if (CAR(cur) != R_UnboundValue)
