@@ -2,7 +2,7 @@
 using namespace Rcpp;
 
 // [[Rcpp::export]]
-std::string prim_desc_(RObject x) {
+std::string prim_desc_(SEXP x) {
 
   switch(TYPEOF(x)) {
 
@@ -14,7 +14,7 @@ std::string prim_desc_(RObject x) {
   case RAWSXP:
   case STRSXP:
   case VECSXP: {
-    RObject dim = x.attr("dim");
+    SEXP dim = Rf_getAttrib(x, Rf_install("dim"));
     if (dim == R_NilValue) {
       return tfm::format("[%i]", Rf_length(x));
     } else {
@@ -32,6 +32,9 @@ std::string prim_desc_(RObject x) {
 
     break;
   }
+
+  case EXTPTRSXP:
+    return tfm::format("<%s>", x);
 
   case SYMSXP:
     return tfm::format("`%s`", CHAR(PRINTNAME(x)));

@@ -39,12 +39,12 @@ BEGIN_RCPP
 END_RCPP
 }
 // prim_desc_
-std::string prim_desc_(RObject x);
+std::string prim_desc_(SEXP x);
 RcppExport SEXP lobstr_prim_desc_(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< RObject >::type x(xSEXP);
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
     __result = Rcpp::wrap(prim_desc_(x));
     return __result;
 END_RCPP
