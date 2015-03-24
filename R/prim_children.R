@@ -28,7 +28,7 @@ print.primlist <- function(x, ...) {
     labels <- format(ifelse(names(x) == "", "", names(x)))
   }
 
-  cat(paste0("*", labels, " ", types, " ", descs, collapse = "\n"))
+  cat(paste0("* ", labels, " ", types, " ", descs, collapse = "\n"))
   cat("\n")
 }
 
