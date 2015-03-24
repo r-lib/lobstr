@@ -16,6 +16,17 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// prim_refs_
+int prim_refs_(SEXP x);
+RcppExport SEXP lobstr_prim_refs_(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    __result = Rcpp::wrap(prim_refs_(x));
+    return __result;
+END_RCPP
+}
 // prim_children_
 RObject prim_children_(SEXP x);
 RcppExport SEXP lobstr_prim_children_(SEXP xSEXP) {

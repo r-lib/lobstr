@@ -8,3 +8,8 @@ std::string prim_address_(SEXP x) {
   s << x;
   return s.str();
 }
+
+// [[Rcpp::export]]
+int prim_refs_(SEXP x) {
+  return NAMED(x);
+}

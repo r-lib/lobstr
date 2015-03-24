@@ -5,6 +5,10 @@ prim_address_ <- function(x) {
     .Call('lobstr_prim_address_', PACKAGE = 'lobstr', x)
 }
 
+prim_refs_ <- function(x) {
+    .Call('lobstr_prim_refs_', PACKAGE = 'lobstr', x)
+}
+
 prim_children_ <- function(x) {
     .Call('lobstr_prim_children_', PACKAGE = 'lobstr', x)
 }
