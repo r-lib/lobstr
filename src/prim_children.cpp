@@ -13,6 +13,7 @@ RObject prim_children_(SEXP x) {
 
   // No children and can't have attributes
   case NILSXP:
+  case BCODESXP:
   case BUILTINSXP:
   case SPECIALSXP:
   case SYMSXP:
@@ -56,12 +57,6 @@ RObject prim_children_(SEXP x) {
     }
     break;
   }
-
-  case BCODESXP:
-    out.push_back("__code", BCODE_CODE(x));
-    out.push_back("__consts", BCODE_CONSTS(x));
-    out.push_back("__tag", BCODE_EXPR(x));
-    break;
 
   case PROMSXP:
     out.push_back("__value", PRVALUE(x));

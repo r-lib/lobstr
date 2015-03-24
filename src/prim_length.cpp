@@ -20,6 +20,7 @@ int prim_length(SEXP x) {
   case REALSXP:
   case CPLXSXP:
   case RAWSXP:
+  case BCODESXP:
   case STRSXP:
     break;
 
@@ -36,7 +37,6 @@ int prim_length(SEXP x) {
   case LANGSXP:
   case EXPRSXP:
   case LISTSXP:
-  case BCODESXP:
     n = Rf_length(x);
     break;
 
