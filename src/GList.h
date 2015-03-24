@@ -52,7 +52,8 @@ public:
     if (TYPEOF(name) != SYMSXP)
       Rcpp::stop("Expecting SYMSXP, got %s", Rf_type2char(TYPEOF(name)));
 
-    push_back(CHAR(PRINTNAME(x)), x);
+    SEXP printname = PRINTNAME(name);
+    push_back((printname == R_NilValue) ? "" : CHAR(printname), x);
   }
 
   Rcpp::List list() {
