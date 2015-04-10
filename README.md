@@ -15,8 +15,6 @@ There are four key functions:
 
 * `user_desc()`/`prim_desc()`: a brief description of the element.
 
-
-
 # Types
 
 * `S4SXP`: either simple type, or S4SXP. In either case, the S4 bit is set

@@ -16,6 +16,12 @@ A list of children with class "primlist". This list should be
 }
 \description{
 Extract all the low-level children of an element. This works at a low-level:
-all dispatch is done in C on the SEXPTYPE. No S3 dispatch is performed.
+all dispatch is done in C on the SEXPTYPE. No S3 dispatch is performed. The
+result has an \code{$} method defined so you can interactively drill down.
+}
+\examples{
+prim_children(mtcars)
+prim_children(mtcars)$`__attributes`
+prim_children(list(1:10, runif(1e3)))
 }
 

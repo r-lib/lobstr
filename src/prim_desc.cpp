@@ -1,8 +1,19 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+//' A brief description of an object.
+//'
+//' \code{prim_desc()} describes the primitive R object. \code{user_desc()}
+//' is an S3 method that object creators can override to provide better
+//' navigation
+//'
+//' @param x An object to describe
+//' @export
+//' @examples
+//' prim_desc(1:100)
+//' prim_desc(quote(a))
 // [[Rcpp::export]]
-std::string prim_desc_(SEXP x) {
+std::string prim_desc(SEXP x) {
 
   switch(TYPEOF(x)) {
 

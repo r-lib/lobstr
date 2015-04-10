@@ -31,6 +31,20 @@ std::string type_name(SEXP x) {
   }
 }
 
+//' The type of an object.
+//'
+//' \code{prim_type()} returns the type of the underlying R object.
+//' \code{user_type()} is an S3 generic that can be optionally overridden
+//' by class authors in order to provide better navigation.
+//'
+//' @export
+//' @examples
+//' prim_type("a")
+//' prim_type(mtcars)
+//' prim_type(sum)
+//' prim_type(mean)
+//' prim_type(formals(mean))
+//' prim_type(formals(mean)[[1]])
 // [[Rcpp::export]]
 std::string prim_type(RObject x) {
   std::string type = type_name(x);
