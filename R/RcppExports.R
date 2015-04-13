@@ -9,8 +9,8 @@ prim_refs_ <- function(name, env) {
     .Call('lobstr_prim_refs_', PACKAGE = 'lobstr', name, env)
 }
 
-prim_children_ <- function(x) {
-    .Call('lobstr_prim_children_', PACKAGE = 'lobstr', x)
+prim_children_ <- function(name, env) {
+    .Call('lobstr_prim_children_', PACKAGE = 'lobstr', name, env)
 }
 
 #' A brief description of an object.

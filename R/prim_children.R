@@ -14,7 +14,7 @@
 #' prim_children(mtcars)$`__attributes`
 #' prim_children(list(1:10, runif(1e3)))
 prim_children <- function(x) {
-  structure(prim_children_(x), class = "primlist")
+  structure(prim_children_(quote(x), environment()), class = "primlist")
 }
 
 #' @export

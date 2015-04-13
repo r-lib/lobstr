@@ -30,13 +30,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // prim_children_
-RObject prim_children_(SEXP x);
-RcppExport SEXP lobstr_prim_children_(SEXP xSEXP) {
+RObject prim_children_(SEXP name, Environment env);
+RcppExport SEXP lobstr_prim_children_(SEXP nameSEXP, SEXP envSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    __result = Rcpp::wrap(prim_children_(x));
+    Rcpp::traits::input_parameter< SEXP >::type name(nameSEXP);
+    Rcpp::traits::input_parameter< Environment >::type env(envSEXP);
+    __result = Rcpp::wrap(prim_children_(name, env));
     return __result;
 END_RCPP
 }

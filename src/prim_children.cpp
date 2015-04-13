@@ -5,7 +5,6 @@ using namespace Rcpp;
 
 void collectEnv(SEXP x, GList& out);
 
-// [[Rcpp::export]]
 RObject prim_children_(SEXP x) {
   GList out;
 
@@ -91,6 +90,12 @@ RObject prim_children_(SEXP x) {
   return out.list();
 }
 
+// [[Rcpp::export]]
+RObject prim_children_(SEXP name, Environment env) {
+  return prim_children_(find_var(name, env));
+}
+
+// Environment helpers ---------------------------------------------------------
 
 // [R-Internals]: Hashing is principally designed for fast searching of
 // environments, which  are from time to time added to but rarely deleted from,
