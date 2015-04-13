@@ -13,19 +13,8 @@ prim_children_ <- function(name, env) {
     .Call('lobstr_prim_children_', PACKAGE = 'lobstr', name, env)
 }
 
-#' A brief description of an object.
-#'
-#' \code{prim_desc()} describes the primitive R object. \code{user_desc()}
-#' is an S3 method that object creators can override to provide better
-#' navigation
-#'
-#' @param x An object to describe
-#' @export
-#' @examples
-#' prim_desc(1:100)
-#' prim_desc(quote(a))
-prim_desc <- function(x) {
-    .Call('lobstr_prim_desc', PACKAGE = 'lobstr', x)
+prim_desc_ <- function(name, env) {
+    .Call('lobstr_prim_desc_', PACKAGE = 'lobstr', name, env)
 }
 
 prim_length <- function(x) {
@@ -40,22 +29,7 @@ prim_sizes <- function(objects, base_env) {
     .Call('lobstr_prim_sizes', PACKAGE = 'lobstr', objects, base_env)
 }
 
-#' The type of an object.
-#'
-#' \code{prim_type()} returns the type of the underlying R object.
-#' \code{user_type()} is an S3 generic that can be optionally overridden
-#' by class authors in order to provide better navigation.
-#'
-#' @param x An object to describe.
-#' @export
-#' @examples
-#' prim_type("a")
-#' prim_type(mtcars)
-#' prim_type(sum)
-#' prim_type(mean)
-#' prim_type(formals(mean))
-#' prim_type(formals(mean)[[1]])
-prim_type <- function(x) {
-    .Call('lobstr_prim_type', PACKAGE = 'lobstr', x)
+prim_type_ <- function(name, env) {
+    .Call('lobstr_prim_type_', PACKAGE = 'lobstr', name, env)
 }
 

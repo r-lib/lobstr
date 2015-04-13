@@ -41,14 +41,15 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// prim_desc
-std::string prim_desc(SEXP x);
-RcppExport SEXP lobstr_prim_desc(SEXP xSEXP) {
+// prim_desc_
+std::string prim_desc_(SEXP name, Environment env);
+RcppExport SEXP lobstr_prim_desc_(SEXP nameSEXP, SEXP envSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    __result = Rcpp::wrap(prim_desc(x));
+    Rcpp::traits::input_parameter< SEXP >::type name(nameSEXP);
+    Rcpp::traits::input_parameter< Environment >::type env(envSEXP);
+    __result = Rcpp::wrap(prim_desc_(name, env));
     return __result;
 END_RCPP
 }
@@ -87,14 +88,15 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
-// prim_type
-std::string prim_type(RObject x);
-RcppExport SEXP lobstr_prim_type(SEXP xSEXP) {
+// prim_type_
+std::string prim_type_(RObject name, Environment env);
+RcppExport SEXP lobstr_prim_type_(SEXP nameSEXP, SEXP envSEXP) {
 BEGIN_RCPP
     Rcpp::RObject __result;
     Rcpp::RNGScope __rngScope;
-    Rcpp::traits::input_parameter< RObject >::type x(xSEXP);
-    __result = Rcpp::wrap(prim_type(x));
+    Rcpp::traits::input_parameter< RObject >::type name(nameSEXP);
+    Rcpp::traits::input_parameter< Environment >::type env(envSEXP);
+    __result = Rcpp::wrap(prim_type_(name, env));
     return __result;
 END_RCPP
 }

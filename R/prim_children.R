@@ -49,3 +49,15 @@ print.primlist <- function(x, ...) {
 `$.primlist` <- function(x, i, ...) {
   prim_children(x[[i]])
 }
+
+#' @export
+#' @param ... Additional arguments pass to \code{user_children} methods.
+#' @rdname prim_children
+user_children <- function(x, ...) {
+  UseMethod("user_children")
+}
+
+#' @export
+user_children.default <- function(x, ...) {
+  prim_children(x)
+}
