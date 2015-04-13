@@ -11,7 +11,7 @@ inline SEXP promise_value(SEXP promise, Rcpp::Environment env) {
   // recurse until we find the top-level promise, not a promise of a promise etc
   while(TYPEOF(promise) == PROMSXP) {
     if (PRENV(promise) == R_NilValue) {
-      Rf_error("Promise has already been forced");
+      return PRVALUE(promise);
     }
 
     env = PRENV(promise);
