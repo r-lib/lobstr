@@ -11,6 +11,8 @@ user_children(x, ...)
 }
 \arguments{
 \item{x}{An object.}
+
+\item{...}{Additional arguments pass to \code{user_children} methods.}
 }
 \value{
 A list of children with class "primlist". This list should be

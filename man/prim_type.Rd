@@ -9,6 +9,11 @@ prim_type(x)
 
 user_type(x, ...)
 }
+\arguments{
+\item{x}{An object to describe.}
+
+\item{...}{Additional arguments pass to \code{user_type} methods.}
+}
 \description{
 \code{prim_type()} returns the type of the underlying R object.
 \code{user_type()} is an S3 generic that can be optionally overridden

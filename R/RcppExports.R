@@ -38,6 +38,7 @@ prim_length <- function(x) {
 #' \code{user_type()} is an S3 generic that can be optionally overridden
 #' by class authors in order to provide better navigation.
 #'
+#' @param x An object to describe.
 #' @export
 #' @examples
 #' prim_type("a")

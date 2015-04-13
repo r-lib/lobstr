@@ -11,6 +11,8 @@ user_desc(x, ...)
 }
 \arguments{
 \item{x}{An object to describe}
+
+\item{...}{Additional arguments pass to \code{user_desc} methods.}
 }
 \description{
 \code{prim_desc()} describes the primitive R object. \code{user_desc()}
