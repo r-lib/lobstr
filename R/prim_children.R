@@ -13,8 +13,16 @@
 #' prim_children(mtcars)
 #' prim_children(mtcars)$`__attributes`
 #' prim_children(list(1:10, runif(1e3)))
+#'
+#' # Don't modify the output of prim_children! They are "pointers" to the
+#' # original data (more precisely they don't increment the ref count so that
+#' # a copy is not made on modification)
+#' x <- list(1:10)
+#' y <- prim_children(x)
+#' y[[1]][5] <- 100L
+#' x
 prim_children <- function(x) {
-  structure(prim_children_(quote(x), environment()), class = "primlist")
+  prim_children_(quote(x), environment())
 }
 
 #' @export

@@ -47,7 +47,7 @@ RObject prim_children_(SEXP x) {
   case VECSXP: {
     SEXP names = Rf_getAttrib(x, Rf_install("names"));
     int n = Rf_length(x);
-    out.resize(n);
+    out.reserve(n);
 
     if (names == R_NilValue) {
       for (int i = 0; i < n; ++i)
@@ -87,7 +87,9 @@ RObject prim_children_(SEXP x) {
       out.push_back("__attributes", ATTRIB(x));
   }
 
-  return out.list();
+  List list = out.list();
+  list.attr("class") = "prim_children";
+  return list;
 }
 
 // [[Rcpp::export]]
