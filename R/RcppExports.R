@@ -32,6 +32,14 @@ prim_length <- function(x) {
     .Call('lobstr_prim_length', PACKAGE = 'lobstr', x)
 }
 
+v_size <- function(n, size) {
+    .Call('lobstr_v_size', PACKAGE = 'lobstr', n, size)
+}
+
+prim_sizes <- function(objects, base_env) {
+    .Call('lobstr_prim_sizes', PACKAGE = 'lobstr', objects, base_env)
+}
+
 #' The type of an object.
 #'
 #' \code{prim_type()} returns the type of the underlying R object.

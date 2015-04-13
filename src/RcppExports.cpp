@@ -63,6 +63,30 @@ BEGIN_RCPP
     return __result;
 END_RCPP
 }
+// v_size
+double v_size(double n, int size);
+RcppExport SEXP lobstr_v_size(SEXP nSEXP, SEXP sizeSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< double >::type n(nSEXP);
+    Rcpp::traits::input_parameter< int >::type size(sizeSEXP);
+    __result = Rcpp::wrap(v_size(n, size));
+    return __result;
+END_RCPP
+}
+// prim_sizes
+double prim_sizes(List objects, Environment base_env);
+RcppExport SEXP lobstr_prim_sizes(SEXP objectsSEXP, SEXP base_envSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject __result;
+    Rcpp::RNGScope __rngScope;
+    Rcpp::traits::input_parameter< List >::type objects(objectsSEXP);
+    Rcpp::traits::input_parameter< Environment >::type base_env(base_envSEXP);
+    __result = Rcpp::wrap(prim_sizes(objects, base_env));
+    return __result;
+END_RCPP
+}
 // prim_type
 std::string prim_type(RObject x);
 RcppExport SEXP lobstr_prim_type(SEXP xSEXP) {

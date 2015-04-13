@@ -15,6 +15,7 @@ There are three key functions:
 
 Two functions help understand the memory usage of an object:
 
+* `prim_size()`: the memory usage of an object.
 * `prim_address()`: the memory location of an object
 * `prim_ref()`: the ref count of an object.
 
