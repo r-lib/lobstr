@@ -16,16 +16,14 @@
 #'
 #' # As of R 3.1.0, assigning an object into a list also makes a lazy copy:
 #' y <- runif(10)
-#' z <- list(a = y, b = y)
-#' lapply(prim_children(z), prim_address)
 #' prim_address(y)
-#' prim_refs(y)
+#' z <- list(y, y)
+#' lapply(prim_children(z), prim_address)
 #'
 #' y[2] <- 1.0
 #' lapply(prim_children(z), prim_address)
 #' prim_address(y)
 #' prim_refs(y)
-#'
 #'
 #' # The address of an expression is different every time:
 #' prim_address(1:10)
