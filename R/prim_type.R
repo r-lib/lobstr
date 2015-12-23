@@ -14,7 +14,7 @@
 #' prim_type(formals(mean))
 #' prim_type(formals(mean)[[1]])
 prim_type <- function(x) {
-  prim_type_(quote(x), environment)
+  prim_type_(quote(x), environment())
 }
 
 #' @export
