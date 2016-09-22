@@ -53,7 +53,7 @@ prim_size <- function(..., env = parent.frame()) {
 #' @export
 #' @rdname prim_size
 compare_size <- function(x) {
-  c(base = object.size(x), pryr = prim_size(x))
+  c(base = utils::object.size(x), pryr = prim_size(x))
 }
 
 
