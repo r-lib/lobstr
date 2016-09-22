@@ -7,9 +7,13 @@ Authors@R: c(
   )
 Description: An alternative to str() and .Internal(inspect()) that provides
     a navigable hierarchy for any R object.
-Depends: R (>= 3.1.0)
+Depends:
+    R (>= 3.1.0)
 License: GPL-3
 LazyData: true
 LinkingTo: Rcpp
-Imports: Rcpp
-Suggests: testthat
+Imports:
+    Rcpp
+Suggests:
+    testthat
+RoxygenNote: 5.0.1
