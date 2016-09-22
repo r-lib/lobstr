@@ -1,5 +1,7 @@
 # lobstr
 
+[![Travis-CI Build Status](https://travis-ci.org/hadley/lobstr.svg?branch=master)](https://travis-ci.org/hadley/lobstr)
+
 A better `str()`. Designed to be used iteratively, so you can explore a complicated data structure one level at a time. 
 
 Lobstr provides two families of functions: `prim_` and `user_`. The `prim_*()` functions are pure C functions and do no S3/S4 dispatch. They have been carefully written to not touch evaluate in input in R, so don't increment the ref count. This makes them most useful for developers who want to dig into the precise structure of an object. The `user_*()` functions are S3 generics, making it easy to override the behaviour for specific cases. These are designed more for the R user, who just needs a solid idea of what the components are, not the precise details.
