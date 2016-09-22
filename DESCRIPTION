@@ -17,3 +17,5 @@ Imports:
 Suggests:
     testthat
 RoxygenNote: 5.0.1
+URL: https://github.com/hadley/lobstr
+BugReports: https://github.com/hadley/lobstr/issues
