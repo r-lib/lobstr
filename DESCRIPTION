@@ -12,10 +12,10 @@ Depends:
 License: GPL-3
 LazyData: true
 LinkingTo: Rcpp
-Imports:
+Imports: 
     Rcpp
 Suggests:
     testthat
-RoxygenNote: 5.0.1
+RoxygenNote: 6.0.1
 URL: https://github.com/hadley/lobstr
 BugReports: https://github.com/hadley/lobstr/issues

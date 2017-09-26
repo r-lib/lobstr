@@ -7,7 +7,7 @@ using namespace Rcpp;
 
 // prim_address_
 std::string prim_address_(SEXP name, Environment env);
-RcppExport SEXP lobstr_prim_address_(SEXP nameSEXP, SEXP envSEXP) {
+RcppExport SEXP _lobstr_prim_address_(SEXP nameSEXP, SEXP envSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -19,7 +19,7 @@ END_RCPP
 }
 // prim_refs_
 int prim_refs_(SEXP name, Environment env);
-RcppExport SEXP lobstr_prim_refs_(SEXP nameSEXP, SEXP envSEXP) {
+RcppExport SEXP _lobstr_prim_refs_(SEXP nameSEXP, SEXP envSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -31,7 +31,7 @@ END_RCPP
 }
 // prim_children_
 RObject prim_children_(SEXP name, Environment env);
-RcppExport SEXP lobstr_prim_children_(SEXP nameSEXP, SEXP envSEXP) {
+RcppExport SEXP _lobstr_prim_children_(SEXP nameSEXP, SEXP envSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -43,7 +43,7 @@ END_RCPP
 }
 // prim_desc_
 std::string prim_desc_(SEXP name, Environment env);
-RcppExport SEXP lobstr_prim_desc_(SEXP nameSEXP, SEXP envSEXP) {
+RcppExport SEXP _lobstr_prim_desc_(SEXP nameSEXP, SEXP envSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -55,7 +55,7 @@ END_RCPP
 }
 // prim_length
 int prim_length(SEXP x);
-RcppExport SEXP lobstr_prim_length(SEXP xSEXP) {
+RcppExport SEXP _lobstr_prim_length(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -66,7 +66,7 @@ END_RCPP
 }
 // v_size
 double v_size(double n, int size);
-RcppExport SEXP lobstr_v_size(SEXP nSEXP, SEXP sizeSEXP) {
+RcppExport SEXP _lobstr_v_size(SEXP nSEXP, SEXP sizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -78,7 +78,7 @@ END_RCPP
 }
 // prim_sizes
 double prim_sizes(List objects, Environment base_env);
-RcppExport SEXP lobstr_prim_sizes(SEXP objectsSEXP, SEXP base_envSEXP) {
+RcppExport SEXP _lobstr_prim_sizes(SEXP objectsSEXP, SEXP base_envSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -90,7 +90,7 @@ END_RCPP
 }
 // prim_type_
 std::string prim_type_(RObject name, Environment env);
-RcppExport SEXP lobstr_prim_type_(SEXP nameSEXP, SEXP envSEXP) {
+RcppExport SEXP _lobstr_prim_type_(SEXP nameSEXP, SEXP envSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -99,4 +99,21 @@ BEGIN_RCPP
     rcpp_result_gen = Rcpp::wrap(prim_type_(name, env));
     return rcpp_result_gen;
 END_RCPP
+}
+
+static const R_CallMethodDef CallEntries[] = {
+    {"_lobstr_prim_address_", (DL_FUNC) &_lobstr_prim_address_, 2},
+    {"_lobstr_prim_refs_", (DL_FUNC) &_lobstr_prim_refs_, 2},
+    {"_lobstr_prim_children_", (DL_FUNC) &_lobstr_prim_children_, 2},
+    {"_lobstr_prim_desc_", (DL_FUNC) &_lobstr_prim_desc_, 2},
+    {"_lobstr_prim_length", (DL_FUNC) &_lobstr_prim_length, 1},
+    {"_lobstr_v_size", (DL_FUNC) &_lobstr_v_size, 2},
+    {"_lobstr_prim_sizes", (DL_FUNC) &_lobstr_prim_sizes, 2},
+    {"_lobstr_prim_type_", (DL_FUNC) &_lobstr_prim_type_, 2},
+    {NULL, NULL, 0}
+};
+
+RcppExport void R_init_lobstr(DllInfo *dll) {
+    R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
+    R_useDynamicSymbols(dll, FALSE);
 }

@@ -23,4 +23,3 @@ navigation
 prim_desc(1:100)
 prim_desc(quote(a))
 }
-

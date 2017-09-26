@@ -27,4 +27,3 @@ prim_type(mean)
 prim_type(formals(mean))
 prim_type(formals(mean)[[1]])
 }
-

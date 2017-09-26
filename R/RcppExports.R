@@ -2,34 +2,34 @@
 # Generator token: 10BE3573-1514-4C36-9D1C-5A225CD40393
 
 prim_address_ <- function(name, env) {
-    .Call('lobstr_prim_address_', PACKAGE = 'lobstr', name, env)
+    .Call(`_lobstr_prim_address_`, name, env)
 }
 
 prim_refs_ <- function(name, env) {
-    .Call('lobstr_prim_refs_', PACKAGE = 'lobstr', name, env)
+    .Call(`_lobstr_prim_refs_`, name, env)
 }
 
 prim_children_ <- function(name, env) {
-    .Call('lobstr_prim_children_', PACKAGE = 'lobstr', name, env)
+    .Call(`_lobstr_prim_children_`, name, env)
 }
 
 prim_desc_ <- function(name, env) {
-    .Call('lobstr_prim_desc_', PACKAGE = 'lobstr', name, env)
+    .Call(`_lobstr_prim_desc_`, name, env)
 }
 
 prim_length <- function(x) {
-    .Call('lobstr_prim_length', PACKAGE = 'lobstr', x)
+    .Call(`_lobstr_prim_length`, x)
 }
 
 v_size <- function(n, size) {
-    .Call('lobstr_v_size', PACKAGE = 'lobstr', n, size)
+    .Call(`_lobstr_v_size`, n, size)
 }
 
 prim_sizes <- function(objects, base_env) {
-    .Call('lobstr_prim_sizes', PACKAGE = 'lobstr', objects, base_env)
+    .Call(`_lobstr_prim_sizes`, objects, base_env)
 }
 
 prim_type_ <- function(name, env) {
-    .Call('lobstr_prim_type_', PACKAGE = 'lobstr', name, env)
+    .Call(`_lobstr_prim_type_`, name, env)
 }
 

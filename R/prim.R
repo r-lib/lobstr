@@ -1,3 +1,3 @@
-#' @useDynLib lobstr
+#' @useDynLib lobstr, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 NULL
