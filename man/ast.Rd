@@ -28,7 +28,7 @@ ast((x + 1))
 # All operations have this same structure
 ast(if (TRUE) 3 else 4)
 ast(y <- x * 10)
-# ast(function(x = 1, y = 2) { x + y } )
+ast(function(x = 1, y = 2) { x + y } )
 
 # Operator precedence
 ast(1 * 2 + 3)

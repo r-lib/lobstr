@@ -20,7 +20,7 @@
 #' # All operations have this same structure
 #' ast(if (TRUE) 3 else 4)
 #' ast(y <- x * 10)
-#' # ast(function(x = 1, y = 2) { x + y } )
+#' ast(function(x = 1, y = 2) { x + y } )
 #'
 #' # Operator precedence
 #' ast(1 * 2 + 3)
@@ -123,7 +123,9 @@ is.syntactic <- function(x) make.names(x) == x
 # string utils ------------------------------------------------------------
 
 str_indent <- function(x, first, rest) {
-  if (length(x) == 1) {
+  if (length(x) == 0) {
+    character()
+  } else if (length(x) == 1) {
     paste0(first, x)
   } else {
     c(
