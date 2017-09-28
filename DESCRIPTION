@@ -12,6 +12,7 @@ Depends:
 License: GPL-3
 LazyData: true
 LinkingTo: Rcpp
+Encoding: UTF-8
 Imports: 
     Rcpp,
     rlang,
