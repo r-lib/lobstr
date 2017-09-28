@@ -126,20 +126,13 @@ is.syntactic <- function(x) make.names(x) == x
 
 # string utils ------------------------------------------------------------
 
-str_indent <- function(x, first, rest, last = rest, sep = "") {
-  n <- length(x)
-  if (n == 1) {
-    paste0(first, sep, x)
-  } else if (n == 2) {
-    c(
-      paste0(first, sep, x[[1]]),
-      paste0(last, sep, x[[2]])
-    )
+str_indent <- function(x, first, rest) {
+  if (length(x) == 1) {
+    paste0(first, x)
   } else {
     c(
-      paste0(first, sep, x[[1]]),
-      paste0(rest, sep, x[-c(1L, n)]),
-      paste0(last, sep, x[n])
+      paste0(first, x[[1]]),
+      paste0(rest, x[-1L])
     )
   }
 
