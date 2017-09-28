@@ -2,6 +2,7 @@
 
 S3method("$",primlist)
 S3method(print,bytes)
+S3method(print,lobstr_ast)
 S3method(print,primlist)
 S3method(user_children,default)
 S3method(user_desc,default)

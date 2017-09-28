@@ -28,9 +28,14 @@
 ast <- function(x) {
   expr <- enexpr(x)
   out <- tree(expr)
-  cat(paste(out, "\n", collapse = ""), sep = "")
 
-  invisible(expr)
+  structure(out, class = "lobstr_ast")
+}
+
+#' @export
+print.lobstr_ast <- function(x, ...) {
+  cat(paste(x, "\n", collapse = ""), sep = "")
+  invisible(x)
 }
 
 tree <- function(x, layout = box_chars()) {
@@ -47,21 +52,12 @@ tree <- function(x, layout = box_chars()) {
   subtrees <- lapply(x, tree, layout = layout)
 
   n <- length(x)
-  if (n == 1) {
+  if (n == 0) {
+    character()
+  } else if (n == 1) {
     str_indent(subtrees[[1]],
       paste0(layout$n, layout$h),
       "  "
-    )
-  } else if (n == 2) {
-    c(
-      str_indent(subtrees[[1]],
-        paste0(layout$n, layout$h),
-        paste0(layout$v,  " ")
-      ),
-      str_indent(subtrees[[2]],
-        paste0(layout$l, layout$h),
-        "  "
-      )
     )
   } else {
     c(
