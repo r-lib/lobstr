@@ -54,6 +54,7 @@ tree <- function(x, layout = box_chars()) {
 
   # recursive case
   subtrees <- lapply(x, tree, layout = layout)
+  subtrees <- name_subtree(subtrees)
 
   n <- length(x)
   if (n == 0) {
@@ -80,6 +81,21 @@ tree <- function(x, layout = box_chars()) {
       )
     )
   }
+}
+
+name_subtree <- function(x) {
+  nm <- names(x)
+  if (is.null(nm))
+    return(x)
+
+  grey <- crayon::make_style(grDevices::grey(0.5), grey = TRUE)
+
+  has_name <- nm != ""
+  label <- paste0(crayon::italic(grey(nm)), " = ")
+  indent <- strrep(" ", nchar(nm) + 3)
+
+  x[has_name] <- Map(str_indent, x[has_name], label[has_name], indent[has_name])
+  x
 }
 
 box_chars <- function() {
