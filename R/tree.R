@@ -39,6 +39,10 @@ print.lobstr_ast <- function(x, ...) {
 }
 
 tree <- function(x, layout = box_chars()) {
+  if (is_quosure(x)) {
+    x <- quo_expr(x)
+  }
+
   # base cases
   if (rlang::is_syntactic_literal(x)) {
     return(leaf_constant(x))
