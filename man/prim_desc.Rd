@@ -2,22 +2,15 @@
 % Please edit documentation in R/prim_desc.R
 \name{prim_desc}
 \alias{prim_desc}
-\alias{user_desc}
 \title{A brief description of an object.}
 \usage{
 prim_desc(x)
-
-user_desc(x, ...)
 }
 \arguments{
 \item{x}{An object to describe}
-
-\item{...}{Additional arguments pass to \code{user_desc} methods.}
 }
 \description{
-\code{prim_desc()} describes the primitive R object. \code{user_desc()}
-is an S3 method that object creators can override to provide better
-navigation
+\code{prim_desc()} describes the primitive R object.
 }
 \examples{
 prim_desc(1:100)

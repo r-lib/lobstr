@@ -2,22 +2,15 @@
 % Please edit documentation in R/prim_type.R
 \name{prim_type}
 \alias{prim_type}
-\alias{user_type}
 \title{The type of an object.}
 \usage{
 prim_type(x)
-
-user_type(x, ...)
 }
 \arguments{
 \item{x}{An object to describe.}
-
-\item{...}{Additional arguments pass to \code{user_type} methods.}
 }
 \description{
 \code{prim_type()} returns the type of the underlying R object.
-\code{user_type()} is an S3 generic that can be optionally overridden
-by class authors in order to provide better navigation.
 }
 \examples{
 prim_type("a")

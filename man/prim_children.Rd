@@ -2,17 +2,12 @@
 % Please edit documentation in R/prim_children.R
 \name{prim_children}
 \alias{prim_children}
-\alias{user_children}
 \title{Primitive children.}
 \usage{
 prim_children(x)
-
-user_children(x, ...)
 }
 \arguments{
 \item{x}{An object.}
-
-\item{...}{Additional arguments pass to \code{user_children} methods.}
 }
 \value{
 A list of children with class "primlist". This list should be
