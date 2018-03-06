@@ -1,4 +1,4 @@
-context("prim_refs")
+context("test-refs.R")
 
 test_that("expression has no refs", {
   expect_equal(obj_refs(1:10), 0L)

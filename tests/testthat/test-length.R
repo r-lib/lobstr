@@ -1,4 +1,4 @@
-context("primt_length")
+context("test-length.R")
 
 test_that("NULL, symbol and builtin have no children", {
   expect_equal(prim_length(NULL), 0)

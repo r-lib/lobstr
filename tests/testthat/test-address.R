@@ -1,4 +1,4 @@
-context("prim_address")
+context("test-address.R")
 
 test_that("address of expression varies", {
   a <- obj_address(1:10)

@@ -1,4 +1,4 @@
-context("prim_type")
+context("test-type.R")
 
 test_that("basic types are correct", {
   expect_equal(prim_type("a"), "character")
