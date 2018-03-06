@@ -1,7 +1,7 @@
 # lobstr
 
-[![Travis-CI Build Status](https://travis-ci.org/hadley/lobstr.svg?branch=master)](https://travis-ci.org/hadley/lobstr)
-[![Coverage status](https://codecov.io/gh/hadley/lobstr/branch/master/graph/badge.svg)](https://codecov.io/github/hadley/lobstr?branch=master)
+[![Travis-CI Build Status](https://travis-ci.org/r-lib/lobstr.svg?branch=master)](https://travis-ci.org/r-lib/lobstr)
+[![Coverage status](https://codecov.io/gh/r-lib/lobstr/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/lobstr?branch=master)
  
 A better `str()`. Designed to be used iteratively, so you can explore a complicated data structure one level at a time. 
 
