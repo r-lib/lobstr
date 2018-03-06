@@ -1,9 +1,10 @@
-#' Information about low-level memory usage.
+#' Find memory location of objects and their children.
 #'
-#' These functions are careful not to take an R-level reference to the
-#' underlying object, hence distorting the ref count.
+#' `obj_address()` gives the address of the value that `x` points to;
+#' `obj_addresses()` gives the address of the components the list,
+#' environment, and character vector `x` point to
 #'
-#' @param x An object to inspect
+#' @param x An object
 #' @export
 #' @examples
 #' # R creates copies lazily
@@ -27,29 +28,8 @@
 #' obj_address(1:10)
 #' obj_address(1:10)
 #' obj_address(1:10)
-#'
-#' # An expression has a ref count of 0 because it's never assigned
-#' # a name
-#' obj_refs(1:10)
-#'
-#' # The RStudio environment pane takes a reference to objects.
-#' # In the console, this will return 1, in RStudio 2.
-#' x <- 1:10
-#' obj_refs(x)
-#'
-#' f <- function() {
-#'   x <- 1:10
-#'   obj_refs(x)
-#' }
-#' f()
 obj_address <- function(x) {
   prim_address_(quote(x), environment())
-}
-
-#' @export
-#' @rdname obj_address
-obj_refs <- function(x) {
-  prim_refs_(quote(x), environment())
 }
 
 #' @export
