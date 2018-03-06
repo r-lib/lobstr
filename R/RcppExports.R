@@ -13,10 +13,6 @@ prim_addresses_ <- function(name, env) {
     .Call(`_lobstr_prim_addresses_`, name, env)
 }
 
-prim_children_ <- function(name, env) {
-    .Call(`_lobstr_prim_children_`, name, env)
-}
-
 prim_desc_ <- function(name, env) {
     .Call(`_lobstr_prim_desc_`, name, env)
 }

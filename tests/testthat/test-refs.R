@@ -14,10 +14,3 @@ test_that("local variable with ref has two refs", {
   y <- x
   expect_equal(obj_refs(x), 2L)
 })
-
-test_that("prim_children doesn't increment refs", {
-  x <- list(1:10)
-  y <- prim_children(x)
-
-  expect_equal(obj_refs(x), 1L)
-})
