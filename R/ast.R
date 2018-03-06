@@ -27,7 +27,7 @@
 #' ast(!1 + !1)
 ast <- function(x) {
   expr <- enexpr(x)
-  out <- tree(expr)
+  out <- ast_tree(expr)
 
   structure(out, class = "lobstr_ast")
 }
@@ -38,7 +38,7 @@ print.lobstr_ast <- function(x, ...) {
   invisible(x)
 }
 
-tree <- function(x, layout = box_chars()) {
+ast_tree <- function(x, layout = box_chars()) {
   if (is_quosure(x)) {
     x <- quo_expr(x)
   }
@@ -53,7 +53,7 @@ tree <- function(x, layout = box_chars()) {
   }
 
   # recursive case
-  subtrees <- lapply(x, tree, layout = layout)
+  subtrees <- lapply(x, ast_tree, layout = layout)
   subtrees <- name_subtree(subtrees)
 
   n <- length(x)
