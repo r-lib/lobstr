@@ -45,9 +45,9 @@ ast_tree <- function(x, layout = box_chars()) {
 
   # base cases
   if (rlang::is_syntactic_literal(x)) {
-    return(leaf_constant(x))
+    return(ast_leaf_constant(x))
   } else if (is_symbol(x)) {
-    return(leaf_symbol(x))
+    return(ast_leaf_symbol(x))
   } else if (!is.pairlist(x) && !is.call(x)) {
     return(paste0("<inline ", paste0(class(x), collapse = "/"), ">"))
   }
@@ -98,7 +98,7 @@ name_subtree <- function(x) {
   x
 }
 
-leaf_symbol <- function(x) {
+ast_leaf_symbol <- function(x) {
   x <- as.character(x)
   if (!is.syntactic(x)) {
     x <- encodeString(x, quote = "`")
@@ -106,7 +106,7 @@ leaf_symbol <- function(x) {
 
   crayon::bold(crayon::magenta(x))
 }
-leaf_constant <- function(x) {
+ast_leaf_constant <- function(x) {
   if (is.character(x)) {
     encodeString(x, quote = '"')
   } else {
