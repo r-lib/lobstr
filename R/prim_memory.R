@@ -9,43 +9,46 @@
 #' # R creates copies lazily
 #' x <- 1:10
 #' y <- x
-#' prim_address(x) == prim_address(y)
+#' obj_address(x) == obj_address(y)
 #'
 #' y[1] <- 2L
-#' prim_address(x) == prim_address(y)
+#' obj_address(x) == obj_address(y)
 #'
-#' # As of R 3.1.0, assigning an object into a list also makes a lazy copy:
 #' y <- runif(10)
-#' prim_address(y)
+#' obj_address(y)
 #' z <- list(y, y)
-#' lapply(prim_children(z), prim_address)
+#' lapply(prim_children(z), obj_address)
 #'
 #' y[2] <- 1.0
-#' lapply(prim_children(z), prim_address)
-#' prim_address(y)
-#' prim_refs(y)
+#' lapply(prim_children(z), obj_address)
+#' obj_address(y)
+#' obj_refs(y)
 #'
 #' # The address of an expression is different every time:
-#' prim_address(1:10)
-#' prim_address(1:10)
-#' prim_address(1:10)
+#' obj_address(1:10)
+#' obj_address(1:10)
+#' obj_address(1:10)
 #'
 #' # An expression has a ref count of 0 because it's never assigned
 #' # a name
-#' prim_refs(1:10)
-#' prim_refs(x)
+#' obj_refs(1:10)
+#' obj_refs(x)
 #'
 #' # The RStudio environment pane takes a reference to objects.
 #' # In the console, this will return 1, in RStudio 2.
 #' x <- 1:10
-#' prim_refs(x)
-prim_address <- function(x) {
+#' obj_refs(x)
+obj_address <- function(x) {
   prim_address_(quote(x), environment())
 }
 
 #' @export
-#' @rdname prim_address
-prim_refs <- function(x) {
+#' @rdname obj_address
+obj_refs <- function(x) {
   prim_refs_(quote(x), environment())
+}
+
+obj_addresses <- function(x) {
+  prim_addresses_(quote(x), environment())
 }
 
