@@ -15,8 +15,7 @@ Depends:
 Imports: 
     crayon,
     Rcpp,
-    rlang,
-    prettyunits
+    rlang
 Suggests: 
     testthat,
     covr

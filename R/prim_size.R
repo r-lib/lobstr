@@ -63,5 +63,6 @@ compare_size <- function(x) {
 
 #' @export
 print.bytes <- function(x, digits = 3, ...) {
-  cat(prettyunits::pretty_bytes(signif(x, digits = digits)), "\n", sep ="")
+  fx <- format(x, big.mark = ",")
+  cat(fx, " B\n", sep = "")
 }
