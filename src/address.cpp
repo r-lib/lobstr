@@ -2,17 +2,6 @@
 #include "utils.h"
 using namespace Rcpp;
 
-int prim_refs_(SEXP x) {
-  return NAMED(x);
-}
-
-// [[Rcpp::export]]
-int prim_refs_(SEXP name, Environment env) {
-  return prim_refs_(find_var(name, env));
-}
-
-// Address -------------------------------------------------
-
 std::string prim_address_(SEXP x) {
   return tfm::format("%p", x);
 }

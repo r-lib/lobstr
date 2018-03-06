@@ -33,3 +33,7 @@ obj_refs <- function(x) {
   prim_refs_(quote(x), environment())
 }
 
+obj_refss <- function(x) {
+  prim_refss_(quote(x), environment())
+}
+
