@@ -1,21 +1,48 @@
+
+<!-- README.md is generated from README.Rmd. Please edit that file -->
+
 # lobstr
 
-[![Travis-CI Build Status](https://travis-ci.org/r-lib/lobstr.svg?branch=master)](https://travis-ci.org/r-lib/lobstr)
-[![Coverage status](https://codecov.io/gh/r-lib/lobstr/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/lobstr?branch=master)
- 
-A better `str()`. Designed to be used iteratively, so you can explore a complicated data structure one level at a time. 
+[![Travis-CI Build
+Status](https://travis-ci.org/r-lib/lobstr.svg?branch=master)](https://travis-ci.org/r-lib/lobstr)
+[![Coverage
+status](https://codecov.io/gh/r-lib/lobstr/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/lobstr?branch=master)
 
-`prim_*()` functions are pure C functions and do no S3/S4 dispatch. They have been carefully written to not evaluate input in R, so don't increment the ref count. This makes them most useful for developers who want to dig into the precise structure of an object.
+lobstr provides tool in the same vein as `str()`, tools that allow you
+to dig into the detail of an object.
 
-There are three key functions:
+## Installation
 
-* `prim_type()`: type of element (similar to `typeof()` but with better names).
-  If S3 or S4, includes those in parentheses.
+You can install the development version with:
 
-* `prim_desc()`: a brief description of the element.
+``` r
+# install.packages("devtools")
+devtools::install_github("r-lib/lobstr")
+```
 
-Three functions help understand the memory usage of an object:
+## Example
 
-* `obj_size()`: the memory usage of an object.
-* `obj_address()`: the memory location of an object
-* `obj_ref()`: the ref count of an object.
+`ast()` draws the abstract syntax tree of R expressions
+
+``` r
+ast(a + b + c)
+#> █─`+` 
+#> ├─█─`+` 
+#> │ ├─a 
+#> │ └─b 
+#> └─c
+
+ast(function(x = 1) {
+  if (x > 0) print("Hi!")
+})
+#> █─`function` 
+#> ├─█─x = 1 
+#> ├─█─`{` 
+#> │ └─█─`if` 
+#> │   ├─█─`>` 
+#> │   │ ├─x 
+#> │   │ └─0 
+#> │   └─█─print 
+#> │     └─"Hi!" 
+#> └─<inline srcref>
+```
