@@ -1,6 +1,6 @@
 #' The type of an object.
 #'
-#' \code{prim_type()} returns the type of the underlying R object.
+#' `prim_type()` returns the type of the underlying R object.
 #'
 #' @param x An object to describe.
 #' @export

@@ -17,7 +17,7 @@ are already stored elsewhere.}
 An estimate of the size of the object, in bytes.
 }
 \description{
-\code{obj_size} works similarly to \code{\link{object.size}}, but correctly
+\code{obj_size} works similarly to \code{\link[=object.size]{object.size()}}, but correctly
 takes into account shared values, and includes the size of environments.
 }
 \section{Environments}{
@@ -27,7 +27,7 @@ environments associated with an object. This is particularly important
 for closures and formulas, since otherwise you may not realise that you've
 accidentally captured a large object. However, it's easy to over count:
 you don't want to include the size of every object in every environment
-leading back to the \code{\link{emptyenv}()}. \code{obj_size} takes
+leading back to the \code{\link[=emptyenv]{emptyenv()}}. \code{obj_size} takes
 a heuristic approach: it never counts the size of the global env,
 the base env, the empty env, or any namespace.
 

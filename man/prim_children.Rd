@@ -11,8 +11,8 @@ prim_children(x)
 }
 \value{
 A list of children with class "primlist". This list should be
-  considered read-only. DO NOT modify any elements returned by this
-  function.
+considered read-only. DO NOT modify any elements returned by this
+function.
 }
 \description{
 Extract all the low-level children of an element. This works at a low-level:

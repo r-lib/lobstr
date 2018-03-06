@@ -1,6 +1,6 @@
 #' Display the abstract syntax tree
 #'
-#' This is a useful alterantive to \code{str()} for expression objects.
+#' This is a useful alterantive to `str()` for expression objects.
 #'
 #' @param x A language object to display.
 #' @export

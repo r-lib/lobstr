@@ -1,6 +1,6 @@
 #' A brief description of an object.
 #'
-#' \code{prim_desc()} describes the primitive R object.
+#' `prim_desc()` describes the primitive R object.
 #'
 #' @param x An object to describe
 #' @export

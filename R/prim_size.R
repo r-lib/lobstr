@@ -1,21 +1,21 @@
 #' Calculate the size of an object.
 #'
-#' \code{obj_size} works similarly to \code{\link{object.size}}, but correctly
+#' `obj_size` works similarly to [object.size()], but correctly
 #' takes into account shared values, and includes the size of environments.
 #'
 #' @section Environments:
-#' \code{obj_size} attempts to take into account the size of the
+#' `obj_size` attempts to take into account the size of the
 #' environments associated with an object. This is particularly important
 #' for closures and formulas, since otherwise you may not realise that you've
 #' accidentally captured a large object. However, it's easy to over count:
 #' you don't want to include the size of every object in every environment
-#' leading back to the \code{\link{emptyenv}()}. \code{obj_size} takes
+#' leading back to the [emptyenv()]. `obj_size` takes
 #' a heuristic approach: it never counts the size of the global env,
 #' the base env, the empty env, or any namespace.
 #'
-#' Additionally, the \code{env} argument allows you to specify another
+#' Additionally, the `env` argument allows you to specify another
 #' environment at which to stop. This defaults to the environment from which
-#' \code{obj_size} is called to prevent double-counting of objects created
+#' `obj_size` is called to prevent double-counting of objects created
 #' elsewhere.
 #'
 #' @export
