@@ -4,10 +4,10 @@
 \alias{obj_size}
 \title{Calculate the size of an object.}
 \usage{
-obj_size(..., env = caller_env())
+obj_size(..., env = parent.frame())
 }
 \arguments{
-\item{...}{Set of objects to compute size of.}
+\item{...}{Set of objects to compute size.}
 
 \item{env}{Environment in which to terminate search. This defaults to the
 current environment so that you don't include the size of objects that
