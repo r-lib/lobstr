@@ -3,11 +3,14 @@
 \name{obj_address}
 \alias{obj_address}
 \alias{obj_refs}
+\alias{obj_addresses}
 \title{Information about low-level memory usage.}
 \usage{
 obj_address(x)
 
 obj_refs(x)
+
+obj_addresses(x)
 }
 \arguments{
 \item{x}{An object to inspect}
@@ -28,14 +31,13 @@ obj_address(x) == obj_address(y)
 y <- runif(10)
 obj_address(y)
 z <- list(y, y)
-lapply(prim_children(z), obj_address)
+obj_addresses(z)
 
 y[2] <- 1.0
-lapply(prim_children(z), obj_address)
+obj_addresses(z)
 obj_address(y)
-obj_refs(y)
 
-# The address of an expression is different every time:
+# The address of an object is different every time you create it:
 obj_address(1:10)
 obj_address(1:10)
 obj_address(1:10)
@@ -43,10 +45,15 @@ obj_address(1:10)
 # An expression has a ref count of 0 because it's never assigned
 # a name
 obj_refs(1:10)
-obj_refs(x)
 
 # The RStudio environment pane takes a reference to objects.
 # In the console, this will return 1, in RStudio 2.
 x <- 1:10
 obj_refs(x)
+
+f <- function() {
+  x <- 1:10
+  obj_refs(x)
+}
+f()
 }
