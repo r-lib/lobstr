@@ -24,3 +24,30 @@ test_that("address flows through function wrappers", {
 })
 
 
+# addresses ---------------------------------------------------------------
+
+test_that("can find addresses of list elements", {
+  x <- 1:3
+  y <- 1:3
+  addr <- c(obj_address(x), obj_address(y))
+
+  l <- list(x, y)
+  expect_equal(obj_addresses(l), addr)
+})
+
+test_that("can find addresses of environment elements", {
+  x <- 1:3
+  y <- 1:3
+  addr <- c(obj_address(x), obj_address(y))
+
+  e1 <- new.env(hash = TRUE)
+  e1$x <- x
+  e1$y <- y
+  expect_setequal(obj_addresses(e1), addr)
+
+  e2 <- new.env(hash = FALSE)
+  e2$x <- x
+  e2$y <- y
+  expect_setequal(obj_addresses(e2), addr)
+})
+
