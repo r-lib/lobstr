@@ -41,17 +41,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// prim_length
-int prim_length(SEXP x);
-RcppExport SEXP _lobstr_prim_length(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(prim_length(x));
-    return rcpp_result_gen;
-END_RCPP
-}
 // prim_refs_
 int prim_refs_(SEXP name, Environment env);
 RcppExport SEXP _lobstr_prim_refs_(SEXP nameSEXP, SEXP envSEXP) {
@@ -117,7 +106,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_lobstr_prim_address_", (DL_FUNC) &_lobstr_prim_address_, 2},
     {"_lobstr_prim_addresses_", (DL_FUNC) &_lobstr_prim_addresses_, 2},
     {"_lobstr_prim_desc_", (DL_FUNC) &_lobstr_prim_desc_, 2},
-    {"_lobstr_prim_length", (DL_FUNC) &_lobstr_prim_length, 1},
     {"_lobstr_prim_refs_", (DL_FUNC) &_lobstr_prim_refs_, 2},
     {"_lobstr_prim_refss_", (DL_FUNC) &_lobstr_prim_refss_, 2},
     {"_lobstr_v_size", (DL_FUNC) &_lobstr_v_size, 2},

@@ -13,10 +13,6 @@ prim_desc_ <- function(name, env) {
     .Call(`_lobstr_prim_desc_`, name, env)
 }
 
-prim_length <- function(x) {
-    .Call(`_lobstr_prim_length`, x)
-}
-
 prim_refs_ <- function(name, env) {
     .Call(`_lobstr_prim_refs_`, name, env)
 }
