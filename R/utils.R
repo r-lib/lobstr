@@ -1,5 +1,5 @@
 box_chars <- function() {
-  fancy <- getOption("pkgdepends.fancy.tree") %||% l10n_info()$`UTF-8`
+  fancy <- getOption("lobstr.fancy.tree") %||% l10n_info()$`UTF-8`
   orange <- crayon::make_style("orange")
 
   if (fancy) {
@@ -16,7 +16,7 @@ box_chars <- function() {
       "v" = "|",
       "l" = "\\",
       "j" = "+",
-      "n" = orange("X")
+      "n" = orange("o")
     )
   }
 }
@@ -39,13 +39,4 @@ str_indent <- function(x, first, rest) {
     )
   }
 
-}
-
-str_trunc <- function(x, max_width = getOption("width")) {
-  width <- nchar(x)
-
-  too_wide <- width > max_width
-  x[too_wide] <- paste0(substr(x[too_wide], 1, width[too_wide] - 3), "...")
-
-  x
 }
