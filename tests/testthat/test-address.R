@@ -51,3 +51,11 @@ test_that("can find addresses of environment elements", {
   expect_setequal(obj_addresses(e2), addr)
 })
 
+test_that("address of character vectors points to global string pool", {
+  addr <- obj_addresses(c("a", "a", "a"))
+  expect_equal(addr[[1]], addr[[2]])
+})
+
+test_that("addresses of other elements throws errors", {
+  expect_error(obj_addresses(1:10), "must be a list")
+})

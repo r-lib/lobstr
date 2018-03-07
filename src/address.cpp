@@ -52,7 +52,10 @@ std::vector<std::string> prim_addresses_(SEXP x) {
   }
 
   default:
-    Rcpp::stop("type not supported");
+    Rcpp::stop(
+      "`x` must be a list, environment, or character vector, not a %s.",
+      Rf_type2char(TYPEOF(x))
+    );
   }
 
   return out;
