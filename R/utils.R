@@ -24,7 +24,7 @@ box_chars <- function() {
 # string -----------------------------------------------------------------
 
 str_dup <- function(x, n) {
-  paste0(rep(x, n), collapse = "")
+  vapply(n, function(i) paste0(rep(x, i), collapse = ""), character(1))
 }
 
 str_indent <- function(x, first, rest) {
