@@ -12,5 +12,6 @@
 #' prim_type(formals(mean))
 #' prim_type(formals(mean)[[1]])
 prim_type <- function(x) {
-  prim_type_(quote(x), environment())
+  x <- enquo(x)
+  prim_type_(quo_get_expr(x), quo_get_env(x))
 }

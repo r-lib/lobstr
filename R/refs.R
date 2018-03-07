@@ -30,10 +30,12 @@
 #' obj_refs(z)
 #' @export
 obj_refs <- function(x) {
-  prim_refs_(quote(x), environment())
+  x <- enquo(x)
+  prim_refs_(quo_get_expr(x), quo_get_env(x))
 }
 
 obj_refss <- function(x) {
-  prim_refss_(quote(x), environment())
+  x <- enquo(x)
+  prim_refss_(quo_get_expr(x), quo_get_env(x))
 }
 

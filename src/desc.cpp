@@ -1,5 +1,4 @@
 #include <Rcpp.h>
-#include "utils.h"
 using namespace Rcpp;
 
 std::string prim_desc_(SEXP x) {
@@ -50,5 +49,5 @@ std::string prim_desc_(SEXP x) {
 
 // [[Rcpp::export]]
 std::string prim_desc_(SEXP name, Environment env) {
-  return prim_desc_(find_var(name, env));
+  return prim_desc_(Rf_eval(name, env));
 }

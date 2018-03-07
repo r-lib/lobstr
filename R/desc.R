@@ -8,5 +8,6 @@
 #' prim_desc(1:100)
 #' prim_desc(quote(a))
 prim_desc <- function(x) {
-  prim_desc_(quote(x), environment())
+  x <- enquo(x)
+  prim_desc_(quo_get_expr(x), quo_get_env(x))
 }

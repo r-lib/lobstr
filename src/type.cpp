@@ -1,5 +1,4 @@
 #include <Rcpp.h>
-#include "utils.h"
 using namespace Rcpp;
 
 std::string type_name(SEXP x) {
@@ -69,5 +68,5 @@ std::string prim_type_(RObject x) {
 
 // [[Rcpp::export]]
 std::string prim_type_(RObject name, Environment env) {
-  return prim_type_(find_var(name, env));
+  return prim_type_(Rf_eval(name, env));
 }

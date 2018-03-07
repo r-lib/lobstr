@@ -1,5 +1,4 @@
 #include <Rcpp.h>
-#include "utils.h"
 using namespace Rcpp;
 
 std::string prim_address_(SEXP x) {
@@ -8,7 +7,7 @@ std::string prim_address_(SEXP x) {
 
 // [[Rcpp::export]]
 std::string prim_address_(SEXP name, Environment env) {
-  return prim_address_(find_var(name, env));
+  return prim_address_(Rf_eval(name, env));
 }
 
 void frame_addresses(SEXP frame, std::vector<std::string>* refs) {
@@ -63,6 +62,6 @@ std::vector<std::string> prim_addresses_(SEXP x) {
 
 // [[Rcpp::export]]
 std::vector<std::string> prim_addresses_(SEXP name, Environment env) {
-  return prim_addresses_(find_var(name, env));
+  return prim_addresses_(Rf_eval(name, env));
 }
 

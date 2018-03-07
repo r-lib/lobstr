@@ -1,5 +1,4 @@
 #include <Rcpp.h>
-#include "utils.h"
 using namespace Rcpp;
 
 int prim_refs_(SEXP x) {
@@ -8,7 +7,7 @@ int prim_refs_(SEXP x) {
 
 // [[Rcpp::export]]
 int prim_refs_(SEXP name, Environment env) {
-  return prim_refs_(find_var(name, env));
+  return prim_refs_(Rf_eval(name, env));
 }
 
 void frame_refs(SEXP frame, std::vector<int>* refs) {
@@ -60,6 +59,6 @@ std::vector<int> prim_refss_(SEXP x) {
 
 // [[Rcpp::export]]
 std::vector<int> prim_refss_(SEXP name, Environment env) {
-  return prim_refss_(find_var(name, env));
+  return prim_refss_(Rf_eval(name, env));
 }
 

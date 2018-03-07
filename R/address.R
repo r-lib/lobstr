@@ -29,12 +29,14 @@
 #' obj_address(1:10)
 #' obj_address(1:10)
 obj_address <- function(x) {
-  prim_address_(quote(x), environment())
+  x <- enquo(x)
+  prim_address_(quo_get_expr(x), quo_get_env(x))
 }
 
 #' @export
 #' @rdname obj_address
 obj_addresses <- function(x) {
-  prim_addresses_(quote(x), environment())
+  x <- enquo(x)
+  prim_addresses_(quo_get_expr(x), quo_get_env(x))
 }
 
