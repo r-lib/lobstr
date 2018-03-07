@@ -17,10 +17,6 @@ prim_refs_ <- function(name, env) {
     .Call(`_lobstr_prim_refs_`, name, env)
 }
 
-prim_refss_ <- function(name, env) {
-    .Call(`_lobstr_prim_refss_`, name, env)
-}
-
 v_size <- function(n, size) {
     .Call(`_lobstr_v_size`, n, size)
 }

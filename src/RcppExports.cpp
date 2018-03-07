@@ -53,18 +53,6 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// prim_refss_
-std::vector<int> prim_refss_(SEXP name, Environment env);
-RcppExport SEXP _lobstr_prim_refss_(SEXP nameSEXP, SEXP envSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type name(nameSEXP);
-    Rcpp::traits::input_parameter< Environment >::type env(envSEXP);
-    rcpp_result_gen = Rcpp::wrap(prim_refss_(name, env));
-    return rcpp_result_gen;
-END_RCPP
-}
 // v_size
 double v_size(double n, int size);
 RcppExport SEXP _lobstr_v_size(SEXP nSEXP, SEXP sizeSEXP) {
@@ -107,7 +95,6 @@ static const R_CallMethodDef CallEntries[] = {
     {"_lobstr_prim_addresses_", (DL_FUNC) &_lobstr_prim_addresses_, 2},
     {"_lobstr_prim_desc_", (DL_FUNC) &_lobstr_prim_desc_, 2},
     {"_lobstr_prim_refs_", (DL_FUNC) &_lobstr_prim_refs_, 2},
-    {"_lobstr_prim_refss_", (DL_FUNC) &_lobstr_prim_refss_, 2},
     {"_lobstr_v_size", (DL_FUNC) &_lobstr_v_size, 2},
     {"_lobstr_prim_sizes", (DL_FUNC) &_lobstr_prim_sizes, 2},
     {"_lobstr_prim_type_", (DL_FUNC) &_lobstr_prim_type_, 2},

@@ -33,9 +33,3 @@ obj_refs <- function(x) {
   x <- enquo(x)
   prim_refs_(quo_get_expr(x), quo_get_env(x))
 }
-
-obj_refss <- function(x) {
-  x <- enquo(x)
-  prim_refss_(quo_get_expr(x), quo_get_env(x))
-}
-
