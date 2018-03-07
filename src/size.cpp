@@ -90,7 +90,8 @@ double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     size += object_size_rec(ATTRIB(x), base_env, seen);
     break;
 
-    // Linked lists
+  // Linked lists
+  case DOTSXP:
   case LISTSXP:
   case LANGSXP:
   case BCODESXP:
@@ -145,8 +146,7 @@ double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     break;
 
   default:
-    Rcout << "type: " << TYPEOF(x);
-  stop("Unimplemented type");
+    stop("Can't compute size of %s", Rf_type2char(TYPEOF(x)));
   }
 
   // Rcout << "type: " << TYPEOF(x) << " size: " << size << "\n";
