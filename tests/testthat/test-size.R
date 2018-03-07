@@ -7,6 +7,14 @@ expect_same <- function(x) {
   expect_equal(base, !!pryr)
 }
 
+
+# S3 methods --------------------------------------------------------------
+
+test_that("combined bytes are aligned", {
+  x <- c(obj_size(1:10), obj_size(1:1e5))
+  expect_known_output(print(x), "size-aligned.txt")
+})
+
 # Compatibility with base ---------------------------------------------------
 
 test_that("size scales correctly with length (accounting for vector pool)", {
