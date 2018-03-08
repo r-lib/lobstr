@@ -32,6 +32,9 @@ bool is_namespace(Environment env) {
   return Rf_findVarInFrame3(env, Rf_install(".__NAMESPACE__."), FALSE) != R_UnboundValue;
 }
 
+// R equivalent
+// https://github.com/wch/r-source/blob/master/src/library/utils/src/size.c#L41
+
 double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
   // NILSXP is a singleton, so occupies no space. Similarly SPECIAL and
   // BUILTIN are fixed and unchanging
@@ -67,7 +70,7 @@ double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     size += object_size_rec(ATTRIB(x), base_env, seen);
     break;
 
-    // Strings
+  // Strings
   case STRSXP:
     size += v_size(XLENGTH(x), ptr_size);
     for (R_xlen_t i = 0; i < XLENGTH(x); i++) {
@@ -79,7 +82,7 @@ double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     size += v_size(LENGTH(x) + 1, 1);
     break;
 
-    // Generic vectors
+  // Generic vectors
   case VECSXP:
   case EXPRSXP:
   case WEAKREFSXP:
@@ -102,7 +105,7 @@ double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     size += object_size_rec(ATTRIB(x), base_env, seen);
     break;
 
-    // Environments
+  // Environments
   case ENVSXP:
     if (x == R_BaseEnv || x == R_GlobalEnv || x == R_EmptyEnv ||
       x == base_env || is_namespace(x)) return 0;
@@ -114,7 +117,7 @@ double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     size += object_size_rec(ATTRIB(x), base_env, seen);
     break;
 
-    // Functions
+  // Functions
   case CLOSXP:
     size += 3 * sizeof(SEXP); // formals, body, env
     size += object_size_rec(FORMALS(x), base_env, seen);
@@ -150,7 +153,7 @@ double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     stop("Can't compute size of %s", Rf_type2char(TYPEOF(x)));
   }
 
-  // Rcout << "type: " << TYPEOF(x) << " size: " << size << "\n";
+  // Rprintf("type: %-10s size: %6.0f\n", Rf_type2char(TYPEOF(x)), size);
   return size;
 }
 
