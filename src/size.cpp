@@ -128,6 +128,7 @@ double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     size += object_size_rec(PRVALUE(x), base_env, seen);
     size += object_size_rec(PRCODE(x), base_env, seen);
     size += object_size_rec(PRENV(x), base_env, seen);
+    break;
 
   case EXTPTRSXP:
     size += sizeof(void *); // the actual pointer
