@@ -54,7 +54,7 @@ new_bytes <- function(x) {
 
 #' @export
 print.lobstr_bytes <- function(x, digits = 3, ...) {
-  fx <- format(x, big.mark = ",")
+  fx <- format(x, big.mark = ",", scientific = FALSE)
   cat(paste0(fx, " B", "\n", collapse = ""))
 }
 
