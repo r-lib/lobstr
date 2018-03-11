@@ -1,3 +1,10 @@
+is_testing <- function () {
+  identical(Sys.getenv("TESTTHAT"), "true")
+}
+
+
+# CLI ---------------------------------------------------------------------
+
 box_chars <- function() {
   fancy <- getOption("lobstr.fancy.tree") %||% l10n_info()$`UTF-8`
   orange <- crayon::make_style("orange")

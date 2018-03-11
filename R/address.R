@@ -30,13 +30,40 @@
 #' obj_addr(1:10)
 obj_addr <- function(x) {
   x <- enquo(x)
-  prim_address_(quo_get_expr(x), quo_get_env(x))
+  addr <- prim_address_(quo_get_expr(x), quo_get_env(x))
+
+  if (is_testing()) {
+    test_addr_get(addr)
+  } else {
+    addr
+  }
 }
 
 #' @export
 #' @rdname obj_addr
 obj_addrs <- function(x) {
   x <- enquo(x)
-  prim_addresses_(quo_get_expr(x), quo_get_env(x))
+  addrs <- prim_addresses_(quo_get_expr(x), quo_get_env(x))
+
+  if (is_testing()) {
+    vapply(addrs, test_addr_get, character(1), USE.NAMES = FALSE)
+  } else {
+    addrs
+  }
 }
 
+
+test_addr <- env(emptyenv(), "__next_id" = 1)
+
+test_addr_get <- function(addr) {
+  if (env_has(test_addr, addr)) {
+    addr <- env_get(test_addr, addr)
+  } else {
+    addr <- obj_id(test_addr, addr)
+  }
+  sprintf("0x%03i", addr)
+}
+
+test_addr_reset <- function() {
+  env_poke(test_addr, "__next_id", 1)
+}

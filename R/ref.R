@@ -31,8 +31,10 @@ ref <- function(..., character = FALSE) {
   seen <- env(emptyenv(), `__next_id` = 1)
 
   out <- lapply(x, mem_tree, character = character, seen = seen)
-  if (length(x) > 1) {
-    out <- lapply(out, function(x) c(x, ""))
+
+  n <- length(x)
+  if (n > 1) {
+    out[-n] <- lapply(out[-n], function(x) c(x, ""))
   }
   new_raw(unlist(out))
 }
