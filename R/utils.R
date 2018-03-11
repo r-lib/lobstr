@@ -44,6 +44,12 @@ str_indent <- function(x, first, rest) {
   }
 }
 
+str_truncate <- function(x, n) {
+  too_long <- nchar(x, type = "width") > n
+  x[too_long] <- paste0(substr(x[too_long], 1, n - 3), "...")
+  x
+}
+
 new_raw <- function(x) {
   structure(x, class = "lobstr_raw")
 }
