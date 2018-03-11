@@ -4,7 +4,7 @@ expect_same <- function(x) {
   base <- as.vector(object.size(x))
   pryr <- as.vector(obj_size(x))
 
-  expect_equal(base, !!pryr)
+  expect_equal(pryr, !!base)
 }
 
 
