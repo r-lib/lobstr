@@ -1,12 +1,21 @@
 #' Display tree of references
 #'
-#' @param x An object
+#' This tree display focusses on the distinction between names and values.
+#' For each reference-type object (lists, environments, and optional character
+#' vectors), it displays the location of each component. The display
+#' shows the connection between shared references using a locally unique id.
+#'
+#' @param ... One or more objects
 #' @param character If `TRUE`, show references from character vector in to
 #'   global string pool
 #' @export
 #' @examples
 #' x <- 1:100
-#' ref(list(x, x, x))
+#' ref(x)
+#'
+#' y <- list(x, x, x)
+#' ref(y)
+#' ref(x, y)
 #'
 #' e <- new.env()
 #' e$e <- e
@@ -14,21 +23,28 @@
 #' e$y <- list(x, e)
 #' ref(e)
 #'
-#' # Will show references into global string pool only if requested
+#' # Can also show references to global string pool if requested
 #' ref(c("x", "x", "y"))
 #' ref(c("x", "x", "y"), character = TRUE)
-ref <- function(x, character = FALSE) {
-  new_raw(mem_tree(x, character = character, seen = env(emptyenv())))
+ref <- function(..., character = FALSE) {
+  x <- list(...)
+  seen <- env(emptyenv(), `__next_id` = 1)
+
+  out <- lapply(x, mem_tree, character = character, seen = seen)
+  if (length(x) > 1) {
+    out <- lapply(out, function(x) c(x, ""))
+  }
+  new_raw(unlist(out))
 }
 
 mem_tree <- function(x, character = FALSE, seen = env(emptyenv()), layout = box_chars()) {
 
   addr <- obj_addr(x)
   has_seen <- env_has(seen, addr)
-  env_poke(seen, addr, NULL)
+  id <- obj_id(seen, addr)
   type <- if (is.environment(x)) "env" else rlang:::rlang_type_sum(x)
 
-  desc <- obj_desc(addr, type, has_seen)
+  desc <- obj_desc(addr, type, has_seen, id)
 
   # Not recursive or already seen
   if (!has_references(x, character) || has_seen) {
@@ -65,11 +81,11 @@ mem_tree <- function(x, character = FALSE, seen = env(emptyenv()), layout = box_
   )
 }
 
-obj_desc <- function(addr, type, has_seen) {
+obj_desc <- function(addr, type, has_seen, id) {
   if (has_seen) {
-    paste0("<", grey(addr), ">")
+    paste0("<", grey(paste0(id, ":", addr)), ">")
   } else {
-    paste0("<", addr, "> ", type)
+    paste0("<", crayon::bold(id), ":", addr, "> ", type)
   }
 }
 
@@ -81,14 +97,27 @@ mem_tree_chr <- function(x, layout = box_chars(), seen = env(emptyenv())) {
   addrs <- obj_addrs(x)
 
   has_seen <- logical(length(x))
+  ids <- integer(length(x))
   for (i in seq_along(addrs)) {
     has_seen[[i]] <- env_has(seen, addrs[[i]])
-    env_poke(seen, addrs[[i]], NULL)
+    ids[[i]] <- obj_id(seen, addrs[[i]])
   }
 
   type <- paste0("string: '", str_truncate(x, 10), "'")
 
-  out <- Map(obj_desc, addrs, type, has_seen)
+  out <- Map(obj_desc, addrs, type, has_seen, ids)
   names(out) <- names(x)
   out
+}
+
+obj_id <- function(env, ref) {
+  if (env_has(env, ref)) {
+    env_get(env, ref)
+  } else {
+    id <- env_get(env, "__next_id")
+    env_poke(env, "__next_id", id + 1)
+    env_poke(env, ref, id)
+
+    id
+  }
 }
