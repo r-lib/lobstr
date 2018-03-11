@@ -44,9 +44,8 @@ mem_tree <- function(x, character = FALSE, seen = env(emptyenv()), layout = box_
   addr <- obj_addr(x)
   has_seen <- env_has(seen, addr)
   id <- obj_id(seen, addr)
-  type <- if (is.environment(x)) "env" else rlang:::rlang_type_sum(x)
 
-  desc <- obj_desc(addr, type, has_seen, id)
+  desc <- obj_desc(addr, type_sum(x), has_seen, id)
 
   # Not recursive or already seen
   if (!has_references(x, character) || has_seen) {
@@ -81,6 +80,14 @@ mem_tree <- function(x, character = FALSE, seen = env(emptyenv()), layout = box_
       "  "
     )
   )
+}
+
+type_sum <- function(x) {
+  if (is_installed("pillar")) {
+    pillar::type_sum(x)
+  } else {
+    typeof(x)
+  }
 }
 
 obj_desc <- function(addr, type, has_seen, id) {
