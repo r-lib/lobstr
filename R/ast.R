@@ -80,8 +80,6 @@ name_subtree <- function(x) {
   if (is.null(nm))
     return(x)
 
-  grey <- crayon::make_style(grDevices::grey(0.5), grey = TRUE)
-
   has_name <- nm != ""
   label <- paste0(crayon::italic(grey(nm)), " = ")
   indent <- str_dup(" ", nchar(nm) + 3)

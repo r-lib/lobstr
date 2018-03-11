@@ -21,6 +21,10 @@ box_chars <- function() {
   }
 }
 
+grey <- function(...) {
+  crayon::make_style(grDevices::grey(0.5), grey = TRUE)(...)
+}
+
 # string -----------------------------------------------------------------
 
 str_dup <- function(x, n) {
