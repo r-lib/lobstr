@@ -28,7 +28,7 @@
 #' ref(c("x", "x", "y"), character = TRUE)
 ref <- function(..., character = FALSE) {
   x <- list(...)
-  seen <- env(emptyenv(), `__next_id` = 1)
+  seen <- child_env(emptyenv(), `__next_id` = 1)
 
   out <- lapply(x, mem_tree, character = character, seen = seen)
 
@@ -39,7 +39,7 @@ ref <- function(..., character = FALSE) {
   new_raw(unlist(out))
 }
 
-mem_tree <- function(x, character = FALSE, seen = env(emptyenv()), layout = box_chars()) {
+mem_tree <- function(x, character = FALSE, seen = child_env(emptyenv()), layout = box_chars()) {
 
   addr <- obj_addr(x)
   has_seen <- env_has(seen, addr)
@@ -99,10 +99,10 @@ obj_desc <- function(addr, type, has_seen, id) {
 }
 
 has_references <- function(x, character = FALSE) {
-  is_list(x) || is_environment(x) || (character && is_character(x))
+  is_list(x) || is.environment(x) || (character && is_character(x))
 }
 
-mem_tree_chr <- function(x, layout = box_chars(), seen = env(emptyenv())) {
+mem_tree_chr <- function(x, layout = box_chars(), seen = child_env(emptyenv())) {
   addrs <- obj_addrs(x)
 
   has_seen <- logical(length(x))

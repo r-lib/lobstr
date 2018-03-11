@@ -53,7 +53,7 @@ obj_addrs <- function(x) {
 }
 
 
-test_addr <- env(emptyenv(), "__next_id" = 1)
+test_addr <- child_env(emptyenv(), "__next_id" = 1)
 
 test_addr_get <- function(addr) {
   if (env_has(test_addr, addr)) {
