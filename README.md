@@ -22,7 +22,7 @@ devtools::install_github("r-lib/lobstr")
 
 ## Example
 
-`ast()` draws the abstract syntax tree of R expressions
+`ast()` draws the abstract syntax tree of R expressions:
 
 ``` r
 ast(a + b + c)
@@ -45,4 +45,33 @@ ast(function(x = 1) {
 #> │   └─█─print 
 #> │     └─"Hi!" 
 #> └─<inline srcref>
+```
+
+`ref()` shows hows objects can be shared across data structures by
+digging into the underlying \_\_ref\_\_erences:
+
+``` r
+x <- 1:1e6
+y <- list(x, x, x)
+ref(y)
+#> █ <1:0x7ff9bff9ea38> list 
+#> ├─<2:0x107ddf000> int 
+#> ├─<2:0x107ddf000> 
+#> └─<2:0x107ddf000>
+
+e <- rlang::env()
+e$self <- e
+ref(e)
+#> █ <1:0x7ff9ba34f310> env 
+#> └─self = <1:0x7ff9ba34f310>
+```
+
+A related tool is `obj_size()`, which computes the size of an object
+taking these shared references into account:
+
+``` r
+obj_size(x)
+#> 4,000,040 B
+obj_size(y)
+#> 4,000,112 B
 ```
