@@ -27,15 +27,7 @@
 #' ast(!1 + !1)
 ast <- function(x) {
   expr <- enexpr(x)
-  out <- ast_tree(expr)
-
-  structure(out, class = "lobstr_ast")
-}
-
-#' @export
-print.lobstr_ast <- function(x, ...) {
-  cat(paste(x, "\n", collapse = ""), sep = "")
-  invisible(x)
+  new_raw(ast_tree(expr))
 }
 
 ast_tree <- function(x, layout = box_chars()) {

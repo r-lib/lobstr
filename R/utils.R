@@ -38,5 +38,15 @@ str_indent <- function(x, first, rest) {
       paste0(rest, x[-1L])
     )
   }
-
 }
+
+new_raw <- function(x) {
+  structure(x, class = "lobstr_raw")
+}
+
+#' @export
+print.lobstr_raw <- function(x, ...) {
+  cat(paste(x, "\n", collapse = ""), sep = "")
+  invisible(x)
+}
+
