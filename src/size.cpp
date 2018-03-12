@@ -35,7 +35,7 @@ bool is_namespace(Environment env) {
 // R equivalent
 // https://github.com/wch/r-source/blob/master/src/library/utils/src/size.c#L41
 
-double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
+double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
   // NILSXP is a singleton, so occupies no space. Similarly SPECIAL and
   // BUILTIN are fixed and unchanging
   if (TYPEOF(x) == NILSXP ||
@@ -55,28 +55,28 @@ double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
   case LGLSXP:
   case INTSXP:
     size += v_size(XLENGTH(x), sizeof(int));
-    size += object_size_rec(ATTRIB(x), base_env, seen);
+    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
   case REALSXP:
     size += v_size(XLENGTH(x), sizeof(double));
-    size += object_size_rec(ATTRIB(x), base_env, seen);
+    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
   case CPLXSXP:
     size += v_size(XLENGTH(x), sizeof(Rcomplex));
-    size += object_size_rec(ATTRIB(x), base_env, seen);
+    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
   case RAWSXP:
     size += v_size(XLENGTH(x), 1);
-    size += object_size_rec(ATTRIB(x), base_env, seen);
+    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
 
   // Strings
   case STRSXP:
     size += v_size(XLENGTH(x), ptr_size);
     for (R_xlen_t i = 0; i < XLENGTH(x); i++) {
-      size += object_size_rec(STRING_ELT(x, i), base_env, seen);
+      size += obj_size_tree(STRING_ELT(x, i), base_env, seen);
     }
-    size += object_size_rec(ATTRIB(x), base_env, seen);
+    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
   case CHARSXP:
     size += v_size(LENGTH(x) + 1, 1);
@@ -88,9 +88,9 @@ double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
   case WEAKREFSXP:
     size += v_size(XLENGTH(x), sizeof(SEXP));
     for (R_xlen_t i = 0; i < XLENGTH(x); ++i) {
-      size += object_size_rec(VECTOR_ELT(x, i), base_env, seen);
+      size += obj_size_tree(VECTOR_ELT(x, i), base_env, seen);
     }
-    size += object_size_rec(ATTRIB(x), base_env, seen);
+    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
 
   // Linked lists
@@ -99,10 +99,10 @@ double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
   case LANGSXP:
   case BCODESXP:
     size += 3 * sizeof(SEXP); // tag, car, cdr
-    size += object_size_rec(TAG(x), base_env, seen); // name of first element
-    size += object_size_rec(CAR(x), base_env, seen); // first element
-    size += object_size_rec(CDR(x), base_env, seen); // pairlist (subsequent elements) or NILSXP
-    size += object_size_rec(ATTRIB(x), base_env, seen);
+    size += obj_size_tree(TAG(x), base_env, seen); // name of first element
+    size += obj_size_tree(CAR(x), base_env, seen); // first element
+    size += obj_size_tree(CDR(x), base_env, seen); // pairlist (subsequent elements) or NILSXP
+    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
 
   // Environments
@@ -111,38 +111,38 @@ double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
       x == base_env || is_namespace(x)) return 0;
 
     size += 3 * sizeof(SEXP); // frame, enclos, hashtab
-    size += object_size_rec(FRAME(x), base_env, seen);
-    size += object_size_rec(ENCLOS(x), base_env, seen);
-    size += object_size_rec(HASHTAB(x), base_env, seen);
-    size += object_size_rec(ATTRIB(x), base_env, seen);
+    size += obj_size_tree(FRAME(x), base_env, seen);
+    size += obj_size_tree(ENCLOS(x), base_env, seen);
+    size += obj_size_tree(HASHTAB(x), base_env, seen);
+    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
 
   // Functions
   case CLOSXP:
     size += 3 * sizeof(SEXP); // formals, body, env
-    size += object_size_rec(FORMALS(x), base_env, seen);
-    size += object_size_rec(BODY(x), base_env, seen);
-    size += object_size_rec(CLOENV(x), base_env, seen);
-    size += object_size_rec(ATTRIB(x), base_env, seen);
+    size += obj_size_tree(FORMALS(x), base_env, seen);
+    size += obj_size_tree(BODY(x), base_env, seen);
+    size += obj_size_tree(CLOENV(x), base_env, seen);
+    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
 
   case PROMSXP:
     size += 3 * sizeof(SEXP); // value, expr, env
-    size += object_size_rec(PRVALUE(x), base_env, seen);
-    size += object_size_rec(PRCODE(x), base_env, seen);
-    size += object_size_rec(PRENV(x), base_env, seen);
+    size += obj_size_tree(PRVALUE(x), base_env, seen);
+    size += obj_size_tree(PRCODE(x), base_env, seen);
+    size += obj_size_tree(PRENV(x), base_env, seen);
     break;
 
   case EXTPTRSXP:
     size += sizeof(void *); // the actual pointer
-    size += object_size_rec(EXTPTR_PROT(x), base_env, seen);
-    size += object_size_rec(EXTPTR_TAG(x), base_env, seen);
+    size += obj_size_tree(EXTPTR_PROT(x), base_env, seen);
+    size += obj_size_tree(EXTPTR_TAG(x), base_env, seen);
     break;
 
   case S4SXP:
     // Only has TAG and ATTRIB
-    size += object_size_rec(TAG(x), base_env, seen);
-    size += object_size_rec(ATTRIB(x), base_env, seen);
+    size += obj_size_tree(TAG(x), base_env, seen);
+    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
 
   case SYMSXP:
@@ -158,13 +158,13 @@ double object_size_rec(SEXP x, Environment base_env, std::set<SEXP>& seen) {
 }
 
 // [[Rcpp::export]]
-double prim_sizes(List objects, Environment base_env) {
+double obj_size_(List objects, Environment base_env) {
   std::set<SEXP> seen;
   double size = 0;
 
   int n = objects.size();
   for (int i = 0; i < n; ++i) {
-    size += object_size_rec(objects[i], base_env, seen);
+    size += obj_size_tree(objects[i], base_env, seen);
   }
 
   return size;

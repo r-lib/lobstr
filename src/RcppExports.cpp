@@ -5,25 +5,25 @@
 
 using namespace Rcpp;
 
-// prim_address_
-std::string prim_address_(SEXP x);
-RcppExport SEXP _lobstr_prim_address_(SEXP xSEXP) {
+// obj_addr_
+std::string obj_addr_(SEXP x);
+RcppExport SEXP _lobstr_obj_addr_(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(prim_address_(x));
+    rcpp_result_gen = Rcpp::wrap(obj_addr_(x));
     return rcpp_result_gen;
 END_RCPP
 }
-// prim_addresses_
-std::vector<std::string> prim_addresses_(SEXP x);
-RcppExport SEXP _lobstr_prim_addresses_(SEXP xSEXP) {
+// obj_addrs_
+std::vector<std::string> obj_addrs_(SEXP x);
+RcppExport SEXP _lobstr_obj_addrs_(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(prim_addresses_(x));
+    rcpp_result_gen = Rcpp::wrap(obj_addrs_(x));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -39,24 +39,24 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// prim_sizes
-double prim_sizes(List objects, Environment base_env);
-RcppExport SEXP _lobstr_prim_sizes(SEXP objectsSEXP, SEXP base_envSEXP) {
+// obj_size_
+double obj_size_(List objects, Environment base_env);
+RcppExport SEXP _lobstr_obj_size_(SEXP objectsSEXP, SEXP base_envSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type objects(objectsSEXP);
     Rcpp::traits::input_parameter< Environment >::type base_env(base_envSEXP);
-    rcpp_result_gen = Rcpp::wrap(prim_sizes(objects, base_env));
+    rcpp_result_gen = Rcpp::wrap(obj_size_(objects, base_env));
     return rcpp_result_gen;
 END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_lobstr_prim_address_", (DL_FUNC) &_lobstr_prim_address_, 1},
-    {"_lobstr_prim_addresses_", (DL_FUNC) &_lobstr_prim_addresses_, 1},
+    {"_lobstr_obj_addr_", (DL_FUNC) &_lobstr_obj_addr_, 1},
+    {"_lobstr_obj_addrs_", (DL_FUNC) &_lobstr_obj_addrs_, 1},
     {"_lobstr_v_size", (DL_FUNC) &_lobstr_v_size, 2},
-    {"_lobstr_prim_sizes", (DL_FUNC) &_lobstr_prim_sizes, 2},
+    {"_lobstr_obj_size_", (DL_FUNC) &_lobstr_obj_size_, 2},
     {NULL, NULL, 0}
 };
 

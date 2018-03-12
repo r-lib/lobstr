@@ -29,7 +29,7 @@
 #' obj_addr(1:10)
 #' obj_addr(1:10)
 obj_addr <- function(x) {
-  addr <- prim_address_(x)
+  addr <- obj_addr_(x)
 
   if (is_testing()) {
     test_addr_get(addr)
@@ -41,7 +41,7 @@ obj_addr <- function(x) {
 #' @export
 #' @rdname obj_addr
 obj_addrs <- function(x) {
-  addrs <- prim_addresses_(x)
+  addrs <- obj_addrs_(x)
 
   if (is_testing()) {
     vapply(addrs, test_addr_get, character(1), USE.NAMES = FALSE)

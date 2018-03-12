@@ -44,7 +44,7 @@
 #' }
 #' obj_size(f())
 obj_size <- function(..., env = parent.frame()) {
-  size <- prim_sizes(list(...), env)
+  size <- obj_size_(list(...), env)
   new_bytes(size)
 }
 
