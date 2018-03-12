@@ -6,26 +6,24 @@
 using namespace Rcpp;
 
 // prim_address_
-std::string prim_address_(SEXP name, Environment env);
-RcppExport SEXP _lobstr_prim_address_(SEXP nameSEXP, SEXP envSEXP) {
+std::string prim_address_(SEXP x);
+RcppExport SEXP _lobstr_prim_address_(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type name(nameSEXP);
-    Rcpp::traits::input_parameter< Environment >::type env(envSEXP);
-    rcpp_result_gen = Rcpp::wrap(prim_address_(name, env));
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(prim_address_(x));
     return rcpp_result_gen;
 END_RCPP
 }
 // prim_addresses_
-std::vector<std::string> prim_addresses_(SEXP name, Environment env);
-RcppExport SEXP _lobstr_prim_addresses_(SEXP nameSEXP, SEXP envSEXP) {
+std::vector<std::string> prim_addresses_(SEXP x);
+RcppExport SEXP _lobstr_prim_addresses_(SEXP xSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type name(nameSEXP);
-    Rcpp::traits::input_parameter< Environment >::type env(envSEXP);
-    rcpp_result_gen = Rcpp::wrap(prim_addresses_(name, env));
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(prim_addresses_(x));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -55,8 +53,8 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_lobstr_prim_address_", (DL_FUNC) &_lobstr_prim_address_, 2},
-    {"_lobstr_prim_addresses_", (DL_FUNC) &_lobstr_prim_addresses_, 2},
+    {"_lobstr_prim_address_", (DL_FUNC) &_lobstr_prim_address_, 1},
+    {"_lobstr_prim_addresses_", (DL_FUNC) &_lobstr_prim_addresses_, 1},
     {"_lobstr_v_size", (DL_FUNC) &_lobstr_v_size, 2},
     {"_lobstr_prim_sizes", (DL_FUNC) &_lobstr_prim_sizes, 2},
     {NULL, NULL, 0}

@@ -1,13 +1,9 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
+// [[Rcpp::export]]
 std::string prim_address_(SEXP x) {
   return tfm::format("%p", x);
-}
-
-// [[Rcpp::export]]
-std::string prim_address_(SEXP name, Environment env) {
-  return prim_address_(Rf_eval(name, env));
 }
 
 void frame_addresses(SEXP frame, std::vector<std::string>* refs) {
@@ -23,6 +19,7 @@ void hash_table_addresses(SEXP table, std::vector<std::string>* refs) {
     frame_addresses(VECTOR_ELT(table, i), refs);
 }
 
+// [[Rcpp::export]]
 std::vector<std::string> prim_addresses_(SEXP x) {
   int n = Rf_length(x);
   std::vector<std::string> out;
@@ -59,9 +56,3 @@ std::vector<std::string> prim_addresses_(SEXP x) {
 
   return out;
 }
-
-// [[Rcpp::export]]
-std::vector<std::string> prim_addresses_(SEXP name, Environment env) {
-  return prim_addresses_(Rf_eval(name, env));
-}
-

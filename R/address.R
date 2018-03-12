@@ -29,8 +29,7 @@
 #' obj_addr(1:10)
 #' obj_addr(1:10)
 obj_addr <- function(x) {
-  x <- enquo(x)
-  addr <- prim_address_(quo_get_expr(x), quo_get_env(x))
+  addr <- prim_address_(x)
 
   if (is_testing()) {
     test_addr_get(addr)
@@ -42,8 +41,7 @@ obj_addr <- function(x) {
 #' @export
 #' @rdname obj_addr
 obj_addrs <- function(x) {
-  x <- enquo(x)
-  addrs <- prim_addresses_(quo_get_expr(x), quo_get_env(x))
+  addrs <- prim_addresses_(x)
 
   if (is_testing()) {
     vapply(addrs, test_addr_get, character(1), USE.NAMES = FALSE)
