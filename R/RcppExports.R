@@ -9,10 +9,6 @@ prim_addresses_ <- function(name, env) {
     .Call(`_lobstr_prim_addresses_`, name, env)
 }
 
-prim_refs_ <- function(name, env) {
-    .Call(`_lobstr_prim_refs_`, name, env)
-}
-
 v_size <- function(n, size) {
     .Call(`_lobstr_v_size`, n, size)
 }
