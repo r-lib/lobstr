@@ -30,7 +30,7 @@ ref <- function(..., character = FALSE) {
   x <- list(...)
   seen <- child_env(emptyenv(), `__next_id` = 1)
 
-  out <- lapply(x, mem_tree, character = character, seen = seen)
+  out <- lapply(x, ref_tree, character = character, seen = seen)
 
   n <- length(x)
   if (n > 1) {
@@ -39,7 +39,7 @@ ref <- function(..., character = FALSE) {
   new_raw(unlist(out))
 }
 
-mem_tree <- function(x, character = FALSE, seen = child_env(emptyenv()), layout = box_chars()) {
+ref_tree <- function(x, character = FALSE, seen = child_env(emptyenv()), layout = box_chars()) {
 
   addr <- obj_addr(x)
   has_seen <- env_has(seen, addr)
@@ -54,11 +54,11 @@ mem_tree <- function(x, character = FALSE, seen = child_env(emptyenv()), layout 
 
   # recursive case
   if (is.list(x)) {
-    subtrees <- lapply(x, mem_tree, layout = layout, seen = seen, character = character)
+    subtrees <- lapply(x, ref_tree, layout = layout, seen = seen, character = character)
   } else if (is.environment(x)) {
-    subtrees <- lapply(as.list(x), mem_tree, layout = layout, seen = seen, character = character)
+    subtrees <- lapply(as.list(x), ref_tree, layout = layout, seen = seen, character = character)
   } else if (is.character(x)) {
-    subtrees <- mem_tree_chr(x, layout = layout, seen = seen)
+    subtrees <- ref_tree_chr(x, layout = layout, seen = seen)
   }
   subtrees <- name_subtree(subtrees)
 
@@ -102,7 +102,7 @@ has_references <- function(x, character = FALSE) {
   is_list(x) || is.environment(x) || (character && is_character(x))
 }
 
-mem_tree_chr <- function(x, layout = box_chars(), seen = child_env(emptyenv())) {
+ref_tree_chr <- function(x, layout = box_chars(), seen = child_env(emptyenv())) {
   addrs <- obj_addrs(x)
 
   has_seen <- logical(length(x))
