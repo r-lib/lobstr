@@ -30,6 +30,8 @@ devtools::install_github("r-lib/lobstr")
 ```
 ## Example
 
+### Abstract syntax trees
+
 `ast()` draws the abstract syntax tree of R expressions:
 
 ```{r example}
@@ -39,6 +41,8 @@ ast(function(x = 1) {
   if (x > 0) print("Hi!")
 })
 ```
+
+### References
 
 `ref()` shows hows objects can be shared across data structures by digging into the underlying __ref__erences:
 
@@ -57,5 +61,16 @@ A related tool is `obj_size()`, which computes the size of an object taking thes
 ```{r}
 obj_size(x)
 obj_size(y)
+```
+
+### Call stack trees
+
+`cst()` shows how frames on the call stack are connected:
+
+```{r}
+f <- function(x) g(x)
+g <- function(x) h(x)
+h <- function(x) x
+f(cst())
 ```
 
