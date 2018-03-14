@@ -49,7 +49,7 @@ tree_view <- function(calls, parents) {
 
   tree <- data.frame(id = as.character(nodes), stringsAsFactors = FALSE)
   tree$children = lapply(children, as.character)
-  tree$call = c(cli::symbol$star, call_text)
+  tree$call = c(cli::symbol$full_block, call_text)
 
   cli::tree(tree)
 }
