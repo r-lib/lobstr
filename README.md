@@ -58,16 +58,16 @@ digging into the underlying \_\_ref\_\_erences:
 x <- 1:1e6
 y <- list(x, x, x)
 ref(y)
-#> █ <1:0x7fe4c805e368> list 
-#> ├─<2:0x10b4b0000> int 
-#> ├─<2:0x10b4b0000> 
-#> └─<2:0x10b4b0000>
+#> █ <1:0x7f7f1a2b1cc8> list 
+#> ├─<2:0x10af25000> int 
+#> ├─<2:0x10af25000> 
+#> └─<2:0x10af25000>
 
 e <- rlang::env()
 e$self <- e
 ref(e)
-#> █ <1:0x7fe4c2348508> env 
-#> └─self = <1:0x7fe4c2348508>
+#> █ <1:0x7f7f165ece68> env 
+#> └─self = <1:0x7f7f165ece68>
 ```
 
 A related tool is `obj_size()`, which computes the size of an object
@@ -89,25 +89,7 @@ f <- function(x) g(x)
 g <- function(x) h(x)
 h <- function(x) x
 f(cst())
-#> ★
-#> ├─rmarkdown::render(...)
-#> │ └─knitr::knit(...)
-#> │   └─process_file(text, output)
-#> │     ├─withCallingHandlers(...)
-#> │     ├─process_group(group)
-#> │     └─process_group.block(group)
-#> │       └─call_block(x)
-#> │         └─block_exec(params)
-#> │           ├─in_dir(...)
-#> │           └─evaluate(...)
-#> │             └─evaluate::evaluate(...)
-#> │               └─evaluate_call(...)
-#> │                 ├─timing_fn(...)
-#> │                 ├─handle(...)
-#> │                 ├─withCallingHandlers(...)
-#> │                 ├─withVisible(eval(expr, envir, enclos))
-#> │                 └─eval(expr, envir, enclos)
-#> │                   └─eval(expr, envir, enclos)
+#> █
 #> ├─f(cst())
 #> │ └─g(x)
 #> │   └─h(x)

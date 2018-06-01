@@ -34,22 +34,7 @@
 #' h <- function() eval(quote(cst()), parent.frame(2))
 #' f()
 cst <- function() {
-  calls <- sys.calls()
-  parents <- sys.parents()
-
-  x <- tree_view(calls, parents)
-  print(x)
-  invisible(x)
-}
-
-tree_view <- function(calls, parents) {
-  nodes <- c(0, seq_along(calls))
-  children <- lapply(nodes, function(id) seq_along(parents)[parents == id])
-  call_text <- vapply(as.list(calls), expr_name, character(1))
-
-  tree <- data.frame(id = as.character(nodes), stringsAsFactors = FALSE)
-  tree$children = lapply(children, as.character)
-  tree$call = c(cli::symbol$full_block, call_text)
-
-  cli::tree(tree)
+  x <- rlang::trace_back(globalenv())
+  print(x, simplify = "none")
+  invisible()
 }
