@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# lobstr
+# lobstr <img src='man/figures/logo.png' align="right">
 
 [![Travis-CI Build
 Status](https://travis-ci.org/r-lib/lobstr.svg?branch=master)](https://travis-ci.org/r-lib/lobstr)
@@ -58,16 +58,16 @@ digging into the underlying \_\_ref\_\_erences:
 x <- 1:1e6
 y <- list(x, x, x)
 ref(y)
-#> █ <1:0x7f7f1a2b1cc8> list 
-#> ├─<2:0x10af25000> int 
-#> ├─<2:0x10af25000> 
-#> └─<2:0x10af25000>
+#> █ <1:0x7fec054d48c8> list 
+#> ├─<2:0x10d8fd000> int 
+#> ├─<2:0x10d8fd000> 
+#> └─<2:0x10d8fd000>
 
 e <- rlang::env()
 e$self <- e
 ref(e)
-#> █ <1:0x7f7f165ece68> env 
-#> └─self = <1:0x7f7f165ece68>
+#> █ <1:0x7fec0071f268> env 
+#> └─self = <1:0x7fec0071f268>
 ```
 
 A related tool is `obj_size()`, which computes the size of an object
