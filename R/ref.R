@@ -94,7 +94,7 @@ obj_desc <- function(addr, type, has_seen, id) {
   if (has_seen) {
     paste0("<", grey(paste0(id, ":", addr)), ">")
   } else {
-    paste0("<", crayon::bold(id), ":", addr, "> ", type)
+    paste0("<", crayon::bold(id), ":", addr, "> ", "[", type, "]")
   }
 }
 
