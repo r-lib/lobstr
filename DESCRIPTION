@@ -16,13 +16,15 @@ Imports:
     cli,
     crayon,
     Rcpp,
-    rlang (>= 0.2.2)
+    rlang (>= 0.2.2.9000)
 Suggests: 
     covr,
     pillar,
     testthat
 LinkingTo: 
     Rcpp
+Remotes: 
+    rlang
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
