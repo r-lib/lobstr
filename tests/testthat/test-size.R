@@ -19,14 +19,6 @@ test_that("combined bytes are aligned", {
 
 # Compatibility with base ---------------------------------------------------
 
-test_that("size scales correctly with length (accounting for vector pool)", {
-  expect_same(numeric())
-  expect_same(1)
-  expect_same(2)
-  expect_same(1:10)
-  expect_same(1:1000)
-})
-
 test_that("size correct for length one vectors", {
   expect_same(1)
   expect_same(1L)
@@ -35,6 +27,15 @@ test_that("size correct for length one vectors", {
   expect_same(charToRaw("a"))
   expect_same(5 + 1i)
 })
+
+test_that("size scales correctly with length (accounting for vector pool)", {
+  expect_same(numeric())
+  expect_same(1)
+  expect_same(2)
+  expect_same(1:10)
+  expect_same(1:1000)
+})
+
 
 test_that("size of list computed recursively", {
   expect_same(list())

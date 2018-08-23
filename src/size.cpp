@@ -1,11 +1,19 @@
 #include <Rcpp.h>
 using namespace Rcpp;
+#include <Rversion.h>
 
-static const int ptr_size = sizeof(void*);
+// sexpinfo increased in 3.5.0
+// https://github.com/wch/r-source/commit/14db43282d12932dfa56eb480a5ef92d1d95b102
+#if defined(R_VERSION) && R_VERSION >= R_Version(3, 5, 0)
+  static const int sexpinfo_size = 64 / 8;
+#else
+  static const int sexpinfo_size = 32 / 8;
+#endif
 
 // [[Rcpp::export]]
 double v_size(double n, int size) {
-  if (n == 0) return 8;
+  if (n == 0)
+    return 2 * sizeof(double);
 
   double vec_size = std::max(sizeof(SEXP), sizeof(double));
   double elements_per_byte = vec_size / size;
@@ -24,8 +32,8 @@ double v_size(double n, int size) {
   else if (n_bytes > 1)  bytes = 16;
   else if (n_bytes > 0)  bytes = 8;
 
-  return bytes +
-    vec_size; // SEXPREC_ALIGN padding
+  // Size is pointer to struct (two lengths) + struct size
+  return 2 * sizeof(double) + bytes;
 }
 
 bool is_namespace(Environment env) {
@@ -42,42 +50,46 @@ double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     TYPEOF(x) == SPECIALSXP ||
     TYPEOF(x) == BUILTINSXP) return 0;
 
-  // If we've seen it before in this object, don't count it again
+  // Don't count objects that we've seen before
   if (!seen.insert(x).second) return 0;
 
-  // As of R 3.1.0, all SEXPRECs start with sxpinfo (4 bytes, but aligned),
-  // followed by three pointers: attribute pairlist, next object, prev object
-  // (i.e. doubly linked list of all objects in memory)
-  double size = 4 * ptr_size;
+  // All objects start with a standard header: SEXPREC_HEADER
+  // https://github.com/wch/r-source/blob/master/src/include/Rinternals.h#L232-L235
+  // This includes the sxpinfo_struct
+  double size = sexpinfo_size;
+  // And a pointer to attributes
+  size += sizeof(SEXP);
+  size += obj_size_tree(ATTRIB(x), base_env, seen);
+  // Followed by two pointers used to create a doubly linked list used by GC
+  size += 2 * sizeof(SEXP);
 
   switch (TYPEOF(x)) {
+  // Vectors -------------------------------------------------------------------
+  // See details in v_size()
+
   // Simple vectors
   case LGLSXP:
   case INTSXP:
     size += v_size(XLENGTH(x), sizeof(int));
-    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
   case REALSXP:
     size += v_size(XLENGTH(x), sizeof(double));
-    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
   case CPLXSXP:
     size += v_size(XLENGTH(x), sizeof(Rcomplex));
-    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
   case RAWSXP:
     size += v_size(XLENGTH(x), 1);
-    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
 
   // Strings
   case STRSXP:
-    size += v_size(XLENGTH(x), ptr_size);
+    size += v_size(XLENGTH(x), sizeof(SEXP));
     for (R_xlen_t i = 0; i < XLENGTH(x); i++) {
       size += obj_size_tree(STRING_ELT(x, i), base_env, seen);
     }
-    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
+
   case CHARSXP:
     size += v_size(LENGTH(x) + 1, 1);
     break;
@@ -90,8 +102,11 @@ double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     for (R_xlen_t i = 0; i < XLENGTH(x); ++i) {
       size += obj_size_tree(VECTOR_ELT(x, i), base_env, seen);
     }
-    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
+
+  // Nodes ---------------------------------------------------------------------
+  // https://github.com/wch/r-source/blob/master/src/include/Rinternals.h#L237-L249
+  // All have enough space for three SEXP pointers
 
   // Linked lists
   case DOTSXP:
@@ -102,7 +117,6 @@ double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     size += obj_size_tree(TAG(x), base_env, seen); // name of first element
     size += obj_size_tree(CAR(x), base_env, seen); // first element
     size += obj_size_tree(CDR(x), base_env, seen); // pairlist (subsequent elements) or NILSXP
-    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
 
   // Environments
@@ -114,7 +128,6 @@ double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     size += obj_size_tree(FRAME(x), base_env, seen);
     size += obj_size_tree(ENCLOS(x), base_env, seen);
     size += obj_size_tree(HASHTAB(x), base_env, seen);
-    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
 
   // Functions
@@ -123,7 +136,6 @@ double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     size += obj_size_tree(FORMALS(x), base_env, seen);
     size += obj_size_tree(BODY(x), base_env, seen);
     size += obj_size_tree(CLOENV(x), base_env, seen);
-    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
 
   case PROMSXP:
@@ -134,16 +146,15 @@ double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     break;
 
   case EXTPTRSXP:
+    size += 3 * sizeof(SEXP);
     size += sizeof(void *); // the actual pointer
     size += obj_size_tree(EXTPTR_PROT(x), base_env, seen);
     size += obj_size_tree(EXTPTR_TAG(x), base_env, seen);
     break;
 
   case S4SXP:
-    // Only has TAG and ATTRIB
     size += 3 * sizeof(SEXP);
     size += obj_size_tree(TAG(x), base_env, seen);
-    size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
 
   case SYMSXP:
