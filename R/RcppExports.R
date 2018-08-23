@@ -17,3 +17,7 @@ obj_size_ <- function(objects, base_env) {
     .Call(`_lobstr_obj_size_`, objects, base_env)
 }
 
+obj_csize_ <- function(objects, base_env) {
+    .Call(`_lobstr_obj_csize_`, objects, base_env)
+}
+

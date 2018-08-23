@@ -67,3 +67,6 @@ print.lobstr_raw <- function(x, ...) {
   invisible(x)
 }
 
+cat_line <- function(...) {
+  cat(paste0(..., "\n", collapse = ""))
+}

@@ -170,3 +170,16 @@ double obj_size_(List objects, Environment base_env) {
 
   return size;
 }
+
+// [[Rcpp::export]]
+IntegerVector obj_csize_(List objects, Environment base_env) {
+  std::set<SEXP> seen;
+  int n = objects.size();
+
+  IntegerVector out(n);
+  for (int i = 0; i < n; ++i) {
+    out[i] += obj_size_tree(objects[i], base_env, seen);
+  }
+
+  return out;
+}
