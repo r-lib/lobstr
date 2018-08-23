@@ -24,7 +24,7 @@ Suggests:
 LinkingTo: 
     Rcpp
 Remotes: 
-    rlang
+    r-lib/rlang
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
