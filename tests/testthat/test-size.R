@@ -54,6 +54,13 @@ test_that("size of pairlists same as base", {
   expect_same(pairlist(1, 2, 3))
 })
 
+test_that("size of S4 objects same as base", {
+  Z <- methods::setClass("Z", slots = c(x = "integer"))
+  z <- Z(x = 1L)
+
+  expect_same(z)
+})
+
 test_that("size of attributes included in object size", {
   expect_same(c(x = 1))
   expect_same(list(x = 1))

@@ -141,6 +141,7 @@ double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
 
   case S4SXP:
     // Only has TAG and ATTRIB
+    size += 3 * sizeof(SEXP);
     size += obj_size_tree(TAG(x), base_env, seen);
     size += obj_size_tree(ATTRIB(x), base_env, seen);
     break;
