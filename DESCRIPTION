@@ -16,7 +16,7 @@ Imports:
     cli,
     crayon,
     Rcpp,
-    rlang (>= 0.2.0.9001)
+    rlang (>= 0.2.2)
 Suggests: 
     covr,
     pillar,
@@ -27,5 +27,3 @@ Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 6.1.0
-Remotes: 
-    r-lib/rlang
