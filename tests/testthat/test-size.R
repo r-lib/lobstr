@@ -1,12 +1,14 @@
 context("test-size.R")
 
-expect_same <- function(x) {
-  base <- as.vector(object.size(x))
-  pryr <- as.vector(obj_size(x))
+expect_same <- function(x, ...) {
+  lab <- as.character(expr_text(enexpr(x)))
+  act <- as.vector(obj_size(x))
+  exp <- as.vector(object.size(x))
 
-  expect_equal(pryr, !!base)
+  msg <- sprintf("`obj_size(%s)` is %s, not %s (\u0394%+i)", lab, act, exp, act - exp)
+  expect(identical(act, exp), msg)
+  invisible(act)
 }
-
 
 # S3 methods --------------------------------------------------------------
 
