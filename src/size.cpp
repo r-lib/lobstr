@@ -5,35 +5,41 @@ using namespace Rcpp;
 // sexpinfo increased in 3.5.0
 // https://github.com/wch/r-source/commit/14db43282d12932dfa56eb480a5ef92d1d95b102
 #if defined(R_VERSION) && R_VERSION >= R_Version(3, 5, 0)
-  static const int sexpinfo_size = 64 / 8;
+  static const int sexpinfo_size = 8;
 #else
-  static const int sexpinfo_size = 32 / 8;
+  static const int sexpinfo_size = 4;
 #endif
 
 // [[Rcpp::export]]
-double v_size(double n, int size) {
+double v_size(double n, int element_size) {
+  double size = 0;
+  // padding to ensure vector starts on 8 byte boundary
+  size += (sexpinfo_size == 4) ? 4 : 0;
+  // size of vecsxp_struct
+  // https://github.com/wch/r-source/blob/master/src/include/Rinternals.h#L219-L222
+  size += 2 * sizeof(double);
+
   if (n == 0)
-    return 2 * sizeof(double);
+    return size;
 
   double vec_size = std::max(sizeof(SEXP), sizeof(double));
-  double elements_per_byte = vec_size / size;
+  double elements_per_byte = vec_size / element_size;
   double n_bytes = ceil(n / elements_per_byte);
   // Rcout << n << " elements, each of " << elements_per_byte << " = " <<
   //  n_bytes << "\n";
 
-  double bytes = 0;
   // Big vectors always allocated in 8 byte chunks
-  if      (n_bytes > 16) bytes = n_bytes * 8;
+  if      (n_bytes > 16) size += n_bytes * 8;
   // For small vectors, round to sizes allocated in small vector pool
-  else if (n_bytes > 8)  bytes = 128;
-  else if (n_bytes > 6)  bytes = 64;
-  else if (n_bytes > 4)  bytes = 48;
-  else if (n_bytes > 2)  bytes = 32;
-  else if (n_bytes > 1)  bytes = 16;
-  else if (n_bytes > 0)  bytes = 8;
+  else if (n_bytes > 8)  size += 128;
+  else if (n_bytes > 6)  size += 64;
+  else if (n_bytes > 4)  size += 48;
+  else if (n_bytes > 2)  size += 32;
+  else if (n_bytes > 1)  size += 16;
+  else if (n_bytes > 0)  size += 8;
 
-  // Size is pointer to struct (two lengths) + struct size
-  return 2 * sizeof(double) + bytes;
+  // Size is pointer to struct  + struct size
+  return size;
 }
 
 bool is_namespace(Environment env) {

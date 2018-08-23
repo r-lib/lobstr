@@ -9,8 +9,8 @@ obj_addrs_ <- function(x) {
     .Call(`_lobstr_obj_addrs_`, x)
 }
 
-v_size <- function(n, size) {
-    .Call(`_lobstr_v_size`, n, size)
+v_size <- function(n, element_size) {
+    .Call(`_lobstr_v_size`, n, element_size)
 }
 
 obj_size_ <- function(objects, base_env) {

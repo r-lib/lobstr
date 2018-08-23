@@ -28,14 +28,14 @@ BEGIN_RCPP
 END_RCPP
 }
 // v_size
-double v_size(double n, int size);
-RcppExport SEXP _lobstr_v_size(SEXP nSEXP, SEXP sizeSEXP) {
+double v_size(double n, int element_size);
+RcppExport SEXP _lobstr_v_size(SEXP nSEXP, SEXP element_sizeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< double >::type n(nSEXP);
-    Rcpp::traits::input_parameter< int >::type size(sizeSEXP);
-    rcpp_result_gen = Rcpp::wrap(v_size(n, size));
+    Rcpp::traits::input_parameter< int >::type element_size(element_sizeSEXP);
+    rcpp_result_gen = Rcpp::wrap(v_size(n, element_size));
     return rcpp_result_gen;
 END_RCPP
 }
