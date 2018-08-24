@@ -12,6 +12,8 @@
 #'
 #' * Includes the size of environments (up to `env`)
 #'
+#' * Accurately measures the size of ALTREP objects.
+#'
 #' @section Environments:
 #' `obj_size()` attempts to take into account the size of the
 #' environments associated with an object. This is particularly important
@@ -35,7 +37,7 @@
 #' @return An estimate of the size of the object, in bytes.
 #' @examples
 #' # obj_size correctly accounts for shared references
-#' x <- 1:1e4
+#' x <- runif(1e4)
 #' obj_size(x)
 #'
 #' z <- list(a = x, b = x, c = x)
@@ -57,6 +59,11 @@
 #'   a ~ b
 #' }
 #' obj_size(f())
+#'
+#' #' # In R 3.5 and greater, `:` creates a special "ALTREP" object that only
+#' # stores the first and last elements. This will make some vectors much
+#' # smaller than you'd otherwise expect
+#' obj_size(1:1e6)
 obj_size <- function(..., env = parent.frame()) {
   dots <- list2(...)
   size <- obj_size_(dots, env, size_node(), size_vector())

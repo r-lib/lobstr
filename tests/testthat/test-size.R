@@ -32,10 +32,9 @@ test_that("size scales correctly with length (accounting for vector pool)", {
   expect_same(numeric())
   expect_same(1)
   expect_same(2)
-  expect_same(1:10)
-  expect_same(1:1000)
+  expect_same(c(1:10))
+  expect_same(c(1:1000))
 })
-
 
 test_that("size of list computed recursively", {
   expect_same(list())
@@ -91,6 +90,19 @@ test_that("size of closures same as base", {
   expect_same(f)
 })
 
+
+# Improved behaviour for ALTREP objects -----------------------------------
+
+test_that("altrep size measured correctly", {
+  skip_if_not(getRversion() > "3.5.0")
+
+  # Currently reported size is 640 B
+  # If regular vector would be 4,000,040 B
+  # This test is conservative so shouldn't fail in case representation
+  # changes in the future
+  expect_true(obj_size(1:1e6) < 10000)
+})
+
 # Environment sizes -----------------------------------------------------------
 test_that("terminal environments have size zero", {
   expect_equal(obj_size(globalenv()), new_bytes(0))
@@ -124,17 +136,16 @@ test_that("size of function includes environment", {
 })
 
 test_that("size doesn't include parents of current environment", {
-  x <- 1:1e4
+  x <- c(1:1e4)
   embedded <- (function() {
     g <- function() {
-      x <- 1:1e3
+      x <- c(1:1e3)
       a ~ b
     }
     obj_size(g())
   })()
 
   expect_true(embedded < obj_size(x))
-
 })
 
 test_that("support dots in closure environments", {

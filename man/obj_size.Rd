@@ -31,6 +31,7 @@ Compared to \code{\link[=object.size]{object.size()}}, \code{obj_size()}:
 \item Accounts for all types of shared values, not just strings in
 the global string pool.
 \item Includes the size of environments (up to \code{env})
+\item Accurately measures the size of ALTREP objects.
 }
 }
 
@@ -53,7 +54,7 @@ elsewhere.
 
 \examples{
 # obj_size correctly accounts for shared references
-x <- 1:1e4
+x <- runif(1e4)
 obj_size(x)
 
 z <- list(a = x, b = x, c = x)
@@ -75,4 +76,9 @@ f <- function() {
   a ~ b
 }
 obj_size(f())
+
+#' # In R 3.5 and greater, `:` creates a special "ALTREP" object that only
+# stores the first and last elements. This will make some vectors much
+# smaller than you'd otherwise expect
+obj_size(1:1e6)
 }

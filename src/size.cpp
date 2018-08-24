@@ -51,6 +51,17 @@ double obj_size_tree(SEXP x, Environment base_env, int sizeof_node, int sizeof_v
   double size = (Rf_isVector(x) || TYPEOF(x) == CHARSXP) ? sizeof_vector : sizeof_node;
   size += obj_size_tree(ATTRIB(x), base_env, sizeof_node, sizeof_vector, seen);
 
+#if defined(R_VERSION) && R_VERSION > R_Version(3, 5, 0)
+  // Handle ALTREP objects
+  if (ALTREP(x)) {
+    size += 3 * sizeof(SEXP);
+    size += obj_size_tree(ALTREP_CLASS(x), base_env, sizeof_node, sizeof_vector, seen);
+    size += obj_size_tree(R_altrep_data1(x), base_env, sizeof_node, sizeof_vector, seen);
+    size += obj_size_tree(R_altrep_data2(x), base_env, sizeof_node, sizeof_vector, seen);
+    return size;
+  }
+#endif
+
   switch (TYPEOF(x)) {
   // Vectors -------------------------------------------------------------------
   // See details in v_size()
