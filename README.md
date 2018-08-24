@@ -3,6 +3,8 @@
 
 # lobstr <img src='man/figures/logo.png' align="right">
 
+[![CRAN
+status](https://www.r-pkg.org/badges/version/lobstr)](https://cran.r-project.org/package=lobstr)
 [![Travis-CI Build
 Status](https://travis-ci.org/r-lib/lobstr.svg?branch=master)](https://travis-ci.org/r-lib/lobstr)
 [![Coverage
@@ -58,16 +60,16 @@ digging into the underlying \_\_ref\_\_erences:
 x <- 1:1e6
 y <- list(x, x, x)
 ref(y)
-#> █ <1:0x7fec054d48c8> list 
-#> ├─<2:0x10d8fd000> int 
-#> ├─<2:0x10d8fd000> 
-#> └─<2:0x10d8fd000>
+#> █ [1:0x7f9adf16b078] <list> 
+#> ├─[2:0x7f9add3d9b48] <int> 
+#> ├─[2:0x7f9add3d9b48] 
+#> └─[2:0x7f9add3d9b48]
 
 e <- rlang::env()
 e$self <- e
 ref(e)
-#> █ <1:0x7fec0071f268> env 
-#> └─self = <1:0x7fec0071f268>
+#> █ [1:0x7f9ada2fc7e8] <env> 
+#> └─self = [1:0x7f9ada2fc7e8]
 ```
 
 A related tool is `obj_size()`, which computes the size of an object
@@ -75,9 +77,9 @@ taking these shared references into account:
 
 ``` r
 obj_size(x)
-#> 4,000,040 B
+#> 680 B
 obj_size(y)
-#> 4,000,112 B
+#> 760 B
 ```
 
 ### Call stack trees
