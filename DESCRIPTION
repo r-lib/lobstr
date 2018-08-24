@@ -19,6 +19,7 @@ Imports:
 Suggests: 
     covr,
     pillar,
+    pkgdown,
     testthat
 LinkingTo: 
     Rcpp
