@@ -13,11 +13,11 @@ v_size <- function(n, element_size) {
     .Call(`_lobstr_v_size`, n, element_size)
 }
 
-obj_size_ <- function(objects, base_env) {
-    .Call(`_lobstr_obj_size_`, objects, base_env)
+obj_size_ <- function(objects, base_env, sizeof_node, sizeof_vector) {
+    .Call(`_lobstr_obj_size_`, objects, base_env, sizeof_node, sizeof_vector)
 }
 
-obj_csize_ <- function(objects, base_env) {
-    .Call(`_lobstr_obj_csize_`, objects, base_env)
+obj_csize_ <- function(objects, base_env, sizeof_node, sizeof_vector) {
+    .Call(`_lobstr_obj_csize_`, objects, base_env, sizeof_node, sizeof_vector)
 }
 

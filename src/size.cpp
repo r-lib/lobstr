@@ -2,25 +2,11 @@
 using namespace Rcpp;
 #include <Rversion.h>
 
-// sexpinfo increased in 3.5.0
-// https://github.com/wch/r-source/commit/14db43282d12932dfa56eb480a5ef92d1d95b102
-#if defined(R_VERSION) && R_VERSION >= R_Version(3, 5, 0)
-  static const int sexpinfo_size = 8;
-#else
-  static const int sexpinfo_size = 4;
-#endif
 
 // [[Rcpp::export]]
 double v_size(double n, int element_size) {
-  double size = 0;
-  // padding to ensure vector starts on 8 byte boundary
-  size += (sexpinfo_size == 4) ? 4 : 0;
-  // size of vecsxp_struct
-  // https://github.com/wch/r-source/blob/master/src/include/Rinternals.h#L219-L222
-  size += 2 * sizeof(double);
-
   if (n == 0)
-    return size;
+    return 0;
 
   double vec_size = std::max(sizeof(SEXP), sizeof(double));
   double elements_per_byte = vec_size / element_size;
@@ -28,15 +14,16 @@ double v_size(double n, int element_size) {
   // Rcout << n << " elements, each of " << elements_per_byte << " = " <<
   //  n_bytes << "\n";
 
+  double size = 0;
   // Big vectors always allocated in 8 byte chunks
-  if      (n_bytes > 16) size += n_bytes * 8;
+  if      (n_bytes > 16) size = n_bytes * 8;
   // For small vectors, round to sizes allocated in small vector pool
-  else if (n_bytes > 8)  size += 128;
-  else if (n_bytes > 6)  size += 64;
-  else if (n_bytes > 4)  size += 48;
-  else if (n_bytes > 2)  size += 32;
-  else if (n_bytes > 1)  size += 16;
-  else if (n_bytes > 0)  size += 8;
+  else if (n_bytes > 8)  size = 128;
+  else if (n_bytes > 6)  size = 64;
+  else if (n_bytes > 4)  size = 48;
+  else if (n_bytes > 2)  size = 32;
+  else if (n_bytes > 1)  size = 16;
+  else if (n_bytes > 0)  size = 8;
 
   // Size is pointer to struct  + struct size
   return size;
@@ -49,7 +36,7 @@ bool is_namespace(Environment env) {
 // R equivalent
 // https://github.com/wch/r-source/blob/master/src/library/utils/src/size.c#L41
 
-double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
+double obj_size_tree(SEXP x, Environment base_env, int sizeof_node, int sizeof_vector, std::set<SEXP>& seen) {
   // NILSXP is a singleton, so occupies no space. Similarly SPECIAL and
   // BUILTIN are fixed and unchanging
   if (TYPEOF(x) == NILSXP ||
@@ -59,15 +46,10 @@ double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
   // Don't count objects that we've seen before
   if (!seen.insert(x).second) return 0;
 
-  // All objects start with a standard header: SEXPREC_HEADER
-  // https://github.com/wch/r-source/blob/master/src/include/Rinternals.h#L232-L235
-  // This includes the sxpinfo_struct
-  double size = sexpinfo_size;
-  // And a pointer to attributes
-  size += sizeof(SEXP);
-  size += obj_size_tree(ATTRIB(x), base_env, seen);
-  // Followed by two pointers used to create a doubly linked list used by GC
-  size += 2 * sizeof(SEXP);
+  // Use sizeof(SEXPREC) and sizeof(VECTOR_SEXPREC) computed in R.
+  // CHARSXP are treated as vectors for this purpose
+  double size = (Rf_isVector(x) || TYPEOF(x) == CHARSXP) ? sizeof_vector : sizeof_node;
+  size += obj_size_tree(ATTRIB(x), base_env, sizeof_node, sizeof_vector, seen);
 
   switch (TYPEOF(x)) {
   // Vectors -------------------------------------------------------------------
@@ -92,7 +74,7 @@ double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
   case STRSXP:
     size += v_size(XLENGTH(x), sizeof(SEXP));
     for (R_xlen_t i = 0; i < XLENGTH(x); i++) {
-      size += obj_size_tree(STRING_ELT(x, i), base_env, seen);
+      size += obj_size_tree(STRING_ELT(x, i), base_env, sizeof_node, sizeof_vector, seen);
     }
     break;
 
@@ -106,7 +88,7 @@ double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
   case WEAKREFSXP:
     size += v_size(XLENGTH(x), sizeof(SEXP));
     for (R_xlen_t i = 0; i < XLENGTH(x); ++i) {
-      size += obj_size_tree(VECTOR_ELT(x, i), base_env, seen);
+      size += obj_size_tree(VECTOR_ELT(x, i), base_env, sizeof_node, sizeof_vector, seen);
     }
     break;
 
@@ -119,10 +101,9 @@ double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
   case LISTSXP:
   case LANGSXP:
   case BCODESXP:
-    size += 3 * sizeof(SEXP); // tag, car, cdr
-    size += obj_size_tree(TAG(x), base_env, seen); // name of first element
-    size += obj_size_tree(CAR(x), base_env, seen); // first element
-    size += obj_size_tree(CDR(x), base_env, seen); // pairlist (subsequent elements) or NILSXP
+    size += obj_size_tree(TAG(x), base_env, sizeof_node, sizeof_vector, seen); // name of first element
+    size += obj_size_tree(CAR(x), base_env, sizeof_node, sizeof_vector, seen); // first element
+    size += obj_size_tree(CDR(x), base_env, sizeof_node, sizeof_vector, seen); // pairlist (subsequent elements) or NILSXP
     break;
 
   // Environments
@@ -130,41 +111,35 @@ double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
     if (x == R_BaseEnv || x == R_GlobalEnv || x == R_EmptyEnv ||
       x == base_env || is_namespace(x)) return 0;
 
-    size += 3 * sizeof(SEXP); // frame, enclos, hashtab
-    size += obj_size_tree(FRAME(x), base_env, seen);
-    size += obj_size_tree(ENCLOS(x), base_env, seen);
-    size += obj_size_tree(HASHTAB(x), base_env, seen);
+    size += obj_size_tree(FRAME(x), base_env, sizeof_node, sizeof_vector, seen);
+    size += obj_size_tree(ENCLOS(x), base_env, sizeof_node, sizeof_vector, seen);
+    size += obj_size_tree(HASHTAB(x), base_env, sizeof_node, sizeof_vector, seen);
     break;
 
   // Functions
   case CLOSXP:
-    size += 3 * sizeof(SEXP); // formals, body, env
-    size += obj_size_tree(FORMALS(x), base_env, seen);
-    size += obj_size_tree(BODY(x), base_env, seen);
-    size += obj_size_tree(CLOENV(x), base_env, seen);
+    size += obj_size_tree(FORMALS(x), base_env, sizeof_node, sizeof_vector, seen);
+    size += obj_size_tree(BODY(x), base_env, sizeof_node, sizeof_vector, seen);
+    size += obj_size_tree(CLOENV(x), base_env, sizeof_node, sizeof_vector, seen);
     break;
 
   case PROMSXP:
-    size += 3 * sizeof(SEXP); // value, expr, env
-    size += obj_size_tree(PRVALUE(x), base_env, seen);
-    size += obj_size_tree(PRCODE(x), base_env, seen);
-    size += obj_size_tree(PRENV(x), base_env, seen);
+    size += obj_size_tree(PRVALUE(x), base_env, sizeof_node, sizeof_vector, seen);
+    size += obj_size_tree(PRCODE(x), base_env, sizeof_node, sizeof_vector, seen);
+    size += obj_size_tree(PRENV(x), base_env, sizeof_node, sizeof_vector, seen);
     break;
 
   case EXTPTRSXP:
-    size += 3 * sizeof(SEXP);
     size += sizeof(void *); // the actual pointer
-    size += obj_size_tree(EXTPTR_PROT(x), base_env, seen);
-    size += obj_size_tree(EXTPTR_TAG(x), base_env, seen);
+    size += obj_size_tree(EXTPTR_PROT(x), base_env, sizeof_node, sizeof_vector, seen);
+    size += obj_size_tree(EXTPTR_TAG(x), base_env, sizeof_node, sizeof_vector, seen);
     break;
 
   case S4SXP:
-    size += 3 * sizeof(SEXP);
-    size += obj_size_tree(TAG(x), base_env, seen);
+    size += obj_size_tree(TAG(x), base_env, sizeof_node, sizeof_vector, seen);
     break;
 
   case SYMSXP:
-    size += 3 * sizeof(SEXP); // pname, value, internal
     break;
 
   default:
@@ -176,26 +151,26 @@ double obj_size_tree(SEXP x, Environment base_env, std::set<SEXP>& seen) {
 }
 
 // [[Rcpp::export]]
-double obj_size_(List objects, Environment base_env) {
+double obj_size_(List objects, Environment base_env, int sizeof_node, int sizeof_vector) {
   std::set<SEXP> seen;
   double size = 0;
 
   int n = objects.size();
   for (int i = 0; i < n; ++i) {
-    size += obj_size_tree(objects[i], base_env, seen);
+    size += obj_size_tree(objects[i], base_env, sizeof_node, sizeof_vector, seen);
   }
 
   return size;
 }
 
 // [[Rcpp::export]]
-IntegerVector obj_csize_(List objects, Environment base_env) {
+IntegerVector obj_csize_(List objects, Environment base_env, int sizeof_node, int sizeof_vector) {
   std::set<SEXP> seen;
   int n = objects.size();
 
   IntegerVector out(n);
   for (int i = 0; i < n; ++i) {
-    out[i] += obj_size_tree(objects[i], base_env, seen);
+    out[i] += obj_size_tree(objects[i], base_env, sizeof_node, sizeof_vector, seen);
   }
 
   return out;

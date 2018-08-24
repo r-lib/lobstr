@@ -40,26 +40,30 @@ BEGIN_RCPP
 END_RCPP
 }
 // obj_size_
-double obj_size_(List objects, Environment base_env);
-RcppExport SEXP _lobstr_obj_size_(SEXP objectsSEXP, SEXP base_envSEXP) {
+double obj_size_(List objects, Environment base_env, int sizeof_node, int sizeof_vector);
+RcppExport SEXP _lobstr_obj_size_(SEXP objectsSEXP, SEXP base_envSEXP, SEXP sizeof_nodeSEXP, SEXP sizeof_vectorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type objects(objectsSEXP);
     Rcpp::traits::input_parameter< Environment >::type base_env(base_envSEXP);
-    rcpp_result_gen = Rcpp::wrap(obj_size_(objects, base_env));
+    Rcpp::traits::input_parameter< int >::type sizeof_node(sizeof_nodeSEXP);
+    Rcpp::traits::input_parameter< int >::type sizeof_vector(sizeof_vectorSEXP);
+    rcpp_result_gen = Rcpp::wrap(obj_size_(objects, base_env, sizeof_node, sizeof_vector));
     return rcpp_result_gen;
 END_RCPP
 }
 // obj_csize_
-IntegerVector obj_csize_(List objects, Environment base_env);
-RcppExport SEXP _lobstr_obj_csize_(SEXP objectsSEXP, SEXP base_envSEXP) {
+IntegerVector obj_csize_(List objects, Environment base_env, int sizeof_node, int sizeof_vector);
+RcppExport SEXP _lobstr_obj_csize_(SEXP objectsSEXP, SEXP base_envSEXP, SEXP sizeof_nodeSEXP, SEXP sizeof_vectorSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< List >::type objects(objectsSEXP);
     Rcpp::traits::input_parameter< Environment >::type base_env(base_envSEXP);
-    rcpp_result_gen = Rcpp::wrap(obj_csize_(objects, base_env));
+    Rcpp::traits::input_parameter< int >::type sizeof_node(sizeof_nodeSEXP);
+    Rcpp::traits::input_parameter< int >::type sizeof_vector(sizeof_vectorSEXP);
+    rcpp_result_gen = Rcpp::wrap(obj_csize_(objects, base_env, sizeof_node, sizeof_vector));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -68,8 +72,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_lobstr_obj_addr_", (DL_FUNC) &_lobstr_obj_addr_, 1},
     {"_lobstr_obj_addrs_", (DL_FUNC) &_lobstr_obj_addrs_, 1},
     {"_lobstr_v_size", (DL_FUNC) &_lobstr_v_size, 2},
-    {"_lobstr_obj_size_", (DL_FUNC) &_lobstr_obj_size_, 2},
-    {"_lobstr_obj_csize_", (DL_FUNC) &_lobstr_obj_csize_, 2},
+    {"_lobstr_obj_size_", (DL_FUNC) &_lobstr_obj_size_, 4},
+    {"_lobstr_obj_csize_", (DL_FUNC) &_lobstr_obj_csize_, 4},
     {NULL, NULL, 0}
 };
 

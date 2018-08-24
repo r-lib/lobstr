@@ -59,7 +59,7 @@
 #' obj_size(f())
 obj_size <- function(..., env = parent.frame()) {
   dots <- list2(...)
-  size <- obj_size_(dots, env)
+  size <- obj_size_(dots, env, size_node(), size_vector())
   new_bytes(size)
 }
 
@@ -67,10 +67,13 @@ obj_size <- function(..., env = parent.frame()) {
 #' @export
 obj_sizes <- function(..., env = parent.frame()) {
   dots <- list2(...)
-  size <- obj_csize_(dots, env)
+  size <- obj_csize_(dots, env, size_node(), size_vector())
   names(size) <- names(dots)
   new_bytes(size)
 }
+
+size_node <- function(x) as.vector(utils::object.size(quote(expr = )))
+size_vector <- function(x) as.vector(utils::object.size(logical()))
 
 new_bytes <- function(x) {
   structure(x, class = "lobstr_bytes")
