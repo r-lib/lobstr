@@ -112,7 +112,7 @@ ref_tree_chr <- function(x, layout = box_chars(), seen = child_env(emptyenv())) 
     ids[[i]] <- obj_id(seen, addrs[[i]])
   }
 
-  type <- paste0("string: '", str_truncate(x, 10), "'")
+  type <- paste0('string: "', str_truncate(x, 10), '"')
 
   out <- Map(obj_desc, addrs, type, has_seen, ids)
   names(out) <- names(x)
