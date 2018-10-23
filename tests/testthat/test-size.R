@@ -53,7 +53,13 @@ test_that("size of symbols same as base", {
 test_that("size of pairlists same as base", {
   expect_same(pairlist())
   expect_same(pairlist(1))
+  expect_same(pairlist(1, 2))
   expect_same(pairlist(1, 2, 3))
+  expect_same(pairlist(1, 2, 3, 4))
+})
+
+test_that("don't crash with large parilists", {
+  expect_equal(obj_size(as.pairlist(1:1e5)), new_bytes(11200000))
 })
 
 test_that("size of S4 objects same as base", {

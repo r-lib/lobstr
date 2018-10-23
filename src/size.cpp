@@ -115,9 +115,16 @@ double obj_size_tree(SEXP x, Environment base_env, int sizeof_node, int sizeof_v
   case LISTSXP:
   case LANGSXP:
   case BCODESXP:
-    size += obj_size_tree(TAG(x), base_env, sizeof_node, sizeof_vector, seen); // name of first element
-    size += obj_size_tree(CAR(x), base_env, sizeof_node, sizeof_vector, seen); // first element
-    size += obj_size_tree(CDR(x), base_env, sizeof_node, sizeof_vector, seen); // pairlist (subsequent elements) or NILSXP
+    if (x == R_MissingArg) // Needed for DOTSXP
+      break;
+
+    for(SEXP cons = x; cons != R_NilValue; cons = CDR(cons)) {
+      if (cons != x)
+        size += sizeof_node;
+      size += obj_size_tree(TAG(cons), base_env, sizeof_node, sizeof_vector, seen);
+      size += obj_size_tree(CAR(cons), base_env, sizeof_node, sizeof_vector, seen);
+    }
+
     break;
 
   // Environments
