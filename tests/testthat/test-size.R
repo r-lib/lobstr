@@ -23,7 +23,7 @@ test_that("size correct for length one vectors", {
   expect_same(1)
   expect_same(1L)
   expect_same("abc")
-  expect_same(paste(rep("banaana", 100), collapse = ""))
+  expect_same(paste(rep("banana", 100), collapse = ""))
   expect_same(charToRaw("a"))
   expect_same(5 + 1i)
 })
