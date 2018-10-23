@@ -5,8 +5,10 @@ Authors@R: c(
     person("Hadley", "Wickham", , "hadley@rstudio.com", role = c("aut", "cre")),
     person("RStudio", role = "cph")
   )
-Description: A set of tools for inspecting and understanding complex R data
-    structures. Inspired by `str()`.
+Description: A set of tools for inspecting and understanding R data
+    structures inspired by `str()`. Includes `ast()` for visualising abstract 
+    syntax trees, `ref()` for showing shared references, `cst()` for showing 
+    call stack trees, and `obj_size()` for computing object sizes.
 License: GPL-3
 URL: https://github.com/r-lib/lobstr
 BugReports: https://github.com/r-lib/lobstr/issues
