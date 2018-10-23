@@ -21,8 +21,8 @@
 #' accidentally captured a large object. However, it's easy to over count:
 #' you don't want to include the size of every object in every environment
 #' leading back to the [emptyenv()]. `obj_size()` takes
-#' a heuristic approach: it never counts the size of the global env,
-#' the base env, the empty env, or any namespace.
+#' a heuristic approach: it never counts the size of the global environment,
+#' the base environment, the empty environment, or any namespace.
 #'
 #' Additionally, the `env` argument allows you to specify another
 #' environment at which to stop. This defaults to the environment from which

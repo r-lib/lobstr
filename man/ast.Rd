@@ -10,7 +10,7 @@ ast(x)
 \item{x}{A language object to display.}
 }
 \description{
-This is a useful alterantive to \code{str()} for expression objects.
+This is a useful alternative to \code{str()} for expression objects.
 }
 \examples{
 # Leaves
