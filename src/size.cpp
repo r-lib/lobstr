@@ -114,7 +114,6 @@ double obj_size_tree(SEXP x, Environment base_env, int sizeof_node, int sizeof_v
   case DOTSXP:
   case LISTSXP:
   case LANGSXP:
-  case BCODESXP:
     if (x == R_MissingArg) // Needed for DOTSXP
       break;
 
@@ -125,6 +124,12 @@ double obj_size_tree(SEXP x, Environment base_env, int sizeof_node, int sizeof_v
       size += obj_size_tree(CAR(cons), base_env, sizeof_node, sizeof_vector, seen);
     }
 
+    break;
+
+  case BCODESXP:
+    size += obj_size_tree(TAG(x), base_env, sizeof_node, sizeof_vector, seen);
+    size += obj_size_tree(CAR(x), base_env, sizeof_node, sizeof_vector, seen);
+    size += obj_size_tree(CDR(x), base_env, sizeof_node, sizeof_vector, seen);
     break;
 
   // Environments
