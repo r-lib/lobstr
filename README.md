@@ -66,16 +66,16 @@ digging into the underlying \_\_ref\_\_erences:
 x <- 1:1e6
 y <- list(x, x, x)
 ref(y)
-#> █ [1:0x7fb2dd0fa2c8] <list> 
-#> ├─[2:0x7fb2dc0a9458] <int> 
-#> ├─[2:0x7fb2dc0a9458] 
-#> └─[2:0x7fb2dc0a9458]
+#> █ [1:0x7febd378d2c8] <list> 
+#> ├─[2:0x7febd3a88258] <int> 
+#> ├─[2:0x7febd3a88258] 
+#> └─[2:0x7febd3a88258]
 
 e <- rlang::env()
 e$self <- e
 ref(e)
-#> █ [1:0x7fb2dbc4f8b0] <env> 
-#> └─self = [1:0x7fb2dbc4f8b0]
+#> █ [1:0x7febd50320b0] <env> 
+#> └─self = [1:0x7febd50320b0]
 ```
 
 A related tool is `obj_size()`, which computes the size of an object
@@ -83,9 +83,9 @@ taking these shared references into account:
 
 ``` r
 obj_size(x)
-#> 4,000,048 B
+#> 680 B
 obj_size(y)
-#> 4,000,128 B
+#> 760 B
 ```
 
 ### Call stack trees
