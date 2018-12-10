@@ -23,6 +23,12 @@ lobstr provides tool in the same vein as `str()`, tools that allow you to dig in
 
 ## Installation
 
+Install the released version of lobstr from CRAN:
+
+``` r
+install.packages("lobstr")
+```
+
 You can install the development version with:
 
 ``` r
