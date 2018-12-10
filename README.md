@@ -10,8 +10,8 @@ Status](https://travis-ci.org/r-lib/lobstr.svg?branch=master)](https://travis-ci
 [![Coverage
 status](https://codecov.io/gh/r-lib/lobstr/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/lobstr?branch=master)
 
-lobstr provides tool in the same vein as `str()`, tools that allow you
-to dig into the detail of an object.
+lobstr provides tools in the same vein as `str()`, which allow you to
+dig into the detail of an object.
 
 ## Installation
 
@@ -66,16 +66,16 @@ digging into the underlying \_\_ref\_\_erences:
 x <- 1:1e6
 y <- list(x, x, x)
 ref(y)
-#> █ [1:0x7fdb5fe92018] <list> 
-#> ├─[2:0x7fdb5e02f090] <int> 
-#> ├─[2:0x7fdb5e02f090] 
-#> └─[2:0x7fdb5e02f090]
+#> █ [1:0x7fb2dd0fa2c8] <list> 
+#> ├─[2:0x7fb2dc0a9458] <int> 
+#> ├─[2:0x7fb2dc0a9458] 
+#> └─[2:0x7fb2dc0a9458]
 
 e <- rlang::env()
 e$self <- e
 ref(e)
-#> █ [1:0x7fdb60839ea8] <env> 
-#> └─self = [1:0x7fdb60839ea8]
+#> █ [1:0x7fb2dbc4f8b0] <env> 
+#> └─self = [1:0x7fb2dbc4f8b0]
 ```
 
 A related tool is `obj_size()`, which computes the size of an object

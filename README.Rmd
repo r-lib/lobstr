@@ -19,7 +19,7 @@ library(lobstr)
 [![Travis-CI Build Status](https://travis-ci.org/r-lib/lobstr.svg?branch=master)](https://travis-ci.org/r-lib/lobstr)
 [![Coverage status](https://codecov.io/gh/r-lib/lobstr/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/lobstr?branch=master)
 
-lobstr provides tool in the same vein as `str()`, tools that allow you to dig into the detail of an object.
+lobstr provides tools in the same vein as `str()`, which allow you to dig into the detail of an object.
 
 ## Installation
 
