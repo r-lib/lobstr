@@ -10,10 +10,16 @@ Status](https://travis-ci.org/r-lib/lobstr.svg?branch=master)](https://travis-ci
 [![Coverage
 status](https://codecov.io/gh/r-lib/lobstr/branch/master/graph/badge.svg)](https://codecov.io/github/r-lib/lobstr?branch=master)
 
-lobstr provides tool in the same vein as `str()`, tools that allow you
-to dig into the detail of an object.
+lobstr provides tools in the same vein as `str()`, which allow you to
+dig into the detail of an object.
 
 ## Installation
+
+Install the released version of lobstr from CRAN:
+
+``` r
+install.packages("lobstr")
+```
 
 You can install the development version with:
 
@@ -60,16 +66,16 @@ digging into the underlying \_\_ref\_\_erences:
 x <- 1:1e6
 y <- list(x, x, x)
 ref(y)
-#> █ [1:0x7f9adf16b078] <list> 
-#> ├─[2:0x7f9add3d9b48] <int> 
-#> ├─[2:0x7f9add3d9b48] 
-#> └─[2:0x7f9add3d9b48]
+#> █ [1:0x7febd378d2c8] <list> 
+#> ├─[2:0x7febd3a88258] <int> 
+#> ├─[2:0x7febd3a88258] 
+#> └─[2:0x7febd3a88258]
 
 e <- rlang::env()
 e$self <- e
 ref(e)
-#> █ [1:0x7f9ada2fc7e8] <env> 
-#> └─self = [1:0x7f9ada2fc7e8]
+#> █ [1:0x7febd50320b0] <env> 
+#> └─self = [1:0x7febd50320b0]
 ```
 
 A related tool is `obj_size()`, which computes the size of an object
@@ -92,8 +98,8 @@ g <- function(x) h(x)
 h <- function(x) x
 f(cst())
 #> █
-#> ├─f(cst())
-#> │ └─g(x)
-#> │   └─h(x)
-#> └─cst()
+#> ├─global::f(cst())
+#> │ └─global::g(x)
+#> │   └─global::h(x)
+#> └─lobstr::cst()
 ```
