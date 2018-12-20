@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# lobstr <img src="'man/figures/logo.png'" align="right" height="139" />
+# lobstr <img src="man/figures/logo.png" align="right" height="139" />
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/lobstr)](https://cran.r-project.org/package=lobstr)
