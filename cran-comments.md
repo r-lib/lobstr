@@ -1,7 +1,3 @@
-This is a resubmission - I have removed backticks from the package description.
-
----
-
 ## Test environments
 
 * local: darwin15.6.0-3.5.1
@@ -11,6 +7,4 @@ This is a resubmission - I have removed backticks from the package description.
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-* This is a new release.
+0 errors | 0 warnings | 0 note
