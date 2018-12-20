@@ -2,7 +2,10 @@
 #'
 #' `obj_addr()` gives the address of the value that `x` points to;
 #' `obj_addrs()` gives the address of the components the list,
-#' environment, and character vector `x` point to
+#' environment, and character vector `x` point to.
+#'
+#' `obj_addr()` has been written in such away that it avoids taking
+#' references to an object.
 #'
 #' @param x An object
 #' @export
@@ -29,7 +32,8 @@
 #' obj_addr(1:10)
 #' obj_addr(1:10)
 obj_addr <- function(x) {
-  addr <- obj_addr_(x)
+  x <- enquo(x)
+  addr <- obj_addr_(quo_get_expr(x), quo_get_env(x))
 
   if (is_testing()) {
     test_addr_get(addr)

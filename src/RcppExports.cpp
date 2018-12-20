@@ -6,13 +6,14 @@
 using namespace Rcpp;
 
 // obj_addr_
-std::string obj_addr_(SEXP x);
-RcppExport SEXP _lobstr_obj_addr_(SEXP xSEXP) {
+std::string obj_addr_(SEXP name, Environment env);
+RcppExport SEXP _lobstr_obj_addr_(SEXP nameSEXP, SEXP envSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(obj_addr_(x));
+    Rcpp::traits::input_parameter< SEXP >::type name(nameSEXP);
+    Rcpp::traits::input_parameter< Environment >::type env(envSEXP);
+    rcpp_result_gen = Rcpp::wrap(obj_addr_(name, env));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -69,7 +70,7 @@ END_RCPP
 }
 
 static const R_CallMethodDef CallEntries[] = {
-    {"_lobstr_obj_addr_", (DL_FUNC) &_lobstr_obj_addr_, 1},
+    {"_lobstr_obj_addr_", (DL_FUNC) &_lobstr_obj_addr_, 2},
     {"_lobstr_obj_addrs_", (DL_FUNC) &_lobstr_obj_addrs_, 1},
     {"_lobstr_v_size", (DL_FUNC) &_lobstr_v_size, 2},
     {"_lobstr_obj_size_", (DL_FUNC) &_lobstr_obj_size_, 4},

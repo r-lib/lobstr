@@ -15,7 +15,11 @@ obj_addrs(x)
 \description{
 \code{obj_addr()} gives the address of the value that \code{x} points to;
 \code{obj_addrs()} gives the address of the components the list,
-environment, and character vector \code{x} point to
+environment, and character vector \code{x} point to.
+}
+\details{
+\code{obj_addr()} has been written in such away that it avoids taking
+references to an object.
 }
 \examples{
 # R creates copies lazily

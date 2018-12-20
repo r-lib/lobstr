@@ -1,9 +1,13 @@
 #include <Rcpp.h>
 using namespace Rcpp;
 
-// [[Rcpp::export]]
 std::string obj_addr_(SEXP x) {
   return tfm::format("%p", x);
+}
+
+// [[Rcpp::export]]
+std::string obj_addr_(SEXP name, Environment env) {
+  return obj_addr_(Rf_eval(name, env));
 }
 
 void frame_addresses(SEXP frame, std::vector<std::string>* refs) {
