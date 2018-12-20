@@ -54,7 +54,7 @@ double obj_size_tree(SEXP x, Environment base_env, int sizeof_node, int sizeof_v
   if (TYPEOF(x) != CHARSXP)
     size += obj_size_tree(ATTRIB(x), base_env, sizeof_node, sizeof_vector, seen);
 
-#if defined(R_VERSION) && R_VERSION > R_Version(3, 5, 0)
+#if defined(R_VERSION) && R_VERSION >= R_Version(3, 5, 0)
   // Handle ALTREP objects
   if (ALTREP(x)) {
     size += 3 * sizeof(SEXP);
