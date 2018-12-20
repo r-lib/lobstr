@@ -129,7 +129,8 @@
     <colgroup><col class="name" /><col class="desc" /></colgroup>
     <tr>
       <th>x</th>
-      <td><p>A language object to display.</p></td>
+      <td><p>An expression to display. Input is automatically quoted,
+use <code>!!</code> to unquote if you have already captured an expression object.</p></td>
     </tr>
     </table>
     
@@ -150,6 +151,13 @@
 #&gt; └─</span><span style='color: #FFAF00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`+`</span><span> 
 #&gt;   ├─</span><span style='color: #BB00BB;font-weight: bold;'>x</span><span> 
 #&gt;   └─1 </div><div class='input'>
+<span class='co'># Displaying expression already stored in object</span>
+<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/substitute'>quote</a></span>(<span class='no'>a</span> + <span class='no'>b</span> + <span class='no'>c</span>)
+<span class='fu'>ast</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; </span><span style='color: #BB00BB;font-weight: bold;'>x</span><span> </div><div class='input'><span class='fu'>ast</span>(!!<span class='no'>x</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFAF00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`+`</span><span> 
+#&gt; ├─</span><span style='color: #FFAF00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`+`</span><span> 
+#&gt; │ ├─</span><span style='color: #BB00BB;font-weight: bold;'>a</span><span> 
+#&gt; │ └─</span><span style='color: #BB00BB;font-weight: bold;'>b</span><span> 
+#&gt; └─</span><span style='color: #BB00BB;font-weight: bold;'>c</span><span> </div><div class='input'>
 <span class='co'># All operations have this same structure</span>
 <span class='fu'>ast</span>(<span class='kw'>if</span> (<span class='fl'>TRUE</span>) <span class='fl'>3</span> <span class='kw'>else</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFAF00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`if`</span><span> 
 #&gt; ├─TRUE 
