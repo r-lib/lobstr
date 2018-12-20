@@ -1,4 +1,4 @@
-# lobstr 1.0.0.9000
+# lobstr 1.0.1
 
 * `ast()` prints scalar integer and complex more accurately (#24)
 
