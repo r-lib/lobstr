@@ -114,8 +114,10 @@ c.lobstr_bytes <- function(...) {
 # Helpers for interactive exploration -------------------------------------
 
 comp <- function(x) {
-  base <- object.size(x)
+  base <- utils::object.size(x)
   lobstr <- obj_size(x)
   c(base = base, lobstr = lobstr, diff = base - lobstr)
 }
-insp <- function(x) .Internal(inspect(x))
+insp <- function(x) {
+  eval(quote(.Internal(inspect(x))))
+}
