@@ -26,3 +26,22 @@ test_that("can print complex expression without unicode", {
     print = TRUE
   )
 })
+
+test_that("can print scalar expressions nicely", {
+  old <- options(lobstr.fancy.tree = FALSE)
+  on.exit(options(old))
+
+  x <- expr(list(
+    logical = c(FALSE, TRUE, NA),
+    integer = 1L,
+    double = 1,
+    character = "a",
+    complex = 1i
+  ))
+  expect_known_output(
+    ast(!!x),
+    "test-ast-scalar.txt",
+    print = TRUE
+  )
+})
+

@@ -103,10 +103,10 @@ ast_leaf_symbol <- function(x) {
   crayon::bold(crayon::magenta(x))
 }
 ast_leaf_constant <- function(x) {
-  if (is.character(x)) {
-    encodeString(x, quote = '"')
+  if (is.complex(x)) {
+    paste0(Im(x), "i")
   } else {
-    as.character(x)
+    deparse(x)
   }
 }
 
