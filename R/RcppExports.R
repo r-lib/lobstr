@@ -9,6 +9,18 @@ obj_addrs_ <- function(x) {
     .Call(`_lobstr_obj_addrs_`, x)
 }
 
+obj_formals <- function(x) {
+    .Call(`_lobstr_obj_formals`, x)
+}
+
+obj_body <- function(x) {
+    .Call(`_lobstr_obj_body`, x)
+}
+
+obj_cloenv <- function(x) {
+    .Call(`_lobstr_obj_cloenv`, x)
+}
+
 v_size <- function(n, element_size) {
     .Call(`_lobstr_v_size`, n, element_size)
 }

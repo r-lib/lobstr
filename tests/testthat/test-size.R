@@ -84,10 +84,6 @@ test_that("duplicated CHARSXPS only counted once", {
   expect_same(c("banana", "banana", "banana"))
 })
 
-test_that("base function match base size", {
-  expect_same(mean)
-})
-
 # Improved behaviour for shared components ------------------------------------
 test_that("shared components only counted once", {
   x <- 1:1e3

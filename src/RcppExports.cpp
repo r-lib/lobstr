@@ -28,6 +28,39 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// obj_formals
+SEXP obj_formals(SEXP x);
+RcppExport SEXP _lobstr_obj_formals(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(obj_formals(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// obj_body
+SEXP obj_body(SEXP x);
+RcppExport SEXP _lobstr_obj_body(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(obj_body(x));
+    return rcpp_result_gen;
+END_RCPP
+}
+// obj_cloenv
+SEXP obj_cloenv(SEXP x);
+RcppExport SEXP _lobstr_obj_cloenv(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(obj_cloenv(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // v_size
 double v_size(double n, int element_size);
 RcppExport SEXP _lobstr_v_size(SEXP nSEXP, SEXP element_sizeSEXP) {
@@ -72,6 +105,9 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_lobstr_obj_addr_", (DL_FUNC) &_lobstr_obj_addr_, 2},
     {"_lobstr_obj_addrs_", (DL_FUNC) &_lobstr_obj_addrs_, 1},
+    {"_lobstr_obj_formals", (DL_FUNC) &_lobstr_obj_formals, 1},
+    {"_lobstr_obj_body", (DL_FUNC) &_lobstr_obj_body, 1},
+    {"_lobstr_obj_cloenv", (DL_FUNC) &_lobstr_obj_cloenv, 1},
     {"_lobstr_v_size", (DL_FUNC) &_lobstr_v_size, 2},
     {"_lobstr_obj_size_", (DL_FUNC) &_lobstr_obj_size_, 4},
     {"_lobstr_obj_csize_", (DL_FUNC) &_lobstr_obj_csize_, 4},

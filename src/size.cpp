@@ -2,6 +2,19 @@
 using namespace Rcpp;
 #include <Rversion.h>
 
+// [[Rcpp::export]]
+SEXP obj_formals(SEXP x) {
+  return FORMALS(x);
+}
+// [[Rcpp::export]]
+SEXP obj_body(SEXP x) {
+  return BODY(x);
+}
+// [[Rcpp::export]]
+SEXP obj_cloenv(SEXP x) {
+  return CLOENV(x);
+}
+
 
 // [[Rcpp::export]]
 double v_size(double n, int element_size) {
@@ -145,6 +158,7 @@ double obj_size_tree(SEXP x, Environment base_env, int sizeof_node, int sizeof_v
   // Functions
   case CLOSXP:
     size += obj_size_tree(FORMALS(x), base_env, sizeof_node, sizeof_vector, seen);
+    // BODY is either an expression or byte code
     size += obj_size_tree(BODY(x), base_env, sizeof_node, sizeof_vector, seen);
     size += obj_size_tree(CLOENV(x), base_env, sizeof_node, sizeof_vector, seen);
     break;
