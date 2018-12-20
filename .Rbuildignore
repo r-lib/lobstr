@@ -1,3 +1,5 @@
+^pkgdown$
+^\.covrignore$
 ^CRAN-RELEASE$
 ^cran-comments\.md$
 ^docs$

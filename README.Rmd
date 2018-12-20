@@ -13,7 +13,8 @@ knitr::opts_chunk$set(
 )
 library(lobstr)
 ```
-# lobstr <img src='man/figures/logo.png' align="right">
+
+# lobstr <img src="'man/figures/logo.png'" align="right" height="139" />
 
 [![CRAN status](https://www.r-pkg.org/badges/version/lobstr)](https://cran.r-project.org/package=lobstr)
 [![Travis-CI Build Status](https://travis-ci.org/r-lib/lobstr.svg?branch=master)](https://travis-ci.org/r-lib/lobstr)

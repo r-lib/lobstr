@@ -6,27 +6,16 @@ cache: packages
 
 matrix:
   include:
+  - r: devel
   - r: release
     after_success:
     - Rscript -e 'covr::codecov()'
-    before_deploy:
-    - R CMD INSTALL .
-    - Rscript -e 'pkgdown::build_site()'
+    before_cache: Rscript -e 'remotes::install_cran("pkgdown")'
     deploy:
-      provider: pages
-      skip-cleanup: true
-      github-token: $GITHUB_TOKEN
-      local-dir: docs
-      fqdn: lobstr.r-lib.org
-      on:
-        branch: master
-
-r:
-- 3.1
-- 3.2
-- 3.3
-- oldrel
-- devel
-
-after_success:
-  - Rscript -e 'covr::codecov()'
+      provider: script
+      script: Rscript -e 'pkgdown::deploy_site_github()'
+      skip_cleanup: true
+  - r: oldrel
+  - r: 3.3
+  - r: 3.2
+  - r: 3.1
