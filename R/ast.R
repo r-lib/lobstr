@@ -2,7 +2,8 @@
 #'
 #' This is a useful alternative to `str()` for expression objects.
 #'
-#' @param x A language object to display.
+#' @param x An expression to display. Input is automatically quoted,
+#'   use `!!` to unquote if you have already captured an expression object.
 #' @export
 #' @examples
 #' # Leaves
@@ -16,6 +17,11 @@
 #' ast(f(x)(y))
 #'
 #' ast((x + 1))
+#'
+#' # Displaying expression already stored in object
+#' x <- quote(a + b + c)
+#' ast(x)
+#' ast(!!x)
 #'
 #' # All operations have this same structure
 #' ast(if (TRUE) 3 else 4)

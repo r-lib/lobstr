@@ -7,7 +7,8 @@
 ast(x)
 }
 \arguments{
-\item{x}{A language object to display.}
+\item{x}{An expression to display. Input is automatically quoted,
+use \code{!!} to unquote if you have already captured an expression object.}
 }
 \description{
 This is a useful alternative to \code{str()} for expression objects.
@@ -24,6 +25,11 @@ ast(f()())
 ast(f(x)(y))
 
 ast((x + 1))
+
+# Displaying expression already stored in object
+x <- quote(a + b + c)
+ast(x)
+ast(!!x)
 
 # All operations have this same structure
 ast(if (TRUE) 3 else 4)
