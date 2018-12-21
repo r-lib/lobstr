@@ -1,3 +1,5 @@
+# lobstr (development version)
+
 # lobstr 1.0.1
 
 * `ast()` prints scalar integer and complex more accurately (#24)
