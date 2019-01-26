@@ -47,19 +47,15 @@ test_that("can display ref to global string pool on request", {
 })
 
 test_that("custom methods are never called (#30)", {
-  `[[.foo` <- function(...) stop("you are dead!")
-  `as.list.foo` <- function(...) stop("you are dead!")
-
-  x <- 1:10
-  y <- list(x, x)
-  class(y) <- "foo"
-
-  expect_error(ref(y), NA)
+  # `[[.numeric_number` causes infinite recursion
+  expect_error(ref(package_version("1.1.1")), NA)
 
   e <- env(a = 1:10)
   e$b <- e$a
   e$c <- e
-  class(e) <- "foo"
+
+  # `as.list.data.frame`(<environemnt>, ...) fails
+  class(e) <- "data.frame"
 
   expect_error(ref(e), NA)
 })
