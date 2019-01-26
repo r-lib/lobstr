@@ -53,7 +53,7 @@ ref_tree <- function(x, character = FALSE, seen = child_env(emptyenv()), layout 
   }
 
   # Remove classes to avoid custom methods (note that environments cannot be unclasse()ed)
-  # attr(x, "class") <- NULL
+  attr(x, "class") <- NULL
 
   # recursive cases
   if (is.list(x)) {
