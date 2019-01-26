@@ -52,7 +52,10 @@ ref_tree <- function(x, character = FALSE, seen = child_env(emptyenv()), layout 
     return(desc)
   }
 
-  # recursive case
+  # Remove classes to avoid custom methods (note that environments cannot be unclasse()ed)
+  attr(x, "class") <- NULL
+
+  # recursive cases
   if (is.list(x)) {
     subtrees <- lapply(x, ref_tree, layout = layout, seen = seen, character = character)
   } else if (is.environment(x)) {
