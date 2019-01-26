@@ -1,5 +1,7 @@
 # lobstr (development version)
 
+* `ref()` now handles custom classes properly (@yutannihilation, #36)
+
 # lobstr 1.0.1
 
 * `ast()` prints scalar integer and complex more accurately (#24)
