@@ -34,6 +34,10 @@
 #' @param env Environment in which to terminate search. This defaults to the
 #'   current environment so that you don't include the size of objects that
 #'   are already stored elsewhere.
+#'
+#'   Regardless of the value here, `obj_size()` never looks past the
+#'   global or base environments.
+#'
 #' @return An estimate of the size of the object, in bytes.
 #' @examples
 #' # obj_size correctly accounts for shared references

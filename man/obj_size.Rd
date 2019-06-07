@@ -14,7 +14,10 @@ obj_sizes(..., env = parent.frame())
 
 \item{env}{Environment in which to terminate search. This defaults to the
 current environment so that you don't include the size of objects that
-are already stored elsewhere.}
+are already stored elsewhere.
+
+Regardless of the value here, \code{obj_size()} never looks past the
+global or base environments.}
 }
 \value{
 An estimate of the size of the object, in bytes.
