@@ -28,6 +28,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// altrep
+Rcpp::List altrep(SEXP x);
+RcppExport SEXP _lobstr_altrep(SEXP xSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
+    rcpp_result_gen = Rcpp::wrap(altrep(x));
+    return rcpp_result_gen;
+END_RCPP
+}
 // obj_formals
 SEXP obj_formals(SEXP x);
 RcppExport SEXP _lobstr_obj_formals(SEXP xSEXP) {
@@ -105,6 +116,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_lobstr_obj_addr_", (DL_FUNC) &_lobstr_obj_addr_, 2},
     {"_lobstr_obj_addrs_", (DL_FUNC) &_lobstr_obj_addrs_, 1},
+    {"_lobstr_altrep", (DL_FUNC) &_lobstr_altrep, 1},
     {"_lobstr_obj_formals", (DL_FUNC) &_lobstr_obj_formals, 1},
     {"_lobstr_obj_body", (DL_FUNC) &_lobstr_obj_body, 1},
     {"_lobstr_obj_cloenv", (DL_FUNC) &_lobstr_obj_cloenv, 1},

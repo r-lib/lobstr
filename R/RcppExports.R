@@ -9,6 +9,10 @@ obj_addrs_ <- function(x) {
     .Call(`_lobstr_obj_addrs_`, x)
 }
 
+altrep <- function(x) {
+    .Call(`_lobstr_altrep`, x)
+}
+
 obj_formals <- function(x) {
     .Call(`_lobstr_obj_formals`, x)
 }
