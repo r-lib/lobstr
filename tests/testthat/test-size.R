@@ -111,6 +111,16 @@ test_that("altrep size measured correctly", {
   expect_true(obj_size(1:1e6) < 10000)
 })
 
+test_that("can compute size of deferred string vectors", {
+  x <- 1:10
+  names(x) <- 10:1
+  y <- names(x)
+  obj_size(y)
+
+  # Just assert that it doesn't crash
+  succeed("Didn't crash")
+})
+
 # Environment sizes -----------------------------------------------------------
 test_that("terminal environments have size zero", {
   expect_equal(obj_size(globalenv()), new_bytes(0))

@@ -2,6 +2,10 @@
 
 * `ref()` now handles custom classes properly (@yutannihilation, #36)
 
+* `obj_size()` now special cases the ALTREP "deferred string vectors" which
+  previously crashed due to the way in which they abuse the pairlist type
+  (#35).
+
 # lobstr 1.0.1
 
 * `ast()` prints scalar integer and complex more accurately (#24)
