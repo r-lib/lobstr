@@ -2,6 +2,7 @@ context("test-ref.R")
 
 test_that("basic list display", {
   skip_on_os("windows")
+  skip_on_cran()
 
   x <- 1:10
   y <- list(x, x)
@@ -22,6 +23,7 @@ test_that("basic list display", {
 
 test_that("basic environment display", {
   skip_on_os("windows")
+  skip_on_cran()
 
   e <- env(a = 1:10)
   e$b <- e$a
@@ -37,6 +39,7 @@ test_that("basic environment display", {
 
 test_that("can display ref to global string pool on request", {
   skip_on_os("windows")
+  skip_on_cran()
 
   test_addr_reset()
   expect_known_output(

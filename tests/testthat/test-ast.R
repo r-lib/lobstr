@@ -6,6 +6,7 @@ test_that("quosures print same as expressions", {
 
 test_that("can print complex expression", {
   skip_on_os("windows")
+  skip_on_cran()
 
   x <- expr(function(x) if (x > 1) f(y$x, "x", g()))
   expect_known_output(
