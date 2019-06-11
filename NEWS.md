@@ -2,6 +2,9 @@
 
 * `ref()` now handles custom classes properly (@yutannihilation, #36)
 
+* `obj_inspect()` is a new tool for displaying the underlying C representation
+  of an object (#38).
+
 * `obj_size()` now special cases the ALTREP "deferred string vectors" which
   previously crashed due to the way in which they abuse the pairlist type
   (#35).

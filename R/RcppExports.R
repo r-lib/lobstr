@@ -9,20 +9,8 @@ obj_addrs_ <- function(x) {
     .Call(`_lobstr_obj_addrs_`, x)
 }
 
-altrep <- function(x) {
-    .Call(`_lobstr_altrep`, x)
-}
-
-obj_formals <- function(x) {
-    .Call(`_lobstr_obj_formals`, x)
-}
-
-obj_body <- function(x) {
-    .Call(`_lobstr_obj_body`, x)
-}
-
-obj_cloenv <- function(x) {
-    .Call(`_lobstr_obj_cloenv`, x)
+obj_inspect_ <- function(x, expand_char = FALSE, expand_altrep = FALSE, expand_env = FALSE) {
+    .Call(`_lobstr_obj_inspect_`, x, expand_char, expand_altrep, expand_env)
 }
 
 v_size <- function(n, element_size) {

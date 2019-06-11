@@ -1,0 +1,26 @@
+[1] <ENVSXP> ()
+  _enclos [2] <ENVSXP> ()
+    x [3] <REALSXP[1]> ()
+    y [2]
+    _enclos [4] <ENVSXP: empty> ()
+
+
+[1] <ENVSXP> ()
+  _frame <NILSXP>
+  _hashtab [3] <VECSXP[5]> ()
+    <NILSXP>
+    <NILSXP>
+    <NILSXP>
+    <NILSXP>
+    <NILSXP>
+  _enclos [4] <ENVSXP> ()
+    _frame <NILSXP>
+    _hashtab [5] <VECSXP[5/2]> ()
+      [6] <LISTSXP> ()
+        x [7] <REALSXP[1]> ()
+      [8] <LISTSXP> ()
+        y [4]
+      <NILSXP>
+      <NILSXP>
+      <NILSXP>
+    _enclos [9] <ENVSXP: empty> ()

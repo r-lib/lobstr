@@ -28,47 +28,17 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// altrep
-Rcpp::List altrep(SEXP x);
-RcppExport SEXP _lobstr_altrep(SEXP xSEXP) {
+// obj_inspect_
+Rcpp::List obj_inspect_(SEXP x, bool expand_char, bool expand_altrep, bool expand_env);
+RcppExport SEXP _lobstr_obj_inspect_(SEXP xSEXP, SEXP expand_charSEXP, SEXP expand_altrepSEXP, SEXP expand_envSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
     Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(altrep(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// obj_formals
-SEXP obj_formals(SEXP x);
-RcppExport SEXP _lobstr_obj_formals(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(obj_formals(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// obj_body
-SEXP obj_body(SEXP x);
-RcppExport SEXP _lobstr_obj_body(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(obj_body(x));
-    return rcpp_result_gen;
-END_RCPP
-}
-// obj_cloenv
-SEXP obj_cloenv(SEXP x);
-RcppExport SEXP _lobstr_obj_cloenv(SEXP xSEXP) {
-BEGIN_RCPP
-    Rcpp::RObject rcpp_result_gen;
-    Rcpp::RNGScope rcpp_rngScope_gen;
-    Rcpp::traits::input_parameter< SEXP >::type x(xSEXP);
-    rcpp_result_gen = Rcpp::wrap(obj_cloenv(x));
+    Rcpp::traits::input_parameter< bool >::type expand_char(expand_charSEXP);
+    Rcpp::traits::input_parameter< bool >::type expand_altrep(expand_altrepSEXP);
+    Rcpp::traits::input_parameter< bool >::type expand_env(expand_envSEXP);
+    rcpp_result_gen = Rcpp::wrap(obj_inspect_(x, expand_char, expand_altrep, expand_env));
     return rcpp_result_gen;
 END_RCPP
 }
@@ -116,10 +86,7 @@ END_RCPP
 static const R_CallMethodDef CallEntries[] = {
     {"_lobstr_obj_addr_", (DL_FUNC) &_lobstr_obj_addr_, 2},
     {"_lobstr_obj_addrs_", (DL_FUNC) &_lobstr_obj_addrs_, 1},
-    {"_lobstr_altrep", (DL_FUNC) &_lobstr_altrep, 1},
-    {"_lobstr_obj_formals", (DL_FUNC) &_lobstr_obj_formals, 1},
-    {"_lobstr_obj_body", (DL_FUNC) &_lobstr_obj_body, 1},
-    {"_lobstr_obj_cloenv", (DL_FUNC) &_lobstr_obj_cloenv, 1},
+    {"_lobstr_obj_inspect_", (DL_FUNC) &_lobstr_obj_inspect_, 4},
     {"_lobstr_v_size", (DL_FUNC) &_lobstr_v_size, 2},
     {"_lobstr_obj_size_", (DL_FUNC) &_lobstr_obj_size_, 4},
     {"_lobstr_obj_csize_", (DL_FUNC) &_lobstr_obj_csize_, 4},

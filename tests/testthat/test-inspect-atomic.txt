@@ -1,0 +1,7 @@
+[1] <VECSXP[6]> ()
+  [2] <LGLSXP[1]> ()
+  [3] <INTSXP[1]> ()
+  [4] <REALSXP[1]> ()
+  [5] <STRSXP[1]> ()
+  [6] <CPLXSXP[1]> ()
+  [7] <RAWSXP[1]> ()

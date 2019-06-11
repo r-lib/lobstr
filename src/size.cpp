@@ -3,20 +3,6 @@ using namespace Rcpp;
 #include <Rversion.h>
 
 // [[Rcpp::export]]
-SEXP obj_formals(SEXP x) {
-  return FORMALS(x);
-}
-// [[Rcpp::export]]
-SEXP obj_body(SEXP x) {
-  return BODY(x);
-}
-// [[Rcpp::export]]
-SEXP obj_cloenv(SEXP x) {
-  return CLOENV(x);
-}
-
-
-// [[Rcpp::export]]
 double v_size(double n, int element_size) {
   if (n == 0)
     return 0;
