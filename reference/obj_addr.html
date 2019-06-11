@@ -153,12 +153,12 @@ references to an object.</p>
 <span class='no'>y</span>[<span class='fl'>1</span>] <span class='kw'>&lt;-</span> <span class='fl'>2L</span>
 <span class='fu'>obj_addr</span>(<span class='no'>x</span>) <span class='kw'>==</span> <span class='fu'>obj_addr</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>10</span>)
-<span class='fu'>obj_addr</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] "0x6f946c8"</div><div class='input'><span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>y</span>, <span class='no'>y</span>)
-<span class='fu'>obj_addrs</span>(<span class='no'>z</span>)</div><div class='output co'>#&gt; [1] "0x6f946c8" "0x6f946c8"</div><div class='input'>
+<span class='fu'>obj_addr</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] "0x57d4938"</div><div class='input'><span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>y</span>, <span class='no'>y</span>)
+<span class='fu'>obj_addrs</span>(<span class='no'>z</span>)</div><div class='output co'>#&gt; [1] "0x57d4938" "0x57d4938"</div><div class='input'>
 <span class='no'>y</span>[<span class='fl'>2</span>] <span class='kw'>&lt;-</span> <span class='fl'>1.0</span>
-<span class='fu'>obj_addrs</span>(<span class='no'>z</span>)</div><div class='output co'>#&gt; [1] "0x6f946c8" "0x6f946c8"</div><div class='input'><span class='fu'>obj_addr</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] "0x6f70ee8"</div><div class='input'>
+<span class='fu'>obj_addrs</span>(<span class='no'>z</span>)</div><div class='output co'>#&gt; [1] "0x57d4938" "0x57d4938"</div><div class='input'><span class='fu'>obj_addr</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] "0x57d54e8"</div><div class='input'>
 <span class='co'># The address of an object is different every time you create it:</span>
-<span class='fu'>obj_addr</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] "0x7daf078"</div><div class='input'><span class='fu'>obj_addr</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] "0x7e19090"</div><div class='input'><span class='fu'>obj_addr</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] "0x5cc65d8"</div></pre>
+<span class='fu'>obj_addr</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] "0x6c10f60"</div><div class='input'><span class='fu'>obj_addr</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] "0x6c74c68"</div><div class='input'><span class='fu'>obj_addr</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] "0x6cd8960"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>

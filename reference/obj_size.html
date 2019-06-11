@@ -141,7 +141,9 @@ to the total size.</p>
       <th>env</th>
       <td><p>Environment in which to terminate search. This defaults to the
 current environment so that you don't include the size of objects that
-are already stored elsewhere.</p></td>
+are already stored elsewhere.</p>
+<p>Regardless of the value here, <code>obj_size()</code> never looks past the
+global or base environments.</p></td>
     </tr>
     </table>
     
