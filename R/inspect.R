@@ -113,6 +113,35 @@ print.lobstr_inspector <- function(x, ..., depth = 0, name = NA) {
   }
 }
 
+obj_inspect_view <- function(x, expand = character()) {
+  if (!"tools:rstudio" %in% search()) {
+    abort("Can only be called from within RStudio")
+  }
+
+  env <- as.environment("tools:rstudio")
+
+  old_opt <- options(crayon.enabled = FALSE)
+  on.exit(options(old_opt), add = TRUE)
+
+  old_fun <- env$.rs.explorer.objectDesc
+  on.exit(env$.rs.addFunction("explorer.objectDesc", old_fun), add = TRUE)
+
+  assign(".rs.explorer.objectDesc", envir = env,
+    function(x) {
+    if (inherits(x, "lobstr_inspector")) {
+      format.lobstr_inspector(x)
+    } else {
+      old_fun(x)
+    }
+  })
+
+  obj <- obj_inspect(x, expand = expand)
+  env$.rs.viewHook(NULL, obj, "Object inspector")
+
+  # explorer.objectDesc() is called lazily so this is a crude hack
+  Sys.sleep(10)
+}
+
 # helpers -----------------------------------------------------------------
 
 sexp_type <- function(x) {
