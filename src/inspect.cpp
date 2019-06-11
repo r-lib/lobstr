@@ -57,7 +57,7 @@ SEXP obj_inspect_(SEXP x,
     }
   }
 
-  const char* value = nullptr;
+  const char* value = NULL;
   if (TYPEOF(x) == SYMSXP && PRINTNAME(x) != R_NilValue) {
     value = CHAR(PRINTNAME(x));
   } else if (TYPEOF(x) == ENVSXP) {
@@ -72,7 +72,7 @@ SEXP obj_inspect_(SEXP x,
         value = CHAR(STRING_ELT(R_PackageEnvName(x), 0));
     }
   }
-  if (value != nullptr) {
+  if (value != NULL) {
     Rf_setAttrib(children, Rf_install("value"), PROTECT(Rf_mkString(value)));
     UNPROTECT(1);
   }
