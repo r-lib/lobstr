@@ -25,7 +25,6 @@ SEXP obj_inspect_(SEXP x,
                  std::map<SEXP, int>& seen,
                  Expand& expand) {
 
-  int nprotect = 1;
   int id;
   SEXP children;
   bool has_seen;
@@ -40,37 +39,45 @@ SEXP obj_inspect_(SEXP x,
   }
 
   // don't store object directly to avoid increasing refcount
-  Rf_setAttrib(children, Rf_install("addr"),   Rf_mkString(tfm::format("%p", x).c_str()));
-  Rf_setAttrib(children, Rf_install("has_seen"), Rf_ScalarLogical(has_seen));
-  Rf_setAttrib(children, Rf_install("id"),     Rf_ScalarInteger(id));
-  Rf_setAttrib(children, Rf_install("type"),   Rf_ScalarInteger(TYPEOF(x)));
-  Rf_setAttrib(children, Rf_install("length"), Rf_ScalarReal(Rf_length(x)));
+  Rf_setAttrib(children, Rf_install("addr"), PROTECT(Rf_mkString(tfm::format("%p", x).c_str())));
+  Rf_setAttrib(children, Rf_install("has_seen"), PROTECT(Rf_ScalarLogical(has_seen)));
+  Rf_setAttrib(children, Rf_install("id"), PROTECT(Rf_ScalarInteger(id)));
+  Rf_setAttrib(children, Rf_install("type"), PROTECT(Rf_ScalarInteger(TYPEOF(x))));
+  Rf_setAttrib(children, Rf_install("length"), PROTECT(Rf_ScalarReal(Rf_length(x))));
+  Rf_setAttrib(children, Rf_install("altrep"), PROTECT(Rf_ScalarLogical(is_altrep(x))));
+  Rf_setAttrib(children, Rf_install("named"), PROTECT(Rf_ScalarInteger(NAMED(x))));
+  Rf_setAttrib(children, Rf_install("object"), PROTECT(Rf_ScalarInteger(OBJECT(x))));
+  UNPROTECT(8);
+
   if (Rf_isVector(x)) {
     if (TRUELENGTH(x) > 0) {
-      Rf_setAttrib(children, Rf_install("truelength"), Rf_ScalarReal(TRUELENGTH(x)));
+      Rf_setAttrib(children, Rf_install("truelength"), PROTECT(Rf_ScalarReal(TRUELENGTH(x))));
+      UNPROTECT(1);
     }
   }
-  Rf_setAttrib(children, Rf_install("altrep"),  Rf_ScalarLogical(is_altrep(x)));
-  Rf_setAttrib(children, Rf_install("named"),  Rf_ScalarInteger(NAMED(x)));
-  Rf_setAttrib(children, Rf_install("object"), Rf_ScalarInteger(OBJECT(x)));
 
-  // TODO: protect
+  const char* value = nullptr;
   if (TYPEOF(x) == SYMSXP && PRINTNAME(x) != R_NilValue) {
-    Rf_setAttrib(children, Rf_install("value"), Rf_ScalarString(PRINTNAME(x)));
+    value = CHAR(PRINTNAME(x));
   } else if (TYPEOF(x) == ENVSXP) {
     if (x == R_GlobalEnv) {
-      Rf_setAttrib(children, Rf_install("value"), Rf_mkString("global"));
+      value = "global";
     } else if (x == R_EmptyEnv) {
-      Rf_setAttrib(children, Rf_install("value"), Rf_mkString("empty"));
+      value = "empty";
     } else if (x == R_BaseEnv) {
-      Rf_setAttrib(children, Rf_install("value"), Rf_mkString("base"));
+      value = "base";
     } else {
-      Rf_setAttrib(children, Rf_install("value"), R_PackageEnvName(x));
+      if (R_PackageEnvName(x) != R_NilValue)
+        value = CHAR(STRING_ELT(R_PackageEnvName(x), 0));
     }
   }
-  // Rf_setAttrib(children, Rf_install("x"), R_MakeWeakRef(R_NilValue, x, R_NilValue, FALSE));
-  Rf_setAttrib(children, Rf_install("class"),  Rf_mkString("lobstr_inspector"));
+  if (value != nullptr) {
+    Rf_setAttrib(children, Rf_install("value"), PROTECT(Rf_mkString(value)));
+    UNPROTECT(1);
+  }
 
+  Rf_setAttrib(children, Rf_install("class"), PROTECT(Rf_mkString("lobstr_inspector")));
+  UNPROTECT(1);
 
   UNPROTECT(1);
   return children;
@@ -141,7 +148,7 @@ SEXP obj_children_(
     case VECSXP:
     case EXPRSXP:
     case WEAKREFSXP: {
-      SEXP names = Rf_getAttrib(x, R_NamesSymbol);
+      SEXP names = PROTECT(Rf_getAttrib(x, R_NamesSymbol));
       if (TYPEOF(names) == STRSXP) {
         for (R_xlen_t i = 0; i < XLENGTH(x); ++i) {
           recurse(children, seen, CHAR(STRING_ELT(names, i)), VECTOR_ELT(x, i), expand);
@@ -151,6 +158,7 @@ SEXP obj_children_(
           recurse(children, seen, "", VECTOR_ELT(x, i), expand);
         }
       }
+      UNPROTECT(1);
       break;
     }
 
@@ -242,7 +250,6 @@ SEXP obj_children_(
     recurse(children, seen, "_attrib", ATTRIB(x), expand);
   }
 
-
   // Convert std::vector to named list
   int n = children.size();
   SEXP out = PROTECT(Rf_allocVector(VECSXP, n));
@@ -256,7 +263,8 @@ SEXP obj_children_(
   Rf_setAttrib(out, R_NamesSymbol, names);
 
   if (skip) {
-    Rf_setAttrib(out, Rf_install("skip"), Rf_ScalarLogical(skip));
+    Rf_setAttrib(out, Rf_install("skip"), PROTECT(Rf_ScalarLogical(skip)));
+    UNPROTECT(1);
   }
 
   UNPROTECT(2);
