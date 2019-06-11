@@ -9,8 +9,8 @@ obj_addrs_ <- function(x) {
     .Call(`_lobstr_obj_addrs_`, x)
 }
 
-obj_inspect_ <- function(x, expand_char = FALSE, expand_altrep = FALSE, expand_env = FALSE) {
-    .Call(`_lobstr_obj_inspect_`, x, expand_char, expand_altrep, expand_env)
+obj_inspect_ <- function(x, expand_char = FALSE, expand_altrep = FALSE, expand_env = FALSE, expand_call = FALSE, expand_bytecode = FALSE) {
+    .Call(`_lobstr_obj_inspect_`, x, expand_char, expand_altrep, expand_env, expand_call, expand_bytecode)
 }
 
 v_size <- function(n, element_size) {

@@ -6,6 +6,8 @@ struct Expand {
   bool alrep;
   bool charsxp;
   bool env;
+  bool call;
+  bool bytecode;
 };
 
 SEXP obj_children_(SEXP x, std::map<SEXP, int>& seen, Expand expand);
@@ -53,7 +55,7 @@ SEXP obj_inspect_(SEXP x,
   Rf_setAttrib(children, Rf_install("object"), Rf_ScalarInteger(OBJECT(x)));
 
   // TODO: protect
-  if (TYPEOF(x) == SYMSXP) {
+  if (TYPEOF(x) == SYMSXP && PRINTNAME(x) != R_NilValue) {
     Rf_setAttrib(children, Rf_install("value"), Rf_ScalarString(PRINTNAME(x)));
   } else if (TYPEOF(x) == ENVSXP) {
     if (x == R_GlobalEnv) {
@@ -66,7 +68,7 @@ SEXP obj_inspect_(SEXP x,
       Rf_setAttrib(children, Rf_install("value"), R_PackageEnvName(x));
     }
   }
-  Rf_setAttrib(children, Rf_install("x"), R_MakeWeakRef(R_NilValue, x, R_NilValue, FALSE));
+  // Rf_setAttrib(children, Rf_install("x"), R_MakeWeakRef(R_NilValue, x, R_NilValue, FALSE));
   Rf_setAttrib(children, Rf_install("class"),  Rf_mkString("lobstr_inspector"));
 
 
@@ -92,6 +94,7 @@ SEXP obj_children_(
                   Expand expand) {
 
   std::vector< std::pair<std::string, SEXP> > children;
+  bool skip = false;
 
   // Handle ALTREP objects
   if (expand.alrep && is_altrep(x)) {
@@ -152,9 +155,13 @@ SEXP obj_children_(
     }
 
     // Linked lists
+    case LANGSXP:
+      if (!expand.call) {
+        skip = true;
+        break;
+      }
     case DOTSXP:
     case LISTSXP:
-    case LANGSXP:
       if (x == R_MissingArg) // Needed for DOTSXP
         break;
 
@@ -173,6 +180,10 @@ SEXP obj_children_(
       break;
 
     case BCODESXP:
+      if (!expand.bytecode) {
+        skip = true;
+        break;
+      }
       recurse(children, seen, "_tag", TAG(x), expand);
       recurse(children, seen, "_car", CAR(x), expand);
       recurse(children, seen, "_cdr", CDR(x), expand);
@@ -243,6 +254,11 @@ SEXP obj_children_(
     SET_VECTOR_ELT(out, i, pair.second);
   }
   Rf_setAttrib(out, R_NamesSymbol, names);
+
+  if (skip) {
+    Rf_setAttrib(out, Rf_install("skip"), Rf_ScalarLogical(skip));
+  }
+
   UNPROTECT(2);
 
   return out;
@@ -253,9 +269,11 @@ SEXP obj_children_(
 Rcpp::List obj_inspect_(SEXP x,
                         bool expand_char = false,
                         bool expand_altrep = false,
-                        bool expand_env = false) {
+                        bool expand_env = false,
+                        bool expand_call = false,
+                        bool expand_bytecode = false) {
   std::map<SEXP, int> seen;
-  Expand expand = {expand_altrep, expand_char, expand_env};
+  Expand expand = {expand_altrep, expand_char, expand_env, expand_call};
 
   return obj_inspect_(x, seen, expand);
 }
