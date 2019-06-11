@@ -34,7 +34,8 @@ SEXP obj_inspect_(SEXP x,
     children = PROTECT(Rf_allocVector(VECSXP, 0));
   } else {
     has_seen = false;
-    id = seen[x] = seen.size() + 1;
+    id = seen.size() + 1;
+    seen[x] = id;
     children = PROTECT(obj_children_(x, seen, expand));
   }
 
