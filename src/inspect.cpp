@@ -240,8 +240,15 @@ SEXP obj_children_(
         SEXP names = PROTECT(R_lsInternal(x, TRUE));
         for (R_xlen_t i = 0; i < XLENGTH(names); ++i) {
           const char* name = CHAR(STRING_ELT(names, i));
-          SEXP obj = Rf_findVarInFrame(x, Rf_install(name));
-          recurse(&children, seen, name, obj, expand);
+          SEXP sym = PROTECT(Rf_install(name));
+
+          if (R_BindingIsActive(sym, x)) {
+            children.push_back(name, obj_inspect_(Rf_install("_active_binding"), seen, expand));
+          } else {
+            SEXP obj = Rf_findVarInFrame(x, sym);
+            recurse(&children, seen, name, obj, expand);
+          }
+          UNPROTECT(1);
         }
         UNPROTECT(1);
       }

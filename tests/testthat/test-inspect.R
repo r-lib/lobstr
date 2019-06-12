@@ -48,6 +48,14 @@ test_that("can expand lists", {
   expect_equal(attr(obj[[1]], "ref"), attr(obj[[2]], "ref"))
 })
 
+test_that("can inspect active bindings", {
+  e <- new.env(hash = FALSE)
+  env_bind_active(e, f = function() stop("!"))
+
+  x <- obj_inspect(e)
+  expect_named(x, c("f", "_enclos"))
+})
+
 # Regression tests --------------------------------------------------------
 
 test_that("can inspect all atomic vectors", {
