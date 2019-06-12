@@ -64,6 +64,7 @@ obj_inspect <- function(x, expand = character()) {
 format.lobstr_inspector <- function(x, ..., depth = 0, name = NA) {
   indent <- paste0(rep("  ", depth), collapse = "")
 
+  id <- crayon::bold(attr(x, "id"))
   if (!is_testing()) {
     addr <- paste0(":", crayon::silver(attr(x, "addr")))
   } else {
@@ -99,19 +100,21 @@ format.lobstr_inspector <- function(x, ..., depth = 0, name = NA) {
     )
 
     desc <- paste0(
-      "[", crayon::bold(attr(x, "id")), addr, "] ",
+      "[", id, addr, "] ",
       "<", crayon::cyan(type), length, value, "> ",
       "(", sxpinfo, ")"
     )
   }
 
-  name <- if (!is.na(name)) paste0(crayon::italic(crayon::silver(name)), " ")
+  name <- if (!identical(name, "")) {
+    paste0(crayon::italic(crayon::silver(name)), " ")
+  }
 
   paste0(indent, name, desc)
 }
 
 #' @export
-print.lobstr_inspector <- function(x, ..., depth = 0, name = NA) {
+print.lobstr_inspector <- function(x, ..., depth = 0, name = "") {
   cat_line(format(x, depth = depth, name = name))
   for (i in seq_along(x)) {
     print(x[[i]], depth = depth + 1, name = names(x)[[i]])

@@ -10,6 +10,36 @@ struct Expand {
   bool bytecode;
 };
 
+class GrowableList {
+  Rcpp::List data_;
+  Rcpp::CharacterVector names_;
+  R_xlen_t n_;
+
+public:
+  GrowableList(R_xlen_t size = 10) : data_(size), names_(size), n_(0) {
+  }
+
+  void push_back(const char* string, SEXP x) {
+    if (Rf_xlength(data_) == n_) {
+      data_ = Rf_xlengthgets(data_, n_ * 2);
+      names_ = Rf_xlengthgets(names_, n_ * 2);
+    }
+    SET_STRING_ELT(names_, n_, Rf_mkChar(string));
+    SET_VECTOR_ELT(data_, n_, x);
+    n_++;
+  }
+
+  Rcpp::List vector() {
+    if (Rf_xlength(data_) != n_) {
+      data_ = Rf_xlengthgets(data_, n_);
+      names_ = Rf_xlengthgets(names_, n_);
+    }
+    Rf_setAttrib(data_, R_NamesSymbol, names_);
+
+    return data_;
+  }
+};
+
 SEXP obj_children_(SEXP x, std::map<SEXP, int>& seen, Expand expand);
 bool is_namespace(Environment env);
 
@@ -85,15 +115,15 @@ SEXP obj_inspect_(SEXP x,
 }
 
 inline void recurse(
-                    std::vector< std::pair<std::string, SEXP> >& children,
+                    GrowableList* children,
                     std::map<SEXP, int>& seen,
                     const char* name,
                     SEXP child,
                     Expand& expand) {
 
-  children.push_back(
-    std::make_pair(std::string(name), obj_inspect_(child, seen, expand))
-  );
+  SEXP descendents = PROTECT(obj_inspect_(child, seen, expand));
+  children->push_back(name, descendents);
+  UNPROTECT(1);
 }
 
 SEXP obj_children_(
@@ -101,7 +131,7 @@ SEXP obj_children_(
                   std::map<SEXP, int>& seen,
                   Expand expand) {
 
-  std::vector< std::pair<std::string, SEXP> > children;
+  GrowableList children;
   bool skip = false;
 
   // Handle ALTREP objects
@@ -110,16 +140,16 @@ SEXP obj_children_(
     SEXP klass = ALTREP_CLASS(x);
     SEXP classname = CAR(ATTRIB(klass));
 
-    recurse(children, seen, "_class", klass, expand);
+    recurse(&children, seen, "_class", klass, expand);
     if (classname == Rf_install("deferred_string")) {
       // Deferred string ALTREP uses an pairlist, but stores data in the CDR
       SEXP data1 = R_altrep_data1(x);
-      recurse(children, seen, "_data1_car", CAR(data1), expand);
-      recurse(children, seen, "_data1_cdr", CDR(data1), expand);
+      recurse(&children, seen, "_data1_car", CAR(data1), expand);
+      recurse(&children, seen, "_data1_cdr", CDR(data1), expand);
     } else {
-      recurse(children, seen, "_data1", R_altrep_data1(x), expand);
+      recurse(&children, seen, "_data1", R_altrep_data1(x), expand);
     }
-    recurse(children, seen, "_data2", R_altrep_data2(x), expand);
+    recurse(&children, seen, "_data2", R_altrep_data2(x), expand);
 #endif
   } else {
     switch (TYPEOF(x)) {
@@ -140,7 +170,7 @@ SEXP obj_children_(
     case STRSXP:
       if (expand.charsxp) {
         for (R_xlen_t i = 0; i < XLENGTH(x); i++) {
-          recurse(children, seen, "", STRING_ELT(x, i), expand);
+          recurse(&children, seen, "", STRING_ELT(x, i), expand);
         }
       }
       break;
@@ -152,11 +182,11 @@ SEXP obj_children_(
       SEXP names = PROTECT(Rf_getAttrib(x, R_NamesSymbol));
       if (TYPEOF(names) == STRSXP) {
         for (R_xlen_t i = 0; i < XLENGTH(x); ++i) {
-          recurse(children, seen, CHAR(STRING_ELT(names, i)), VECTOR_ELT(x, i), expand);
+          recurse(&children, seen, CHAR(STRING_ELT(names, i)), VECTOR_ELT(x, i), expand);
         }
       } else {
         for (R_xlen_t i = 0; i < XLENGTH(x); ++i) {
-          recurse(children, seen, "", VECTOR_ELT(x, i), expand);
+          recurse(&children, seen, "", VECTOR_ELT(x, i), expand);
         }
       }
       UNPROTECT(1);
@@ -177,13 +207,13 @@ SEXP obj_children_(
       for(SEXP cons = x; cons != R_NilValue; cons = CDR(cons)) {
         SEXP tag = TAG(cons);
         if (TYPEOF(tag) == NILSXP) {
-          recurse(children, seen, "", CAR(cons), expand);
+          recurse(&children, seen, "", CAR(cons), expand);
         } else if (TYPEOF(tag) == SYMSXP) {
-          recurse(children, seen, CHAR(PRINTNAME(tag)), CAR(cons), expand);
+          recurse(&children, seen, CHAR(PRINTNAME(tag)), CAR(cons), expand);
         } else {
           // TODO: add index? needs to be a list?
-          recurse(children, seen, "_tag", tag, expand);
-          recurse(children, seen, "_car", CAR(cons), expand);
+          recurse(&children, seen, "_tag", tag, expand);
+          recurse(&children, seen, "_car", CAR(cons), expand);
         }
       }
       break;
@@ -193,9 +223,9 @@ SEXP obj_children_(
         skip = true;
         break;
       }
-      recurse(children, seen, "_tag", TAG(x), expand);
-      recurse(children, seen, "_car", CAR(x), expand);
-      recurse(children, seen, "_cdr", CDR(x), expand);
+      recurse(&children, seen, "_tag", TAG(x), expand);
+      recurse(&children, seen, "_car", CAR(x), expand);
+      recurse(&children, seen, "_cdr", CDR(x), expand);
       break;
 
     // Environments
@@ -204,41 +234,41 @@ SEXP obj_children_(
         break;
 
       if (expand.env) {
-        recurse(children, seen, "_frame", FRAME(x), expand);
-        recurse(children, seen, "_hashtab", HASHTAB(x), expand);
+        recurse(&children, seen, "_frame", FRAME(x), expand);
+        recurse(&children, seen, "_hashtab", HASHTAB(x), expand);
       } else {
         SEXP names = PROTECT(R_lsInternal(x, TRUE));
         for (R_xlen_t i = 0; i < XLENGTH(names); ++i) {
           const char* name = CHAR(STRING_ELT(names, i));
           SEXP obj = Rf_findVarInFrame(x, Rf_install(name));
-          recurse(children, seen, name, obj, expand);
+          recurse(&children, seen, name, obj, expand);
         }
         UNPROTECT(1);
       }
 
-      recurse(children, seen, "_enclos", ENCLOS(x), expand);
+      recurse(&children, seen, "_enclos", ENCLOS(x), expand);
       break;
 
     // Functions
     case CLOSXP:
-      recurse(children, seen, "_formals", FORMALS(x), expand);
-      recurse(children, seen, "_body", BODY(x), expand);
-      recurse(children, seen, "_env", CLOENV(x), expand);
+      recurse(&children, seen, "_formals", FORMALS(x), expand);
+      recurse(&children, seen, "_body", BODY(x), expand);
+      recurse(&children, seen, "_env", CLOENV(x), expand);
       break;
 
     case PROMSXP:
-      recurse(children, seen, "_value", PRVALUE(x), expand);
-      recurse(children, seen, "_code", PRCODE(x), expand);
-      recurse(children, seen, "_env", PRENV(x), expand);
+      recurse(&children, seen, "_value", PRVALUE(x), expand);
+      recurse(&children, seen, "_code", PRCODE(x), expand);
+      recurse(&children, seen, "_env", PRENV(x), expand);
       break;
 
     case EXTPTRSXP:
-      recurse(children, seen, "_prot", EXTPTR_PROT(x), expand);
-      recurse(children, seen, "_tag", EXTPTR_TAG(x), expand);
+      recurse(&children, seen, "_prot", EXTPTR_PROT(x), expand);
+      recurse(&children, seen, "_tag", EXTPTR_TAG(x), expand);
       break;
 
     case S4SXP:
-      recurse(children, seen, "_tag", TAG(x), expand);
+      recurse(&children, seen, "_tag", TAG(x), expand);
       break;
 
     default:
@@ -248,27 +278,15 @@ SEXP obj_children_(
 
   // CHARSXPs have fake attriibutes
   if (TYPEOF(x) != CHARSXP && !Rf_isNull(ATTRIB(x))) {
-    recurse(children, seen, "_attrib", ATTRIB(x), expand);
+    recurse(&children, seen, "_attrib", ATTRIB(x), expand);
   }
 
-  // Convert std::vector to named list
-  int n = children.size();
-  SEXP out = PROTECT(Rf_allocVector(VECSXP, n));
-  SEXP names = PROTECT(Rf_allocVector(STRSXP, n));
-
-  for (int i = 0; i < n; ++i) {
-    std::pair<std::string, SEXP> pair = children[i];
-    SET_STRING_ELT(names, i, pair.first == "" ? NA_STRING : Rf_mkChar(pair.first.c_str()));
-    SET_VECTOR_ELT(out, i, pair.second);
-  }
-  Rf_setAttrib(out, R_NamesSymbol, names);
-
+  SEXP out = PROTECT(children.vector());
   if (skip) {
     Rf_setAttrib(out, Rf_install("skip"), PROTECT(Rf_ScalarLogical(skip)));
     UNPROTECT(1);
   }
-
-  UNPROTECT(2);
+  UNPROTECT(1);
 
   return out;
 }
