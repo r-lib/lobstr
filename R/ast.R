@@ -38,7 +38,7 @@ ast <- function(x) {
 
 ast_tree <- function(x, layout = box_chars()) {
   if (is_quosure(x)) {
-    x <- quo_expr(x)
+    x <- quo_squash(x)
   }
 
   # base cases
