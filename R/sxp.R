@@ -11,6 +11,8 @@
 #' underlies all R objects.
 #'
 #' @param x Object to inspect
+#' @param max_depth Maximum depth to recurse. Use `max_depth = Inf` (with care!)
+#'   to recurse as deeply as possible.
 #' @param expand Optionally, expand components of the true that are usually
 #'   suppressed. Use:
 #'
@@ -48,7 +50,7 @@
 #' sxp(e1)
 #' sxp(e1, expand = "environment")
 #' sxp(e2, expand = "environment")
-sxp <- function(x, expand = character()) {
+sxp <- function(x, expand = character(), max_depth = 3) {
 
   opts <- c("character", "altrep", "environment", "call", "bytecode")
   if (any(!expand %in% opts)) {
@@ -56,6 +58,7 @@ sxp <- function(x, expand = character()) {
   }
 
   obj_inspect_(x,
+    max_depth,
     opts[[1]] %in% expand,
     opts[[2]] %in% expand,
     opts[[3]] %in% expand,
