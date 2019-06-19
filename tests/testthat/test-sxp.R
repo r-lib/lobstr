@@ -103,6 +103,7 @@ test_that("can inspect environments", {
 
 test_that("can expand altrep", {
   skip_if_not(getRversion() >= "3.5")
+  skip_if_not(.Machine$sizeof.pointer == 8) # _class RAWSXP has different size
 
   x <- 1:10
   expect_known_output(
