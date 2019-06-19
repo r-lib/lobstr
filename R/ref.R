@@ -9,6 +9,7 @@
 #' @param character If `TRUE`, show references from character vector in to
 #'   global string pool
 #' @export
+#' @family object inspectors
 #' @examples
 #' x <- 1:100
 #' ref(x)

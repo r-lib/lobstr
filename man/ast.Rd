@@ -40,3 +40,8 @@ ast(function(x = 1, y = 2) { x + y } )
 ast(1 * 2 + 3)
 ast(!1 + !1)
 }
+\seealso{
+Other object inspectors: \code{\link{ref}},
+  \code{\link{sxp}}
+}
+\concept{object inspectors}

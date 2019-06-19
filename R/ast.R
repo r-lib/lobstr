@@ -4,6 +4,7 @@
 #'
 #' @param x An expression to display. Input is automatically quoted,
 #'   use `!!` to unquote if you have already captured an expression object.
+#' @family object inspectors
 #' @export
 #' @examples
 #' # Leaves

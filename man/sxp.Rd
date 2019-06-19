@@ -4,7 +4,7 @@
 \alias{sxp}
 \title{Inspect an object}
 \usage{
-sxp(x, expand = character(), max_depth = 3)
+sxp(x, expand = character(), max_depth = 5L)
 }
 \arguments{
 \item{x}{Object to inspect}
@@ -20,7 +20,7 @@ suppressed. Use:
 }}
 
 \item{max_depth}{Maximum depth to recurse. Use \code{max_depth = Inf} (with care!)
-to recurse as deeply as possible.}
+to recurse as deeply as possible. Skipped elements will be shown as \code{...}.`}
 }
 \description{
 \code{sxp(x)} is similar to \code{.Internal(inspect(x))}, recursing into the C data
@@ -63,3 +63,8 @@ sxp(e1)
 sxp(e1, expand = "environment")
 sxp(e2, expand = "environment")
 }
+\seealso{
+Other object inspectors: \code{\link{ast}},
+  \code{\link{ref}}
+}
+\concept{object inspectors}
