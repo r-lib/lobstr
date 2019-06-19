@@ -144,41 +144,48 @@ global string pool</p></td>
     </tr>
     </table>
     
+    <h2 class="hasAnchor" id="see-also"><a class="anchor" href="#see-also"></a>See also</h2>
+
+    <div class='dont-index'><p>Other object inspectors: <code><a href='ast.html'>ast</a></code>,
+  <code><a href='sxp.html'>sxp</a></code></p></div>
+    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>100</span>
-<span class='fu'>ref</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [<span style='font-weight: bold;'>1</span><span>:0x5699f70] &lt;int&gt; </div><div class='input'>
+<span class='fu'>ref</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; [<span style='font-weight: bold;'>1</span><span>:0x7134508] &lt;int&gt; </div><div class='input'>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>x</span>, <span class='no'>x</span>, <span class='no'>x</span>)
-<span class='fu'>ref</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFAF00;'>█</span><span> [</span><span style='font-weight: bold;'>1</span><span>:0x4089d68] &lt;list&gt; 
-#&gt; ├─[</span><span style='font-weight: bold;'>2</span><span>:0x5699f70] &lt;int&gt; 
-#&gt; ├─[</span><span style='color: #808080;'>2:0x5699f70</span><span>] 
-#&gt; └─[</span><span style='color: #808080;'>2:0x5699f70</span><span>] </div><div class='input'><span class='fu'>ref</span>(<span class='no'>x</span>, <span class='no'>y</span>)</div><div class='output co'>#&gt; [</span><span style='font-weight: bold;'>1</span><span>:0x5699f70] &lt;int&gt; 
+<span class='fu'>ref</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFAF00;'>█</span><span> [</span><span style='font-weight: bold;'>1</span><span>:0x4e01dc8] &lt;list&gt; 
+#&gt; ├─[</span><span style='font-weight: bold;'>2</span><span>:0x7134508] &lt;int&gt; 
+#&gt; ├─[</span><span style='color: #808080;'>2:0x7134508</span><span>] 
+#&gt; └─[</span><span style='color: #808080;'>2:0x7134508</span><span>] </div><div class='input'><span class='fu'>ref</span>(<span class='no'>x</span>, <span class='no'>y</span>)</div><div class='output co'>#&gt; [</span><span style='font-weight: bold;'>1</span><span>:0x7134508] &lt;int&gt; 
 #&gt;  
-#&gt; </span><span style='color: #FFAF00;'>█</span><span> [</span><span style='font-weight: bold;'>2</span><span>:0x4089d68] &lt;list&gt; 
-#&gt; ├─[</span><span style='color: #808080;'>1:0x5699f70</span><span>] 
-#&gt; ├─[</span><span style='color: #808080;'>1:0x5699f70</span><span>] 
-#&gt; └─[</span><span style='color: #808080;'>1:0x5699f70</span><span>] </div><div class='input'>
+#&gt; </span><span style='color: #FFAF00;'>█</span><span> [</span><span style='font-weight: bold;'>2</span><span>:0x4e01dc8] &lt;list&gt; 
+#&gt; ├─[</span><span style='color: #808080;'>1:0x7134508</span><span>] 
+#&gt; ├─[</span><span style='color: #808080;'>1:0x7134508</span><span>] 
+#&gt; └─[</span><span style='color: #808080;'>1:0x7134508</span><span>] </div><div class='input'>
 <span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/environment'>new.env</a></span>()
 <span class='no'>e</span>$<span class='no'>e</span> <span class='kw'>&lt;-</span> <span class='no'>e</span>
 <span class='no'>e</span>$<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='no'>x</span>
 <span class='no'>e</span>$<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>x</span>, <span class='no'>e</span>)
-<span class='fu'>ref</span>(<span class='no'>e</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFAF00;'>█</span><span> [</span><span style='font-weight: bold;'>1</span><span>:0x6807960] &lt;env&gt; 
-#&gt; ├─</span><span style='color: #808080;font-style: italic;'>x</span><span> = [</span><span style='font-weight: bold;'>2</span><span>:0x5699f70] &lt;int&gt; 
-#&gt; ├─</span><span style='color: #808080;font-style: italic;'>y</span><span> = </span><span style='color: #FFAF00;'>█</span><span> [</span><span style='font-weight: bold;'>3</span><span>:0x5518f68] &lt;list&gt; 
-#&gt; │     ├─[</span><span style='color: #808080;'>2:0x5699f70</span><span>] 
-#&gt; │     └─[</span><span style='color: #808080;'>1:0x6807960</span><span>] 
-#&gt; └─</span><span style='color: #808080;font-style: italic;'>e</span><span> = [</span><span style='color: #808080;'>1:0x6807960</span><span>] </div><div class='input'>
+<span class='fu'>ref</span>(<span class='no'>e</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFAF00;'>█</span><span> [</span><span style='font-weight: bold;'>1</span><span>:0x3651c70] &lt;env&gt; 
+#&gt; ├─</span><span style='color: #808080;font-style: italic;'>x</span><span> = [</span><span style='font-weight: bold;'>2</span><span>:0x7134508] &lt;int&gt; 
+#&gt; ├─</span><span style='color: #808080;font-style: italic;'>y</span><span> = </span><span style='color: #FFAF00;'>█</span><span> [</span><span style='font-weight: bold;'>3</span><span>:0x603b5e8] &lt;list&gt; 
+#&gt; │     ├─[</span><span style='color: #808080;'>2:0x7134508</span><span>] 
+#&gt; │     └─[</span><span style='color: #808080;'>1:0x3651c70</span><span>] 
+#&gt; └─</span><span style='color: #808080;font-style: italic;'>e</span><span> = [</span><span style='color: #808080;'>1:0x3651c70</span><span>] </div><div class='input'>
 <span class='co'># Can also show references to global string pool if requested</span>
-<span class='fu'>ref</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"x"</span>, <span class='st'>"x"</span>, <span class='st'>"y"</span>))</div><div class='output co'>#&gt; [</span><span style='font-weight: bold;'>1</span><span>:0x5976448] &lt;chr&gt; </div><div class='input'><span class='fu'>ref</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"x"</span>, <span class='st'>"x"</span>, <span class='st'>"y"</span>), <span class='kw'>character</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFAF00;'>█</span><span> [</span><span style='font-weight: bold;'>1</span><span>:0x58ceb58] &lt;chr&gt; 
-#&gt; ├─[</span><span style='font-weight: bold;'>2</span><span>:0xcb7d98] &lt;string: "x"&gt; 
-#&gt; ├─[</span><span style='color: #808080;'>2:0xcb7d98</span><span>] 
-#&gt; └─[</span><span style='font-weight: bold;'>3</span><span>:0xdadb80] &lt;string: "y"&gt; </div></span></pre>
+<span class='fu'>ref</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"x"</span>, <span class='st'>"x"</span>, <span class='st'>"y"</span>))</div><div class='output co'>#&gt; [</span><span style='font-weight: bold;'>1</span><span>:0x5f054d8] &lt;chr&gt; </div><div class='input'><span class='fu'>ref</span>(<span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"x"</span>, <span class='st'>"x"</span>, <span class='st'>"y"</span>), <span class='kw'>character</span> <span class='kw'>=</span> <span class='fl'>TRUE</span>)</div><div class='output co'>#&gt; </span><span style='color: #FFAF00;'>█</span><span> [</span><span style='font-weight: bold;'>1</span><span>:0x5f06ce8] &lt;chr&gt; 
+#&gt; ├─[</span><span style='font-weight: bold;'>2</span><span>:0x8b9cd8] &lt;string: "x"&gt; 
+#&gt; ├─[</span><span style='color: #808080;'>2:0x8b9cd8</span><span>] 
+#&gt; └─[</span><span style='font-weight: bold;'>3</span><span>:0x9aec30] &lt;string: "y"&gt; </div></span></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-            
+      
+      <li><a href="#see-also">See also</a></li>
+      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
