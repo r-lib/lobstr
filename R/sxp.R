@@ -1,10 +1,14 @@
 #' Inspect an object
 #'
-#' `obj_inspect(x)` is similar to `.Internal(inspect(x))`. The main difference
-#' is the output is a little more compact, it recurses fully, and avoids
-#' getting stuck in infinite loops by using a depth-first search. It also
-#' returns a list that you can compute with, and carefully uses colour to
-#' highlight the most important details.
+#' `sxp(x)` is similar to `.Internal(inspect(x))`, recursing into the C data
+#' structures underlying any R object. The main difference is the output is a
+#' little more compact, it recurses fully, and avoids getting stuck in infinite
+#' loops by using a depth-first search. It also returns a list that you can
+#' compute with, and carefully uses colour to highlight the most important
+#' details.
+#'
+#' The name `sxp` comes from `SEXP`, the name of the C data structure that
+#' underlies all R objects.
 #'
 #' @param x Object to inspect
 #' @param expand Optionally, expand components of the true that are usually
@@ -23,28 +27,28 @@
 #'   runif(100),
 #'   "3"
 #' )
-#' obj_inspect(x)
+#' sxp(x)
 #'
 #' # Expand "character" to see underlying CHARSXP entries in the global
 #' # string pool
 #' x <- c("banana", "banana", "apple", "banana")
-#' obj_inspect(x)
-#' obj_inspect(x, expand = "character")
+#' sxp(x)
+#' sxp(x, expand = "character")
 #'
 #' # Expand altrep to see underlying data
 #' x <- 1:10
-#' obj_inspect(x)
-#' obj_inspect(x, expand = "altrep")
+#' sxp(x)
+#' sxp(x, expand = "altrep")
 #'
 #' # Expand environmnets to see the underlying implementation details
 #' e1 <- new.env(hash = FALSE, parent = emptyenv(), size = 3L)
 #' e2 <- new.env(hash = TRUE, parent = emptyenv(), size = 3L)
 #' e1$x <- e2$x <- 1:10
 #'
-#' obj_inspect(e1)
-#' obj_inspect(e1, expand = "environment")
-#' obj_inspect(e2, expand = "environment")
-obj_inspect <- function(x, expand = character()) {
+#' sxp(e1)
+#' sxp(e1, expand = "environment")
+#' sxp(e2, expand = "environment")
+sxp <- function(x, expand = character()) {
 
   opts <- c("character", "altrep", "environment", "call", "bytecode")
   if (any(!expand %in% opts)) {
@@ -121,7 +125,7 @@ print.lobstr_inspector <- function(x, ..., depth = 0, name = "") {
   }
 }
 
-obj_inspect_view <- function(x, expand = character()) {
+sxp_view <- function(x, expand = character()) {
   if (!"tools:rstudio" %in% search()) {
     abort("Can only be called from within RStudio")
   }
@@ -143,7 +147,7 @@ obj_inspect_view <- function(x, expand = character()) {
     }
   })
 
-  obj <- obj_inspect(x, expand = expand)
+  obj <- sxp(x, expand = expand)
   env$.rs.viewHook(NULL, obj, "Object inspector")
 
   # explorer.objectDesc() is called lazily so this is a crude hack

@@ -6,7 +6,7 @@ test_that("retrieves truelength", {
   # true length is only updated after assignment
   x <- runif(100)
   x[101] <- 1
-  obj <- obj_inspect(x)
+  obj <- sxp(x)
 
   # weak test because R doesn't make any guarantees about what the object
   # will be
@@ -16,7 +16,7 @@ test_that("retrieves truelength", {
 test_that("computes spanning tree", {
   x <- 1:10
   y <- list(x, x, x)
-  obj <- obj_inspect(y)
+  obj <- sxp(y)
 
   expect_false(attr(obj[[1]], "has_seen"))
   expect_true(attr(obj[[2]], "has_seen"))
@@ -28,7 +28,7 @@ test_that("captures names of special environments", {
     baseenv(),
     globalenv()
   )
-  obj <- obj_inspect(x)
+  obj <- sxp(x)
   expect_equal(attr(obj[[1]], "value"), "empty")
   expect_equal(attr(obj[[2]], "value"), "base")
   expect_equal(attr(obj[[3]], "value"), "global")
@@ -36,13 +36,13 @@ test_that("captures names of special environments", {
 
 test_that("captures names of lists", {
   x <- list(a = 1, b = 2, c = 3)
-  obj <- obj_inspect(x)
+  obj <- sxp(x)
   expect_named(obj, c(names(x), "_attrib"))
 })
 
 test_that("can expand lists", {
   x <- c("xxx", "xxx", "y")
-  obj <- obj_inspect(x, expand = "character")
+  obj <- sxp(x, expand = "character")
 
   expect_length(obj, 3)
   expect_equal(attr(obj[[1]], "ref"), attr(obj[[2]], "ref"))
@@ -52,7 +52,7 @@ test_that("can inspect active bindings", {
   e <- new.env(hash = FALSE)
   env_bind_active(e, f = function() stop("!"))
 
-  x <- obj_inspect(e)
+  x <- sxp(e)
   expect_named(x, c("f", "_enclos"))
 })
 
@@ -68,8 +68,8 @@ test_that("can inspect all atomic vectors", {
     raw(1)
   )
   expect_known_output(
-    print(obj_inspect(x)),
-    test_path("test-inspect-atomic.txt"),
+    print(sxp(x)),
+    test_path("test-sxp-atomic.txt"),
   )
 })
 
@@ -79,8 +79,8 @@ test_that("can inspect functions", {
   environment(f) <- globalenv()
 
   expect_known_output(
-    print(obj_inspect(f)),
-    test_path("test-inspect-function.txt"),
+    print(sxp(f)),
+    test_path("test-sxp-function.txt"),
   )
 })
 
@@ -93,11 +93,11 @@ test_that("can inspect environments", {
 
   expect_known_output(
     {
-      print(obj_inspect(e2))
+      print(sxp(e2))
       cat("\n\n")
-      print(obj_inspect(e2, expand = "environment"))
+      print(sxp(e2, expand = "environment"))
     },
-    test_path("test-inspect-environment.txt"),
+    test_path("test-sxp-environment.txt"),
   )
 })
 
@@ -107,8 +107,8 @@ test_that("can expand altrep", {
   x <- 1:10
   expect_known_output(
     {
-      print(obj_inspect(x, expand = "altrep"))
+      print(sxp(x, expand = "altrep"))
     },
-    test_path("test-inspect-altrep.txt")
+    test_path("test-sxp-altrep.txt")
   )
 })
