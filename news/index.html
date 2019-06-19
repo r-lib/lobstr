@@ -70,7 +70,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lobstr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.0.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0</span>
       </span>
     </div>
 
@@ -113,6 +113,16 @@
       <small>Source: <a href='https://github.com/r-lib/lobstr/blob/master/NEWS.md'><code>NEWS.md</code></a></small>
     </div>
 
+    <div id="lobstr-1-1-0" class="section level1">
+<h1 class="page-header">
+<a href="#lobstr-1-1-0" class="anchor"></a>lobstr 1.1.0<small> Unreleased </small>
+</h1>
+<ul>
+<li><p><code><a href="../reference/ref.html">ref()</a></code> now handles custom classes properly (<a href='https://github.com/yutannihilation'>@yutannihilation</a>, <a href='https://github.com/r-lib/lobstr/issues/36'>#36</a>)</p></li>
+<li><p><code><a href="../reference/sxp.html">sxp()</a></code> is a new tool for displaying the underlying C representation of an object (<a href='https://github.com/r-lib/lobstr/issues/38'>#38</a>).</p></li>
+<li><p><code><a href="../reference/obj_size.html">obj_size()</a></code> now special cases the ALTREP “deferred string vectors” which previously crashed due to the way in which they abuse the pairlist type (<a href='https://github.com/r-lib/lobstr/issues/35'>#35</a>).</p></li>
+</ul>
+</div>
     <div id="lobstr-1-0-1" class="section level1">
 <h1 class="page-header">
 <a href="#lobstr-1-0-1" class="anchor"></a>lobstr 1.0.1<small> 2018-12-21 </small>
@@ -129,6 +139,7 @@
     <div id="tocnav">
       <h2>Contents</h2>
       <ul class="nav nav-pills nav-stacked">
+        <li><a href="#lobstr-1-1-0">1.1.0</a></li>
         <li><a href="#lobstr-1-0-1">1.0.1</a></li>
       </ul>
     </div>
