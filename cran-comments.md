@@ -1,3 +1,7 @@
+Sorry it took so long for a fix; unfortunately I missed the email about the failure on Latin1 locales.
+
+---
+
 ## Test environments
 
 * local: darwin15.6.0-3.5.1
