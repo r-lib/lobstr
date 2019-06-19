@@ -4,4 +4,5 @@
     y [4] <REALSXP[1]> ()
     ... [3]
   _body [5] <LANGSXP> ()
+    ...
   _env [6] <ENVSXP: global> ()

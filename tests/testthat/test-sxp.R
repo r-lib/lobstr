@@ -95,7 +95,7 @@ test_that("can inspect environments", {
     {
       print(sxp(e2))
       cat("\n\n")
-      print(sxp(e2, expand = "environment"))
+      print(sxp(e2, expand = "environment", max_depth = 5L))
     },
     test_path("test-sxp-environment.txt"),
   )
@@ -107,7 +107,7 @@ test_that("can expand altrep", {
   x <- 1:10
   expect_known_output(
     {
-      print(sxp(x, expand = "altrep"))
+      print(sxp(x, expand = "altrep", max_depth = 4L))
     },
     test_path("test-sxp-altrep.txt")
   )

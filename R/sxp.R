@@ -12,7 +12,7 @@
 #'
 #' @param x Object to inspect
 #' @param max_depth Maximum depth to recurse. Use `max_depth = Inf` (with care!)
-#'   to recurse as deeply as possible.
+#'   to recurse as deeply as possible. Skipped elements will be shown as `...`.`
 #' @param expand Optionally, expand components of the true that are usually
 #'   suppressed. Use:
 #'
@@ -50,7 +50,7 @@
 #' sxp(e1)
 #' sxp(e1, expand = "environment")
 #' sxp(e2, expand = "environment")
-sxp <- function(x, expand = character(), max_depth = 3) {
+sxp <- function(x, expand = character(), max_depth = 5L) {
 
   opts <- c("character", "altrep", "environment", "call", "bytecode")
   if (any(!expand %in% opts)) {
@@ -58,7 +58,7 @@ sxp <- function(x, expand = character(), max_depth = 3) {
   }
 
   obj_inspect_(x,
-    max_depth,
+    max_depth - 1L,
     opts[[1]] %in% expand,
     opts[[2]] %in% expand,
     opts[[3]] %in% expand,
@@ -123,6 +123,12 @@ format.lobstr_inspector <- function(x, ..., depth = 0, name = NA) {
 #' @export
 print.lobstr_inspector <- function(x, ..., depth = 0, name = "") {
   cat_line(format(x, depth = depth, name = name))
+
+  if (isTRUE(attr(x, "skip"))) {
+    indent <- paste0(rep("  ", depth + 1), collapse = "")
+    cat_line(indent, crayon::silver("..."))
+  }
+
   for (i in seq_along(x)) {
     print(x[[i]], depth = depth + 1, name = names(x)[[i]])
   }

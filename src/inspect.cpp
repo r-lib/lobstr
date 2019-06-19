@@ -123,7 +123,7 @@ inline void recurse(
                     double max_depth,
                     Expand& expand) {
 
-  SEXP descendents = PROTECT(obj_inspect_(child, seen, max_depth, expand));
+  SEXP descendents = PROTECT(obj_inspect_(child, seen, max_depth - 1, expand));
   children->push_back(name, descendents);
   UNPROTECT(1);
 }
@@ -154,6 +154,25 @@ SEXP obj_children_(
     }
     recurse(&children, seen, "_data2", R_altrep_data2(x), max_depth, expand);
 #endif
+  } else if (max_depth <= 0) {
+    switch (TYPEOF(x)) {
+    // Non-recursive types
+    case NILSXP:
+    case SPECIALSXP:
+    case BUILTINSXP:
+    case LGLSXP:
+    case INTSXP:
+    case REALSXP:
+    case CPLXSXP:
+    case RAWSXP:
+    case CHARSXP:
+    case SYMSXP:
+      skip = false;
+      break;
+
+    default:
+      skip = true;
+    };
   } else {
     switch (TYPEOF(x)) {
     // Non-recursive types
@@ -287,7 +306,7 @@ SEXP obj_children_(
   }
 
   // CHARSXPs have fake attriibutes
-  if (TYPEOF(x) != CHARSXP && !Rf_isNull(ATTRIB(x))) {
+  if (max_depth > 0 && TYPEOF(x) != CHARSXP && !Rf_isNull(ATTRIB(x))) {
     recurse(&children, seen, "_attrib", ATTRIB(x), max_depth, expand);
   }
 
