@@ -1,4 +1,4 @@
-Sorry it took so long for a fix; unfortunately I missed the email about the failure on Latin1 locales.
+This is a minor fix removing utf-8 characters from comments
 
 ---
 
