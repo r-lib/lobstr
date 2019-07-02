@@ -265,7 +265,10 @@ SEXP obj_children_(
           SEXP sym = PROTECT(Rf_install(name));
 
           if (R_BindingIsActive(sym, x)) {
-            children.push_back(name, obj_inspect_(Rf_install("_active_binding"), seen, max_depth, expand));
+            SEXP sym = PROTECT(Rf_install("_active_binding"));
+            SEXP active = PROTECT(obj_inspect_(sym, seen, max_depth, expand));
+            children.push_back(name, active);
+            UNPROTECT(2);
           } else {
             SEXP obj = Rf_findVarInFrame(x, sym);
             recurse(&children, seen, name, obj, max_depth, expand);
