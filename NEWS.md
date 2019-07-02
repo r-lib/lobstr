@@ -1,4 +1,4 @@
-# lobstr (development version)
+# lobstr 1.1.1
 
 * Remove UTF-8 charatecrs from comments
 
