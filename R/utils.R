@@ -11,11 +11,11 @@ box_chars <- function() {
 
   if (fancy) {
     list(
-      "h" = "\u2500",          # ─ horizontal
-      "v" = "\u2502",          # │ vertical
-      "l" = "\u2514",          # └ leaf
-      "j" = "\u251C",          # ├ junction
-      "n" = orange("\u2588")   # █ node
+      "h" = "\u2500",          # - horizontal
+      "v" = "\u2502",          # | vertical
+      "l" = "\u2514",          # \ leaf
+      "j" = "\u251C",          # + junction
+      "n" = orange("\u2588")   # X node
     )
   } else {
     list(
