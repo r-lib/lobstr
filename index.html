@@ -40,7 +40,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">lobstr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -132,16 +132,16 @@
 <div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb4-1" data-line-number="1">x &lt;-<span class="st"> </span><span class="dv">1</span><span class="op">:</span><span class="fl">1e6</span></a>
 <a class="sourceLine" id="cb4-2" data-line-number="2">y &lt;-<span class="st"> </span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/list">list</a></span>(x, x, x)</a>
 <a class="sourceLine" id="cb4-3" data-line-number="3"><span class="kw"><a href="reference/ref.html">ref</a></span>(y)</a>
-<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; █ [1:0x3172de8] &lt;list&gt; </span></a>
-<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; ├─[2:0x26e4078] &lt;int&gt; </span></a>
-<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; ├─[2:0x26e4078] </span></a>
-<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; └─[2:0x26e4078]</span></a>
+<a class="sourceLine" id="cb4-4" data-line-number="4"><span class="co">#&gt; █ [1:0x250acf8] &lt;list&gt; </span></a>
+<a class="sourceLine" id="cb4-5" data-line-number="5"><span class="co">#&gt; ├─[2:0x316e6e0] &lt;int&gt; </span></a>
+<a class="sourceLine" id="cb4-6" data-line-number="6"><span class="co">#&gt; ├─[2:0x316e6e0] </span></a>
+<a class="sourceLine" id="cb4-7" data-line-number="7"><span class="co">#&gt; └─[2:0x316e6e0]</span></a>
 <a class="sourceLine" id="cb4-8" data-line-number="8"></a>
 <a class="sourceLine" id="cb4-9" data-line-number="9">e &lt;-<span class="st"> </span>rlang<span class="op">::</span><span class="kw"><a href="https://rlang.r-lib.org/reference/env.html">env</a></span>()</a>
 <a class="sourceLine" id="cb4-10" data-line-number="10">e<span class="op">$</span>self &lt;-<span class="st"> </span>e</a>
 <a class="sourceLine" id="cb4-11" data-line-number="11"><span class="kw"><a href="reference/ref.html">ref</a></span>(e)</a>
-<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; █ [1:0x5c0f440] &lt;env&gt; </span></a>
-<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; └─self = [1:0x5c0f440]</span></a></code></pre></div>
+<a class="sourceLine" id="cb4-12" data-line-number="12"><span class="co">#&gt; █ [1:0x4cdf3f0] &lt;env&gt; </span></a>
+<a class="sourceLine" id="cb4-13" data-line-number="13"><span class="co">#&gt; └─self = [1:0x4cdf3f0]</span></a></code></pre></div>
 <p>A related tool is <code><a href="reference/obj_size.html">obj_size()</a></code>, which computes the size of an object taking these shared references into account:</p>
 <div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><a class="sourceLine" id="cb5-1" data-line-number="1"><span class="kw"><a href="reference/obj_size.html">obj_size</a></span>(x)</a>
 <a class="sourceLine" id="cb5-2" data-line-number="2"><span class="co">#&gt; 680 B</span></a>

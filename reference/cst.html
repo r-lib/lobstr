@@ -74,7 +74,7 @@ that shows how frames on the call stack are related." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lobstr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -172,9 +172,9 @@ that shows how frames on the call stack are related.</p>
 #&gt; </span><span style='color: #555555;'> 35. </span><span>                        ├─base::withVisible(eval(expr, envir, enclos))
 #&gt; </span><span style='color: #555555;'> 36. </span><span>                        └─base::eval(expr, envir, enclos)
 #&gt; </span><span style='color: #555555;'> 37. </span><span>                          └─base::eval(expr, envir, enclos)
-#&gt; </span><span style='color: #555555;'> 38. </span><span>                            └─global::f()
-#&gt; </span><span style='color: #555555;'> 39. </span><span>                              └─global::g()
-#&gt; </span><span style='color: #555555;'> 40. </span><span>                                └─global::h()
+#&gt; </span><span style='color: #555555;'> 38. </span><span>                            └─f()
+#&gt; </span><span style='color: #555555;'> 39. </span><span>                              └─g()
+#&gt; </span><span style='color: #555555;'> 40. </span><span>                                └─h()
 #&gt; </span><span style='color: #555555;'> 41. </span><span>                                  └─lobstr::cst()</div><div class='input'>
 <span class='co'># You get multiple trees with delayed evaluation</span>
 <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/try'>try</a></span>(<span class='fu'>f</span>())</div><div class='output co'>#&gt; </span><span style='color: #555555;'>     </span><span>█
@@ -220,9 +220,9 @@ that shows how frames on the call stack are related.</p>
 #&gt; </span><span style='color: #555555;'> 40. </span><span>                            │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
 #&gt; </span><span style='color: #555555;'> 41. </span><span>                            │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; </span><span style='color: #555555;'> 42. </span><span>                            │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'> 43. </span><span>                            └─global::f()
-#&gt; </span><span style='color: #555555;'> 44. </span><span>                              └─global::g()
-#&gt; </span><span style='color: #555555;'> 45. </span><span>                                └─global::h()
+#&gt; </span><span style='color: #555555;'> 43. </span><span>                            └─f()
+#&gt; </span><span style='color: #555555;'> 44. </span><span>                              └─g()
+#&gt; </span><span style='color: #555555;'> 45. </span><span>                                └─h()
 #&gt; </span><span style='color: #555555;'> 46. </span><span>                                  └─lobstr::cst()</div><div class='input'>
 <span class='co'># Pay attention to the first element of each subtree: each</span>
 <span class='co'># evaluates the outermost call</span>
@@ -272,9 +272,9 @@ that shows how frames on the call stack are related.</p>
 #&gt; </span><span style='color: #555555;'> 40. </span><span>                            │   └─base:::tryCatchList(expr, classes, parentenv, handlers)
 #&gt; </span><span style='color: #555555;'> 41. </span><span>                            │     └─base:::tryCatchOne(expr, names, parentenv, handlers[[1L]])
 #&gt; </span><span style='color: #555555;'> 42. </span><span>                            │       └─base:::doTryCatch(return(expr), name, parentenv, handler)
-#&gt; </span><span style='color: #555555;'> 43. </span><span>                            ├─global::f(cst())
-#&gt; </span><span style='color: #555555;'> 44. </span><span>                            │ └─global::g(x)
-#&gt; </span><span style='color: #555555;'> 45. </span><span>                            │   └─global::h(x)
+#&gt; </span><span style='color: #555555;'> 43. </span><span>                            ├─f(cst())
+#&gt; </span><span style='color: #555555;'> 44. </span><span>                            │ └─g(x)
+#&gt; </span><span style='color: #555555;'> 45. </span><span>                            │   └─h(x)
 #&gt; </span><span style='color: #555555;'> 46. </span><span>                            └─lobstr::cst()</div><div class='input'>
 <span class='co'># With a little ingenuity you can use it to see how NSE</span>
 <span class='co'># functions work in base R</span>
@@ -406,9 +406,9 @@ that shows how frames on the call stack are related.</p>
 #&gt; </span><span style='color: #555555;'> 35. </span><span>                        ├─base::withVisible(eval(expr, envir, enclos))
 #&gt; </span><span style='color: #555555;'> 36. </span><span>                        └─base::eval(expr, envir, enclos)
 #&gt; </span><span style='color: #555555;'> 37. </span><span>                          └─base::eval(expr, envir, enclos)
-#&gt; </span><span style='color: #555555;'> 38. </span><span>                            └─global::f()
-#&gt; </span><span style='color: #555555;'> 39. </span><span>                              ├─global::g()
-#&gt; </span><span style='color: #555555;'> 40. </span><span>                              │ └─global::h()
+#&gt; </span><span style='color: #555555;'> 38. </span><span>                            └─f()
+#&gt; </span><span style='color: #555555;'> 39. </span><span>                              ├─g()
+#&gt; </span><span style='color: #555555;'> 40. </span><span>                              │ └─h()
 #&gt; </span><span style='color: #555555;'> 41. </span><span>                              │   └─base::eval(quote(cst()), parent.frame(2))
 #&gt; </span><span style='color: #555555;'> 42. </span><span>                              │     └─base::eval(quote(cst()), parent.frame(2))
 #&gt; </span><span style='color: #555555;'> 43. </span><span>                              └─lobstr::cst()</div></span></pre>

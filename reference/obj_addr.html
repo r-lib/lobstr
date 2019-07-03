@@ -74,7 +74,7 @@ environment, and character vector x point to." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lobstr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.0.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
       </span>
     </div>
 
@@ -153,12 +153,12 @@ references to an object.</p>
 <span class='no'>y</span>[<span class='fl'>1</span>] <span class='kw'>&lt;-</span> <span class='fl'>2L</span>
 <span class='fu'>obj_addr</span>(<span class='no'>x</span>) <span class='kw'>==</span> <span class='fu'>obj_addr</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/stats/topics/Uniform'>runif</a></span>(<span class='fl'>10</span>)
-<span class='fu'>obj_addr</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] "0x5e47948"</div><div class='input'><span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>y</span>, <span class='no'>y</span>)
-<span class='fu'>obj_addrs</span>(<span class='no'>z</span>)</div><div class='output co'>#&gt; [1] "0x5e47948" "0x5e47948"</div><div class='input'>
+<span class='fu'>obj_addr</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] "0x66903b8"</div><div class='input'><span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/list'>list</a></span>(<span class='no'>y</span>, <span class='no'>y</span>)
+<span class='fu'>obj_addrs</span>(<span class='no'>z</span>)</div><div class='output co'>#&gt; [1] "0x66903b8" "0x66903b8"</div><div class='input'>
 <span class='no'>y</span>[<span class='fl'>2</span>] <span class='kw'>&lt;-</span> <span class='fl'>1.0</span>
-<span class='fu'>obj_addrs</span>(<span class='no'>z</span>)</div><div class='output co'>#&gt; [1] "0x5e47948" "0x5e47948"</div><div class='input'><span class='fu'>obj_addr</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] "0x6a541e8"</div><div class='input'>
+<span class='fu'>obj_addrs</span>(<span class='no'>z</span>)</div><div class='output co'>#&gt; [1] "0x66903b8" "0x66903b8"</div><div class='input'><span class='fu'>obj_addr</span>(<span class='no'>y</span>)</div><div class='output co'>#&gt; [1] "0x6b84658"</div><div class='input'>
 <span class='co'># The address of an object is different every time you create it:</span>
-<span class='fu'>obj_addr</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] "0x7dd6250"</div><div class='input'><span class='fu'>obj_addr</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] "0x7e3be68"</div><div class='input'><span class='fu'>obj_addr</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] "0x7e9fb60"</div></pre>
+<span class='fu'>obj_addr</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] "0x7fe9328"</div><div class='input'><span class='fu'>obj_addr</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] "0x804d020"</div><div class='input'><span class='fu'>obj_addr</span>(<span class='fl'>1</span>:<span class='fl'>10</span>)</div><div class='output co'>#&gt; [1] "0x80aee08"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
