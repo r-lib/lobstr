@@ -1,3 +1,5 @@
+# lobstr (development version)
+
 # lobstr 1.1.1
 
 * Fix PROTECT error.
