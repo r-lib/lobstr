@@ -2,7 +2,7 @@
 
 * Fix PROTECT error.
 
-* Remove UTF-8 charatecrs from comments
+* Remove UTF-8 charaters from comments
 
 # lobstr 1.1.0
 
