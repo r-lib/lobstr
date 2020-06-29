@@ -34,17 +34,17 @@ extern "C" SEXP _lobstr_v_size(SEXP n, SEXP element_size) {
   END_CPP11
 }
 // size.cpp
-double obj_size_(Rcpp::List objects, Rcpp::Environment base_env, int sizeof_node, int sizeof_vector);
+double obj_size_(cpp11::list objects, cpp11::environment base_env, int sizeof_node, int sizeof_vector);
 extern "C" SEXP _lobstr_obj_size_(SEXP objects, SEXP base_env, SEXP sizeof_node, SEXP sizeof_vector) {
   BEGIN_CPP11
-    return cpp11::as_sexp(obj_size_(cpp11::unmove(cpp11::as_cpp<Rcpp::List>(objects)), cpp11::unmove(cpp11::as_cpp<Rcpp::Environment>(base_env)), cpp11::unmove(cpp11::as_cpp<int>(sizeof_node)), cpp11::unmove(cpp11::as_cpp<int>(sizeof_vector))));
+    return cpp11::as_sexp(obj_size_(cpp11::unmove(cpp11::as_cpp<cpp11::list>(objects)), cpp11::unmove(cpp11::as_cpp<cpp11::environment>(base_env)), cpp11::unmove(cpp11::as_cpp<int>(sizeof_node)), cpp11::unmove(cpp11::as_cpp<int>(sizeof_vector))));
   END_CPP11
 }
 // size.cpp
-Rcpp::IntegerVector obj_csize_(Rcpp::List objects, Rcpp::Environment base_env, int sizeof_node, int sizeof_vector);
+cpp11::integers obj_csize_(cpp11::list objects, cpp11::environment base_env, int sizeof_node, int sizeof_vector);
 extern "C" SEXP _lobstr_obj_csize_(SEXP objects, SEXP base_env, SEXP sizeof_node, SEXP sizeof_vector) {
   BEGIN_CPP11
-    return cpp11::as_sexp(obj_csize_(cpp11::unmove(cpp11::as_cpp<Rcpp::List>(objects)), cpp11::unmove(cpp11::as_cpp<Rcpp::Environment>(base_env)), cpp11::unmove(cpp11::as_cpp<int>(sizeof_node)), cpp11::unmove(cpp11::as_cpp<int>(sizeof_vector))));
+    return cpp11::as_sexp(obj_csize_(cpp11::unmove(cpp11::as_cpp<cpp11::list>(objects)), cpp11::unmove(cpp11::as_cpp<cpp11::environment>(base_env)), cpp11::unmove(cpp11::as_cpp<int>(sizeof_node)), cpp11::unmove(cpp11::as_cpp<int>(sizeof_vector))));
   END_CPP11
 }
 

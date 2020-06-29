@@ -1,6 +1,8 @@
 #include <cpp11/environment.hpp>
-#include <Rcpp.h>
+#include <cpp11/integers.hpp>
+#include <cpp11/list.hpp>
 #include <Rversion.h>
+#include <set>
 
 [[cpp11::register]]
 double v_size(double n, int element_size) {
@@ -36,7 +38,7 @@ bool is_namespace(cpp11::environment env) {
 // https://github.com/wch/r-source/blob/master/src/library/utils/src/size.c#L41
 
 double obj_size_tree(SEXP x,
-                     Rcpp::Environment base_env,
+                     cpp11::environment base_env,
                      int sizeof_node,
                      int sizeof_vector,
                      std::set<SEXP>& seen,
@@ -188,7 +190,7 @@ double obj_size_tree(SEXP x,
     break;
 
   default:
-    Rcpp::stop("Can't compute size of %s", Rf_type2char(TYPEOF(x)));
+    cpp11::stop("Can't compute size of %s", Rf_type2char(TYPEOF(x)));
   }
 
   // Rprintf("type: %-10s size: %6.0f\n", Rf_type2char(TYPEOF(x)), size);
@@ -196,7 +198,7 @@ double obj_size_tree(SEXP x,
 }
 
 [[cpp11::register]]
-double obj_size_(Rcpp::List objects, Rcpp::Environment base_env, int sizeof_node, int sizeof_vector) {
+double obj_size_(cpp11::list objects, cpp11::environment base_env, int sizeof_node, int sizeof_vector) {
   std::set<SEXP> seen;
   double size = 0;
 
@@ -209,13 +211,13 @@ double obj_size_(Rcpp::List objects, Rcpp::Environment base_env, int sizeof_node
 }
 
 [[cpp11::register]]
-Rcpp::IntegerVector obj_csize_(Rcpp::List objects, Rcpp::Environment base_env, int sizeof_node, int sizeof_vector) {
+cpp11::integers obj_csize_(cpp11::list objects, cpp11::environment base_env, int sizeof_node, int sizeof_vector) {
   std::set<SEXP> seen;
   int n = objects.size();
 
-  Rcpp::IntegerVector out(n);
+  cpp11::writable::integers out(n);
   for (int i = 0; i < n; ++i) {
-    out[i] += obj_size_tree(objects[i], base_env, sizeof_node, sizeof_vector, seen, 0);
+    out[i] = out[i] + obj_size_tree(objects[i], base_env, sizeof_node, sizeof_vector, seen, 0);
   }
 
   return out;
