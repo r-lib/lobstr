@@ -1,5 +1,8 @@
-#include <Rcpp.h>
+#include <cpp11/environment.hpp>
+#include <cpp11/list.hpp>
+#include <cpp11/strings.hpp>
 #include <Rversion.h>
+#include <map>
 
 struct Expand {
   bool alrep;
@@ -10,8 +13,8 @@ struct Expand {
 };
 
 class GrowableList {
-  Rcpp::List data_;
-  Rcpp::CharacterVector names_;
+  cpp11::writable::list data_;
+  cpp11::writable::strings names_;
   R_xlen_t n_;
 
 public:
@@ -28,7 +31,7 @@ public:
     n_++;
   }
 
-  Rcpp::List vector() {
+  cpp11::list vector() {
     if (Rf_xlength(data_) != n_) {
       data_ = Rf_xlengthgets(data_, n_);
       names_ = Rf_xlengthgets(names_, n_);
@@ -40,7 +43,7 @@ public:
 };
 
 SEXP obj_children_(SEXP x, std::map<SEXP, int>& seen, double max_depth, Expand expand);
-bool is_namespace(Rcpp::Environment env);
+bool is_namespace(cpp11::environment env);
 
 bool is_altrep(SEXP x) {
 #if defined(R_VERSION) && R_VERSION >= R_Version(3, 5, 0)
@@ -69,8 +72,11 @@ SEXP obj_inspect_(SEXP x,
     children = PROTECT(obj_children_(x, seen, max_depth, expand));
   }
 
+  char ptr[16];
+  snprintf(ptr, 16, "%p", static_cast<void *>(x));
+
   // don't store object directly to avoid increasing refcount
-  Rf_setAttrib(children, Rf_install("addr"), PROTECT(Rf_mkString(tfm::format("%p", x).c_str())));
+  Rf_setAttrib(children, Rf_install("addr"), PROTECT(Rf_mkString(ptr)));
   Rf_setAttrib(children, Rf_install("has_seen"), PROTECT(Rf_ScalarLogical(has_seen)));
   Rf_setAttrib(children, Rf_install("id"), PROTECT(Rf_ScalarInteger(id)));
   Rf_setAttrib(children, Rf_install("type"), PROTECT(Rf_ScalarInteger(TYPEOF(x))));
@@ -303,7 +309,7 @@ SEXP obj_children_(
       break;
 
     default:
-      Rcpp::stop("Don't know how to handle type %s", Rf_type2char(TYPEOF(x)));
+      cpp11::stop("Don't know how to handle type %s", Rf_type2char(TYPEOF(x)));
     }
   }
 
@@ -324,7 +330,7 @@ SEXP obj_children_(
 
 
 [[cpp11::register]]
-Rcpp::List obj_inspect_(SEXP x,
+cpp11::list obj_inspect_(SEXP x,
                         double max_depth,
                         bool expand_char = false,
                         bool expand_altrep = false,

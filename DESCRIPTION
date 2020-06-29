@@ -25,6 +25,7 @@ Suggests:
     testthat
 LinkingTo: 
     Rcpp, cpp11
+SystemRequirements: C++11
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

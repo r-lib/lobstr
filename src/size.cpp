@@ -1,3 +1,4 @@
+#include <cpp11/environment.hpp>
 #include <Rcpp.h>
 #include <Rversion.h>
 
@@ -27,7 +28,7 @@ double v_size(double n, int element_size) {
   return size;
 }
 
-bool is_namespace(Rcpp::Environment env) {
+bool is_namespace(cpp11::environment env) {
   return Rf_findVarInFrame3(env, Rf_install(".__NAMESPACE__."), FALSE) != R_UnboundValue;
 }
 

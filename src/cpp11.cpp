@@ -6,10 +6,10 @@ using namespace Rcpp;
 #include "cpp11/declarations.hpp"
 
 // address.cpp
-std::string obj_addr_(SEXP name, Environment env);
+std::string obj_addr_(SEXP name, Rcpp::Environment env);
 extern "C" SEXP _lobstr_obj_addr_(SEXP name, SEXP env) {
   BEGIN_CPP11
-    return cpp11::as_sexp(obj_addr_(cpp11::unmove(cpp11::as_cpp<SEXP>(name)), cpp11::unmove(cpp11::as_cpp<Environment>(env))));
+    return cpp11::as_sexp(obj_addr_(cpp11::unmove(cpp11::as_cpp<SEXP>(name)), cpp11::unmove(cpp11::as_cpp<Rcpp::Environment>(env))));
   END_CPP11
 }
 // address.cpp
@@ -20,7 +20,7 @@ extern "C" SEXP _lobstr_obj_addrs_(SEXP x) {
   END_CPP11
 }
 // inspect.cpp
-Rcpp::List obj_inspect_(SEXP x, double max_depth, bool expand_char, bool expand_altrep, bool expand_env, bool expand_call, bool expand_bytecode);
+cpp11::list obj_inspect_(SEXP x, double max_depth, bool expand_char, bool expand_altrep, bool expand_env, bool expand_call, bool expand_bytecode);
 extern "C" SEXP _lobstr_obj_inspect_(SEXP x, SEXP max_depth, SEXP expand_char, SEXP expand_altrep, SEXP expand_env, SEXP expand_call, SEXP expand_bytecode) {
   BEGIN_CPP11
     return cpp11::as_sexp(obj_inspect_(cpp11::unmove(cpp11::as_cpp<SEXP>(x)), cpp11::unmove(cpp11::as_cpp<double>(max_depth)), cpp11::unmove(cpp11::as_cpp<bool>(expand_char)), cpp11::unmove(cpp11::as_cpp<bool>(expand_altrep)), cpp11::unmove(cpp11::as_cpp<bool>(expand_env)), cpp11::unmove(cpp11::as_cpp<bool>(expand_call)), cpp11::unmove(cpp11::as_cpp<bool>(expand_bytecode))));
