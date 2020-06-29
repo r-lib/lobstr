@@ -5,7 +5,7 @@ std::string obj_addr_(SEXP x) {
   return tfm::format("%p", x);
 }
 
-// [[Rcpp::export]]
+[[cpp11::register]]
 std::string obj_addr_(SEXP name, Environment env) {
   return obj_addr_(Rf_eval(name, env));
 }
@@ -23,7 +23,7 @@ void hash_table_addresses(SEXP table, std::vector<std::string>* refs) {
     frame_addresses(VECTOR_ELT(table, i), refs);
 }
 
-// [[Rcpp::export]]
+[[cpp11::register]]
 std::vector<std::string> obj_addrs_(SEXP x) {
   int n = Rf_length(x);
   std::vector<std::string> out;

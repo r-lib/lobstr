@@ -2,7 +2,7 @@
 using namespace Rcpp;
 #include <Rversion.h>
 
-// [[Rcpp::export]]
+[[cpp11::register]]
 double v_size(double n, int element_size) {
   if (n == 0)
     return 0;
@@ -195,7 +195,7 @@ double obj_size_tree(SEXP x,
   return size;
 }
 
-// [[Rcpp::export]]
+[[cpp11::register]]
 double obj_size_(List objects, Environment base_env, int sizeof_node, int sizeof_vector) {
   std::set<SEXP> seen;
   double size = 0;
@@ -208,7 +208,7 @@ double obj_size_(List objects, Environment base_env, int sizeof_node, int sizeof
   return size;
 }
 
-// [[Rcpp::export]]
+[[cpp11::register]]
 IntegerVector obj_csize_(List objects, Environment base_env, int sizeof_node, int sizeof_vector) {
   std::set<SEXP> seen;
   int n = objects.size();

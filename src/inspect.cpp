@@ -324,7 +324,7 @@ SEXP obj_children_(
 }
 
 
-// [[Rcpp::export]]
+[[cpp11::register]]
 Rcpp::List obj_inspect_(SEXP x,
                         double max_depth,
                         bool expand_char = false,

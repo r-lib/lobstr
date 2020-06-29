@@ -24,7 +24,7 @@ Suggests:
     pkgdown,
     testthat
 LinkingTo: 
-    Rcpp
+    Rcpp, cpp11
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
