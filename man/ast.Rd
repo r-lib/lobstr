@@ -8,7 +8,7 @@ ast(x)
 }
 \arguments{
 \item{x}{An expression to display. Input is automatically quoted,
-use \code{!!} to unquote if you have already captured an expression object.}
+use \verb{!!} to unquote if you have already captured an expression object.}
 }
 \description{
 This is a useful alternative to \code{str()} for expression objects.
@@ -41,7 +41,8 @@ ast(1 * 2 + 3)
 ast(!1 + !1)
 }
 \seealso{
-Other object inspectors: \code{\link{ref}},
-  \code{\link{sxp}}
+Other object inspectors: 
+\code{\link{ref}()},
+\code{\link{sxp}()}
 }
 \concept{object inspectors}
