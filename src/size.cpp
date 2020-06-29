@@ -1,5 +1,4 @@
 #include <Rcpp.h>
-using namespace Rcpp;
 #include <Rversion.h>
 
 [[cpp11::register]]
@@ -28,7 +27,7 @@ double v_size(double n, int element_size) {
   return size;
 }
 
-bool is_namespace(Environment env) {
+bool is_namespace(Rcpp::Environment env) {
   return Rf_findVarInFrame3(env, Rf_install(".__NAMESPACE__."), FALSE) != R_UnboundValue;
 }
 
@@ -36,7 +35,7 @@ bool is_namespace(Environment env) {
 // https://github.com/wch/r-source/blob/master/src/library/utils/src/size.c#L41
 
 double obj_size_tree(SEXP x,
-                     Environment base_env,
+                     Rcpp::Environment base_env,
                      int sizeof_node,
                      int sizeof_vector,
                      std::set<SEXP>& seen,
@@ -188,7 +187,7 @@ double obj_size_tree(SEXP x,
     break;
 
   default:
-    stop("Can't compute size of %s", Rf_type2char(TYPEOF(x)));
+    Rcpp::stop("Can't compute size of %s", Rf_type2char(TYPEOF(x)));
   }
 
   // Rprintf("type: %-10s size: %6.0f\n", Rf_type2char(TYPEOF(x)), size);
@@ -196,7 +195,7 @@ double obj_size_tree(SEXP x,
 }
 
 [[cpp11::register]]
-double obj_size_(List objects, Environment base_env, int sizeof_node, int sizeof_vector) {
+double obj_size_(Rcpp::List objects, Rcpp::Environment base_env, int sizeof_node, int sizeof_vector) {
   std::set<SEXP> seen;
   double size = 0;
 
@@ -209,11 +208,11 @@ double obj_size_(List objects, Environment base_env, int sizeof_node, int sizeof
 }
 
 [[cpp11::register]]
-IntegerVector obj_csize_(List objects, Environment base_env, int sizeof_node, int sizeof_vector) {
+Rcpp::IntegerVector obj_csize_(Rcpp::List objects, Rcpp::Environment base_env, int sizeof_node, int sizeof_vector) {
   std::set<SEXP> seen;
   int n = objects.size();
 
-  IntegerVector out(n);
+  Rcpp::IntegerVector out(n);
   for (int i = 0; i < n; ++i) {
     out[i] += obj_size_tree(objects[i], base_env, sizeof_node, sizeof_vector, seen, 0);
   }

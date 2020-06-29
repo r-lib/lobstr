@@ -1,12 +1,11 @@
 #include <Rcpp.h>
-using namespace Rcpp;
 
 std::string obj_addr_(SEXP x) {
   return tfm::format("%p", x);
 }
 
 [[cpp11::register]]
-std::string obj_addr_(SEXP name, Environment env) {
+std::string obj_addr_(SEXP name, Rcpp::Environment env) {
   return obj_addr_(Rf_eval(name, env));
 }
 

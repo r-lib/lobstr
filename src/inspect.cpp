@@ -1,5 +1,4 @@
 #include <Rcpp.h>
-using namespace Rcpp;
 #include <Rversion.h>
 
 struct Expand {
@@ -41,7 +40,7 @@ public:
 };
 
 SEXP obj_children_(SEXP x, std::map<SEXP, int>& seen, double max_depth, Expand expand);
-bool is_namespace(Environment env);
+bool is_namespace(Rcpp::Environment env);
 
 bool is_altrep(SEXP x) {
 #if defined(R_VERSION) && R_VERSION >= R_Version(3, 5, 0)
@@ -304,7 +303,7 @@ SEXP obj_children_(
       break;
 
     default:
-      stop("Don't know how to handle type %s", Rf_type2char(TYPEOF(x)));
+      Rcpp::stop("Don't know how to handle type %s", Rf_type2char(TYPEOF(x)));
     }
   }
 
