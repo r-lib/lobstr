@@ -1,11 +1,9 @@
-#include <Rcpp.h>
-
-std::string obj_addr_(SEXP x) {
-  return tfm::format("%p", x);
-}
+#include "utils.h"
+#include <cpp11/environment.hpp>
+#include <vector>
 
 [[cpp11::register]]
-std::string obj_addr_(SEXP name, Rcpp::Environment env) {
+std::string obj_addr_(SEXP name, cpp11::environment env) {
   return obj_addr_(Rf_eval(name, env));
 }
 
@@ -51,7 +49,7 @@ std::vector<std::string> obj_addrs_(SEXP x) {
   }
 
   default:
-    Rcpp::stop(
+    cpp11::stop(
       "`x` must be a list, environment, or character vector, not a %s.",
       Rf_type2char(TYPEOF(x))
     );

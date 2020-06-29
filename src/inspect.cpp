@@ -3,6 +3,7 @@
 #include <cpp11/strings.hpp>
 #include <Rversion.h>
 #include <map>
+#include "utils.h"
 
 struct Expand {
   bool alrep;
@@ -72,11 +73,8 @@ SEXP obj_inspect_(SEXP x,
     children = PROTECT(obj_children_(x, seen, max_depth, expand));
   }
 
-  char ptr[16];
-  snprintf(ptr, 16, "%p", static_cast<void *>(x));
-
   // don't store object directly to avoid increasing refcount
-  Rf_setAttrib(children, Rf_install("addr"), PROTECT(Rf_mkString(ptr)));
+  Rf_setAttrib(children, Rf_install("addr"), PROTECT(Rf_mkString(obj_addr_(x).c_str())));
   Rf_setAttrib(children, Rf_install("has_seen"), PROTECT(Rf_ScalarLogical(has_seen)));
   Rf_setAttrib(children, Rf_install("id"), PROTECT(Rf_ScalarInteger(id)));
   Rf_setAttrib(children, Rf_install("type"), PROTECT(Rf_ScalarInteger(TYPEOF(x))));
