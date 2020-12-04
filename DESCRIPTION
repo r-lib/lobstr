@@ -16,7 +16,6 @@ Depends:
     R (>= 3.2)
 Imports: 
     crayon,
-    Rcpp,
     rlang (>= 0.3.0)
 Suggests: 
     covr,
@@ -24,8 +23,11 @@ Suggests:
     pkgdown,
     testthat
 LinkingTo: 
-    Rcpp
+    cpp11
+SystemRequirements: C++11
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 6.1.1
+RoxygenNote: 7.1.1
+Remotes:
+  r-lib/cpp11

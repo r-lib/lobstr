@@ -1,12 +1,9 @@
-#include <Rcpp.h>
-using namespace Rcpp;
+#include "utils.h"
+#include <cpp11/environment.hpp>
+#include <vector>
 
-std::string obj_addr_(SEXP x) {
-  return tfm::format("%p", x);
-}
-
-// [[Rcpp::export]]
-std::string obj_addr_(SEXP name, Environment env) {
+[[cpp11::register]]
+std::string obj_addr_(SEXP name, cpp11::environment env) {
   return obj_addr_(Rf_eval(name, env));
 }
 
@@ -23,7 +20,7 @@ void hash_table_addresses(SEXP table, std::vector<std::string>* refs) {
     frame_addresses(VECTOR_ELT(table, i), refs);
 }
 
-// [[Rcpp::export]]
+[[cpp11::register]]
 std::vector<std::string> obj_addrs_(SEXP x) {
   int n = Rf_length(x);
   std::vector<std::string> out;
@@ -52,7 +49,7 @@ std::vector<std::string> obj_addrs_(SEXP x) {
   }
 
   default:
-    Rcpp::stop(
+    cpp11::stop(
       "`x` must be a list, environment, or character vector, not a %s.",
       Rf_type2char(TYPEOF(x))
     );
