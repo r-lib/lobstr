@@ -1,5 +1,7 @@
 # lobstr (development version)
 
+* `obj_sizes()` no longer returns NA for objects larger than 2^31 bytes (#45)
+
 # lobstr 1.1.1
 
 * Fix PROTECT error.
