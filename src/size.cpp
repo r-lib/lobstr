@@ -1,5 +1,5 @@
 #include <cpp11/environment.hpp>
-#include <cpp11/integers.hpp>
+#include <cpp11/doubles.hpp>
 #include <cpp11/list.hpp>
 #include <Rversion.h>
 #include <set>
@@ -211,11 +211,11 @@ double obj_size_(cpp11::list objects, cpp11::environment base_env, int sizeof_no
 }
 
 [[cpp11::register]]
-cpp11::integers obj_csize_(cpp11::list objects, cpp11::environment base_env, int sizeof_node, int sizeof_vector) {
+cpp11::doubles obj_csize_(cpp11::list objects, cpp11::environment base_env, int sizeof_node, int sizeof_vector) {
   std::set<SEXP> seen;
   int n = objects.size();
 
-  cpp11::writable::integers out(n);
+  cpp11::writable::doubles out(n);
   for (int i = 0; i < n; ++i) {
     out[i] = out[i] + obj_size_tree(objects[i], base_env, sizeof_node, sizeof_vector, seen, 0);
   }

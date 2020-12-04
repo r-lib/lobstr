@@ -1,10 +1,12 @@
 # lobstr (development version)
 
+* `obj_sizes()` no longer returns NA for objects larger than 2^31 bytes (#45)
+
 # lobstr 1.1.1
 
 * Fix PROTECT error.
 
-* Remove UTF-8 charatecrs from comments
+* Remove UTF-8 characters from comments
 
 # lobstr 1.1.0
 
