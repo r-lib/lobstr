@@ -82,7 +82,7 @@ to the total size." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lobstr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1.9000</span>
       </span>
     </div>
 
@@ -132,9 +132,9 @@ to the total size." />
 to the total size.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>obj_size</span>(<span class='no'>...</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())
+    <pre class="usage"><span class='fu'>obj_size</span><span class='op'>(</span><span class='va'>...</span>, env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
 
-<span class='fu'>obj_sizes</span>(<span class='no'>...</span>, <span class='kw'>env</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span>())</pre>
+<span class='fu'>obj_sizes</span><span class='op'>(</span><span class='va'>...</span>, env <span class='op'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/sys.parent.html'>parent.frame</a></span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -186,28 +186,38 @@ elsewhere.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># obj_size correctly accounts for shared references</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span>(<span class='fl'>1e4</span>)
-<span class='fu'>obj_size</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; 80,048 B</div><div class='input'>
-<span class='no'>z</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span>(<span class='kw'>a</span> <span class='kw'>=</span> <span class='no'>x</span>, <span class='kw'>b</span> <span class='kw'>=</span> <span class='no'>x</span>, <span class='kw'>c</span> <span class='kw'>=</span> <span class='no'>x</span>)
-<span class='fu'>obj_size</span>(<span class='no'>z</span>)</div><div class='output co'>#&gt; 80,488 B</div><div class='input'>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>1e4</span><span class='op'>)</span>
+<span class='fu'>obj_size</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 80,048 B</div><div class='input'>
+<span class='va'>z</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span>a <span class='op'>=</span> <span class='va'>x</span>, b <span class='op'>=</span> <span class='va'>x</span>, c <span class='op'>=</span> <span class='va'>x</span><span class='op'>)</span>
+<span class='fu'>obj_size</span><span class='op'>(</span><span class='va'>z</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 80,488 B</div><div class='input'>
 <span class='co'># this means that object size is not transitive</span>
-<span class='fu'>obj_size</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; 80,048 B</div><div class='input'><span class='fu'>obj_size</span>(<span class='no'>z</span>)</div><div class='output co'>#&gt; 80,488 B</div><div class='input'><span class='fu'>obj_size</span>(<span class='no'>x</span>, <span class='no'>z</span>)</div><div class='output co'>#&gt; 80,488 B</div><div class='input'>
+<span class='fu'>obj_size</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 80,048 B</div><div class='input'><span class='fu'>obj_size</span><span class='op'>(</span><span class='va'>z</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 80,488 B</div><div class='input'><span class='fu'>obj_size</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>z</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 80,488 B</div><div class='input'>
 <span class='co'># use obj_size() to see the unique contribution of each component</span>
-<span class='fu'>obj_sizes</span>(<span class='no'>x</span>, <span class='no'>z</span>)</div><div class='output co'>#&gt; * 80,052 B
-#&gt; *    440 B</div><div class='input'><span class='fu'>obj_sizes</span>(<span class='no'>z</span>, <span class='no'>x</span>)</div><div class='output co'>#&gt; * 80,488 B
-#&gt; *      0 B</div><div class='input'><span class='fu'>obj_sizes</span>(!!!<span class='no'>z</span>)</div><div class='output co'>#&gt; a: 1,246,006,773 B
-#&gt; b: 1,230,450,000 B
-#&gt; c:     3,092,302 B</div><div class='input'>
+<span class='fu'>obj_sizes</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>z</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; * 80,048 B
+#&gt; *    440 B</div><div class='input'><span class='fu'>obj_sizes</span><span class='op'>(</span><span class='va'>z</span>, <span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; * 80,488.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 B
+#&gt; *      0.000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000692939 B</div><div class='input'><span class='fu'>obj_sizes</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='op'>!</span><span class='va'>z</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; a: 80,112 B
+#&gt; b:      1 B
+#&gt; c:  1,024 B</div><div class='input'>
 <span class='co'># obj_size() also includes the size of environments</span>
-<span class='no'>f</span> <span class='kw'>&lt;-</span> <span class='kw'>function</span>() {
-  <span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>1e4</span>
-  <span class='no'>a</span> ~ <span class='no'>b</span>
-}
-<span class='fu'>obj_size</span>(<span class='fu'>f</span>())</div><div class='output co'>#&gt; 1,520 B</div><div class='input'>
+<span class='va'>f</span> <span class='op'>&lt;-</span> <span class='kw'>function</span><span class='op'>(</span><span class='op'>)</span> <span class='op'>{</span>
+  <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>1e4</span>
+  <span class='va'>a</span> <span class='op'>~</span> <span class='va'>b</span>
+<span class='op'>}</span>
+<span class='fu'>obj_size</span><span class='op'>(</span><span class='fu'>f</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 1,520 B</div><div class='input'>
 <span class='co'>#' # In R 3.5 and greater, `:` creates a special "ALTREP" object that only</span>
 <span class='co'># stores the first and last elements. This will make some vectors much</span>
 <span class='co'># smaller than you'd otherwise expect</span>
-<span class='fu'>obj_size</span>(<span class='fl'>1</span>:<span class='fl'>1e6</span>)</div><div class='output co'>#&gt; 680 B</div></pre>
+<span class='fu'>obj_size</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>1e6</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 680 B</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -223,7 +233,7 @@ elsewhere.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

@@ -83,7 +83,7 @@ variations." />
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lobstr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1.9000</span>
       </span>
     </div>
 
@@ -134,17 +134,22 @@ currently used by R. Note that changes will not match up exactly to
 variations.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mem_used</span>()</pre>
+    <pre class="usage"><span class='fu'>mem_used</span><span class='op'>(</span><span class='op'>)</span></pre>
 
 
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='no'>prev_m</span> <span class='kw'>&lt;-</span> <span class='fl'>0</span>; <span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'>mem_used</span>(); <span class='no'>m</span> - <span class='no'>prev_m</span></div><div class='output co'>#&gt; 48,497,608 B</div><div class='input'>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fl'>1</span>:<span class='fl'>1e6</span>
-<span class='no'>prev_m</span> <span class='kw'>&lt;-</span> <span class='no'>m</span>; <span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'>mem_used</span>(); <span class='no'>m</span> - <span class='no'>prev_m</span></div><div class='output co'>#&gt; 170,504 B</div><div class='input'><span class='fu'><a href='obj_size.html'>obj_size</a></span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; 680 B</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span>(<span class='no'>x</span>)
-<span class='no'>prev_m</span> <span class='kw'>&lt;-</span> <span class='no'>m</span>; <span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'>mem_used</span>(); <span class='no'>m</span> - <span class='no'>prev_m</span></div><div class='output co'>#&gt; 19,376 B</div><div class='input'>
-<span class='no'>prev_m</span> <span class='kw'>&lt;-</span> <span class='no'>m</span>; <span class='no'>m</span> <span class='kw'>&lt;-</span> <span class='fu'>mem_used</span>(); <span class='no'>m</span> - <span class='no'>prev_m</span></div><div class='output co'>#&gt; 464 B</div></pre>
+    <pre class="examples"><div class='input'><span class='va'>prev_m</span> <span class='op'>&lt;-</span> <span class='fl'>0</span>; <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>mem_used</span><span class='op'>(</span><span class='op'>)</span>; <span class='va'>m</span> <span class='op'>-</span> <span class='va'>prev_m</span>
+</div><div class='output co'>#&gt; 50,919,336 B</div><div class='input'>
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>1e6</span>
+<span class='va'>prev_m</span> <span class='op'>&lt;-</span> <span class='va'>m</span>; <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>mem_used</span><span class='op'>(</span><span class='op'>)</span>; <span class='va'>m</span> <span class='op'>-</span> <span class='va'>prev_m</span>
+</div><div class='output co'>#&gt; 163,224 B</div><div class='input'><span class='fu'><a href='obj_size.html'>obj_size</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 680 B</div><div class='input'>
+<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+<span class='va'>prev_m</span> <span class='op'>&lt;-</span> <span class='va'>m</span>; <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>mem_used</span><span class='op'>(</span><span class='op'>)</span>; <span class='va'>m</span> <span class='op'>-</span> <span class='va'>prev_m</span>
+</div><div class='output co'>#&gt; 15,192 B</div><div class='input'>
+<span class='va'>prev_m</span> <span class='op'>&lt;-</span> <span class='va'>m</span>; <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>mem_used</span><span class='op'>(</span><span class='op'>)</span>; <span class='va'>m</span> <span class='op'>-</span> <span class='va'>prev_m</span>
+</div><div class='output co'>#&gt; 464 B</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
@@ -160,7 +165,7 @@ variations.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>

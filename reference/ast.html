@@ -80,7 +80,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">lobstr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1.9000</span>
       </span>
     </div>
 
@@ -128,7 +128,7 @@
     <p>This is a useful alternative to <code><a href='https://rdrr.io/r/utils/str.html'>str()</a></code> for expression objects.</p>
     </div>
 
-    <pre class="usage"><span class='fu'>ast</span>(<span class='no'>x</span>)</pre>
+    <pre class="usage"><span class='fu'>ast</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span></pre>
 
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
@@ -148,36 +148,48 @@ use <code>!!</code> to unquote if you have already captured an expression object
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='co'># Leaves</span>
-<span class='fu'>ast</span>(<span class='fl'>1</span>)</div><div class='output co'>#&gt; 1 </div><div class='input'><span class='fu'>ast</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; <span style='color: #BB00BB;font-weight: bold;'>x</span><span> </div><div class='input'>
+<span class='fu'>ast</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 1 </div><div class='input'><span class='fu'>ast</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; <span style='color: #BB00BB;font-weight: bold;'>x</span><span> </div><div class='input'>
 <span class='co'># Simple calls</span>
-<span class='fu'>ast</span>(<span class='fu'>f</span>())</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>f</span><span> </div><div class='input'><span class='fu'>ast</span>(<span class='fu'>f</span>(<span class='no'>x</span>, <span class='fl'>1</span>, <span class='fu'>g</span>(), <span class='fu'>h</span>(<span class='fu'>i</span>())))</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>f</span><span> 
+<span class='fu'>ast</span><span class='op'>(</span><span class='fu'>f</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>f</span><span> </div><div class='input'><span class='fu'>ast</span><span class='op'>(</span><span class='fu'>f</span><span class='op'>(</span><span class='va'>x</span>, <span class='fl'>1</span>, <span class='fu'>g</span><span class='op'>(</span><span class='op'>)</span>, <span class='fu'>h</span><span class='op'>(</span><span class='fu'>i</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>f</span><span> 
 #&gt; ├─</span><span style='color: #BB00BB;font-weight: bold;'>x</span><span> 
 #&gt; ├─1 
 #&gt; ├─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>g</span><span> 
 #&gt; └─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>h</span><span> 
-#&gt;   └─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>i</span><span> </div><div class='input'><span class='fu'>ast</span>(<span class='fu'>f</span>()())</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>f</span><span> </div><div class='input'><span class='fu'>ast</span>(<span class='fu'>f</span>(<span class='no'>x</span>)(<span class='no'>y</span>))</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>f</span><span> 
+#&gt;   └─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>i</span><span> </div><div class='input'><span class='fu'>ast</span><span class='op'>(</span><span class='fu'>f</span><span class='op'>(</span><span class='op'>)</span><span class='op'>(</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>f</span><span> </div><div class='input'><span class='fu'>ast</span><span class='op'>(</span><span class='fu'>f</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>f</span><span> 
 #&gt; │ └─</span><span style='color: #BB00BB;font-weight: bold;'>x</span><span> 
 #&gt; └─</span><span style='color: #BB00BB;font-weight: bold;'>y</span><span> </div><div class='input'>
-<span class='fu'>ast</span>((<span class='no'>x</span> + <span class='fl'>1</span>))</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`(`</span><span> 
+<span class='fu'>ast</span><span class='op'>(</span><span class='op'>(</span><span class='va'>x</span> <span class='op'>+</span> <span class='fl'>1</span><span class='op'>)</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`(`</span><span> 
 #&gt; └─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`+`</span><span> 
 #&gt;   ├─</span><span style='color: #BB00BB;font-weight: bold;'>x</span><span> 
 #&gt;   └─1 </div><div class='input'>
 <span class='co'># Displaying expression already stored in object</span>
-<span class='no'>x</span> <span class='kw'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span>(<span class='no'>a</span> + <span class='no'>b</span> + <span class='no'>c</span>)
-<span class='fu'>ast</span>(<span class='no'>x</span>)</div><div class='output co'>#&gt; </span><span style='color: #BB00BB;font-weight: bold;'>x</span><span> </div><div class='input'><span class='fu'>ast</span>(!!<span class='no'>x</span>)</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`+`</span><span> 
+<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/substitute.html'>quote</a></span><span class='op'>(</span><span class='va'>a</span> <span class='op'>+</span> <span class='va'>b</span> <span class='op'>+</span> <span class='va'>c</span><span class='op'>)</span>
+<span class='fu'>ast</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #BB00BB;font-weight: bold;'>x</span><span> </div><div class='input'><span class='fu'>ast</span><span class='op'>(</span><span class='op'>!</span><span class='op'>!</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`+`</span><span> 
 #&gt; ├─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`+`</span><span> 
 #&gt; │ ├─</span><span style='color: #BB00BB;font-weight: bold;'>a</span><span> 
 #&gt; │ └─</span><span style='color: #BB00BB;font-weight: bold;'>b</span><span> 
 #&gt; └─</span><span style='color: #BB00BB;font-weight: bold;'>c</span><span> </div><div class='input'>
 <span class='co'># All operations have this same structure</span>
-<span class='fu'>ast</span>(<span class='kw'>if</span> (<span class='fl'>TRUE</span>) <span class='fl'>3</span> <span class='kw'>else</span> <span class='fl'>4</span>)</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`if`</span><span> 
+<span class='fu'>ast</span><span class='op'>(</span><span class='kw'>if</span> <span class='op'>(</span><span class='cn'>TRUE</span><span class='op'>)</span> <span class='fl'>3</span> <span class='kw'>else</span> <span class='fl'>4</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`if`</span><span> 
 #&gt; ├─TRUE 
 #&gt; ├─3 
-#&gt; └─4 </div><div class='input'><span class='fu'>ast</span>(<span class='no'>y</span> <span class='kw'>&lt;-</span> <span class='no'>x</span> * <span class='fl'>10</span>)</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`&lt;-`</span><span> 
+#&gt; └─4 </div><div class='input'><span class='fu'>ast</span><span class='op'>(</span><span class='va'>y</span> <span class='op'>&lt;-</span> <span class='va'>x</span> <span class='op'>*</span> <span class='fl'>10</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`&lt;-`</span><span> 
 #&gt; ├─</span><span style='color: #BB00BB;font-weight: bold;'>y</span><span> 
 #&gt; └─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`*`</span><span> 
 #&gt;   ├─</span><span style='color: #BB00BB;font-weight: bold;'>x</span><span> 
-#&gt;   └─10 </div><div class='input'><span class='fu'>ast</span>(<span class='kw'>function</span>(<span class='no'>x</span> <span class='kw'>=</span> <span class='fl'>1</span>, <span class='no'>y</span> <span class='kw'>=</span> <span class='fl'>2</span>) { <span class='no'>x</span> + <span class='no'>y</span> } )</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`function`</span><span> 
+#&gt;   └─10 </div><div class='input'><span class='fu'>ast</span><span class='op'>(</span><span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span> <span class='op'>=</span> <span class='fl'>1</span>, <span class='va'>y</span> <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span> <span class='op'>{</span> <span class='va'>x</span> <span class='op'>+</span> <span class='va'>y</span> <span class='op'>}</span> <span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`function`</span><span> 
 #&gt; ├─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #555555;font-style: italic;'>x</span><span> = 1 
 #&gt; │ └─</span><span style='color: #555555;font-style: italic;'>y</span><span> = 2 
 #&gt; ├─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`{`</span><span> 
@@ -186,11 +198,13 @@ use <code>!!</code> to unquote if you have already captured an expression object
 #&gt; │   └─</span><span style='color: #BB00BB;font-weight: bold;'>y</span><span> 
 #&gt; └─&lt;inline srcref&gt; </div><div class='input'>
 <span class='co'># Operator precedence</span>
-<span class='fu'>ast</span>(<span class='fl'>1</span> * <span class='fl'>2</span> + <span class='fl'>3</span>)</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`+`</span><span> 
+<span class='fu'>ast</span><span class='op'>(</span><span class='fl'>1</span> <span class='op'>*</span> <span class='fl'>2</span> <span class='op'>+</span> <span class='fl'>3</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`+`</span><span> 
 #&gt; ├─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`*`</span><span> 
 #&gt; │ ├─1 
 #&gt; │ └─2 
-#&gt; └─3 </div><div class='input'><span class='fu'>ast</span>(!<span class='fl'>1</span> + !<span class='fl'>1</span>)</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`!`</span><span> 
+#&gt; └─3 </div><div class='input'><span class='fu'>ast</span><span class='op'>(</span><span class='op'>!</span><span class='fl'>1</span> <span class='op'>+</span> <span class='op'>!</span><span class='fl'>1</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; </span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`!`</span><span> 
 #&gt; └─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`+`</span><span> 
 #&gt;   ├─1 
 #&gt;   └─</span><span style='color: #BBBB00;'>█</span><span>─</span><span style='color: #BB00BB;font-weight: bold;'>`!`</span><span> 
@@ -210,7 +224,7 @@ use <code>!!</code> to unquote if you have already captured an expression object
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.5.1.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
 </div>
 
       </footer>
