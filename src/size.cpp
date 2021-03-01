@@ -34,6 +34,19 @@ bool is_namespace(cpp11::environment env) {
   return Rf_findVarInFrame3(env, Rf_install(".__NAMESPACE__."), FALSE) != R_UnboundValue;
 }
 
+static inline
+bool is_linked_list(SEXP x) {
+  switch (TYPEOF(x)) {
+  case DOTSXP:
+  case LISTSXP:
+  case LANGSXP:
+    return true;
+  default:
+    return false;
+  }
+}
+
+
 // R equivalent
 // https://github.com/wch/r-source/blob/master/src/library/utils/src/size.c#L41
 
@@ -133,18 +146,24 @@ double obj_size_tree(SEXP x,
   // Linked lists
   case DOTSXP:
   case LISTSXP:
-  case LANGSXP:
-    if (x == R_MissingArg) // Needed for DOTSXP
+  case LANGSXP: {
+    if (x == R_MissingArg) { // Needed for DOTSXP
       break;
+    }
 
-    for(SEXP cons = x; cons != R_NilValue; cons = CDR(cons)) {
-      if (cons != x)
+    SEXP cons = x;
+    for (; is_linked_list(cons); cons = CDR(cons)) {
+      if (cons != x) {
         size += sizeof_node;
+      }
       size += obj_size_tree(TAG(cons), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
       size += obj_size_tree(CAR(cons), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
     }
+    // Handle non-nil CDRs
+    size += obj_size_tree(cons, base_env, sizeof_node, sizeof_vector, seen, depth + 1);
 
     break;
+  }
 
   case BCODESXP:
     size += obj_size_tree(TAG(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
