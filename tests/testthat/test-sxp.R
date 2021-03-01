@@ -113,3 +113,15 @@ test_that("can expand altrep", {
     test_path("test-sxp-altrep.txt")
   )
 })
+
+test_that("can inspect cons cells", {
+  cell <- new_node(1, 2)
+  non_nil_terminated_list <- new_node(1, new_node(2, 3))
+  expect_known_output(
+    {
+      print(sxp(cell))
+      print(sxp(non_nil_terminated_list))
+    },
+    test_path("test-sxp-cons-cells.txt")
+  )
+})

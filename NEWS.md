@@ -1,6 +1,6 @@
 # lobstr (development version)
 
-* `obj_size()` supports non-nil terminated pairlists.
+* `obj_size()` and `sxp()` now support non-nil terminated pairlists.
 
 * `obj_sizes()` no longer returns NA for objects larger than 2^31 bytes (#45)
 

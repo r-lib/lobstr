@@ -3,6 +3,7 @@
 #include <cpp11/list.hpp>
 #include <Rversion.h>
 #include <set>
+#include "utils.h"
 
 [[cpp11::register]]
 double v_size(double n, int element_size) {
@@ -32,18 +33,6 @@ double v_size(double n, int element_size) {
 
 bool is_namespace(cpp11::environment env) {
   return Rf_findVarInFrame3(env, Rf_install(".__NAMESPACE__."), FALSE) != R_UnboundValue;
-}
-
-static inline
-bool is_linked_list(SEXP x) {
-  switch (TYPEOF(x)) {
-  case DOTSXP:
-  case LISTSXP:
-  case LANGSXP:
-    return true;
-  default:
-    return false;
-  }
 }
 
 

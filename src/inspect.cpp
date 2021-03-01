@@ -225,11 +225,13 @@ SEXP obj_children_(
         break;
       }
     case DOTSXP:
-    case LISTSXP:
-      if (x == R_MissingArg) // Needed for DOTSXP
+    case LISTSXP: {
+      if (x == R_MissingArg) { // Needed for DOTSXP
         break;
+      }
 
-      for(SEXP cons = x; cons != R_NilValue; cons = CDR(cons)) {
+      SEXP cons = x;
+      for (; is_linked_list(cons); cons = CDR(cons)) {
         SEXP tag = TAG(cons);
         if (TYPEOF(tag) == NILSXP) {
           recurse(&children, seen, "", CAR(cons), max_depth, expand);
@@ -241,7 +243,12 @@ SEXP obj_children_(
           recurse(&children, seen, "_car", CAR(cons), max_depth, expand);
         }
       }
+      if (cons != R_NilValue) {
+        recurse(&children, seen, "_cdr", cons, max_depth, expand);
+      }
+
       break;
+    }
 
     case BCODESXP:
       if (!expand.bytecode) {
