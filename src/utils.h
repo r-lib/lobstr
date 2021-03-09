@@ -18,3 +18,18 @@ bool is_linked_list(SEXP x) {
     return false;
   }
 }
+
+// Rf_length() crashes on flexible cells
+static inline
+R_xlen_t sxp_length(SEXP x) {
+  if (TYPEOF(x) == LISTSXP) {
+    R_xlen_t i = 0;
+    while (is_linked_list(x)) {
+      ++i;
+      x = CDR(x);
+    }
+    return i;
+  } else {
+    return Rf_length(x);
+  }
+}
