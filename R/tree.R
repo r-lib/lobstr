@@ -60,11 +60,11 @@ tree <- function(el,
                  ...,
                  index_arraylike = TRUE,
                  max_depth = Inf,
-                 val_printer = crayon::blue,
-                 class_printer = crayon::silver,
-                 show_attributes = FALSE,
-                 char_vertical = "\u2502",
-                 char_horizontal = "\u2500",
+  val_printer = crayon::blue,
+  class_printer = crayon::silver,
+  show_attributes = FALSE,
+  char_vertical = "\u2502",
+  char_horizontal = "\u2500",
                  char_branch = "\u251c",
                  char_final_branch = "\u2514",
                  char_vertical_attr = "\u250A",
@@ -88,27 +88,12 @@ tree <- function(el,
   )
 }
 
-#' Tree printing internal function
-#'
-#' This is the internal function for the main tree printing code. It wraps the
-#' static options arguments from the user-facing `tree()` into a single opts
-#' list to make recusive calls cleaner. It also has arguments that as it is
-#' called successively but the end-user shouldn't see or use.
-#'
-#' @param el Current element to be printed
-#' @param opts All the arguments besides `el` from \code{\link{tree}} that
-#'   effect output
-#' @param branch_chars Character vector of branch symbols that are concatenated
-#'   together to form current element/row's branch structure when catted to
-#'   console. There are a few instances where these symbols are not purely
-#'   concatenated involving mostly last children. This is the most tricky logic
-#'   to follow in the function
-#' @param el_id Id of current element (if desired)
-#' @param attr_mode Is this element an attribute element of the parent? This
-#'   results in some different printing styles
-#'
-#' @return NULL
-#'
+# Tree printing internal function
+#
+# This is the internal function for the main tree printing code. It wraps the
+# static options arguments from the user-facing `tree()` into a single opts
+# list to make recursive calls cleaner. It also has arguments that as it is
+# called successively but the end-user shouldn't see or use.
 tree_internal <- function(x,
                           x_id = NULL,
                           branch_hist = character(0),
