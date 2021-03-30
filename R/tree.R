@@ -1,0 +1,271 @@
+#' Pretty tree-like object printing
+#'
+#' A cleaner and easier to read replacement for `str` for nested list-like objects
+#'
+#' @param x A tree like object (list, etc.)
+#' @param index_arraylike Should children of containers without names have
+#'   indices used as stand-in?
+#' @param max_depth How far down the tree structure should be printed. E.g. `1`
+#'   means only direct children of the root element will be shown. Useful for
+#'   very deep lists.
+#' @param val_printer Function that values get passed to before being drawn to
+#'   screen. Can be used to color or generally style output.
+#' @param class_printer Same as `val_printer` but for the the class types of
+#'   non-atomic tree elements.
+#' @param show_attributes Should attributes be printed as a child of the list or
+#'   avoided?
+#' @param char_vertical,char_horizontal,char_branch,char_final_branch,char_vertical_attr,char_horizontal_attr
+#'   Unicode characters used to construct the tree. Typically you wont want to
+#'   change these.
+#'
+#' @return console output of structure
+#'
+#' @examples
+#'
+#' x <- list(
+#' list(id = "a",
+#'      val = 2),
+#' list(id = "b",
+#'      val = 1,
+#'      children = list(
+#'        list(id = "b1",
+#'             val = 2.5),
+#'        list(id = "b2",
+#'             val = 8,
+#'             children = list(
+#'               list(id = "b21",
+#'                    val = 4)
+#'             )))),
+#' list(id = "c",
+#'      val = 8,
+#'      children = list(
+#'        list(id = "c1"),
+#'        list(id = "c2",
+#'             val = 1))))
+#'
+#' # Basic usage
+#' tree(x)
+#'
+#' # Even cleaner output can be achieved by not printing indices
+#' tree(x, index_arraylike = FALSE)
+#'
+#' # Limit depth if object is potentially very large
+#' tree(x, max_depth = 2)
+#'
+#' # You can customize how the values and classes are printed if desired
+#' tree(x, val_printer = function(x){paste0("_", x, "_")})
+#'
+#' @export
+tree <- function(el,
+                 ...,
+                 index_arraylike = TRUE,
+                 max_depth = Inf,
+                 val_printer = crayon::blue,
+                 class_printer = crayon::silver,
+                 show_attributes = FALSE,
+                 char_vertical = "\u2502",
+                 char_horizontal = "\u2500",
+                 char_branch = "\u251c",
+                 char_final_branch = "\u2514",
+                 char_vertical_attr = "\u250A",
+                 char_horizontal_attr = "\u2504"){
+  # Pack up the unchanging arguments into a list and send to tree_internal
+  tree_internal(
+    el,
+    opts = list(
+      index_arraylike = index_arraylike,
+      max_depth = max_depth,
+      val_printer = val_printer,
+      class_printer = class_printer,
+      show_attributes = show_attributes,
+      vertical = char_vertical,
+      horizontal = char_horizontal,
+      branch = char_branch,
+      final_branch = char_final_branch,
+      vertical_attr = char_vertical_attr,
+      horizontal_attr = char_horizontal_attr
+    )
+  )
+}
+
+#' Tree printing internal function
+#'
+#' This is the internal function for the main tree printing code. It wraps the
+#' static options arguments from the user-facing `tree()` into a single opts
+#' list to make recusive calls cleaner. It also has arguments that as it is
+#' called successively but the end-user shouldn't see or use.
+#'
+#' @param el Current element to be printed
+#' @param opts All the arguments besides `el` from \code{\link{tree}} that
+#'   effect output
+#' @param branch_chars Character vector of branch symbols that are concatenated
+#'   together to form current element/row's branch structure when catted to
+#'   console. There are a few instances where these symbols are not purely
+#'   concatenated involving mostly last children. This is the most tricky logic
+#'   to follow in the function
+#' @param el_id Id of current element (if desired)
+#' @param attr_mode Is this element an attribute element of the parent? This
+#'   results in some different printing styles
+#'
+#' @return NULL
+#'
+tree_internal <- function(x,
+                          x_id = NULL,
+                          branch_hist = character(0),
+                          opts,
+                          attr_mode = FALSE){
+
+  depth <- length(branch_hist)
+
+  # Build branch string from branch history
+  # Start with empty spaces
+  branch_chars <- rep_len("  ", depth)
+
+  # Store history in short name so logic is more legible
+  branch_chars[branch_hist == "child"] <- paste0(opts$vertical, " ")
+  branch_chars[branch_hist == "pre-attrs"] <- paste0(opts$vertical_attr, " ")
+
+  # Next update the final element (aka the current step) with the correct branch type
+  last_step <- branch_hist[depth]
+  root_node <- length(branch_hist) == 0
+  branch_chars[depth] <- if(root_node) "" else paste0(
+    if(grepl("last", last_step)) opts$final_branch else opts$branch,
+    if(grepl("attribute", last_step)) opts$horizontal_attr else opts$horizontal
+  )
+
+  # Build label
+  label <- paste0(
+    x_id,
+    if(!is.null(x_id) && x_id != "") ":",
+    tree_label(x, class_printer = opts$class_printer, val_printer = opts$val_printer)
+  )
+
+  # Do the actual printing to the console
+  cat("\n", paste(branch_chars, collapse = ""), label, sep = "")
+
+  x_attributes <- attributes(x)
+  if(attr_mode){
+    # Filter out "names" attribute as this is already shown by tree
+    x_attributes <- x_attributes[names(x_attributes) != "names"]
+  }
+  has_attributes <- length(x_attributes) > 0 & opts$show_attributes
+
+  # ===== Start recursion logic
+  # Turn into a s3 method for recursion
+  if(!is.atomic(x) & depth <= opts$max_depth & !is.function(x) & !is.environment(x)){
+    children <- as.list(x)
+
+    # Traverse children, if any exist
+    n_children <- length(children)
+
+    # If children have names, give them the names
+    for (i in seq_along(children)) {
+      id <- names(x)[i]
+      if(is.null(id) & opts$index_arraylike) id <- i
+
+      child_type <- if(i < n_children){
+        "child"
+      } else if(has_attributes) {
+        "pre-attrs"
+      } else {
+        "last-child"
+      }
+      tree_internal(
+        x = children[[i]],
+        x_id = id,
+        branch_hist = c(branch_hist, child_type),
+        opts = opts
+      )
+    }
+  }
+  # ===== End recursion logic
+
+  # Add any attributes as an "attr" prefixed children at end
+  if(has_attributes){
+    n_attributes <- length(x_attributes)
+    for(i in seq_len(n_attributes)){
+      tree_internal(
+        x = x_attributes[[i]],
+        x_id = crayon::italic(paste0("<attr>", names(x_attributes)[i])),
+        opts = opts,
+        branch_hist = c(branch_hist, paste0(if(i == n_attributes) "last-", "attribute")),
+        attr_mode = TRUE # Let tree know this is an attribute
+      )
+    }
+  }
+}
+
+#' Build element or node label in tree
+#'
+#' These methods control how the value of a given node is printed. New methods
+#' can be added if support is needed for a novel class
+#'
+#' @inheritParams tree
+#'
+#' @export
+tree_label <- function(x, class_printer, val_printer){
+  UseMethod("tree_label")
+}
+
+#' @export
+tree_label.function <- function(x, ...){
+  crayon::italic("function(){...}")
+}
+
+#' @export
+tree_label.environment <- function(x,...){
+  format.default(x)
+}
+
+#' @export
+tree_label.NULL <- function(x,...){
+  "<NULL>"
+}
+
+#' @export
+tree_label.character <- function(x,...){
+  tree_label.default(paste0("\"", x, "\""),...)
+}
+
+
+
+#' @export
+tree_label.default <- function(x, class_printer, val_printer){
+
+  # There are a few psuedo-types that we want different printing behavior for.
+  # Since s3 methods cant differentiate between something like a single
+  # character and a vector of characters we use some logical branching here to
+  # try and use the best printing type for the passed value.
+  is_atomic_value <- is.atomic(x)
+  is_atomic_vec <- is_atomic_value & length(x) != 1
+  is_environment <- is.environment(x)
+
+  if(is_atomic_vec) {
+    # Atomic vectors are truncated to a max of 10 elements and printed inline
+    num_els <- length(x)
+    x <- as.character(x)
+    if(num_els > 10){
+      x <- head(x, 10)
+      x <- c(x, paste0("...(n = ", num_els, ")"))
+    }
+    paste(x, collapse = ",")
+  } else if(is_atomic_value) {
+    # Single length atomics just go through unscathed
+    val_printer(x)
+  } else if(is.function(x)) {
+    # Lots of times function-like functions don't actually trigger the s3 method
+    # for function because they dont have function in their class-list. This
+    # catches those.
+    tree_label.function(x, class_printer, val_printer)
+  } else if(is.environment(x)) {
+    # Environments also tend to have the same trouble as functions. For instance
+    # the srcobject attached to a function's attributes is an environment but
+    # doesn't report as one to s3.
+    tree_label.environment(x)
+  } else {
+    # The "base-case" is simply a list-like object. Here we use curly braces if
+    # it has named elements and print the class name
+    delims <- if(!is.null(names(x))) c("{","}") else c("[", "]")
+    class_printer(paste0(delims[1], class(x)[1], delims[2]))
+  }
+}
