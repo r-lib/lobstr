@@ -17,6 +17,7 @@
 #' @param char_vertical,char_horizontal,char_branch,char_final_branch,char_vertical_attr,char_horizontal_attr
 #'   Unicode characters used to construct the tree. Typically you wont want to
 #'   change these.
+#' @param ... Ignored (used to force use of names)
 #'
 #' @return console output of structure
 #'
@@ -57,18 +58,28 @@
 #'
 #' @export
 tree <- function(el,
-                 ...,
-                 index_arraylike = TRUE,
-                 max_depth = Inf,
+  ...,
+  index_arraylike = TRUE,
+  max_depth = Inf,
   val_printer = crayon::blue,
   class_printer = crayon::silver,
   show_attributes = FALSE,
   char_vertical = "\u2502",
   char_horizontal = "\u2500",
-                 char_branch = "\u251c",
-                 char_final_branch = "\u2514",
-                 char_vertical_attr = "\u250A",
-                 char_horizontal_attr = "\u2504"){
+  char_branch = "\u251c",
+  char_final_branch = "\u2514",
+  char_vertical_attr = "\u250A",
+  char_horizontal_attr = "\u2504"
+){
+  args_in_dots <- list(...)
+  if (length(args_in_dots) != 0) {
+    stop(
+      "Unknown arguments passed to tree: ",
+      paste("\"", names(args_in_docs), "\"", sep = "\n"),
+      "Were these mispecified?"
+    )
+  }
+
   # Pack up the unchanging arguments into a list and send to tree_internal
   tree_internal(
     el,

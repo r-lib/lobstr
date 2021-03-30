@@ -5,7 +5,7 @@
 \title{Pretty tree-like object printing}
 \usage{
 tree(
-  el,
+  x,
   ...,
   index_arraylike = TRUE,
   max_depth = Inf,
@@ -21,6 +21,10 @@ tree(
 )
 }
 \arguments{
+\item{x}{A tree like object (list, etc.)}
+
+\item{...}{Ignored (used to force use of names)}
+
 \item{index_arraylike}{Should children of containers without names have
 indices used as stand-in?}
 
@@ -39,8 +43,6 @@ avoided?}
 
 \item{char_vertical, char_horizontal, char_branch, char_final_branch, char_vertical_attr, char_horizontal_attr}{Unicode characters used to construct the tree. Typically you wont want to
 change these.}
-
-\item{x}{A tree like object (list, etc.)}
 }
 \value{
 console output of structure
