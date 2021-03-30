@@ -57,7 +57,8 @@
 #' tree(x, val_printer = function(x){paste0("_", x, "_")})
 #'
 #' @export
-tree <- function(el,
+tree <- function(
+  x,
   ...,
   index_arraylike = TRUE,
   max_depth = Inf,
@@ -82,7 +83,7 @@ tree <- function(el,
 
   # Pack up the unchanging arguments into a list and send to tree_internal
   tree_internal(
-    el,
+    x,
     opts = list(
       index_arraylike = index_arraylike,
       max_depth = max_depth,
