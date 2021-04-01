@@ -74,11 +74,21 @@ tree <- function(
 ){
   args_in_dots <- list(...)
   if (length(args_in_dots) != 0) {
-    stop(
-      "Unknown arguments passed to tree: ",
-      paste("\"", names(args_in_docs), "\"", sep = "\n"),
-      "Were these mispecified?"
-    )
+    named_args <- names(args_in_dots)[names(args_in_dots) != ""]
+    if(length(named_args) > 0) {
+      warning(
+        "Unknown arguments passed to tree:\n",
+        paste0("   - \"", named_args, "\"", collapse = "\n"),
+        "\nWere these mispecified?"
+      )
+    }
+
+    n_unamed <- sum(!has_name)
+    if(n_unamed != 0) {
+      warning(
+        n_unamed, " unnamed arguments passed to tree. These are ignored."
+      )
+    }
   }
 
   # Pack up the unchanging arguments into a list and send to tree_internal
