@@ -159,7 +159,7 @@ tree_internal <- function(x,
   )
 
   # Do the actual printing to the console
-  cat("\n", paste(branch_chars, collapse = ""), label, sep = "")
+  cat(paste(branch_chars, collapse = ""), label, "\n", sep = "")
 
   x_attributes <- attributes(x)
   if(attr_mode){
