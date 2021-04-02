@@ -12,6 +12,7 @@ tree(
   val_printer = crayon::blue,
   class_printer = crayon::silver,
   show_attributes = FALSE,
+  remove_newlines = TRUE,
   char_vertical = "│",
   char_horizontal = "─",
   char_branch = "├",
@@ -41,6 +42,11 @@ non-atomic tree elements.}
 \item{show_attributes}{Should attributes be printed as a child of the list or
 avoided?}
 
+\item{remove_newlines}{Should character strings with newlines in them have the
+newlines removed? Not doing so will mess up the vertical flow of the tree
+but may be desired for some use-cases if newline structure is important to
+understanding object state.}
+
 \item{char_vertical, char_horizontal, char_branch, char_final_branch, char_vertical_attr, char_horizontal_attr}{Unicode characters used to construct the tree. Typically you wont want to
 change these.}
 }
@@ -48,7 +54,8 @@ change these.}
 console output of structure
 }
 \description{
-A cleaner and easier to read replacement for \code{str} for nested list-like objects
+A cleaner and easier to read replacement for \code{str} for nested list-like
+objects
 }
 \examples{
 

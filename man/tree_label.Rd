@@ -4,16 +4,21 @@
 \alias{tree_label}
 \title{Build element or node label in tree}
 \usage{
-tree_label(x, class_printer, val_printer)
+tree_label(x, val_printer, class_printer, remove_newlines)
 }
 \arguments{
 \item{x}{A tree like object (list, etc.)}
 
+\item{val_printer}{Function that values get passed to before being drawn to
+screen. Can be used to color or generally style output.}
+
 \item{class_printer}{Same as \code{val_printer} but for the the class types of
 non-atomic tree elements.}
 
-\item{val_printer}{Function that values get passed to before being drawn to
-screen. Can be used to color or generally style output.}
+\item{remove_newlines}{Should character strings with newlines in them have the
+newlines removed? Not doing so will mess up the vertical flow of the tree
+but may be desired for some use-cases if newline structure is important to
+understanding object state.}
 }
 \description{
 These methods control how the value of a given node is printed. New methods

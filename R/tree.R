@@ -1,6 +1,7 @@
 #' Pretty tree-like object printing
 #'
-#' A cleaner and easier to read replacement for `str` for nested list-like objects
+#' A cleaner and easier to read replacement for `str` for nested list-like
+#' objects
 #'
 #' @param x A tree like object (list, etc.)
 #' @param index_arraylike Should children of containers without names have
@@ -14,9 +15,14 @@
 #'   non-atomic tree elements.
 #' @param show_attributes Should attributes be printed as a child of the list or
 #'   avoided?
-#' @param char_vertical,char_horizontal,char_branch,char_final_branch,char_vertical_attr,char_horizontal_attr
-#'   Unicode characters used to construct the tree. Typically you wont want to
-#'   change these.
+#' @param remove_newlines Should character strings with newlines in them have the
+#'   newlines removed? Not doing so will mess up the vertical flow of the tree
+#'   but may be desired for some use-cases if newline structure is important to
+#'   understanding object state.
+#' @param
+#' char_vertical,char_horizontal,char_branch,char_final_branch,char_vertical_attr,char_horizontal_attr
+#' Unicode characters used to construct the tree. Typically you wont want to
+#' change these.
 #' @param ... Ignored (used to force use of names)
 #'
 #' @return console output of structure
@@ -65,6 +71,7 @@ tree <- function(
   val_printer = crayon::blue,
   class_printer = crayon::silver,
   show_attributes = FALSE,
+  remove_newlines = TRUE,
   char_vertical = "\u2502",
   char_horizontal = "\u2500",
   char_branch = "\u251c",
@@ -100,6 +107,7 @@ tree <- function(
       val_printer = val_printer,
       class_printer = class_printer,
       show_attributes = show_attributes,
+      remove_newlines = remove_newlines,
       vertical = char_vertical,
       horizontal = char_horizontal,
       branch = char_branch,
@@ -144,7 +152,10 @@ tree_internal <- function(x,
   label <- paste0(
     x_id,
     if(!is.null(x_id) && x_id != "") ":",
-    tree_label(x, class_printer = opts$class_printer, val_printer = opts$val_printer)
+    tree_label(x,
+               class_printer = opts$class_printer,
+               val_printer = opts$val_printer,
+               remove_newlines = opts$remove_newlines)
   )
 
   # Do the actual printing to the console
@@ -210,7 +221,7 @@ tree_internal <- function(x,
 #' @inheritParams tree
 #'
 #' @export
-tree_label <- function(x, class_printer, val_printer){
+tree_label <- function(x, val_printer, class_printer, remove_newlines){
   UseMethod("tree_label")
 }
 
@@ -230,35 +241,60 @@ tree_label.NULL <- function(x,...){
 }
 
 #' @export
-tree_label.character <- function(x,...){
+tree_label.character <- function(x, remove_newlines, ...){
+
+  # Get rid of new-line so they don't break tree flow
+  if(remove_newlines){
+    x <- gsub("\\n", replacement = " ", x = x, perl = TRUE)
+  }
+
+  # Shorten strings if needed
+  max_standalone_length <- 35
+  max_vec_length <- 25
+  max_length <- if(length(x) == 1) max_standalone_length else max_vec_length
+  x <- ifelse(
+    nchar(x) > max_length,
+    # Since we add an elipses we need to take a bit more than the max length
+    # off. The gsub adds elipses but also makes sure we dont awkwardly end on
+    # a space.
+    gsub(x = substr(x, start = 1, max_length - 3),
+         pattern = "\\s*$",
+         replacement = "...",
+         perl = TRUE),
+    x
+  )
+
   tree_label.default(paste0("\"", x, "\""),...)
 }
 
 
 
 #' @export
-tree_label.default <- function(x, class_printer, val_printer){
+tree_label.default <- function(x, val_printer, class_printer, remove_newlines){
 
   # There are a few psuedo-types that we want different printing behavior for.
   # Since s3 methods cant differentiate between something like a single
   # character and a vector of characters we use some logical branching here to
   # try and use the best printing type for the passed value.
   is_atomic_value <- is.atomic(x)
-  is_atomic_vec <- is_atomic_value & length(x) != 1
   is_environment <- is.environment(x)
 
-  if(is_atomic_vec) {
-    # Atomic vectors are truncated to a max of 10 elements and printed inline
+  if(is_atomic_value) {
+
     num_els <- length(x)
-    x <- as.character(x)
-    if(num_els > 10){
-      x <- head(x, 10)
-      x <- c(x, paste0("...(n = ", num_els, ")"))
+    if(num_els > 1) {
+      # Atomic vectors are truncated to a max of 10 elements and printed inline
+      x <- as.character(x)
+      if(num_els > 10){
+        x <- head(x, 10)
+        x <- c(x, paste0("...(n = ", num_els, ")"))
+      }
+      x <- paste(x, collapse = ",")
     }
-    paste(x, collapse = ",")
-  } else if(is_atomic_value) {
+
     # Single length atomics just go through unscathed
     val_printer(x)
+
   } else if(is.function(x)) {
     # Lots of times function-like functions don't actually trigger the s3 method
     # for function because they dont have function in their class-list. This

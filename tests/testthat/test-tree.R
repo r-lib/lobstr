@@ -195,4 +195,49 @@ test_that("Handles elements with a single element and attributes well", {
   )
 })
 
+test_that("Large and multiline strings are handled gracefully", {
+  long_strings <- list(
+    "normal string" = "first element",
+    "really long string" = paste(rep(letters, 4), collapse = ""),
+    "vec of long strings" = c(
+      "a long\nand multi\nline string element",
+      "a fine length",
+      "another long\nand also multi\nline string element"
+    ))
+
+  # No truncation of first string
+  expect_output(
+    tree(long_strings),
+    regexp = 'normal string:"first element"',
+    fixed = TRUE
+  )
+
+  # Really long single string is truncated and elipsesed
+  expect_output(
+    tree(long_strings),
+    regexp = 'really long string:"abcdefghijklmnopqrstuvwxyzabcdef..."',
+    fixed = TRUE
+  )
+
+  # Short string inside vector with long strings is not truncated
+  expect_output(
+    tree(long_strings),
+    regexp = ',"a fine length",',
+    fixed = TRUE
+  )
+
+  # But it's long-siblings are
+  expect_output(
+    tree(long_strings),
+    regexp = '"another long and also..."',
+    fixed = TRUE
+  )
+
+  # Newline removal can be disabled
+  expect_output(
+    tree(long_strings, remove_newlines = FALSE),
+    regexp = '"a long\n',
+    fixed = TRUE
+  )
+})
 
