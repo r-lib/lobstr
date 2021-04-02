@@ -250,7 +250,7 @@ tree_label.character <- function(x, remove_newlines, ...){
 
   # Shorten strings if needed
   max_standalone_length <- 35
-  max_vec_length <- 25
+  max_vec_length <- 15
   max_length <- if(length(x) == 1) max_standalone_length else max_vec_length
   x <- ifelse(
     nchar(x) > max_length,
