@@ -1,4 +1,0 @@
-█ [1:0x001] <chr> 
-├─[2:0x002] <string: "string"> 
-├─[2:0x002] 
-└─[3:0x003] <string: "new string"> 

@@ -1,19 +1,14 @@
-context("test-ast.R")
-
 test_that("quosures print same as expressions", {
   expect_equal(ast_tree(quo(x)), ast_tree(expr(x)))
 })
 
 test_that("can print complex expression", {
   skip_on_os("windows")
-  skip_on_cran()
 
   x <- expr(function(x) if (x > 1) f(y$x, "x", g()))
-  expect_known_output(
-    ast(!!x),
-    "test-ast-fancy.txt",
-    print = TRUE
-  )
+  expect_snapshot({
+    ast(!!x)
+  })
 })
 
 test_that("can print complex expression without unicode", {
@@ -21,11 +16,9 @@ test_that("can print complex expression without unicode", {
   on.exit(options(old))
 
   x <- expr(function(x) if (x > 1) f(y$x, "x", g()))
-  expect_known_output(
-    ast(!!x),
-    "test-ast-simple.txt",
-    print = TRUE
-  )
+  expect_snapshot({
+    ast(!!x)
+  })
 })
 
 test_that("can print scalar expressions nicely", {
@@ -39,10 +32,8 @@ test_that("can print scalar expressions nicely", {
     character = "a",
     complex = 1i
   ))
-  expect_known_output(
-    ast(!!x),
-    "test-ast-scalar.txt",
-    print = TRUE
-  )
+  expect_snapshot({
+    ast(!!x)
+  })
 })
 
