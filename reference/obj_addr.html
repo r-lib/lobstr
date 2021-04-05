@@ -90,7 +90,7 @@ environment, and character vector x point to." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -104,7 +104,7 @@ environment, and character vector x point to." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/lobstr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -161,18 +161,18 @@ references to an object.</p>
 </div><div class='output co'>#&gt; [1] FALSE</div><div class='input'>
 <span class='va'>y</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/stats/Uniform.html'>runif</a></span><span class='op'>(</span><span class='fl'>10</span><span class='op'>)</span>
 <span class='fu'>obj_addr</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "0x7f8f1211b968"</div><div class='input'><span class='va'>z</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>y</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "0x7fb7353bc808"</div><div class='input'><span class='va'>z</span> <span class='op'>&lt;-</span> <span class='fu'><a href='https://rdrr.io/r/base/list.html'>list</a></span><span class='op'>(</span><span class='va'>y</span>, <span class='va'>y</span><span class='op'>)</span>
 <span class='fu'>obj_addrs</span><span class='op'>(</span><span class='va'>z</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "0x7f8f1211b968" "0x7f8f1211b968"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "0x7fb7353bc808" "0x7fb7353bc808"</div><div class='input'>
 <span class='va'>y</span><span class='op'>[</span><span class='fl'>2</span><span class='op'>]</span> <span class='op'>&lt;-</span> <span class='fl'>1.0</span>
 <span class='fu'>obj_addrs</span><span class='op'>(</span><span class='va'>z</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "0x7f8f1211b968" "0x7f8f1211b968"</div><div class='input'><span class='fu'>obj_addr</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "0x7f8f1211d0c8"</div><div class='input'>
+</div><div class='output co'>#&gt; [1] "0x7fb7353bc808" "0x7fb7353bc808"</div><div class='input'><span class='fu'>obj_addr</span><span class='op'>(</span><span class='va'>y</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "0x7fb7353bd518"</div><div class='input'>
 <span class='co'># The address of an object is different every time you create it:</span>
 <span class='fu'>obj_addr</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "0x7f8f10d70590"</div><div class='input'><span class='fu'>obj_addr</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "0x7f8f10c6a400"</div><div class='input'><span class='fu'>obj_addr</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; [1] "0x7f8f0e2f30b0"</div></pre>
+</div><div class='output co'>#&gt; [1] "0x7fb735ea4ac0"</div><div class='input'><span class='fu'>obj_addr</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "0x7fb7357dea60"</div><div class='input'><span class='fu'>obj_addr</span><span class='op'>(</span><span class='fl'>1</span><span class='op'>:</span><span class='fl'>10</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; [1] "0x7fb7355e4580"</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">

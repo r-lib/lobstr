@@ -91,7 +91,7 @@ variations." />
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fas fa fas fa-home fa-lg"></span>
+    <span class="fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -105,7 +105,7 @@ variations." />
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/r-lib/lobstr/">
-    <span class="fab fa fab fa-github fa-lg"></span>
+    <span class="fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -140,14 +140,14 @@ variations.</p>
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
     <pre class="examples"><div class='input'><span class='va'>prev_m</span> <span class='op'>&lt;-</span> <span class='fl'>0</span>; <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>mem_used</span><span class='op'>(</span><span class='op'>)</span>; <span class='va'>m</span> <span class='op'>-</span> <span class='va'>prev_m</span>
-</div><div class='output co'>#&gt; 50,919,336 B</div><div class='input'>
+</div><div class='output co'>#&gt; 52,321,376 B</div><div class='input'>
 <span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>1e6</span>
 <span class='va'>prev_m</span> <span class='op'>&lt;-</span> <span class='va'>m</span>; <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>mem_used</span><span class='op'>(</span><span class='op'>)</span>; <span class='va'>m</span> <span class='op'>-</span> <span class='va'>prev_m</span>
-</div><div class='output co'>#&gt; 163,224 B</div><div class='input'><span class='fu'><a href='obj_size.html'>obj_size</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
+</div><div class='output co'>#&gt; 178,872 B</div><div class='input'><span class='fu'><a href='obj_size.html'>obj_size</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 </div><div class='output co'>#&gt; 680 B</div><div class='input'>
 <span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
 <span class='va'>prev_m</span> <span class='op'>&lt;-</span> <span class='va'>m</span>; <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>mem_used</span><span class='op'>(</span><span class='op'>)</span>; <span class='va'>m</span> <span class='op'>-</span> <span class='va'>prev_m</span>
-</div><div class='output co'>#&gt; 15,192 B</div><div class='input'>
+</div><div class='output co'>#&gt; 14,624 B</div><div class='input'>
 <span class='va'>prev_m</span> <span class='op'>&lt;-</span> <span class='va'>m</span>; <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>mem_used</span><span class='op'>(</span><span class='op'>)</span>; <span class='va'>m</span> <span class='op'>-</span> <span class='va'>prev_m</span>
 </div><div class='output co'>#&gt; 464 B</div></pre>
   </div>
