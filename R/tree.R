@@ -90,7 +90,6 @@ tree <- function(
 
   ellipsis::check_dots_empty()
 
-  n_elements_printed <- 0
   # Pack up the unchanging arguments into a list and send to tree_internal
   tree_internal(
     x,
@@ -120,16 +119,17 @@ tree <- function(
 # static options arguments from the user-facing `tree()` into a single opts
 # list to make recursive calls cleaner. It also has arguments that as it is
 # called successively but the end-user shouldn't see or use.
-tree_internal <- function(x,
-                          x_id = NULL,
-                          branch_hist = character(0),
-                          opts,
-                          attr_mode = FALSE){
-
-  calling_env <- caller_env()
-  calling_env$n_elements_printed <- calling_env$n_elements_printed + 1
+tree_internal <- function(
+  x,
+  x_id = NULL,
+  branch_hist = character(0),
+  opts,
+  attr_mode = FALSE,
+  counter_env = rlang::new_environment(data = list(n_elements_printed = 0))
+) {
+  counter_env$n_elements_printed <- counter_env$n_elements_printed + 1
   # Stop if we've reached the max number of times printed desired
-  if (calling_env$n_elements_printed > opts$max_length){
+  if (counter_env$n_elements_printed > opts$max_length) {
     return(NULL)
   }
 
@@ -197,7 +197,8 @@ tree_internal <- function(x,
         x = children[[i]],
         x_id = id,
         branch_hist = c(branch_hist, child_type),
-        opts = opts
+        opts = opts,
+        counter_env = counter_env
       )
     }
   }
@@ -206,13 +207,14 @@ tree_internal <- function(x,
   # Add any attributes as an "attr" prefixed children at end
   if (has_attributes){
     n_attributes <- length(x_attributes)
-    for(i in seq_len(n_attributes)){
+    for (i in seq_len(n_attributes)) {
       Recall(
         x = x_attributes[[i]],
         x_id = crayon::italic(paste0("<attr>", names(x_attributes)[i])),
         opts = opts,
         branch_hist = c(branch_hist, paste0(if (i == n_attributes) "last-", "attribute")),
-        attr_mode = TRUE # Let tree know this is an attribute
+        attr_mode = TRUE, # Let tree know this is an attribute
+        counter_env = counter_env
       )
     }
   }
