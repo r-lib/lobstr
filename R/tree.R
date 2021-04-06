@@ -91,7 +91,7 @@ tree <- function(
   ellipsis::check_dots_empty()
 
   # Pack up the unchanging arguments into a list and send to tree_internal
-  tree_internal(
+  termination_type <- tree_internal(
     x,
     opts = list(
       index_unnamed = index_unnamed,
@@ -109,6 +109,9 @@ tree <- function(
       horizontal_attr = char_horizontal_attr
     )
   )
+  if(termination_type == "early"){
+    cat("...", "\n")
+  }
 
   invisible(x)
 }
@@ -130,7 +133,7 @@ tree_internal <- function(
   counter_env$n_elements_printed <- counter_env$n_elements_printed + 1
   # Stop if we've reached the max number of times printed desired
   if (counter_env$n_elements_printed > opts$max_length) {
-    return(NULL)
+    return("early")
   }
 
   depth <- length(branch_hist)
@@ -193,13 +196,14 @@ tree_internal <- function(
       } else {
         "last-child"
       }
-      Recall(
+      termination_type <- Recall(
         x = children[[i]],
         x_id = id,
         branch_hist = c(branch_hist, child_type),
         opts = opts,
         counter_env = counter_env
       )
+      if(termination_type == "early") return(termination_type)
     }
   }
   # ===== End recursion logic
@@ -208,7 +212,7 @@ tree_internal <- function(
   if (has_attributes){
     n_attributes <- length(x_attributes)
     for (i in seq_len(n_attributes)) {
-      Recall(
+      termination_type <- Recall(
         x = x_attributes[[i]],
         x_id = crayon::italic(paste0("<attr>", names(x_attributes)[i])),
         opts = opts,
@@ -216,8 +220,11 @@ tree_internal <- function(
         attr_mode = TRUE, # Let tree know this is an attribute
         counter_env = counter_env
       )
+      if(termination_type == "early") return(termination_type)
     }
   }
+  # If all went smoothly we reach here
+  "Normal finish"
 }
 
 #' Build element or node label in tree

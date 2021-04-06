@@ -163,11 +163,7 @@ test_that("Handles elements with a single element and attributes well", {
   expect_snapshot({
     tree(
       list(
-        "first element",
-        structure(
-          "second element",
-          purpose = "show bug"
-        )
+        structure("a", attribute = "b")
       ),
       show_attributes = TRUE
     )

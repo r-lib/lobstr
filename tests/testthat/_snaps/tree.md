@@ -136,10 +136,14 @@
         └─val: 2
     Code
       tree(deep_list, max_length = 0)
+    Output
+      ... 
+    Code
       tree(deep_list, max_length = 2)
     Output
       [list]
       ├─{list}
+      ... 
     Code
       tree(deep_list, max_depth = 1, max_length = 4)
     Output
@@ -147,6 +151,7 @@
       ├─{list}
       │ ├─id: "b"
       │ ├─val: 1
+      ... 
 
 # Missing values are caught and printed properly
 
@@ -208,11 +213,9 @@
 # Handles elements with a single element and attributes well
 
     Code
-      tree(list("first element", structure("second element", purpose = "show bug")),
-      show_attributes = TRUE)
+      tree(list(structure("a", attribute = "b")), show_attributes = TRUE)
     Output
       [list]
-      ├─"first element"
-      └─"second element"
-        └┄<attr>purpose: "show bug"
+      └─"a"
+        └┄<attr>attribute: "b"
 
