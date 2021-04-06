@@ -4,21 +4,23 @@
 #' objects
 #'
 #' @param x A tree like object (list, etc.)
-#' @param index_unnamed Should children of containers without names have
-#'   indices used as stand-in?
+#' @param index_unnamed Should children of containers without names have indices
+#'   used as stand-in?
 #' @param max_depth How far down the tree structure should be printed. E.g. `1`
 #'   means only direct children of the root element will be shown. Useful for
 #'   very deep lists.
+#' @param max_length How many elements should be printed? This is useful in case
+#'   you try and print an object with 100,000 items in it.
 #' @param val_printer Function that values get passed to before being drawn to
 #'   screen. Can be used to color or generally style output.
 #' @param class_printer Same as `val_printer` but for the the class types of
 #'   non-atomic tree elements.
 #' @param show_attributes Should attributes be printed as a child of the list or
 #'   avoided?
-#' @param remove_newlines Should character strings with newlines in them have the
-#'   newlines removed? Not doing so will mess up the vertical flow of the tree
-#'   but may be desired for some use-cases if newline structure is important to
-#'   understanding object state.
+#' @param remove_newlines Should character strings with newlines in them have
+#'   the newlines removed? Not doing so will mess up the vertical flow of the
+#'   tree but may be desired for some use-cases if newline structure is
+#'   important to understanding object state.
 #' @param
 #' char_vertical,char_horizontal,char_branch,char_final_branch,char_vertical_attr,char_horizontal_attr
 #' Unicode characters used to construct the tree. Typically you wont want to
@@ -72,7 +74,8 @@ tree <- function(
   x,
   ...,
   index_unnamed = TRUE,
-  max_depth = Inf,
+  max_depth = 10L,
+  max_length = 1000L,
   val_printer = crayon::blue,
   class_printer = crayon::silver,
   show_attributes = FALSE,
@@ -103,12 +106,14 @@ tree <- function(
     }
   }
 
+  n_elements_printed <- 0
   # Pack up the unchanging arguments into a list and send to tree_internal
   tree_internal(
     x,
     opts = list(
       index_unnamed = index_unnamed,
       max_depth = max_depth,
+      max_length = max_length,
       val_printer = val_printer,
       class_printer = class_printer,
       show_attributes = show_attributes,
@@ -136,6 +141,13 @@ tree_internal <- function(x,
                           branch_hist = character(0),
                           opts,
                           attr_mode = FALSE){
+
+  calling_env <- caller_env()
+  calling_env$n_elements_printed <- calling_env$n_elements_printed + 1
+  # Stop if we've reached the max number of times printed desired
+  if(calling_env$n_elements_printed > opts$max_length){
+    return(NULL)
+  }
 
   depth <- length(branch_hist)
 

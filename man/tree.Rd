@@ -8,7 +8,8 @@ tree(
   x,
   ...,
   index_unnamed = TRUE,
-  max_depth = Inf,
+  max_depth = 10L,
+  max_length = 1000L,
   val_printer = crayon::blue,
   class_printer = crayon::silver,
   show_attributes = FALSE,
@@ -26,12 +27,15 @@ tree(
 
 \item{...}{Ignored (used to force use of names)}
 
-\item{index_unnamed}{Should children of containers without names have
-indices used as stand-in?}
+\item{index_unnamed}{Should children of containers without names have indices
+used as stand-in?}
 
 \item{max_depth}{How far down the tree structure should be printed. E.g. \code{1}
 means only direct children of the root element will be shown. Useful for
 very deep lists.}
+
+\item{max_length}{How many elements should be printed? This is useful in case
+you try and print an object with 100,000 items in it.}
 
 \item{val_printer}{Function that values get passed to before being drawn to
 screen. Can be used to color or generally style output.}
@@ -42,10 +46,10 @@ non-atomic tree elements.}
 \item{show_attributes}{Should attributes be printed as a child of the list or
 avoided?}
 
-\item{remove_newlines}{Should character strings with newlines in them have the
-newlines removed? Not doing so will mess up the vertical flow of the tree
-but may be desired for some use-cases if newline structure is important to
-understanding object state.}
+\item{remove_newlines}{Should character strings with newlines in them have
+the newlines removed? Not doing so will mess up the vertical flow of the
+tree but may be desired for some use-cases if newline structure is
+important to understanding object state.}
 
 \item{char_vertical, char_horizontal, char_branch, char_final_branch, char_vertical_attr, char_horizontal_attr}{Unicode characters used to construct the tree. Typically you wont want to
 change these.}
