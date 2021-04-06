@@ -121,6 +121,8 @@ tree <- function(
       horizontal_attr = char_horizontal_attr
     )
   )
+
+  invisible(x)
 }
 
 # Tree printing internal function
