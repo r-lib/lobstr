@@ -154,7 +154,7 @@ tree_internal <- function(
   # Build label
   label <- paste0(
     x_id,
-    if (!rlang::is_null(x_id) && x_id != "") ":",
+    if (!rlang::is_null(x_id) && x_id != "") ": ",
     tree_label(
       x,
       class_printer = opts$class_printer,
@@ -290,11 +290,13 @@ tree_label.default <- function(x, val_printer, class_printer, remove_newlines){
     if (num_els > 1) {
       # Atomic vectors are truncated to a max of 10 elements and printed inline
       x <- as.character(x)
-      if (num_els > 10){
+      too_long <- num_els > 10
+      if (too_long) {
         x <- head(x, 10)
-        x <- c(x, paste0("...(n = ", num_els, ")"))
+        x <- c(x, "...")
       }
-      x <- paste(x, collapse = ",")
+      x <- paste0("[", paste(x, collapse = ", "), "]")
+      if (too_long) x <- paste0(x, " n:", num_els)
     }
 
     # Single length atomics just go through unscathed
