@@ -170,7 +170,7 @@ tree_internal <- function(x,
   # Build label
   label <- paste0(
     x_id,
-    if(!is.null(x_id) && x_id != "") ":",
+    if(!rlang::is_null(x_id) && x_id != "") ":",
     tree_label(
       x,
       class_printer = opts$class_printer,
@@ -200,7 +200,7 @@ tree_internal <- function(x,
     # If children have names, give them the names
     for (i in seq_along(children)) {
       id <- names(x)[i]
-      if(is.null(id) & opts$index_unnamed) id <- i
+      if(rlang::is_null(id) & opts$index_unnamed) id <- i
 
       child_type <- if(i < n_children){
         "child"
@@ -297,10 +297,8 @@ tree_label.default <- function(x, val_printer, class_printer, remove_newlines){
   # Since s3 methods cant differentiate between something like a single
   # character and a vector of characters we use some logical branching here to
   # try and use the best printing type for the passed value.
-  is_atomic_value <- is.atomic(x)
-  is_environment <- is.environment(x)
 
-  if(is_atomic_value) {
+  if(rlang::is_atomic(x)) {
 
     num_els <- length(x)
     if(num_els > 1) {
@@ -316,12 +314,12 @@ tree_label.default <- function(x, val_printer, class_printer, remove_newlines){
     # Single length atomics just go through unscathed
     val_printer(x)
 
-  } else if(is.function(x)) {
+  } else if(rlang::is_function(x)) {
     # Lots of times function-like functions don't actually trigger the s3 method
     # for function because they dont have function in their class-list. This
     # catches those.
     tree_label.function(x, class_printer, val_printer)
-  } else if(is.environment(x)) {
+  } else if(rlang::is_environment(x)) {
     # Environments also tend to have the same trouble as functions. For instance
     # the srcobject attached to a function's attributes is an environment but
     # doesn't report as one to s3.
@@ -329,7 +327,7 @@ tree_label.default <- function(x, val_printer, class_printer, remove_newlines){
   } else {
     # The "base-case" is simply a list-like object. Here we use curly braces if
     # it has named elements and print the class name
-    delims <- if(!is.null(names(x))) c("{","}") else c("[", "]")
+    delims <- if(!rlang::is_null(names(x))) c("{","}") else c("[", "]")
     class_printer(paste0(delims[1], class(x)[1], delims[2]))
   }
 }
