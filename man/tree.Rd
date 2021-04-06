@@ -7,7 +7,7 @@
 tree(
   x,
   ...,
-  index_arraylike = TRUE,
+  index_unnamed = TRUE,
   max_depth = Inf,
   val_printer = crayon::blue,
   class_printer = crayon::silver,
@@ -26,7 +26,7 @@ tree(
 
 \item{...}{Ignored (used to force use of names)}
 
-\item{index_arraylike}{Should children of containers without names have
+\item{index_unnamed}{Should children of containers without names have
 indices used as stand-in?}
 
 \item{max_depth}{How far down the tree structure should be printed. E.g. \code{1}
@@ -60,31 +60,36 @@ objects
 \examples{
 
 x <- list(
-list(id = "a",
-     val = 2),
-list(id = "b",
-     val = 1,
-     children = list(
-       list(id = "b1",
-            val = 2.5),
-       list(id = "b2",
-            val = 8,
-            children = list(
-              list(id = "b21",
-                   val = 4)
-            )))),
-list(id = "c",
-     val = 8,
-     children = list(
-       list(id = "c1"),
-       list(id = "c2",
-            val = 1))))
+  list(id = "a", val = 2),
+  list(
+    id = "b",
+    val = 1,
+    children = list(
+      list(id = "b1",val = 2.5),
+      list(
+        id = "b2",
+        val = 8,
+        children = list(
+          list(id = "b21", val = 4)
+        )
+      )
+    )
+  ),
+  list(
+    id = "c",
+    val = 8,
+    children = list(
+      list(id = "c1"),
+      list(id = "c2", val = 1)
+    )
+  )
+)
 
 # Basic usage
 tree(x)
 
 # Even cleaner output can be achieved by not printing indices
-tree(x, index_arraylike = FALSE)
+tree(x, index_unnamed = FALSE)
 
 # Limit depth if object is potentially very large
 tree(x, max_depth = 2)

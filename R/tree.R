@@ -4,7 +4,7 @@
 #' objects
 #'
 #' @param x A tree like object (list, etc.)
-#' @param index_arraylike Should children of containers without names have
+#' @param index_unnamed Should children of containers without names have
 #'   indices used as stand-in?
 #' @param max_depth How far down the tree structure should be printed. E.g. `1`
 #'   means only direct children of the root element will be shown. Useful for
@@ -59,7 +59,7 @@
 #' tree(x)
 #'
 #' # Even cleaner output can be achieved by not printing indices
-#' tree(x, index_arraylike = FALSE)
+#' tree(x, index_unnamed = FALSE)
 #'
 #' # Limit depth if object is potentially very large
 #' tree(x, max_depth = 2)
@@ -71,7 +71,7 @@
 tree <- function(
   x,
   ...,
-  index_arraylike = TRUE,
+  index_unnamed = TRUE,
   max_depth = Inf,
   val_printer = crayon::blue,
   class_printer = crayon::silver,
@@ -107,7 +107,7 @@ tree <- function(
   tree_internal(
     x,
     opts = list(
-      index_arraylike = index_arraylike,
+      index_unnamed = index_unnamed,
       max_depth = max_depth,
       val_printer = val_printer,
       class_printer = class_printer,
@@ -186,7 +186,7 @@ tree_internal <- function(x,
     # If children have names, give them the names
     for (i in seq_along(children)) {
       id <- names(x)[i]
-      if(is.null(id) & opts$index_arraylike) id <- i
+      if(is.null(id) & opts$index_unnamed) id <- i
 
       child_type <- if(i < n_children){
         "child"

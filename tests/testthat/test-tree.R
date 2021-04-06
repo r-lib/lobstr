@@ -28,9 +28,9 @@ test_that("Array-like indices can be shown or hidden", {
       )
     )
 
-    tree(nested_lists, index_arraylike = TRUE)
+    tree(nested_lists, index_unnamed = TRUE)
 
-    tree(nested_lists, index_arraylike = FALSE)
+    tree(nested_lists, index_unnamed = FALSE)
   })
 
 })

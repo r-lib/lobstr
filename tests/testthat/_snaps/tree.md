@@ -5,7 +5,7 @@
         list(id = "b1", val = 2.5), list(id = "b2", val = 8, children = list(list(id = "b21",
           val = 4))))), list(id = "c", val = 8, children = list(list(id = "c1"), list(
         id = "c2", val = 1))))
-      tree(nested_lists, index_arraylike = TRUE)
+      tree(nested_lists, index_unnamed = TRUE)
     Output
       [list]
       ├─1:{list}
@@ -35,7 +35,7 @@
             ├─id:"c2"
             └─val:1
     Code
-      tree(nested_lists, index_arraylike = FALSE)
+      tree(nested_lists, index_unnamed = FALSE)
     Output
       [list]
       ├─{list}
