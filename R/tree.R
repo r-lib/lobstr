@@ -166,9 +166,8 @@ tree_internal <- function(
     )
   )
 
-  # Do the actual printing to the console
-  cat(paste(branch_chars, collapse = ""), label, "\n", sep = "")
-
+  # Figure out how many children we have (plus attributes if they are being
+  # printed) so we can setup how to proceed
   x_attributes <- attributes(x)
   if (attr_mode){
     # Filter out "names" attribute as this is already shown by tree
@@ -176,9 +175,21 @@ tree_internal <- function(
   }
   has_attributes <- length(x_attributes) > 0 & opts$show_attributes
 
+  has_children <- has_attributes | length(x) > 1
+  max_depth_reached <- depth >= opts$max_depth & has_children
+
+  # Do the actual printing to the console with an optional ellipses to indicate
+  # we've reached the max depth and won't recurse more
+  cat(
+    paste(branch_chars, collapse = ""),
+    label,
+    if (max_depth_reached) "...",
+    "\n",
+    sep = ""
+  )
+
   # ===== Start recursion logic
-  # Turn into a s3 method for recursion
-  if (!is.atomic(x) & depth <= opts$max_depth & !is.function(x) & !is.environment(x)){
+  if (!(is.atomic(x) | max_depth_reached | is.function(x) | is.environment(x))){
     children <- as.list(x)
 
     # Traverse children, if any exist

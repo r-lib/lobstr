@@ -15,10 +15,10 @@ screen. Can be used to color or generally style output.}
 \item{class_printer}{Same as \code{val_printer} but for the the class types of
 non-atomic tree elements.}
 
-\item{remove_newlines}{Should character strings with newlines in them have the
-newlines removed? Not doing so will mess up the vertical flow of the tree
-but may be desired for some use-cases if newline structure is important to
-understanding object state.}
+\item{remove_newlines}{Should character strings with newlines in them have
+the newlines removed? Not doing so will mess up the vertical flow of the
+tree but may be desired for some use-cases if newline structure is
+important to understanding object state.}
 }
 \description{
 These methods control how the value of a given node is printed. New methods

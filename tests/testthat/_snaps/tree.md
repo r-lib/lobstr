@@ -96,13 +96,8 @@
       tree(deep_list, max_depth = 1)
     Output
       [list]
-      ├─{list}
-      │ ├─id: "b"
-      │ ├─val: 1
-      │ └─children: [list]
-      └─{list}
-        ├─id: "a"
-        └─val: 2
+      ├─{list}...
+      └─{list}...
     Code
       tree(deep_list, max_depth = 2)
     Output
@@ -110,9 +105,7 @@
       ├─{list}
       │ ├─id: "b"
       │ ├─val: 1
-      │ └─children: [list]
-      │   ├─{list}
-      │   └─{list}
+      │ └─children: [list]...
       └─{list}
         ├─id: "a"
         └─val: 2
@@ -124,13 +117,8 @@
       │ ├─id: "b"
       │ ├─val: 1
       │ └─children: [list]
-      │   ├─{list}
-      │   │ ├─id: "b1"
-      │   │ └─val: 2.5
-      │   └─{list}
-      │     ├─id: "b2"
-      │     ├─val: 8
-      │     └─children: [list]
+      │   ├─{list}...
+      │   └─{list}...
       └─{list}
         ├─id: "a"
         └─val: 2
@@ -148,10 +136,8 @@
       tree(deep_list, max_depth = 1, max_length = 4)
     Output
       [list]
-      ├─{list}
-      │ ├─id: "b"
-      │ ├─val: 1
-      ... 
+      ├─{list}...
+      └─{list}...
 
 # Missing values are caught and printed properly
 
