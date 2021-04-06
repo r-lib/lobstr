@@ -184,7 +184,7 @@ tree_internal <- function(
     # If children have names, give them the names
     for (i in seq_along(children)) {
       id <- names(x)[i]
-      if (rlang::is_null(id) & opts$index_unnamed) id <- i
+      if ((rlang::is_null(id) || id == "") & opts$index_unnamed) id <- crayon::italic(i)
 
       child_type <- if (i < n_children){
         "child"
