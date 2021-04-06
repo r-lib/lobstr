@@ -30,25 +30,30 @@
 #' @examples
 #'
 #' x <- list(
-#' list(id = "a",
-#'      val = 2),
-#' list(id = "b",
-#'      val = 1,
-#'      children = list(
-#'        list(id = "b1",
-#'             val = 2.5),
-#'        list(id = "b2",
-#'             val = 8,
-#'             children = list(
-#'               list(id = "b21",
-#'                    val = 4)
-#'             )))),
-#' list(id = "c",
-#'      val = 8,
-#'      children = list(
-#'        list(id = "c1"),
-#'        list(id = "c2",
-#'             val = 1))))
+#'   list(id = "a", val = 2),
+#'   list(
+#'     id = "b",
+#'     val = 1,
+#'     children = list(
+#'       list(id = "b1",val = 2.5),
+#'       list(
+#'         id = "b2",
+#'         val = 8,
+#'         children = list(
+#'           list(id = "b21", val = 4)
+#'         )
+#'       )
+#'     )
+#'   ),
+#'   list(
+#'     id = "c",
+#'     val = 8,
+#'     children = list(
+#'       list(id = "c1"),
+#'       list(id = "c2", val = 1)
+#'     )
+#'   )
+#' )
 #'
 #' # Basic usage
 #' tree(x)
@@ -152,10 +157,12 @@ tree_internal <- function(x,
   label <- paste0(
     x_id,
     if(!is.null(x_id) && x_id != "") ":",
-    tree_label(x,
-               class_printer = opts$class_printer,
-               val_printer = opts$val_printer,
-               remove_newlines = opts$remove_newlines)
+    tree_label(
+      x,
+      class_printer = opts$class_printer,
+      val_printer = opts$val_printer,
+      remove_newlines = opts$remove_newlines
+    )
   )
 
   # Do the actual printing to the console
