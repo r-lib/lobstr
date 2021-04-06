@@ -90,7 +90,7 @@ tree <- function(
   args_in_dots <- list(...)
   if (length(args_in_dots) != 0) {
     named_args <- names(args_in_dots)[names(args_in_dots) != ""]
-    if(length(named_args) > 0) {
+    if (length(named_args) > 0) {
       warning(
         "Unknown arguments passed to tree:\n",
         paste0("   - \"", named_args, "\"", collapse = "\n"),
@@ -99,7 +99,7 @@ tree <- function(
     }
 
     n_unamed <- sum(!has_name)
-    if(n_unamed != 0) {
+    if (n_unamed != 0) {
       warning(
         n_unamed, " unnamed arguments passed to tree. These are ignored."
       )
@@ -145,7 +145,7 @@ tree_internal <- function(x,
   calling_env <- caller_env()
   calling_env$n_elements_printed <- calling_env$n_elements_printed + 1
   # Stop if we've reached the max number of times printed desired
-  if(calling_env$n_elements_printed > opts$max_length){
+  if (calling_env$n_elements_printed > opts$max_length){
     return(NULL)
   }
 
@@ -162,15 +162,15 @@ tree_internal <- function(x,
   # Next update the final element (aka the current step) with the correct branch type
   last_step <- branch_hist[depth]
   root_node <- length(branch_hist) == 0
-  branch_chars[depth] <- if(root_node) "" else paste0(
-    if(grepl("last", last_step)) opts$final_branch else opts$branch,
-    if(grepl("attribute", last_step)) opts$horizontal_attr else opts$horizontal
+  branch_chars[depth] <- if (root_node) "" else paste0(
+    if (grepl("last", last_step)) opts$final_branch else opts$branch,
+    if (grepl("attribute", last_step)) opts$horizontal_attr else opts$horizontal
   )
 
   # Build label
   label <- paste0(
     x_id,
-    if(!rlang::is_null(x_id) && x_id != "") ":",
+    if (!rlang::is_null(x_id) && x_id != "") ":",
     tree_label(
       x,
       class_printer = opts$class_printer,
@@ -183,7 +183,7 @@ tree_internal <- function(x,
   cat(paste(branch_chars, collapse = ""), label, "\n", sep = "")
 
   x_attributes <- attributes(x)
-  if(attr_mode){
+  if (attr_mode){
     # Filter out "names" attribute as this is already shown by tree
     x_attributes <- x_attributes[names(x_attributes) != "names"]
   }
@@ -191,7 +191,7 @@ tree_internal <- function(x,
 
   # ===== Start recursion logic
   # Turn into a s3 method for recursion
-  if(!is.atomic(x) & depth <= opts$max_depth & !is.function(x) & !is.environment(x)){
+  if (!is.atomic(x) & depth <= opts$max_depth & !is.function(x) & !is.environment(x)){
     children <- as.list(x)
 
     # Traverse children, if any exist
@@ -200,11 +200,11 @@ tree_internal <- function(x,
     # If children have names, give them the names
     for (i in seq_along(children)) {
       id <- names(x)[i]
-      if(rlang::is_null(id) & opts$index_unnamed) id <- i
+      if (rlang::is_null(id) & opts$index_unnamed) id <- i
 
-      child_type <- if(i < n_children){
+      child_type <- if (i < n_children){
         "child"
-      } else if(has_attributes) {
+      } else if (has_attributes) {
         "pre-attrs"
       } else {
         "last-child"
@@ -220,14 +220,14 @@ tree_internal <- function(x,
   # ===== End recursion logic
 
   # Add any attributes as an "attr" prefixed children at end
-  if(has_attributes){
+  if (has_attributes){
     n_attributes <- length(x_attributes)
     for(i in seq_len(n_attributes)){
       Recall(
         x = x_attributes[[i]],
         x_id = crayon::italic(paste0("<attr>", names(x_attributes)[i])),
         opts = opts,
-        branch_hist = c(branch_hist, paste0(if(i == n_attributes) "last-", "attribute")),
+        branch_hist = c(branch_hist, paste0(if (i == n_attributes) "last-", "attribute")),
         attr_mode = TRUE # Let tree know this is an attribute
       )
     }
@@ -265,14 +265,14 @@ tree_label.NULL <- function(x,...){
 tree_label.character <- function(x, remove_newlines, ...){
 
   # Get rid of new-line so they don't break tree flow
-  if(remove_newlines){
+  if (remove_newlines){
     x <- gsub("\\n", replacement = " ", x = x, perl = TRUE)
   }
 
   # Shorten strings if needed
   max_standalone_length <- 35
   max_vec_length <- 15
-  max_length <- if(length(x) == 1) max_standalone_length else max_vec_length
+  max_length <- if (length(x) == 1) max_standalone_length else max_vec_length
   x <- ifelse(
     nchar(x) > max_length,
     # Since we add an elipses we need to take a bit more than the max length
@@ -298,13 +298,13 @@ tree_label.default <- function(x, val_printer, class_printer, remove_newlines){
   # character and a vector of characters we use some logical branching here to
   # try and use the best printing type for the passed value.
 
-  if(rlang::is_atomic(x)) {
+  if (rlang::is_atomic(x)) {
 
     num_els <- length(x)
-    if(num_els > 1) {
+    if (num_els > 1) {
       # Atomic vectors are truncated to a max of 10 elements and printed inline
       x <- as.character(x)
-      if(num_els > 10){
+      if (num_els > 10){
         x <- head(x, 10)
         x <- c(x, paste0("...(n = ", num_els, ")"))
       }
@@ -314,12 +314,12 @@ tree_label.default <- function(x, val_printer, class_printer, remove_newlines){
     # Single length atomics just go through unscathed
     val_printer(x)
 
-  } else if(rlang::is_function(x)) {
+  } else if (rlang::is_function(x)) {
     # Lots of times function-like functions don't actually trigger the s3 method
     # for function because they dont have function in their class-list. This
     # catches those.
     tree_label.function(x, class_printer, val_printer)
-  } else if(rlang::is_environment(x)) {
+  } else if (rlang::is_environment(x)) {
     # Environments also tend to have the same trouble as functions. For instance
     # the srcobject attached to a function's attributes is an environment but
     # doesn't report as one to s3.
@@ -327,7 +327,7 @@ tree_label.default <- function(x, val_printer, class_printer, remove_newlines){
   } else {
     # The "base-case" is simply a list-like object. Here we use curly braces if
     # it has named elements and print the class name
-    delims <- if(!rlang::is_null(names(x))) c("{","}") else c("[", "]")
+    delims <- if (!rlang::is_null(names(x))) c("{","}") else c("[", "]")
     class_printer(paste0(delims[1], class(x)[1], delims[2]))
   }
 }
