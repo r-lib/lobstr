@@ -188,7 +188,7 @@ tree_internal <- function(x,
       } else {
         "last-child"
       }
-      tree_internal(
+      Recall(
         x = children[[i]],
         x_id = id,
         branch_hist = c(branch_hist, child_type),
@@ -202,7 +202,7 @@ tree_internal <- function(x,
   if(has_attributes){
     n_attributes <- length(x_attributes)
     for(i in seq_len(n_attributes)){
-      tree_internal(
+      Recall(
         x = x_attributes[[i]],
         x_id = crayon::italic(paste0("<attr>", names(x_attributes)[i])),
         opts = opts,
