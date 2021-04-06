@@ -2,37 +2,11 @@
 
 test_that("Array-like indices can be shown or hidden", {
   expect_snapshot({
-    nested_lists <- list(
-      list(id = "a", val = 2),
-      list(
-        id = "b",
-        val = 1,
-        children = list(
-          list(id = "b1",val = 2.5),
-          list(
-            id = "b2",
-            val = 8,
-            children = list(
-              list(id = "b21", val = 4)
-            )
-          )
-        )
-      ),
-      list(
-        id = "c",
-        val = 8,
-        children = list(
-          list(id = "c1"),
-          list(id = "c2", val = 1)
-        )
-      )
-    )
-
-    tree(nested_lists, index_unnamed = TRUE)
-
-    tree(nested_lists, index_unnamed = FALSE)
+    tree(list(a = "a", "b", "c"), index_unnamed = TRUE)
   })
-
+  expect_snapshot({
+    tree(list(a = "a", "b", "c"), index_unnamed = FALSE)
+  })
 })
 
 

@@ -73,7 +73,7 @@
 tree <- function(
   x,
   ...,
-  index_unnamed = TRUE,
+  index_unnamed = FALSE,
   max_depth = 10L,
   max_length = 1000L,
   val_printer = crayon::blue,

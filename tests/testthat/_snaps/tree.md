@@ -1,69 +1,22 @@
 # Array-like indices can be shown or hidden
 
     Code
-      nested_lists <- list(list(id = "a", val = 2), list(id = "b", val = 1, children = list(
-        list(id = "b1", val = 2.5), list(id = "b2", val = 8, children = list(list(id = "b21",
-          val = 4))))), list(id = "c", val = 8, children = list(list(id = "c1"), list(
-        id = "c2", val = 1))))
-      tree(nested_lists, index_unnamed = TRUE)
+      tree(list(a = "a", "b", "c"), index_unnamed = TRUE)
     Output
-      [list]
-      ├─1:{list}
-      │ ├─id:"a"
-      │ └─val:2
-      ├─2:{list}
-      │ ├─id:"b"
-      │ ├─val:1
-      │ └─children:[list]
-      │   ├─1:{list}
-      │   │ ├─id:"b1"
-      │   │ └─val:2.5
-      │   └─2:{list}
-      │     ├─id:"b2"
-      │     ├─val:8
-      │     └─children:[list]
-      │       └─1:{list}
-      │         ├─id:"b21"
-      │         └─val:4
-      └─3:{list}
-        ├─id:"c"
-        ├─val:8
-        └─children:[list]
-          ├─1:{list}
-          │ └─id:"c1"
-          └─2:{list}
-            ├─id:"c2"
-            └─val:1
+      {list}
+      ├─a:"a"
+      ├─2:"b"
+      └─3:"c"
+
+---
+
     Code
-      tree(nested_lists, index_unnamed = FALSE)
+      tree(list(a = "a", "b", "c"), index_unnamed = FALSE)
     Output
-      [list]
-      ├─{list}
-      │ ├─id:"a"
-      │ └─val:2
-      ├─{list}
-      │ ├─id:"b"
-      │ ├─val:1
-      │ └─children:[list]
-      │   ├─{list}
-      │   │ ├─id:"b1"
-      │   │ └─val:2.5
-      │   └─{list}
-      │     ├─id:"b2"
-      │     ├─val:8
-      │     └─children:[list]
-      │       └─{list}
-      │         ├─id:"b21"
-      │         └─val:4
-      └─{list}
-        ├─id:"c"
-        ├─val:8
-        └─children:[list]
-          ├─{list}
-          │ └─id:"c1"
-          └─{list}
-            ├─id:"c2"
-            └─val:1
+      {list}
+      ├─a:"a"
+      ├─"b"
+      └─"c"
 
 # Atomic arrays have sensible defaults with truncation added for longer than 10-elements
 
@@ -85,15 +38,15 @@
       ├─attribs:{list}
       │ └─class:"form-group shiny-input-container"
       └─children:[list]
-        ├─1:{shiny.tag}
+        ├─{shiny.tag}
         │ ├─name:"label"
         │ ├─attribs:{list}
         │ │ ├─class:"control-label"
         │ │ ├─id:"test-label"
         │ │ └─for:"test"
         │ └─children:[list]
-        │   └─1:"Input Label"
-        └─2:{shiny.tag}
+        │   └─"Input Label"
+        └─{shiny.tag}
           ├─name:"input"
           ├─attribs:{list}
           │ ├─class:"js-range-slider"
@@ -121,42 +74,42 @@
       tree(deep_list, max_depth = 1)
     Output
       [list]
-      ├─1:{list}
+      ├─{list}
       │ ├─id:"b"
       │ ├─val:1
       │ └─children:[list]
-      └─2:{list}
+      └─{list}
         ├─id:"a"
         └─val:2
     Code
       tree(deep_list, max_depth = 2)
     Output
       [list]
-      ├─1:{list}
+      ├─{list}
       │ ├─id:"b"
       │ ├─val:1
       │ └─children:[list]
-      │   ├─1:{list}
-      │   └─2:{list}
-      └─2:{list}
+      │   ├─{list}
+      │   └─{list}
+      └─{list}
         ├─id:"a"
         └─val:2
     Code
       tree(deep_list, max_depth = 3)
     Output
       [list]
-      ├─1:{list}
+      ├─{list}
       │ ├─id:"b"
       │ ├─val:1
       │ └─children:[list]
-      │   ├─1:{list}
+      │   ├─{list}
       │   │ ├─id:"b1"
       │   │ └─val:2.5
-      │   └─2:{list}
+      │   └─{list}
       │     ├─id:"b2"
       │     ├─val:8
       │     └─children:[list]
-      └─2:{list}
+      └─{list}
         ├─id:"a"
         └─val:2
     Code
@@ -164,12 +117,12 @@
       tree(deep_list, max_length = 2)
     Output
       [list]
-      ├─1:{list}
+      ├─{list}
     Code
       tree(deep_list, max_depth = 1, max_length = 4)
     Output
       [list]
-      ├─1:{list}
+      ├─{list}
       │ ├─id:"b"
       │ ├─val:1
 
@@ -193,7 +146,7 @@
       │ ├─id:"b"
       │ ├─val:1
       │ ├─children:[list]
-      │ ┊ └─1:{list}
+      │ ┊ └─{list}
       │ ┊   ├─id:"b1"
       │ ┊   ├─val:2.5
       │ ┊   └┄<attr>names:"id","val"
@@ -215,7 +168,7 @@
       │ ├─id:"b"
       │ ├─val:1
       │ └─children:[list]
-      │   └─1:{list}
+      │   └─{list}
       │     ├─id:"b1"
       │     └─val:2.5
       ├─level:"1"
@@ -228,8 +181,8 @@
       show_attributes = TRUE)
     Output
       [list]
-      ├─1:"first element"
-      └─2:"second element"
+      ├─"first element"
+      └─"second element"
         └┄<attr>purpose:"show bug"
 
 # Large and multiline strings are handled gracefully
