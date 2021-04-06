@@ -252,7 +252,7 @@ tree_label.character <- function(x, remove_newlines, ...){
 
   # Get rid of new-line so they don't break tree flow
   if (remove_newlines){
-    x <- gsub("\\n", replacement = " ", x = x, perl = TRUE)
+    x <- gsub("\\n", replacement = "\u21B5", x = x, perl = TRUE)
   }
 
   # Shorten strings if needed
