@@ -1,5 +1,3 @@
-context("test-size.R")
-
 expect_same <- function(x, ...) {
   lab <- as.character(expr_text(enexpr(x)))
   act <- as.vector(obj_size(x))
@@ -13,8 +11,9 @@ expect_same <- function(x, ...) {
 # S3 methods --------------------------------------------------------------
 
 test_that("combined bytes are aligned", {
-  x <- new_bytes(c(400, 400000))
-  expect_known_output(print(x), "size-aligned.txt")
+  expect_snapshot({
+    new_bytes(c(400, 400000))
+  })
 })
 
 # Compatibility with base ---------------------------------------------------

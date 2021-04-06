@@ -1,8 +1,0 @@
-[1] <CLOSXP> ()
-  _formals [2] <LISTSXP> ()
-    x [3] <SYMSXP: > ()
-    y [4] <REALSXP[1]> ()
-    ... [3]
-  _body [5] <LANGSXP> ()
-    ...
-  _env [6] <ENVSXP: global> ()

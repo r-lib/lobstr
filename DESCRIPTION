@@ -21,7 +21,7 @@ Suggests:
     covr,
     pillar,
     pkgdown,
-    testthat
+    testthat (>= 3.0.0)
 LinkingTo: 
     cpp11
 SystemRequirements: C++11
@@ -31,3 +31,4 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Remotes:
   r-lib/cpp11
+Config/testthat/edition: 3

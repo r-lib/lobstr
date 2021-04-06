@@ -1,5 +1,3 @@
-context("test-address.R")
-
 test_that("address of expression varies", {
   a <- obj_addr(1:10)
   b <- obj_addr(1:10)
