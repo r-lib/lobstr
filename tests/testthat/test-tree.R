@@ -25,6 +25,28 @@ test_that(
 
   })
 
+test_that("Large and multiline strings are handled gracefully", {
+  expect_snapshot({
+    long_strings <- list(
+      "normal string" = "first element",
+      "really long string" = paste(rep(letters, 4), collapse = ""),
+      "vec of long strings" = c(
+        "a long\nand multi\nline string element",
+        "a fine length",
+        "another long\nand also multi\nline string element"
+      )
+    )
+
+    # No truncation of first string
+    # Really long single string is truncated and elipsesed
+    # Short string inside vector with long strings is not truncated
+    tree(long_strings)
+
+    # Newline removal can be disabled
+    tree(long_strings, remove_newlines = FALSE)
+  })
+})
+
 test_that("Works with HTML tag structures", {
   # sliderInput is a pretty complex structure all in one line
   expect_snapshot(
@@ -74,21 +96,17 @@ test_that("Max depth and length can be enforced", {
   })
 })
 
-test_that("Null values are caught and printed properly", {
-  expect_output(
-    tree(list("null-element" = NULL)),
-    regexp = "null-element:<NULL>",
-    fixed = TRUE
+test_that("Missing values are caught and printed properly", {
+  expect_snapshot(
+    tree(
+      list(
+        "null-element" = NULL,
+        "NA-element" = NA
+      )
+    )
   )
 })
 
-test_that("NA printing", {
-  expect_output(
-    tree(list("NA-element" = NA)),
-    regexp = "NA-element:NA",
-    fixed = TRUE
-  )
-})
 
 test_that("non-named elements in named list",{
   expect_output(
@@ -157,25 +175,5 @@ test_that("Handles elements with a single element and attributes well", {
 
 })
 
-test_that("Large and multiline strings are handled gracefully", {
-  expect_snapshot({
-    long_strings <- list(
-      "normal string" = "first element",
-      "really long string" = paste(rep(letters, 4), collapse = ""),
-      "vec of long strings" = c(
-        "a long\nand multi\nline string element",
-        "a fine length",
-        "another long\nand also multi\nline string element"
-      )
-    )
 
-    # No truncation of first string
-    # Really long single string is truncated and elipsesed
-    # Short string inside vector with long strings is not truncated
-    tree(long_strings)
-
-    # Newline removal can be disabled
-    tree(long_strings, remove_newlines = FALSE)
-  })
-})
 
