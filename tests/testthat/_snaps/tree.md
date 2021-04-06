@@ -112,53 +112,66 @@
           │ └─data-data-type:"number"
           └─children:[list]
 
-# Max depth can be enforced
+# Max depth and length can be enforced
 
     Code
-      deep_list <- list(list(id = "a", val = 2), list(id = "b", val = 1, children = list(
-        list(id = "b1", val = 2.5), list(id = "b2", val = 8, children = list(list(id = "b21",
-          val = 4))))))
+      deep_list <- list(list(id = "b", val = 1, children = list(list(id = "b1", val = 2.5),
+      list(id = "b2", val = 8, children = list(list(id = "b21", val = 4))))), list(
+        id = "a", val = 2))
       tree(deep_list, max_depth = 1)
     Output
       [list]
       ├─1:{list}
-      │ ├─id:"a"
-      │ └─val:2
+      │ ├─id:"b"
+      │ ├─val:1
+      │ └─children:[list]
       └─2:{list}
-        ├─id:"b"
-        ├─val:1
-        └─children:[list]
+        ├─id:"a"
+        └─val:2
     Code
       tree(deep_list, max_depth = 2)
     Output
       [list]
       ├─1:{list}
-      │ ├─id:"a"
-      │ └─val:2
+      │ ├─id:"b"
+      │ ├─val:1
+      │ └─children:[list]
+      │   ├─1:{list}
+      │   └─2:{list}
       └─2:{list}
-        ├─id:"b"
-        ├─val:1
-        └─children:[list]
-          ├─1:{list}
-          └─2:{list}
+        ├─id:"a"
+        └─val:2
     Code
       tree(deep_list, max_depth = 3)
     Output
       [list]
       ├─1:{list}
-      │ ├─id:"a"
-      │ └─val:2
+      │ ├─id:"b"
+      │ ├─val:1
+      │ └─children:[list]
+      │   ├─1:{list}
+      │   │ ├─id:"b1"
+      │   │ └─val:2.5
+      │   └─2:{list}
+      │     ├─id:"b2"
+      │     ├─val:8
+      │     └─children:[list]
       └─2:{list}
-        ├─id:"b"
-        ├─val:1
-        └─children:[list]
-          ├─1:{list}
-          │ ├─id:"b1"
-          │ └─val:2.5
-          └─2:{list}
-            ├─id:"b2"
-            ├─val:8
-            └─children:[list]
+        ├─id:"a"
+        └─val:2
+    Code
+      tree(deep_list, max_length = 0)
+      tree(deep_list, max_length = 2)
+    Output
+      [list]
+      ├─1:{list}
+    Code
+      tree(deep_list, max_depth = 1, max_length = 4)
+    Output
+      [list]
+      ├─1:{list}
+      │ ├─id:"b"
+      │ ├─val:1
 
 # Attributes are properly displayed as special children nodes
 

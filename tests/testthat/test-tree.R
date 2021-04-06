@@ -70,11 +70,10 @@ doesNotExistRegex <- function(substring){
   paste0("(?sm)^(?!.*", substring, ").*$")
 }
 
-test_that("Max depth can be enforced", {
+test_that("Max depth and length can be enforced", {
 
   expect_snapshot({
     deep_list <- list(
-      list(id = "a", val = 2),
       list(
         id = "b",
         val = 1,
@@ -88,11 +87,16 @@ test_that("Max depth can be enforced", {
             )
           )
         )
-      )
+      ),
+      list(id = "a", val = 2)
     )
     tree(deep_list, max_depth = 1)
     tree(deep_list, max_depth = 2)
     tree(deep_list, max_depth = 3)
+
+    tree(deep_list, max_length = 0)
+    tree(deep_list, max_length = 2)
+    tree(deep_list, max_depth = 1, max_length = 4)
   })
 })
 
