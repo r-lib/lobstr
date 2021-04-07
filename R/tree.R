@@ -326,11 +326,6 @@ tree_label.character <- function(x, remove_newlines, ...){
 #' @export
 tree_label.default <- function(x, val_printer, class_printer, remove_newlines){
 
-  # There are a few psuedo-types that we want different printing behavior for.
-  # Since s3 methods cant differentiate between something like a single
-  # character and a vector of characters we use some logical branching here to
-  # try and use the best printing type for the passed value.
-
   if (rlang::is_atomic(x)) {
 
     num_els <- length(x)
