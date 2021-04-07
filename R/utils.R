@@ -11,19 +11,23 @@ box_chars <- function() {
 
   if (fancy) {
     list(
-      "h" = "\u2500",          # - horizontal
-      "v" = "\u2502",          # | vertical
-      "l" = "\u2514",          # \ leaf
-      "j" = "\u251C",          # + junction
-      "n" = orange("\u2588")   # X node
+      "h"  = "\u2500",         # - horizontal
+      "hd" = "\u2504",         # - horizontal dotted
+      "v"  = "\u2502",         # | vertical
+      "vd" = "\u250A",         # | vertical dotted
+      "l"  = "\u2514",         # \ leaf
+      "j"  = "\u251C",         # + junction
+      "n"  = orange("\u2588")  # X node
     )
   } else {
     list(
-      "h" = "-",
-      "v" = "|",
-      "l" = "\\",
-      "j" = "+",
-      "n" = orange("o")
+      "h"  = "-",
+      "hd" = "-", # Just use normal chars for dotted
+      "v"  = "|",
+      "vd" = "|",
+      "l"  = "\\",
+      "j"  = "+",
+      "n"  = orange("o")
     )
   }
 }

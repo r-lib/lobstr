@@ -24,8 +24,9 @@
 #'   tree but may be desired for some use-cases if newline structure is
 #'   important to understanding object state.
 #' @param tree_chars List of box characters used to construct tree. Needs
-#'   elements `$h` for horizontal bar, `$v` for vertical bar, `$l` for l-bend,
-#'   and `$j` for junction (or middle child).
+#'   elements `$h` for horizontal bar, `$hd` for dotted horizontal bar, `$v` for
+#'   vertical bar, `$vd` for dotted vertical bar, `$l` for l-bend, and `$j` for
+#'   junction (or middle child).
 #' @param ... Ignored (used to force use of names)
 #'
 #' @return console output of structure
@@ -134,26 +135,20 @@ tree_internal <- function(
   # Start with empty spaces
   branch_chars <- rep_len("  ", depth)
 
-  attr_branch_print <- crayon::white
-  # Store history in short name so logic is more legible
   branch_chars[branch_hist == "child"] <- paste0(opts$tree_chars$v, " ")
-  branch_chars[branch_hist == "pre-attrs"] <- paste0(attr_branch_print(opts$tree_chars$v), " ")
+  branch_chars[branch_hist == "pre-attrs"] <- paste0(opts$tree_chars$vd, " ")
 
   # Next update the final element (aka the current step) with the correct branch type
   last_step <- branch_hist[depth]
   root_node <- length(branch_hist) == 0
 
-  if (root_node) {
-    branch_chars[depth] <- ""
+  branch_chars[depth] <- if (root_node) {
+    ""
   }  else {
-    branch_chars[depth] <- paste0(
+    paste0(
       if (grepl("last", last_step)) opts$tree_chars$l else opts$tree_chars$j,
-      opts$tree_chars$h
+      if (grepl("attribute", last_step)) opts$tree_chars$hd else opts$tree_chars$h
     )
-
-    if (grepl("attribute", last_step)) {
-      branch_chars[depth] <- attr_branch_print(branch_chars[depth])
-    }
   }
 
   # Build label

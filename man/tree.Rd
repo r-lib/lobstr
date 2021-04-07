@@ -10,6 +10,7 @@ tree(
   index_unnamed = FALSE,
   max_depth = 10L,
   max_length = 1000L,
+  show_environments = TRUE,
   val_printer = crayon::blue,
   class_printer = crayon::silver,
   show_attributes = FALSE,
@@ -32,6 +33,9 @@ very deep lists.}
 \item{max_length}{How many elements should be printed? This is useful in case
 you try and print an object with 100,000 items in it.}
 
+\item{show_environments}{Should environments be treated like normal lists and
+recursed into?}
+
 \item{val_printer}{Function that values get passed to before being drawn to
 screen. Can be used to color or generally style output.}
 
@@ -47,8 +51,9 @@ tree but may be desired for some use-cases if newline structure is
 important to understanding object state.}
 
 \item{tree_chars}{List of box characters used to construct tree. Needs
-elements \verb{$h} for horizontal bar, \verb{$v} for vertical bar, \verb{$l} for l-bend,
-and \verb{$j} for junction (or middle child).}
+elements \verb{$h} for horizontal bar, \verb{$hd} for dotted horizontal bar, \verb{$v} for
+vertical bar, \verb{$vd} for dotted vertical bar, \verb{$l} for l-bend, and \verb{$j} for
+junction (or middle child).}
 }
 \value{
 console output of structure
