@@ -150,19 +150,6 @@ test_that("Attributes are properly displayed as special children nodes", {
   })
 })
 
-test_that("Handles elements with a single element and attributes well", {
-  # The logic of handling single-element nodes with attributes is tricky
-  # This test _should_ catch mistakes
-  expect_snapshot({
-    tree(
-      list(
-        structure("a", attribute = "b")
-      ),
-      show_attributes = TRUE
-    )
-  })
-
-})
 
 
 

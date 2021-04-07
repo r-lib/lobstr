@@ -205,12 +205,3 @@
       ├─level: "1"
       └─name: "root"
 
-# Handles elements with a single element and attributes well
-
-    Code
-      tree(list(structure("a", attribute = "b")), show_attributes = TRUE)
-    Output
-      [list]
-      └─"a"
-        └─<attr>attribute: "b"
-
