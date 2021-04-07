@@ -170,10 +170,10 @@ tree_internal <- function(
     # Filter out "names" attribute as this is already shown by tree
     x_attributes <- x_attributes[names(x_attributes) != "names"]
   }
-  has_attributes <- length(x_attributes) > 0 & opts$show_attributes
+  has_attributes <- length(x_attributes) > 0 && opts$show_attributes
 
-  has_children <- has_attributes | length(x) > 1
-  max_depth_reached <- depth >= opts$max_depth & has_children
+  has_children <- has_attributes || length(x) > 1
+  max_depth_reached <- depth >= opts$max_depth && has_children
 
   # Do the actual printing to the console with an optional ellipses to indicate
   # we've reached the max depth and won't recurse more
@@ -190,10 +190,10 @@ tree_internal <- function(
   # Using negative tense here because so it's easier to state when we don't want
   # to recurse than when we do
   dont_recurse_into <-
-    is_atomic(x) |
-    max_depth_reached |
-    is_function(x) |
-    (is_environment(x) & !opts$show_env)
+    is_atomic(x) ||
+    max_depth_reached ||
+    is_function(x) ||
+    (is_environment(x) && !opts$show_env)
 
 
   if (!dont_recurse_into) {
@@ -209,9 +209,9 @@ tree_internal <- function(
       # environment, the global environment, or an empty environment
       if (
         !(
-          already_seen_parent |
-          identical(parent, rlang::caller_env()) |
-          identical(parent, rlang::empty_env()) |
+          already_seen_parent ||
+          identical(parent, rlang::caller_env()) ||
+          identical(parent, rlang::empty_env()) ||
           identical(parent, rlang::global_env())
         )
       ) {
@@ -226,7 +226,7 @@ tree_internal <- function(
     # If children have names, give them the names
     for (i in seq_along(children)) {
       id <- child_names[i]
-      if ((rlang::is_null(id) || id == "") & opts$index_unnamed) id <- crayon::italic(i)
+      if ((rlang::is_null(id) || id == "") && opts$index_unnamed) id <- crayon::italic(i)
 
       child_type <- if (i < n_children){
         "child"
@@ -337,6 +337,7 @@ tree_label.default <- function(x, val_printer, class_printer, remove_newlines){
         x <- head(x, 10)
         x <- c(x, "...")
       }
+      # x <- paste0("(n:", num_els, ") ", paste(x, collapse = ", "), "")
       x <- paste0("[", paste(x, collapse = ", "), "]")
       if (too_long) x <- paste0(x, " n:", num_els)
     }
