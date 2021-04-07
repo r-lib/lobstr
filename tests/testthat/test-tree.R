@@ -150,6 +150,41 @@ test_that("Attributes are properly displayed as special children nodes", {
   })
 })
 
+test_that("Can optionally recurse into environments", {
+  # Wrapped in a local to avoid different environment setup for code running in
+  # test_that instead of interactively
+  # Can't use snapshots here because environment address change on each run
+  env_printing <- capture.output(
+    local(
+      {
+        ea <- env(d = 4, e = 5)
+        tree(env(ea, a = 1, b = 2, c = 3))
+      },
+      envir = rlang::global_env()
+    )
+  )
 
+  # Seven total nodes should be printed
+  expect_equal(
+    length(env_printing),
+    7
+  )
 
+  # Printed only the names we expected
+  expect_equal(
+    mean(
+      grepl(
+        pattern = "(environment|a|b|c|d|e):",
+        env_printing
+      )
+    ),
+    1
+  )
 
+  # Should only print two environment nodes (aka didn't escape past global env)
+  expect_equal(
+    sum(grepl(pattern = "<environment:", env_printing, fixed = TRUE)),
+    2
+  )
+
+})

@@ -9,6 +9,8 @@
 #' @param max_depth How far down the tree structure should be printed. E.g. `1`
 #'   means only direct children of the root element will be shown. Useful for
 #'   very deep lists.
+#' @param show_environments Should environments be treated like normal lists and
+#'   recursed into?
 #' @param max_length How many elements should be printed? This is useful in case
 #'   you try and print an object with 100,000 items in it.
 #' @param val_printer Function that values get passed to before being drawn to
@@ -75,6 +77,7 @@ tree <- function(
   index_unnamed = FALSE,
   max_depth = 10L,
   max_length = 1000L,
+  show_environments = TRUE,
   val_printer = crayon::blue,
   class_printer = crayon::silver,
   show_attributes = FALSE,
@@ -90,6 +93,7 @@ tree <- function(
       index_unnamed = index_unnamed,
       max_depth = max_depth,
       max_length = max_length,
+      show_envs = show_environments,
       val_printer = val_printer,
       class_printer = class_printer,
       show_attributes = show_attributes,
@@ -116,7 +120,7 @@ tree_internal <- function(
   branch_hist = character(0),
   opts,
   attr_mode = FALSE,
-  counter_env = rlang::new_environment(data = list(n_elements_printed = 0))
+  counter_env = rlang::new_environment(data = list(n_elements_printed = 0, envs_seen = c()))
 ) {
   counter_env$n_elements_printed <- counter_env$n_elements_printed + 1
   # Stop if we've reached the max number of times printed desired
@@ -187,15 +191,46 @@ tree_internal <- function(
   )
 
   # ===== Start recursion logic
-  if (!(is.atomic(x) | max_depth_reached | is.function(x) | is.environment(x))){
+
+  # Using negative tense here because so it's easier to state when we don't want
+  # to recurse than when we do
+  dont_recurse_into <-
+    is_atomic(x) |
+    max_depth_reached |
+    is_function(x) |
+    (is_environment(x) & !opts$show_env)
+
+
+  if (!dont_recurse_into) {
+
     children <- as.list(x)
+
+    if (is_environment(x)) {
+      # If we're looking at an environment, we add its parent as child
+      parent <- env_parent(x)
+
+      already_seen_parent <- any(as.logical(lapply(counter_env$envs_seen, identical, parent)))
+      # Stop recursion into environments when we get to either the calling
+      # environment, the global environment, or an empty environment
+      if (
+        !(
+          already_seen_parent |
+          identical(parent, rlang::caller_env()) |
+          identical(parent, rlang::empty_env()) |
+          identical(parent, rlang::global_env())
+        )
+      ) {
+        counter_env$envs_seen <- c(counter_env$envs_seen, parent)
+        children <- c(children, parent = env_parent(x))
+      }
+    }
 
     # Traverse children, if any exist
     n_children <- length(children)
-
+    child_names <- names(children)
     # If children have names, give them the names
     for (i in seq_along(children)) {
-      id <- names(x)[i]
+      id <- child_names[i]
       if ((rlang::is_null(id) || id == "") & opts$index_unnamed) id <- crayon::italic(i)
 
       child_type <- if (i < n_children){
