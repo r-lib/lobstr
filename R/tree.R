@@ -204,21 +204,36 @@ tree_internal <- function(
       # If we're looking at an environment, we add its parent as child
       parent <- env_parent(x)
 
-      already_seen_parent <- any(as.logical(lapply(counter_env$envs_seen, identical, parent)))
       # Stop recursion into environments when we get to either the calling
       # environment, the global environment, or an empty environment
       if (
         !(
-          already_seen_parent ||
           identical(parent, rlang::caller_env()) ||
           identical(parent, rlang::empty_env()) ||
           identical(parent, rlang::global_env())
         )
       ) {
-        counter_env$envs_seen <- c(counter_env$envs_seen, parent)
         children <- c(children, parent = env_parent(x))
       }
     }
+
+    # Get rid of any environments that have been printed already
+    children <- Filter(
+      children,
+      f = function(x){
+
+        if(is_environment(x)){
+          # If we're looking at an environment, we add its parent as child
+          if (any(as.logical(lapply(counter_env$envs_seen, identical, x)))) {
+            return(FALSE)
+          }
+
+          # If this environment is new, add it to the seen
+          counter_env$envs_seen <- c(counter_env$envs_seen, x)
+        }
+
+        TRUE
+      })
 
     # Traverse children, if any exist
     n_children <- length(children)
@@ -264,6 +279,21 @@ tree_internal <- function(
   }
   # If all went smoothly we reach here
   "Normal finish"
+}
+
+not_already_shown <- function(x, counter_env){
+
+  if(is_environment(x)){
+    # If we're looking at an environment, we add its parent as child
+    if (any(as.logical(lapply(counter_env$envs_seen, identical, x)))) {
+      return(FALSE)
+    }
+
+    # If this environment is new, add it to the seen
+    counter_env$envs_seen <- c(counter_env$envs_seen, x)
+  }
+
+  TRUE
 }
 
 
