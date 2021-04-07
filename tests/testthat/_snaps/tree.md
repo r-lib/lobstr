@@ -55,12 +55,12 @@
     Code
       tree(shiny::sliderInput("test", "Input Label", 0, 1, 0.5))
     Output
-      <shiny.tag>
+      S3<shiny.tag>
       ├─name: "div"
       ├─attribs: <list>
       │ └─class: "form-group shiny-input-container"
       └─children: <list>
-        ├─<shiny.tag>
+        ├─S3<shiny.tag>
         │ ├─name: "label"
         │ ├─attribs: <list>
         │ │ ├─class: "control-label"
@@ -68,7 +68,7 @@
         │ │ └─for: "test"
         │ └─children: <list>
         │   └─"Input Label"
-        └─<shiny.tag>
+        └─S3<shiny.tag>
           ├─name: "input"
           ├─attribs: <list>
           │ ├─class: "js-range-slider"
@@ -173,7 +173,7 @@
       │ ├┄<attr>names: ["id", "val"]
       │ ├┄<attr>level: 2
       │ └┄<attr>name: "first child"
-      ├─<custom-class>
+      ├─S3<custom-class>
       │ ├─id: "b"
       │ ├─val: 1
       │ ├─children: <list>
@@ -195,7 +195,7 @@
       ├─<list>
       │ ├─id: "a"
       │ └─val: 2
-      ├─<custom-class>
+      ├─S3<custom-class>
       │ ├─id: "b"
       │ ├─val: 1
       │ └─children: <list>

@@ -266,6 +266,7 @@ tree_internal <- function(
   "Normal finish"
 }
 
+
 #' Build element or node label in tree
 #'
 #' These methods control how the value of a given node is printed. New methods
@@ -359,8 +360,32 @@ tree_label.default <- function(x, val_printer, class_printer, remove_newlines){
     # doesn't report as one to s3.
     tree_label.environment(x)
   } else {
-    # The "base-case" is simply a list-like object. This will get printed with
-    # angle brackets enclosing the class name.
-    class_printer(paste0("<", class(x)[1], ">"))
+    # The "base-case" is simply a list-like object.
+    class_printer(label_class(x))
   }
+}
+
+# Inspired by waldo:::friendly_type_of(). Prints the class name and hierarchy
+# encased in angle brackets along with a prefix that tells you what OO system
+# the object belongs to (if it does.)
+label_class <- function(x) {
+  if (is_missing(x)) {
+    return("absent")
+  }
+  oo_prefix <- ""
+
+  class_list <- if (!is.object(x)) {
+    typeof(x)
+  } else if (isS4(x)){
+    oo_prefix <- "S4"
+    is(x)
+  } else if (inherits(x, "R6")) {
+    oo_prefix <- "R6"
+    setdiff(class(x), "R6")
+  } else {
+    oo_prefix <- "S3"
+    class(x)
+  }
+
+  paste0(oo_prefix, "<", paste(class_list, collapse = "/"), ">")
 }
