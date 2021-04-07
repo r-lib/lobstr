@@ -109,15 +109,8 @@ test_that("Missing values are caught and printed properly", {
 
 
 test_that("non-named elements in named list",{
-  expect_output(
-    tree(
-      list(
-        "a" = 1,
-        "element without id"
-      ),
-      char_horizontal = "\u2500"),
-    "\u2500\"element without id\"",
-    fixed = TRUE
+  expect_snapshot(
+    tree(list("a" = 1, "el w/o id"))
   )
 })
 

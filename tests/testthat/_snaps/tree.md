@@ -148,6 +148,15 @@
       ├─null-element: <NULL>
       └─NA-element: NA
 
+# non-named elements in named list
+
+    Code
+      tree(list(a = 1, "el w/o id"))
+    Output
+      {list}
+      ├─a: 1
+      └─"el w/o id"
+
 # Attributes are properly displayed as special children nodes
 
     Code
@@ -161,24 +170,24 @@
       ├─{list}
       │ ├─id: "a"
       │ ├─val: 2
-      │ ├┄<attr>names: ["id", "val"]
-      │ ├┄<attr>level: 2
-      │ └┄<attr>name: "first child"
+      │ ├─<attr>names: ["id", "val"]
+      │ ├─<attr>level: 2
+      │ └─<attr>name: "first child"
       ├─{custom-class}
       │ ├─id: "b"
       │ ├─val: 1
       │ ├─children: [list]
-      │ ┊ └─{list}
-      │ ┊   ├─id: "b1"
-      │ ┊   ├─val: 2.5
-      │ ┊   └┄<attr>names: ["id", "val"]
-      │ ├┄<attr>names: ["id", "val", "children"]
-      │ ├┄<attr>level: 2
-      │ ├┄<attr>name: "second child"
-      │ └┄<attr>class: "custom-class"
+      │ │ └─{list}
+      │ │   ├─id: "b1"
+      │ │   ├─val: 2.5
+      │ │   └─<attr>names: ["id", "val"]
+      │ ├─<attr>names: ["id", "val", "children"]
+      │ ├─<attr>level: 2
+      │ ├─<attr>name: "second child"
+      │ └─<attr>class: "custom-class"
       ├─level: "1"
       ├─name: "root"
-      └┄<attr>names: ["", "", "level", "name"]
+      └─<attr>names: ["", "", "level", "name"]
     Code
       tree(list_w_attrs, show_attributes = FALSE)
     Output
@@ -203,5 +212,5 @@
     Output
       [list]
       └─"a"
-        └┄<attr>attribute: "b"
+        └─<attr>attribute: "b"
 
