@@ -21,10 +21,9 @@
 #'   the newlines removed? Not doing so will mess up the vertical flow of the
 #'   tree but may be desired for some use-cases if newline structure is
 #'   important to understanding object state.
-#' @param
-#' char_vertical,char_horizontal,char_branch,char_final_branch,char_vertical_attr,char_horizontal_attr
-#' Unicode characters used to construct the tree. Typically you wont want to
-#' change these.
+#' @param tree_chars List of box characters used to construct tree. Needs
+#'   elements `$h` for horizontal bar, `$v` for vertical bar, `$l` for l-bend,
+#'   and `$j` for junction (or middle child).
 #' @param ... Ignored (used to force use of names)
 #'
 #' @return console output of structure
@@ -80,14 +79,8 @@ tree <- function(
   class_printer = crayon::silver,
   show_attributes = FALSE,
   remove_newlines = TRUE,
-  char_vertical = "\u2502",
-  char_horizontal = "\u2500",
-  char_branch = "\u251c",
-  char_final_branch = "\u2514",
-  char_vertical_attr = "\u250A",
-  char_horizontal_attr = "\u2504"
+  tree_chars = box_chars()
 ){
-
   ellipsis::check_dots_empty()
 
   # Pack up the unchanging arguments into a list and send to tree_internal
@@ -101,15 +94,10 @@ tree <- function(
       class_printer = class_printer,
       show_attributes = show_attributes,
       remove_newlines = remove_newlines,
-      vertical = char_vertical,
-      horizontal = char_horizontal,
-      branch = char_branch,
-      final_branch = char_final_branch,
-      vertical_attr = char_vertical_attr,
-      horizontal_attr = char_horizontal_attr
+      tree_chars = tree_chars
     )
   )
-  if(termination_type == "early"){
+  if (termination_type == "early") {
     cat("...", "\n")
   }
 
@@ -142,17 +130,27 @@ tree_internal <- function(
   # Start with empty spaces
   branch_chars <- rep_len("  ", depth)
 
+  attr_branch_print <- crayon::white
   # Store history in short name so logic is more legible
-  branch_chars[branch_hist == "child"] <- paste0(opts$vertical, " ")
-  branch_chars[branch_hist == "pre-attrs"] <- paste0(opts$vertical_attr, " ")
+  branch_chars[branch_hist == "child"] <- paste0(opts$tree_chars$v, " ")
+  branch_chars[branch_hist == "pre-attrs"] <- paste0(attr_branch_print(opts$tree_chars$v), " ")
 
   # Next update the final element (aka the current step) with the correct branch type
   last_step <- branch_hist[depth]
   root_node <- length(branch_hist) == 0
-  branch_chars[depth] <- if (root_node) "" else paste0(
-    if (grepl("last", last_step)) opts$final_branch else opts$branch,
-    if (grepl("attribute", last_step)) opts$horizontal_attr else opts$horizontal
-  )
+
+  if (root_node) {
+    branch_chars[depth] <- ""
+  }  else {
+    branch_chars[depth] <- paste0(
+      if (grepl("last", last_step)) opts$tree_chars$l else opts$tree_chars$j,
+      opts$tree_chars$h
+    )
+
+    if (grepl("attribute", last_step)) {
+      branch_chars[depth] <- attr_branch_print(branch_chars[depth])
+    }
+  }
 
   # Build label
   label <- paste0(
@@ -214,7 +212,7 @@ tree_internal <- function(
         opts = opts,
         counter_env = counter_env
       )
-      if(termination_type == "early") return(termination_type)
+      if (termination_type == "early") return(termination_type)
     }
   }
   # ===== End recursion logic
@@ -231,7 +229,7 @@ tree_internal <- function(
         attr_mode = TRUE, # Let tree know this is an attribute
         counter_env = counter_env
       )
-      if(termination_type == "early") return(termination_type)
+      if (termination_type == "early") return(termination_type)
     }
   }
   # If all went smoothly we reach here

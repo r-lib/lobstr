@@ -14,12 +14,7 @@ tree(
   class_printer = crayon::silver,
   show_attributes = FALSE,
   remove_newlines = TRUE,
-  char_vertical = "│",
-  char_horizontal = "─",
-  char_branch = "├",
-  char_final_branch = "└",
-  char_vertical_attr = "┊",
-  char_horizontal_attr = "┄"
+  tree_chars = box_chars()
 )
 }
 \arguments{
@@ -51,8 +46,9 @@ the newlines removed? Not doing so will mess up the vertical flow of the
 tree but may be desired for some use-cases if newline structure is
 important to understanding object state.}
 
-\item{char_vertical, char_horizontal, char_branch, char_final_branch, char_vertical_attr, char_horizontal_attr}{Unicode characters used to construct the tree. Typically you wont want to
-change these.}
+\item{tree_chars}{List of box characters used to construct tree. Needs
+elements \verb{$h} for horizontal bar, \verb{$v} for vertical bar, \verb{$l} for l-bend,
+and \verb{$j} for junction (or middle child).}
 }
 \value{
 console output of structure
