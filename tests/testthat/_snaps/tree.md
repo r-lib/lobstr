@@ -3,7 +3,7 @@
     Code
       tree(list(a = "a", "b", "c"), index_unnamed = TRUE)
     Output
-      {list}
+      <list>
       ├─a: "a"
       ├─2: "b"
       └─3: "c"
@@ -13,7 +13,7 @@
     Code
       tree(list(a = "a", "b", "c"), index_unnamed = FALSE)
     Output
-      {list}
+      <list>
       ├─a: "a"
       ├─"b"
       └─"c"
@@ -23,7 +23,7 @@
     Code
       tree(list(name = "vectored list", num_vec = 1:10, char_vec = letters))
     Output
-      {list}
+      <list>
       ├─name: "vectored list"
       ├─num_vec: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
       └─char_vec: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", ...] n:26
@@ -37,14 +37,14 @@
         "another long\nand also multi\nline string element"))
       tree(long_strings)
     Output
-      {list}
+      <list>
       ├─normal string: "first element"
       ├─really long string: "abcdefghijklmnopqrstuvwxyzabcdef..."
       └─vec of long strings: ["a long↵and m...", "a fine length", "another long..."]
     Code
       tree(long_strings, remove_newlines = FALSE)
     Output
-      {list}
+      <list>
       ├─normal string: "first element"
       ├─really long string: "abcdefghijklmnopqrstuvwxyzabcdef..."
       └─vec of long strings: ["a long
@@ -55,22 +55,22 @@
     Code
       tree(shiny::sliderInput("test", "Input Label", 0, 1, 0.5))
     Output
-      {shiny.tag}
+      <shiny.tag>
       ├─name: "div"
-      ├─attribs: {list}
+      ├─attribs: <list>
       │ └─class: "form-group shiny-input-container"
-      └─children: [list]
-        ├─{shiny.tag}
+      └─children: <list>
+        ├─<shiny.tag>
         │ ├─name: "label"
-        │ ├─attribs: {list}
+        │ ├─attribs: <list>
         │ │ ├─class: "control-label"
         │ │ ├─id: "test-label"
         │ │ └─for: "test"
-        │ └─children: [list]
+        │ └─children: <list>
         │   └─"Input Label"
-        └─{shiny.tag}
+        └─<shiny.tag>
           ├─name: "input"
-          ├─attribs: {list}
+          ├─attribs: <list>
           │ ├─class: "js-range-slider"
           │ ├─id: "test"
           │ ├─data-skin: "shiny"
@@ -85,7 +85,7 @@
           │ ├─data-prettify-enabled: "true"
           │ ├─data-keyboard: "true"
           │ └─data-data-type: "number"
-          └─children: [list]
+          └─children: <list>
 
 # Max depth and length can be enforced
 
@@ -95,31 +95,31 @@
         id = "a", val = 2))
       tree(deep_list, max_depth = 1)
     Output
-      [list]
-      ├─{list}...
-      └─{list}...
+      <list>
+      ├─<list>...
+      └─<list>...
     Code
       tree(deep_list, max_depth = 2)
     Output
-      [list]
-      ├─{list}
+      <list>
+      ├─<list>
       │ ├─id: "b"
       │ ├─val: 1
-      │ └─children: [list]...
-      └─{list}
+      │ └─children: <list>...
+      └─<list>
         ├─id: "a"
         └─val: 2
     Code
       tree(deep_list, max_depth = 3)
     Output
-      [list]
-      ├─{list}
+      <list>
+      ├─<list>
       │ ├─id: "b"
       │ ├─val: 1
-      │ └─children: [list]
-      │   ├─{list}...
-      │   └─{list}...
-      └─{list}
+      │ └─children: <list>
+      │   ├─<list>...
+      │   └─<list>...
+      └─<list>
         ├─id: "a"
         └─val: 2
     Code
@@ -129,22 +129,22 @@
     Code
       tree(deep_list, max_length = 2)
     Output
-      [list]
-      ├─{list}
+      <list>
+      ├─<list>
       ... 
     Code
       tree(deep_list, max_depth = 1, max_length = 4)
     Output
-      [list]
-      ├─{list}...
-      └─{list}...
+      <list>
+      ├─<list>...
+      └─<list>...
 
 # Missing values are caught and printed properly
 
     Code
       tree(list(`null-element` = NULL, `NA-element` = NA))
     Output
-      {list}
+      <list>
       ├─null-element: <NULL>
       └─NA-element: NA
 
@@ -153,7 +153,7 @@
     Code
       tree(list(a = 1, "el w/o id"))
     Output
-      {list}
+      <list>
       ├─a: 1
       └─"el w/o id"
 
@@ -166,18 +166,18 @@
       level = "1", name = "root"))
       tree(list_w_attrs, show_attributes = TRUE)
     Output
-      {list}
-      ├─{list}
+      <list>
+      ├─<list>
       │ ├─id: "a"
       │ ├─val: 2
       │ ├┄<attr>names: ["id", "val"]
       │ ├┄<attr>level: 2
       │ └┄<attr>name: "first child"
-      ├─{custom-class}
+      ├─<custom-class>
       │ ├─id: "b"
       │ ├─val: 1
-      │ ├─children: [list]
-      │ ┊ └─{list}
+      │ ├─children: <list>
+      │ ┊ └─<list>
       │ ┊   ├─id: "b1"
       │ ┊   ├─val: 2.5
       │ ┊   └┄<attr>names: ["id", "val"]
@@ -191,15 +191,15 @@
     Code
       tree(list_w_attrs, show_attributes = FALSE)
     Output
-      {list}
-      ├─{list}
+      <list>
+      ├─<list>
       │ ├─id: "a"
       │ └─val: 2
-      ├─{custom-class}
+      ├─<custom-class>
       │ ├─id: "b"
       │ ├─val: 1
-      │ └─children: [list]
-      │   └─{list}
+      │ └─children: <list>
+      │   └─<list>
       │     ├─id: "b1"
       │     └─val: 2.5
       ├─level: "1"

@@ -359,9 +359,8 @@ tree_label.default <- function(x, val_printer, class_printer, remove_newlines){
     # doesn't report as one to s3.
     tree_label.environment(x)
   } else {
-    # The "base-case" is simply a list-like object. Here we use curly braces if
-    # it has named elements and print the class name
-    delims <- if (!rlang::is_null(names(x))) c("{","}") else c("[", "]")
-    class_printer(paste0(delims[1], class(x)[1], delims[2]))
+    # The "base-case" is simply a list-like object. This will get printed with
+    # angle brackets enclosing the class name.
+    class_printer(paste0("<", class(x)[1], ">"))
   }
 }
