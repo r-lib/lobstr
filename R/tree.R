@@ -199,18 +199,9 @@ tree_internal <- function(
   )
 
   # ===== Start recursion logic
+  if (already_seen || max_depth_reached) return("Normal finish")
 
-  # Using negative tense here because so it's easier to state when we don't want
-  # to recurse than when we do
-  dont_recurse_into <-
-    is_atomic(x) ||
-    is_function(x) ||
-    is_env_to_ignore(x) ||
-    max_depth_reached ||
-    already_seen ||
-    length(x) <= 1
-
-  if (!dont_recurse_into) {
+  if (rlang::is_list(x) || is_printable_env(x)) {
 
     children <- as.list(x)
 
@@ -261,13 +252,15 @@ tree_internal <- function(
 }
 
 # There are a few environments we don't want to recurse into
-is_env_to_ignore <- function(x){
-  identical(x, rlang::global_env()) ||
-    identical(x, rlang::empty_env())  ||
-    identical(x, rlang::base_env()) ||
-    rlang::is_namespace(x)
+is_printable_env <- function(x){
+  is_environment(x) &&
+    !(
+      identical(x, rlang::global_env()) ||
+        identical(x, rlang::empty_env())  ||
+        identical(x, rlang::base_env()) ||
+        rlang::is_namespace(x)
+    )
 }
-
 
 #' Build element or node label in tree
 #'

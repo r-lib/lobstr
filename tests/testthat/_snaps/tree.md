@@ -227,3 +227,10 @@
       ├─few_args: function(a, b, c)
       └─lots_of_args: function(strict.width, digits.d, vec.len, list.len, deparse.lines, ...)
 
+# Handles symbols
+
+    Code
+      tree(quote(a))
+    Output
+      <symbol>
+

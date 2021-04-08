@@ -211,3 +211,9 @@ test_that("Function arguments get printed", {
     )
   })
 })
+
+test_that("Handles symbols", {
+  expect_snapshot({
+    tree(quote(a))
+  })
+})
