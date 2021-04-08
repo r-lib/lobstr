@@ -308,6 +308,33 @@ tree_label.character <- function(x, opts){
   tree_label.default(paste0("\"", x, "\""),opts)
 }
 
+
+#' @export
+tree_label.default <- function(x, opts){
+
+  if (rlang::is_atomic(x)) {
+
+    opts$val_printer(collapse_and_truncate_vec(x, 10))
+
+  } else if (rlang::is_function(x)) {
+    # Lots of times function-like functions don't actually trigger the s3 method
+    # for function because they dont have function in their class-list. This
+    # catches those.
+    tree_label.function(x, opts)
+  } else if (rlang::is_environment(x)) {
+    # Environments also tend to have the same trouble as functions. For instance
+    # the srcobject attached to a function's attributes is an environment but
+    # doesn't report as one to s3.
+    tree_label.environment(x, opts)
+  } else if (rlang::is_expression(x) || rlang::is_formula(x)) {
+    paste0(label_class(x, opts), " ", crayon::italic(deparse(x)))
+  } else {
+    # The "base-case" is simply a list-like object.
+    label_class(x, opts)
+  }
+}
+
+
 collapse_and_truncate_vec <- function(vec, max_length){
   vec <- as.character(vec)
   too_long <- length(vec) > max_length
@@ -351,31 +378,6 @@ make_type_abrev <- function(x, omit_scalars){
   paste0("<", type_abrev, " [", format(length(x), big.mark = ",") ,"]>")
 }
 
-
-#' @export
-tree_label.default <- function(x, opts){
-
-  if (rlang::is_atomic(x)) {
-
-    opts$val_printer(collapse_and_truncate_vec(x, 10))
-
-  } else if (rlang::is_function(x)) {
-    # Lots of times function-like functions don't actually trigger the s3 method
-    # for function because they dont have function in their class-list. This
-    # catches those.
-    tree_label.function(x, opts)
-  } else if (rlang::is_environment(x)) {
-    # Environments also tend to have the same trouble as functions. For instance
-    # the srcobject attached to a function's attributes is an environment but
-    # doesn't report as one to s3.
-    tree_label.environment(x, opts)
-  } else if (rlang::is_expression(x) || rlang::is_formula(x)) {
-    paste0(label_class(x, opts), " ", crayon::italic(deparse(x)))
-  } else {
-    # The "base-case" is simply a list-like object.
-    label_class(x, opts)
-  }
-}
 
 # Inspired by waldo:::friendly_type_of(). Prints the class name and hierarchy
 # encased in angle brackets along with a prefix that tells you what OO system
