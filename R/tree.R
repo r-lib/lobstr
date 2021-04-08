@@ -246,7 +246,7 @@ tree_internal <- function(
     for (i in seq_len(n_attributes)) {
       termination_type <- Recall(
         x = x_attributes[[i]],
-        x_id = crayon::italic(paste0("<attr>", names(x_attributes)[i])),
+        x_id = crayon::italic(paste0("attr(,\"", names(x_attributes)[i], "\")")),
         opts = opts,
         branch_hist = c(branch_hist, paste0(if (i == n_attributes) "last-", "attribute")),
         attr_mode = TRUE, # Let tree know this is an attribute

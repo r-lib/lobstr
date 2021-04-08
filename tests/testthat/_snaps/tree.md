@@ -181,9 +181,9 @@
       ├─<list>
       │ ├─id: "a"
       │ ├─val: 2
-      │ ├┄<attr>names<chr [2]>: "id", "val"
-      │ ├┄<attr>level: 2
-      │ └┄<attr>name: "first child"
+      │ ├┄attr(,"names")<chr [2]>: "id", "val"
+      │ ├┄attr(,"level"): 2
+      │ └┄attr(,"name"): "first child"
       ├─S3<custom-class>
       │ ├─id: "b"
       │ ├─val: 1
@@ -191,14 +191,14 @@
       │ ┊ └─<list>
       │ ┊   ├─id: "b1"
       │ ┊   ├─val: 2.5
-      │ ┊   └┄<attr>names<chr [2]>: "id", "val"
-      │ ├┄<attr>names<chr [3]>: "id", "val", "children"
-      │ ├┄<attr>level: 2
-      │ ├┄<attr>name: "second child"
-      │ └┄<attr>class: "custom-class"
+      │ ┊   └┄attr(,"names")<chr [2]>: "id", "val"
+      │ ├┄attr(,"names")<chr [3]>: "id", "val", "children"
+      │ ├┄attr(,"level"): 2
+      │ ├┄attr(,"name"): "second child"
+      │ └┄attr(,"class"): "custom-class"
       ├─level: "1"
       ├─name: "root"
-      └┄<attr>names<chr [4]>: "", "", "level", "name"
+      └┄attr(,"names")<chr [4]>: "", "", "level", "name"
     Code
       tree(list_w_attrs, show_attributes = FALSE)
     Output
