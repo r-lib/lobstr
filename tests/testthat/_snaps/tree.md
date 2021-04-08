@@ -219,9 +219,8 @@
 # Function arguments get printed
 
     Code
-      tree(list(no_args = function() {
-        TRUE
-      }, few_args = function(a, b, c) { }, lots_of_args = utils::strOptions))
+      tree(list(no_args = function() { }, few_args = function(a, b, c) { },
+      lots_of_args = utils::strOptions))
     Output
       <list>
       ├─no_args: function()
