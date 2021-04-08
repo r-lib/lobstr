@@ -230,9 +230,10 @@
 # Handles expressions
 
     Code
-      tree(list(a = quote(a), b = quote(a + 1)))
+      tree(list(a = quote(a), b = quote(a + 1), c = y ~ mx + b))
     Output
       <list>
       ├─a: <symbol> a
-      └─b: <language> a + 1
+      ├─b: <language> a + 1
+      └─c: S3<formula> y ~ mx + b
 

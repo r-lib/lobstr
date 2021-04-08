@@ -369,8 +369,8 @@ tree_label.default <- function(x, opts){
     # the srcobject attached to a function's attributes is an environment but
     # doesn't report as one to s3.
     tree_label.environment(x, opts)
-  } else if (rlang::is_expression(x)) {
-    paste0(label_class(x, opts), " ", crayon::italic(rlang::expr_deparse(x)))
+  } else if (rlang::is_expression(x) || rlang::is_formula(x)) {
+    paste0(label_class(x, opts), " ", crayon::italic(deparse(x)))
   } else {
     # The "base-case" is simply a list-like object.
     label_class(x, opts)

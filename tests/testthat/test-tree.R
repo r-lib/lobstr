@@ -217,7 +217,8 @@ test_that("Handles expressions", {
     tree(
       list(
         a = quote(a),
-        b = quote(a+1)
+        b = quote(a+1),
+        c = y~mx+b
       )
     )
   })
