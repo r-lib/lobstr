@@ -25,8 +25,19 @@
     Output
       <list>
       ├─name: "vectored list"
-      ├─num_vec: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-      └─char_vec: ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", ...] n:26
+      ├─num_vec<int [10]>: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+      └─char_vec<chr [26]>: "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", ...
+
+---
+
+    Code
+      tree(list(name = "vectored list", num_vec = 1:10, char_vec = letters),
+      hide_scalar_types = FALSE)
+    Output
+      <list>
+      ├─name<chr [1]>: "vectored list"
+      ├─num_vec<int [10]>: 1, 2, 3, 4, 5, 6, 7, 8, 9, 10
+      └─char_vec<chr [26]>: "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", ...
 
 # Large and multiline strings are handled gracefully
 
@@ -40,15 +51,15 @@
       <list>
       ├─normal string: "first element"
       ├─really long string: "abcdefghijklmnopqrstuvwxyzabcdef..."
-      └─vec of long strings: ["a long↵and m...", "a fine length", "another long..."]
+      └─vec of long strings<chr [3]>: "a long↵and m...", "a fine length", "another long..."
     Code
       tree(long_strings, remove_newlines = FALSE)
     Output
       <list>
       ├─normal string: "first element"
       ├─really long string: "abcdefghijklmnopqrstuvwxyzabcdef..."
-      └─vec of long strings: ["a long
-      and m...", "a fine length", "another long..."]
+      └─vec of long strings<chr [3]>: "a long
+      and m...", "a fine length", "another long..."
 
 # Works with HTML tag structures
 
@@ -170,7 +181,7 @@
       ├─<list>
       │ ├─id: "a"
       │ ├─val: 2
-      │ ├┄<attr>names: ["id", "val"]
+      │ ├┄<attr>names<chr [2]>: "id", "val"
       │ ├┄<attr>level: 2
       │ └┄<attr>name: "first child"
       ├─S3<custom-class>
@@ -180,14 +191,14 @@
       │ ┊ └─<list>
       │ ┊   ├─id: "b1"
       │ ┊   ├─val: 2.5
-      │ ┊   └┄<attr>names: ["id", "val"]
-      │ ├┄<attr>names: ["id", "val", "children"]
+      │ ┊   └┄<attr>names<chr [2]>: "id", "val"
+      │ ├┄<attr>names<chr [3]>: "id", "val", "children"
       │ ├┄<attr>level: 2
       │ ├┄<attr>name: "second child"
       │ └┄<attr>class: "custom-class"
       ├─level: "1"
       ├─name: "root"
-      └┄<attr>names: ["", "", "level", "name"]
+      └┄<attr>names<chr [4]>: "", "", "level", "name"
     Code
       tree(list_w_attrs, show_attributes = FALSE)
     Output

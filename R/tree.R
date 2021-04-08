@@ -11,6 +11,9 @@
 #'   very deep lists.
 #' @param show_environments Should environments be treated like normal lists and
 #'   recursed into?
+#' @param hide_scalar_types Should atomic scalars be printed with type and
+#'   length like vectors? E.g. `x <- "a"` would be shown as `x<char [1]>: "a"`
+#'   instead of `x: "a"`.
 #' @param max_length How many elements should be printed? This is useful in case
 #'   you try and print an object with 100,000 items in it.
 #' @param val_printer Function that values get passed to before being drawn to
@@ -79,6 +82,7 @@ tree <- function(
   max_depth = 10L,
   max_length = 1000L,
   show_environments = TRUE,
+  hide_scalar_types = TRUE,
   val_printer = crayon::blue,
   class_printer = crayon::silver,
   show_attributes = FALSE,
@@ -95,6 +99,7 @@ tree <- function(
       max_depth = max_depth,
       max_length = max_length,
       show_envs = show_environments,
+      hide_scalar_types = hide_scalar_types,
       val_printer = val_printer,
       class_printer = class_printer,
       show_attributes = show_attributes,
@@ -134,7 +139,7 @@ tree_internal <- function(
   # Since self-loops can occur in environments check to see if we've seen any
   # environments before
   already_seen <- rlang::is_environment(x) &&
-    any(as.logical(lapply(counter_env$envs_seen, identical, x)))
+    any(vapply(counter_env$envs_seen, identical, x, FUN.VALUE = NA))
 
   if (!already_seen) {
     # If this environment is new, add it to the seen
@@ -162,10 +167,10 @@ tree_internal <- function(
       if (grepl("attribute", last_step)) opts$tree_chars$hd else opts$tree_chars$h
     )
   }
-
   # Build label
   label <- paste0(
     x_id,
+    make_type_abrev(x, opts$hide_scalar_types),
     if (!rlang::is_null(x_id) && x_id != "") ": ",
     tree_label(x, opts),
     if (already_seen) " (Already seen)"
@@ -277,8 +282,8 @@ tree_label <- function(x, opts){
 
 #' @export
 tree_label.function <- function(x, opts){
-  func_args <- truncate_vec(formalArgs(x), 5)
-  crayon::italic(paste0("function(", paste0(func_args, collapse = ", "),")"))
+  func_args <- collapse_and_truncate_vec(formalArgs(x), 5)
+  crayon::italic(paste0("function(", func_args, ")"))
 }
 
 #' @export
@@ -308,14 +313,14 @@ tree_label.character <- function(x, opts){
   tree_label.default(paste0("\"", x, "\""),opts)
 }
 
-truncate_vec <- function(vec, max_length){
+collapse_and_truncate_vec <- function(vec, max_length){
   vec <- as.character(vec)
   too_long <- length(vec) > max_length
   if (too_long) {
     vec <- head(vec, max_length)
     vec <- c(vec, "...")
   }
-  vec
+  paste0(vec, collapse = ", ")
 }
 
 truncate_string <- function(char_vec, max_length){
@@ -332,6 +337,24 @@ truncate_string <- function(char_vec, max_length){
   )
 }
 
+make_type_abrev <- function(x, omit_scalars){
+
+  if(!rlang::is_atomic(x) || (rlang::is_scalar_atomic(x) && omit_scalars)) return("")
+
+  type_abrev <- switch(
+    typeof(x),
+    logical = "lgl",
+    integer = "int",
+    double = "dbl",
+    character = "chr",
+    complex = "cpl",
+    expression = "expr",
+    raw = "raw",
+    "unknown"
+  )
+
+  paste0("<", type_abrev, " [", format(length(x), big.mark = ",") ,"]>")
+}
 
 
 #' @export
@@ -339,22 +362,7 @@ tree_label.default <- function(x, opts){
 
   if (rlang::is_atomic(x)) {
 
-    num_els <- length(x)
-    if (num_els > 1) {
-      # Atomic vectors are truncated to a max of 10 elements and printed inline
-      x <- as.character(x)
-      too_long <- num_els > 10
-      if (too_long) {
-        x <- head(x, 10)
-        x <- c(x, "...")
-      }
-      # x <- paste0("(n:", num_els, ") ", paste(x, collapse = ", "), "")
-      x <- paste0("[", paste(x, collapse = ", "), "]")
-      if (too_long) x <- paste0(x, " n:", num_els)
-    }
-
-    # Single length atomics just go through unscathed
-    opts$val_printer(x)
+    opts$val_printer(collapse_and_truncate_vec(x, 10))
 
   } else if (rlang::is_function(x)) {
     # Lots of times function-like functions don't actually trigger the s3 method

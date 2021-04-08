@@ -23,6 +23,17 @@ test_that(
       )
     )
 
+    expect_snapshot(
+      tree(
+        list(
+          name = "vectored list",
+          num_vec = 1:10,
+          char_vec = letters
+        ),
+        hide_scalar_types = FALSE
+      )
+    )
+
   })
 
 test_that("Large and multiline strings are handled gracefully", {
