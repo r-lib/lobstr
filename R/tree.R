@@ -155,12 +155,7 @@ tree_internal <- function(
   label <- paste0(
     x_id,
     if (!rlang::is_null(x_id) && x_id != "") ": ",
-    tree_label(
-      x,
-      class_printer = opts$class_printer,
-      val_printer = opts$val_printer,
-      remove_newlines = opts$remove_newlines
-    )
+    tree_label(x, opts)
   )
 
   # Figure out how many children we have (plus attributes if they are being
@@ -305,30 +300,30 @@ not_already_shown <- function(x, counter_env){
 #' @inheritParams tree
 #'
 #' @export
-tree_label <- function(x, val_printer, class_printer, remove_newlines){
+tree_label <- function(x, opts){
   UseMethod("tree_label")
 }
 
 #' @export
-tree_label.function <- function(x, ...){
+tree_label.function <- function(x, opts){
   crayon::italic("function(){...}")
 }
 
 #' @export
-tree_label.environment <- function(x,...){
+tree_label.environment <- function(x, opts){
   format.default(x)
 }
 
 #' @export
-tree_label.NULL <- function(x,...){
+tree_label.NULL <- function(x,opts){
   "<NULL>"
 }
 
 #' @export
-tree_label.character <- function(x, remove_newlines, ...){
+tree_label.character <- function(x, opts){
 
   # Get rid of new-line so they don't break tree flow
-  if (remove_newlines){
+  if (opts$remove_newlines){
     x <- gsub("\\n", replacement = "\u21B5", x = x, perl = TRUE)
   }
 
@@ -348,13 +343,13 @@ tree_label.character <- function(x, remove_newlines, ...){
     x
   )
 
-  tree_label.default(paste0("\"", x, "\""),...)
+  tree_label.default(paste0("\"", x, "\""),opts)
 }
 
 
 
 #' @export
-tree_label.default <- function(x, val_printer, class_printer, remove_newlines){
+tree_label.default <- function(x, opts){
 
   if (rlang::is_atomic(x)) {
 
@@ -373,21 +368,21 @@ tree_label.default <- function(x, val_printer, class_printer, remove_newlines){
     }
 
     # Single length atomics just go through unscathed
-    val_printer(x)
+    opts$val_printer(x)
 
   } else if (rlang::is_function(x)) {
     # Lots of times function-like functions don't actually trigger the s3 method
     # for function because they dont have function in their class-list. This
     # catches those.
-    tree_label.function(x, class_printer, val_printer)
+    tree_label.function(x, opts)
   } else if (rlang::is_environment(x)) {
     # Environments also tend to have the same trouble as functions. For instance
     # the srcobject attached to a function's attributes is an environment but
     # doesn't report as one to s3.
-    tree_label.environment(x)
+    tree_label.environment(x, opts)
   } else {
     # The "base-case" is simply a list-like object.
-    class_printer(label_class(x))
+    opts$class_printer(label_class(x))
   }
 }
 
