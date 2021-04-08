@@ -207,7 +207,8 @@ tree_internal <- function(
     is_function(x) ||
     is_env_to_ignore(x) ||
     max_depth_reached ||
-    already_seen
+    already_seen ||
+    length(x) <= 1
 
   if (!dont_recurse_into) {
 
