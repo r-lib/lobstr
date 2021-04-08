@@ -167,14 +167,14 @@ test_that("Can optionally recurse into environments", {
   # Seven total nodes should be printed
   expect_equal(
     length(env_printing),
-    7
+    4
   )
 
   # Printed only the names we expected
   expect_equal(
     mean(
       grepl(
-        pattern = "(environment|a|b|c|d|e):",
+        pattern = "(environment|a|b|c):",
         env_printing
       )
     ),
@@ -184,7 +184,7 @@ test_that("Can optionally recurse into environments", {
   # Should only print two environment nodes (aka didn't escape past global env)
   expect_equal(
     sum(grepl(pattern = "<environment:", env_printing, fixed = TRUE)),
-    2
+    1
   )
 
 })
