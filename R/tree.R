@@ -138,12 +138,13 @@ tree_internal <- function(
 
   # Since self-loops can occur in environments check to see if we've seen any
   # environments before
-  already_seen <- rlang::is_environment(x) &&
-    any(vapply(counter_env$envs_seen, identical, x, FUN.VALUE = NA))
-
-  if (!already_seen && rlang::is_environment(x)) {
-    # If this environment is new, add it to the seen
-    counter_env$envs_seen[[length(counter_env$envs_seen) + 1]] <- x
+  already_seen <- FALSE
+  if (rlang::is_environment(x)) {
+    already_seen <- any(vapply(counter_env$envs_seen, identical, x, FUN.VALUE = logical(1)))
+    if (!already_seen) {
+      # If this environment is new, add it to the seen
+      counter_env$envs_seen[[length(counter_env$envs_seen) + 1]] <- x
+    }
   }
 
   depth <- length(branch_hist)
