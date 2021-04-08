@@ -188,3 +188,15 @@ test_that("Can optionally recurse into environments", {
   )
 
 })
+
+test_that("Function arguments get printed", {
+  expect_snapshot({
+    tree(
+      list(
+        no_args = function(){TRUE},
+        few_args = function(a,b,c){},
+        lots_of_args = utils::strOptions
+      )
+    )
+  })
+})

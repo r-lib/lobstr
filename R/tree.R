@@ -277,7 +277,8 @@ tree_label <- function(x, opts){
 
 #' @export
 tree_label.function <- function(x, opts){
-  crayon::italic("function(){...}")
+  func_args <- truncate_vec(formalArgs(x), 5)
+  crayon::italic(paste0("function(", paste0(func_args, collapse = ", "),")"))
 }
 
 #' @export
