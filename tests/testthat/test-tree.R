@@ -212,8 +212,13 @@ test_that("Function arguments get printed", {
   })
 })
 
-test_that("Handles symbols", {
+test_that("Handles expressions", {
   expect_snapshot({
-    tree(quote(a))
+    tree(
+      list(
+        a = quote(a),
+        b = quote(a+1)
+      )
+    )
   })
 })

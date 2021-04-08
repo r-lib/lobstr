@@ -227,10 +227,12 @@
       ├─few_args: function(a, b, c)
       └─lots_of_args: function(strict.width, digits.d, vec.len, list.len, deparse.lines, ...)
 
-# Handles symbols
+# Handles expressions
 
     Code
-      tree(quote(a))
+      tree(list(a = quote(a), b = quote(a + 1)))
     Output
-      <symbol>
+      <list>
+      ├─a: <symbol> a
+      └─b: <language> a + 1
 

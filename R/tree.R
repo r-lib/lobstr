@@ -369,16 +369,18 @@ tree_label.default <- function(x, opts){
     # the srcobject attached to a function's attributes is an environment but
     # doesn't report as one to s3.
     tree_label.environment(x, opts)
+  } else if (rlang::is_expression(x)) {
+    paste0(label_class(x, opts), " ", crayon::italic(rlang::expr_deparse(x)))
   } else {
     # The "base-case" is simply a list-like object.
-    opts$class_printer(label_class(x))
+    label_class(x, opts)
   }
 }
 
 # Inspired by waldo:::friendly_type_of(). Prints the class name and hierarchy
 # encased in angle brackets along with a prefix that tells you what OO system
 # the object belongs to (if it does.)
-label_class <- function(x) {
+label_class <- function(x, opts) {
   if (is_missing(x)) {
     return("absent")
   }
@@ -397,5 +399,7 @@ label_class <- function(x) {
     class(x)
   }
 
-  paste0(oo_prefix, "<", paste(class_list, collapse = "/"), ">")
+  opts$class_printer(
+    paste0(oo_prefix, "<", paste(class_list, collapse = "/"), ">")
+  )
 }
