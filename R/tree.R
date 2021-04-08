@@ -121,11 +121,13 @@ tree_internal <- function(
   branch_hist = character(0),
   opts,
   attr_mode = FALSE,
-  counter_env = rlang::new_environment(data = list(n_elements_printed = 0, envs_seen = c()))
+  counter_env = rlang::new_environment(
+    data = list(n_printed = 0, envs_seen = c())
+  )
 ) {
-  counter_env$n_elements_printed <- counter_env$n_elements_printed + 1
+  counter_env$n_printed <- counter_env$n_printed + 1
   # Stop if we've reached the max number of times printed desired
-  if (counter_env$n_elements_printed > opts$max_length) {
+  if (counter_env$n_printed > opts$max_length) {
     return("early")
   }
 
