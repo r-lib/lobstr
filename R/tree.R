@@ -302,19 +302,33 @@ tree_label.character <- function(x, opts){
   max_standalone_length <- 35
   max_vec_length <- 15
   max_length <- if (length(x) == 1) max_standalone_length else max_vec_length
-  x <- ifelse(
-    nchar(x) > max_length,
+  x <- truncate_string(x, max_length)
+
+  tree_label.default(paste0("\"", x, "\""),opts)
+}
+
+truncate_vec <- function(vec, max_length){
+  vec <- as.character(vec)
+  too_long <- length(vec) > max_length
+  if (too_long) {
+    vec <- head(vec, max_length)
+    vec <- c(vec, "...")
+  }
+  vec
+}
+
+truncate_string <- function(char_vec, max_length){
+  ifelse(
+    nchar(char_vec) > max_length,
     # Since we add an elipses we need to take a bit more than the max length
     # off. The gsub adds elipses but also makes sure we dont awkwardly end on
     # a space.
-    gsub(x = substr(x, start = 1, max_length - 3),
+    gsub(x = substr(char_vec, start = 1, max_length - 3),
          pattern = "\\s*$",
          replacement = "...",
          perl = TRUE),
-    x
+    char_vec
   )
-
-  tree_label.default(paste0("\"", x, "\""),opts)
 }
 
 
