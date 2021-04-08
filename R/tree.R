@@ -143,7 +143,7 @@ tree_internal <- function(
 
   if (!already_seen) {
     # If this environment is new, add it to the seen
-    counter_env$envs_seen <- c(counter_env$envs_seen, x)
+    counter_env$envs_seen[[length(counter_env$envs_seen) + 1]] <- x
   }
 
   depth <- length(branch_hist)
