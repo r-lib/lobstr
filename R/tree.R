@@ -141,7 +141,7 @@ tree_internal <- function(
   already_seen <- rlang::is_environment(x) &&
     any(vapply(counter_env$envs_seen, identical, x, FUN.VALUE = NA))
 
-  if (!already_seen) {
+  if (!already_seen && rlang::is_environment(x)) {
     # If this environment is new, add it to the seen
     counter_env$envs_seen[[length(counter_env$envs_seen) + 1]] <- x
   }
