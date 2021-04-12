@@ -3,6 +3,7 @@
 #include <cpp11/list.hpp>
 #include <Rversion.h>
 #include <set>
+#include "utils.h"
 
 [[cpp11::register]]
 double v_size(double n, int element_size) {
@@ -34,6 +35,7 @@ bool is_namespace(cpp11::environment env) {
   return Rf_findVarInFrame3(env, Rf_install(".__NAMESPACE__."), FALSE) != R_UnboundValue;
 }
 
+
 // R equivalent
 // https://github.com/wch/r-source/blob/master/src/library/utils/src/size.c#L41
 
@@ -62,20 +64,11 @@ double obj_size_tree(SEXP x,
 #if defined(R_VERSION) && R_VERSION >= R_Version(3, 5, 0)
   // Handle ALTREP objects
   if (ALTREP(x)) {
-
     SEXP klass = ALTREP_CLASS(x);
-    SEXP classname = CAR(ATTRIB(klass));
 
     size += 3 * sizeof(SEXP);
     size += obj_size_tree(klass, base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-    if (classname == Rf_install("deferred_string")) {
-      // Deferred string ALTREP uses an pairlist, but stores data in the CDR
-      SEXP data1 = R_altrep_data1(x);
-      size += obj_size_tree(CAR(data1), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-      size += obj_size_tree(CDR(data1), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-    } else {
-      size += obj_size_tree(R_altrep_data1(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-    }
+    size += obj_size_tree(R_altrep_data1(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
     size += obj_size_tree(R_altrep_data2(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
     return size;
   }
@@ -133,18 +126,24 @@ double obj_size_tree(SEXP x,
   // Linked lists
   case DOTSXP:
   case LISTSXP:
-  case LANGSXP:
-    if (x == R_MissingArg) // Needed for DOTSXP
+  case LANGSXP: {
+    if (x == R_MissingArg) { // Needed for DOTSXP
       break;
+    }
 
-    for(SEXP cons = x; cons != R_NilValue; cons = CDR(cons)) {
-      if (cons != x)
+    SEXP cons = x;
+    for (; is_linked_list(cons); cons = CDR(cons)) {
+      if (cons != x) {
         size += sizeof_node;
+      }
       size += obj_size_tree(TAG(cons), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
       size += obj_size_tree(CAR(cons), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
     }
+    // Handle non-nil CDRs
+    size += obj_size_tree(cons, base_env, sizeof_node, sizeof_vector, seen, depth + 1);
 
     break;
+  }
 
   case BCODESXP:
     size += obj_size_tree(TAG(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);

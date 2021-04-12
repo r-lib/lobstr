@@ -78,7 +78,7 @@ SEXP obj_inspect_(SEXP x,
   Rf_setAttrib(children, Rf_install("has_seen"), PROTECT(Rf_ScalarLogical(has_seen)));
   Rf_setAttrib(children, Rf_install("id"), PROTECT(Rf_ScalarInteger(id)));
   Rf_setAttrib(children, Rf_install("type"), PROTECT(Rf_ScalarInteger(TYPEOF(x))));
-  Rf_setAttrib(children, Rf_install("length"), PROTECT(Rf_ScalarReal(Rf_length(x))));
+  Rf_setAttrib(children, Rf_install("length"), PROTECT(Rf_ScalarReal(sxp_length(x))));
   Rf_setAttrib(children, Rf_install("altrep"), PROTECT(Rf_ScalarLogical(is_altrep(x))));
   Rf_setAttrib(children, Rf_install("named"), PROTECT(Rf_ScalarInteger(NAMED(x))));
   Rf_setAttrib(children, Rf_install("object"), PROTECT(Rf_ScalarInteger(OBJECT(x))));
@@ -144,17 +144,9 @@ SEXP obj_children_(
   if (expand.alrep && is_altrep(x)) {
 #if defined(R_VERSION) && R_VERSION >= R_Version(3, 5, 0)
     SEXP klass = ALTREP_CLASS(x);
-    SEXP classname = CAR(ATTRIB(klass));
 
     recurse(&children, seen, "_class", klass, max_depth, expand);
-    if (classname == Rf_install("deferred_string")) {
-      // Deferred string ALTREP uses an pairlist, but stores data in the CDR
-      SEXP data1 = R_altrep_data1(x);
-      recurse(&children, seen, "_data1_car", CAR(data1), max_depth, expand);
-      recurse(&children, seen, "_data1_cdr", CDR(data1), max_depth, expand);
-    } else {
-      recurse(&children, seen, "_data1", R_altrep_data1(x), max_depth, expand);
-    }
+    recurse(&children, seen, "_data1", R_altrep_data1(x), max_depth, expand);
     recurse(&children, seen, "_data2", R_altrep_data2(x), max_depth, expand);
 #endif
   } else if (max_depth <= 0) {
@@ -225,11 +217,13 @@ SEXP obj_children_(
         break;
       }
     case DOTSXP:
-    case LISTSXP:
-      if (x == R_MissingArg) // Needed for DOTSXP
+    case LISTSXP: {
+      if (x == R_MissingArg) { // Needed for DOTSXP
         break;
+      }
 
-      for(SEXP cons = x; cons != R_NilValue; cons = CDR(cons)) {
+      SEXP cons = x;
+      for (; is_linked_list(cons); cons = CDR(cons)) {
         SEXP tag = TAG(cons);
         if (TYPEOF(tag) == NILSXP) {
           recurse(&children, seen, "", CAR(cons), max_depth, expand);
@@ -241,7 +235,12 @@ SEXP obj_children_(
           recurse(&children, seen, "_car", CAR(cons), max_depth, expand);
         }
       }
+      if (cons != R_NilValue) {
+        recurse(&children, seen, "_cdr", cons, max_depth, expand);
+      }
+
       break;
+    }
 
     case BCODESXP:
       if (!expand.bytecode) {
