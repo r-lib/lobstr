@@ -11,6 +11,7 @@ tree(
   max_depth = 10L,
   max_length = 1000L,
   show_environments = TRUE,
+  hide_scalar_types = TRUE,
   val_printer = crayon::blue,
   class_printer = crayon::silver,
   show_attributes = FALSE,
@@ -35,6 +36,10 @@ you try and print an object with 100,000 items in it.}
 
 \item{show_environments}{Should environments be treated like normal lists and
 recursed into?}
+
+\item{hide_scalar_types}{Should atomic scalars be printed with type and
+length like vectors? E.g. \code{x <- "a"} would be shown as \verb{x<char [1]>: "a"}
+instead of \code{x: "a"}.}
 
 \item{val_printer}{Function that values get passed to before being drawn to
 screen. Can be used to color or generally style output.}
