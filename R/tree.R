@@ -88,7 +88,7 @@ tree <- function(
   show_attributes = FALSE,
   remove_newlines = TRUE,
   tree_chars = box_chars()
-){
+) {
   ellipsis::check_dots_empty()
 
   # Pack up the unchanging arguments into a list and send to tree_internal
@@ -162,7 +162,7 @@ tree_internal <- function(
 
   branch_chars[depth] <- if (root_node) {
     ""
-  }  else {
+  } else {
     paste0(
       if (grepl("last", last_step)) opts$tree_chars$l else opts$tree_chars$j,
       if (grepl("attribute", last_step)) opts$tree_chars$hd else opts$tree_chars$h
@@ -180,7 +180,7 @@ tree_internal <- function(
   # Figure out how many children we have (plus attributes if they are being
   # printed) so we can setup how to proceed
   x_attributes <- attributes(x)
-  if (attr_mode){
+  if (attr_mode) {
     # Filter out "names" attribute as this is already shown by tree
     x_attributes <- x_attributes[names(x_attributes) != "names"]
   }
@@ -200,10 +200,11 @@ tree_internal <- function(
   )
 
   # ===== Start recursion logic
-  if (already_seen || max_depth_reached) return("Normal finish")
+  if (already_seen || max_depth_reached) {
+    return("Normal finish")
+  }
 
   if (rlang::is_list(x) || is_printable_env(x)) {
-
     children <- as.list(x)
 
     # Traverse children, if any exist
@@ -214,7 +215,7 @@ tree_internal <- function(
       id <- child_names[i]
       if ((rlang::is_null(id) || id == "") && opts$index_unnamed) id <- crayon::italic(i)
 
-      child_type <- if (i < n_children){
+      child_type <- if (i < n_children) {
         "child"
       } else if (has_attributes) {
         "pre-attrs"
@@ -228,13 +229,15 @@ tree_internal <- function(
         opts = opts,
         counter_env = counter_env
       )
-      if (termination_type == "early") return(termination_type)
+      if (termination_type == "early") {
+        return(termination_type)
+      }
     }
   }
   # ===== End recursion logic
 
   # Add any attributes as an "attr" prefixed children at end
-  if (has_attributes){
+  if (has_attributes) {
     n_attributes <- length(x_attributes)
     for (i in seq_len(n_attributes)) {
       termination_type <- Recall(
@@ -245,7 +248,9 @@ tree_internal <- function(
         attr_mode = TRUE, # Let tree know this is an attribute
         counter_env = counter_env
       )
-      if (termination_type == "early") return(termination_type)
+      if (termination_type == "early") {
+        return(termination_type)
+      }
     }
   }
   # If all went smoothly we reach here
@@ -253,11 +258,11 @@ tree_internal <- function(
 }
 
 # There are a few environments we don't want to recurse into
-is_printable_env <- function(x){
+is_printable_env <- function(x) {
   is_environment(x) &&
     !(
       identical(x, rlang::global_env()) ||
-        identical(x, rlang::empty_env())  ||
+        identical(x, rlang::empty_env()) ||
         identical(x, rlang::base_env()) ||
         rlang::is_namespace(x)
     )
@@ -271,31 +276,31 @@ is_printable_env <- function(x){
 #' @inheritParams tree
 #'
 #' @export
-tree_label <- function(x, opts){
+tree_label <- function(x, opts) {
   UseMethod("tree_label")
 }
 
 #' @export
-tree_label.function <- function(x, opts){
+tree_label.function <- function(x, opts) {
   func_args <- collapse_and_truncate_vec(formalArgs(x), 5)
   crayon::italic(paste0("function(", func_args, ")"))
 }
 
 #' @export
-tree_label.environment <- function(x, opts){
+tree_label.environment <- function(x, opts) {
   format.default(x)
 }
 
 #' @export
-tree_label.NULL <- function(x,opts){
+tree_label.NULL <- function(x, opts) {
   "<NULL>"
 }
 
 #' @export
-tree_label.character <- function(x, opts){
+tree_label.character <- function(x, opts) {
 
   # Get rid of new-line so they don't break tree flow
-  if (opts$remove_newlines){
+  if (opts$remove_newlines) {
     x <- gsub("\\n", replacement = "\u21B5", x = x, perl = TRUE)
   }
 
@@ -305,17 +310,14 @@ tree_label.character <- function(x, opts){
   max_length <- if (length(x) == 1) max_standalone_length else max_vec_length
   x <- truncate_string(x, max_length)
 
-  tree_label.default(paste0("\"", x, "\""),opts)
+  tree_label.default(paste0("\"", x, "\""), opts)
 }
 
 
 #' @export
-tree_label.default <- function(x, opts){
-
+tree_label.default <- function(x, opts) {
   if (rlang::is_atomic(x)) {
-
     opts$val_printer(collapse_and_truncate_vec(x, 10))
-
   } else if (rlang::is_function(x)) {
     # Lots of times function-like functions don't actually trigger the s3 method
     # for function because they dont have function in their class-list. This
@@ -335,7 +337,7 @@ tree_label.default <- function(x, opts){
 }
 
 
-collapse_and_truncate_vec <- function(vec, max_length){
+collapse_and_truncate_vec <- function(vec, max_length) {
   vec <- as.character(vec)
   too_long <- length(vec) > max_length
   if (too_long) {
@@ -345,26 +347,28 @@ collapse_and_truncate_vec <- function(vec, max_length){
   paste0(vec, collapse = ", ")
 }
 
-truncate_string <- function(char_vec, max_length){
+truncate_string <- function(char_vec, max_length) {
   ifelse(
     nchar(char_vec) > max_length,
     # Since we add an elipses we need to take a bit more than the max length
     # off. The gsub adds elipses but also makes sure we dont awkwardly end on
     # a space.
-    gsub(x = substr(char_vec, start = 1, max_length - 3),
-         pattern = "\\s*$",
-         replacement = "...",
-         perl = TRUE),
+    gsub(
+      x = substr(char_vec, start = 1, max_length - 3),
+      pattern = "\\s*$",
+      replacement = "...",
+      perl = TRUE
+    ),
     char_vec
   )
 }
 
-make_type_abrev <- function(x, omit_scalars){
+make_type_abrev <- function(x, omit_scalars) {
+  if (!rlang::is_atomic(x) || (rlang::is_scalar_atomic(x) && omit_scalars)) {
+    return("")
+  }
 
-  if(!rlang::is_atomic(x) || (rlang::is_scalar_atomic(x) && omit_scalars)) return("")
-
-  type_abrev <- switch(
-    typeof(x),
+  type_abrev <- switch(typeof(x),
     logical = "lgl",
     integer = "int",
     double = "dbl",
@@ -375,7 +379,7 @@ make_type_abrev <- function(x, omit_scalars){
     "unknown"
   )
 
-  paste0("<", type_abrev, " [", format(length(x), big.mark = ",") ,"]>")
+  paste0("<", type_abrev, " [", format(length(x), big.mark = ","), "]>")
 }
 
 
@@ -390,7 +394,7 @@ label_class <- function(x, opts) {
 
   class_list <- if (!is.object(x)) {
     typeof(x)
-  } else if (isS4(x)){
+  } else if (isS4(x)) {
     oo_prefix <- "S4"
     is(x)
   } else if (inherits(x, "R6")) {
