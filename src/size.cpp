@@ -64,20 +64,11 @@ double obj_size_tree(SEXP x,
 #if defined(R_VERSION) && R_VERSION >= R_Version(3, 5, 0)
   // Handle ALTREP objects
   if (ALTREP(x)) {
-
     SEXP klass = ALTREP_CLASS(x);
-    SEXP classname = CAR(ATTRIB(klass));
 
     size += 3 * sizeof(SEXP);
     size += obj_size_tree(klass, base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-    if (classname == Rf_install("deferred_string")) {
-      // Deferred string ALTREP uses an pairlist, but stores data in the CDR
-      SEXP data1 = R_altrep_data1(x);
-      size += obj_size_tree(CAR(data1), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-      size += obj_size_tree(CDR(data1), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-    } else {
-      size += obj_size_tree(R_altrep_data1(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-    }
+    size += obj_size_tree(R_altrep_data1(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
     size += obj_size_tree(R_altrep_data2(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
     return size;
   }

@@ -144,17 +144,9 @@ SEXP obj_children_(
   if (expand.alrep && is_altrep(x)) {
 #if defined(R_VERSION) && R_VERSION >= R_Version(3, 5, 0)
     SEXP klass = ALTREP_CLASS(x);
-    SEXP classname = CAR(ATTRIB(klass));
 
     recurse(&children, seen, "_class", klass, max_depth, expand);
-    if (classname == Rf_install("deferred_string")) {
-      // Deferred string ALTREP uses an pairlist, but stores data in the CDR
-      SEXP data1 = R_altrep_data1(x);
-      recurse(&children, seen, "_data1_car", CAR(data1), max_depth, expand);
-      recurse(&children, seen, "_data1_cdr", CDR(data1), max_depth, expand);
-    } else {
-      recurse(&children, seen, "_data1", R_altrep_data1(x), max_depth, expand);
-    }
+    recurse(&children, seen, "_data1", R_altrep_data1(x), max_depth, expand);
     recurse(&children, seen, "_data2", R_altrep_data2(x), max_depth, expand);
 #endif
   } else if (max_depth <= 0) {
