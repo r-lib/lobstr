@@ -179,7 +179,7 @@ tree_internal <- function(
 
   # Figure out how many children we have (plus attributes if they are being
   # printed) so we can setup how to proceed
-  x_attributes <- attributes(x)
+  x_attributes <- tree_as_list(attributes(x))
   if (attr_mode) {
     # Filter out "names" attribute as this is already shown by tree
     x_attributes <- x_attributes[names(x_attributes) != "names"]
@@ -205,7 +205,7 @@ tree_internal <- function(
   }
 
   if (rlang::is_list(x) || is_printable_env(x)) {
-    children <- as.list(x)
+    children <- tree_as_list(x)
 
     # Traverse children, if any exist
     n_children <- length(children)
@@ -266,6 +266,22 @@ is_printable_env <- function(x) {
         identical(x, rlang::base_env()) ||
         rlang::is_namespace(x)
     )
+}
+
+tree_as_list <- function(x){
+  # Make sure to get rid of attributes as well
+  # rlang::as_list() is depreciated
+  if (rlang::is_environment(x)) {
+    # Environments are funky as they dont have names before conversion to list
+    # but do after, so let them handle their conversion
+    return (as.list(x))
+  }
+  # Keep names but get rid of other attributes (like class)
+  x_names <- names(x)
+  attributes(x) <- NULL
+  x <- as.list(x)
+  names(x) <- x_names
+  x
 }
 
 #' Build element or node label in tree

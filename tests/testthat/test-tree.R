@@ -223,3 +223,9 @@ test_that("Handles expressions", {
     )
   })
 })
+
+test_that("Hidden lists dont cause infinite recursion", {
+  expect_snapshot({
+    tree(packageVersion('lobstr'))
+  })
+})

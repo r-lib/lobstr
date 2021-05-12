@@ -237,3 +237,11 @@
       ├─b: <language> a + 1
       └─c: S3<formula> y ~ mx + b
 
+# Hidden lists dont cause infinite recursion
+
+    Code
+      tree(packageVersion("lobstr"))
+    Output
+      S3<package_version/numeric_version>
+      └─<int [4]>1, 1, 1, 9000
+
