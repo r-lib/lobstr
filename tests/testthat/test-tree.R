@@ -161,8 +161,8 @@ test_that("Can optionally recurse into environments", {
   env_printing <- capture.output(
     local(
       {
-        ea <- env(d = 4, e = 5)
-        tree(env(ea, a = 1, b = 2, c = 3))
+        ea <- rlang::env(d = 4, e = 5)
+        tree(rlang::env(ea, a = 1, b = 2, c = 3))
       },
       envir = rlang::global_env()
     )
