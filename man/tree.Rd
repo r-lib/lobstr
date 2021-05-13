@@ -75,7 +75,7 @@ x <- list(
     id = "b",
     val = 1,
     children = list(
-      list(id = "b1",val = 2.5),
+      list(id = "b1", val = 2.5),
       list(
         id = "b2",
         val = 8,
@@ -105,6 +105,7 @@ tree(x, index_unnamed = FALSE)
 tree(x, max_depth = 2)
 
 # You can customize how the values and classes are printed if desired
-tree(x, val_printer = function(x){paste0("_", x, "_")})
-
+tree(x, val_printer = function(x) {
+  paste0("_", x, "_")
+})
 }

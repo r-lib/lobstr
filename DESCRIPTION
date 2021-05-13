@@ -17,7 +17,8 @@ Depends:
 Imports: 
     crayon,
     rlang (>= 0.3.0),
-    ellipsis
+    ellipsis,
+    methods
 Suggests: 
     covr,
     pillar,

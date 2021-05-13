@@ -286,6 +286,9 @@ is_printable_env <- function(x) {
 #' can be added if support is needed for a novel class
 #'
 #' @inheritParams tree
+#' @param opts A list of options that directly mirrors the named arguments of
+#'   [tree]. E.g. `list(val_printer = crayon::red)` is equivalent to
+#'   `tree(..., val_printer = crayon::red)`.
 #'
 #' @export
 tree_label <- function(x, opts) {
@@ -294,7 +297,7 @@ tree_label <- function(x, opts) {
 
 #' @export
 tree_label.function <- function(x, opts) {
-  func_args <- collapse_and_truncate_vec(formalArgs(x), 5)
+  func_args <- collapse_and_truncate_vec(methods::formalArgs(x), 5)
   crayon::italic(paste0("function(", func_args, ")"))
 }
 
@@ -353,7 +356,7 @@ collapse_and_truncate_vec <- function(vec, max_length) {
   vec <- as.character(vec)
   too_long <- length(vec) > max_length
   if (too_long) {
-    vec <- head(vec, max_length)
+    vec <- utils::head(vec, max_length)
     vec <- c(vec, "...")
   }
   paste0(vec, collapse = ", ")
@@ -408,7 +411,7 @@ label_class <- function(x, opts) {
     typeof(x)
   } else if (isS4(x)) {
     oo_prefix <- "S4"
-    is(x)
+    methods::is(x)
   } else if (inherits(x, "R6")) {
     oo_prefix <- "R6"
     setdiff(class(x), "R6")

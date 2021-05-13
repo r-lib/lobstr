@@ -8,6 +8,10 @@ tree_label(x, opts)
 }
 \arguments{
 \item{x}{A tree like object (list, etc.)}
+
+\item{opts}{A list of options that directly mirrors the named arguments of
+\link{tree}. E.g. \code{list(val_printer = crayon::red)} is equivalent to
+\code{tree(..., val_printer = crayon::red)}.}
 }
 \description{
 These methods control how the value of a given node is printed. New methods
