@@ -183,12 +183,12 @@
 
     Code
       tree(list(no_args = function() { }, few_args = function(a, b, c) { },
-      lots_of_args = utils::strOptions))
+      lots_of_args = function(d, e, f, g, h, i, j, k, l, m, n, o, p) { }))
     Output
       <list>
       ├─no_args: function()
       ├─few_args: function(a, b, c)
-      └─lots_of_args: function(strict.width, digits.d, vec.len, list.len, deparse.lines, ...)
+      └─lots_of_args: function(d, e, f, g, h, ...)
 
 # Handles expressions
 
