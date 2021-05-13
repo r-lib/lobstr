@@ -271,10 +271,12 @@ is_printable_env <- function(x) {
 tree_as_list <- function(x){
   # Make sure to get rid of attributes as well
   # rlang::as_list() is depreciated
+
   if (rlang::is_environment(x)) {
-    # Environments are funky as they dont have names before conversion to list
-    # but do after, so let them handle their conversion
-    return (as.list(x))
+    # Environments are funky as they don't have names before conversion to list
+    # but do after, so let them handle their conversion.
+    # We use all.names = TRUE in an effort to fully explain the object
+    return (as.list.environment(x, all.names = TRUE))
   }
   # Keep names but get rid of other attributes (like class)
   x_names <- names(x)
