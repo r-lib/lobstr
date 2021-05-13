@@ -1,6 +1,7 @@
 
-
 test_that("Array-like indices can be shown or hidden", {
+  testthat::skip_on_os("windows")
+
   expect_snapshot({
     tree(list(a = "a", "b", "c"), index_unnamed = TRUE)
   })
@@ -9,34 +10,35 @@ test_that("Array-like indices can be shown or hidden", {
   })
 })
 
+test_that("Atomic arrays have sensible defaults w/ truncation for longer than 10-elements",{
+  testthat::skip_on_os("windows")
 
-test_that(
-  "Atomic arrays have sensible defaults with truncation added for longer than 10-elements",
-  {
-    expect_snapshot(
-      tree(
-        list(
-          name = "vectored list",
-          num_vec = 1:10,
-          char_vec = letters
-        )
+  expect_snapshot(
+    tree(
+      list(
+        name = "vectored list",
+        num_vec = 1:10,
+        char_vec = letters
       )
     )
+  )
 
-    expect_snapshot(
-      tree(
-        list(
-          name = "vectored list",
-          num_vec = 1:10,
-          char_vec = letters
-        ),
-        hide_scalar_types = FALSE
-      )
+  expect_snapshot(
+    tree(
+      list(
+        name = "vectored list",
+        num_vec = 1:10,
+        char_vec = letters
+      ),
+      hide_scalar_types = FALSE
     )
+  )
 
-  })
+})
 
 test_that("Large and multiline strings are handled gracefully", {
+  testthat::skip_on_os("windows")
+
   expect_snapshot({
     long_strings <- list(
       "normal string" = "first element",
@@ -58,20 +60,11 @@ test_that("Large and multiline strings are handled gracefully", {
   })
 })
 
-
-# Builds a regex that tests for the _lack_ of a substring
-doesNotExistRegex <- function(substring){
-  # Uses a negative look-behind to check for the absence of the substring
-  # pattern.
-
-  # The (?...) block controls how the perl regex parser works
-  # s -> Makes a dot matches all characters
-  # m -> Multiline mode
-  paste0("(?sm)^(?!.*", substring, ").*$")
-}
-
 test_that("Max depth and length can be enforced", {
-
+  # This test also disables the unicode printing so it can be run on windows
+  # platforms
+  old_opts <- options("lobstr.fancy.tree" = FALSE)
+  on.exit(options(old_opts))
   expect_snapshot({
     deep_list <- list(
       list(
@@ -101,6 +94,8 @@ test_that("Max depth and length can be enforced", {
 })
 
 test_that("Missing values are caught and printed properly", {
+  testthat::skip_on_os("windows")
+
   expect_snapshot(
     tree(
       list(
@@ -111,15 +106,16 @@ test_that("Missing values are caught and printed properly", {
   )
 })
 
+test_that("non-named elements in named list", {
+  testthat::skip_on_os("windows")
 
-test_that("non-named elements in named list",{
   expect_snapshot(
     tree(list("a" = 1, "el w/o id"))
   )
 })
 
-
 test_that("Attributes are properly displayed as special children nodes", {
+  testthat::skip_on_os("windows")
 
   expect_snapshot({
     list_w_attrs <- structure(
@@ -155,6 +151,8 @@ test_that("Attributes are properly displayed as special children nodes", {
 })
 
 test_that("Can optionally recurse into environments", {
+  testthat::skip_on_os("windows")
+
   # Wrapped in a local to avoid different environment setup for code running in
   # test_that instead of interactively
   # Can't use snapshots here because environment address change on each run
@@ -194,6 +192,8 @@ test_that("Can optionally recurse into environments", {
 })
 
 test_that("Function arguments get printed", {
+  testthat::skip_on_os("windows")
+
   expect_snapshot({
     tree(
       list(
@@ -206,6 +206,8 @@ test_that("Function arguments get printed", {
 })
 
 test_that("Handles expressions", {
+  testthat::skip_on_os("windows")
+
   expect_snapshot({
     tree(
       list(
@@ -218,6 +220,8 @@ test_that("Handles expressions", {
 })
 
 test_that("Hidden lists dont cause infinite recursion", {
+  testthat::skip_on_os("windows")
+
   expect_snapshot({
     tree(packageVersion('lobstr'))
   })

@@ -18,7 +18,7 @@
       ├─"b"
       └─"c"
 
-# Atomic arrays have sensible defaults with truncation added for longer than 10-elements
+# Atomic arrays have sensible defaults w/ truncation for longer than 10-elements
 
     Code
       tree(list(name = "vectored list", num_vec = 1:10, char_vec = letters))
@@ -70,32 +70,32 @@
       tree(deep_list, max_depth = 1)
     Output
       <list>
-      ├─<list>...
-      └─<list>...
+      +-<list>...
+      \-<list>...
     Code
       tree(deep_list, max_depth = 2)
     Output
       <list>
-      ├─<list>
-      │ ├─id: "b"
-      │ ├─val: 1
-      │ └─children: <list>...
-      └─<list>
-        ├─id: "a"
-        └─val: 2
+      +-<list>
+      | +-id: "b"
+      | +-val: 1
+      | \-children: <list>...
+      \-<list>
+        +-id: "a"
+        \-val: 2
     Code
       tree(deep_list, max_depth = 3)
     Output
       <list>
-      ├─<list>
-      │ ├─id: "b"
-      │ ├─val: 1
-      │ └─children: <list>
-      │   ├─<list>...
-      │   └─<list>...
-      └─<list>
-        ├─id: "a"
-        └─val: 2
+      +-<list>
+      | +-id: "b"
+      | +-val: 1
+      | \-children: <list>
+      |   +-<list>...
+      |   \-<list>...
+      \-<list>
+        +-id: "a"
+        \-val: 2
     Code
       tree(deep_list, max_length = 0)
     Output
@@ -104,14 +104,14 @@
       tree(deep_list, max_length = 2)
     Output
       <list>
-      ├─<list>
+      +-<list>
       ... 
     Code
       tree(deep_list, max_depth = 1, max_length = 4)
     Output
       <list>
-      ├─<list>...
-      └─<list>...
+      +-<list>...
+      \-<list>...
 
 # Missing values are caught and printed properly
 
