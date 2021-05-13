@@ -42,7 +42,7 @@
 #'     id = "b",
 #'     val = 1,
 #'     children = list(
-#'       list(id = "b1",val = 2.5),
+#'       list(id = "b1", val = 2.5),
 #'       list(
 #'         id = "b2",
 #'         val = 8,
@@ -72,23 +72,22 @@
 #' tree(x, max_depth = 2)
 #'
 #' # You can customize how the values and classes are printed if desired
-#' tree(x, val_printer = function(x){paste0("_", x, "_")})
-#'
+#' tree(x, val_printer = function(x) {
+#'   paste0("_", x, "_")
+#' })
 #' @export
-tree <- function(
-  x,
-  ...,
-  index_unnamed = FALSE,
-  max_depth = 10L,
-  max_length = 1000L,
-  show_environments = TRUE,
-  hide_scalar_types = TRUE,
-  val_printer = crayon::blue,
-  class_printer = crayon::silver,
-  show_attributes = FALSE,
-  remove_newlines = TRUE,
-  tree_chars = box_chars()
-) {
+tree <- function(x,
+                 ...,
+                 index_unnamed = FALSE,
+                 max_depth = 10L,
+                 max_length = 1000L,
+                 show_environments = TRUE,
+                 hide_scalar_types = TRUE,
+                 val_printer = crayon::blue,
+                 class_printer = crayon::silver,
+                 show_attributes = FALSE,
+                 remove_newlines = TRUE,
+                 tree_chars = box_chars()) {
   ellipsis::check_dots_empty()
 
   # Pack up the unchanging arguments into a list and send to tree_internal
@@ -120,16 +119,14 @@ tree <- function(
 # static options arguments from the user-facing `tree()` into a single opts
 # list to make recursive calls cleaner. It also has arguments that as it is
 # called successively but the end-user shouldn't see or use.
-tree_internal <- function(
-  x,
-  x_id = NULL,
-  branch_hist = character(0),
-  opts,
-  attr_mode = FALSE,
-  counter_env = rlang::new_environment(
-    data = list(n_printed = 0, envs_seen = c())
-  )
-) {
+tree_internal <- function(x,
+                          x_id = NULL,
+                          branch_hist = character(0),
+                          opts,
+                          attr_mode = FALSE,
+                          counter_env = rlang::new_environment(
+                            data = list(n_printed = 0, envs_seen = c())
+                          )) {
   counter_env$n_printed <- counter_env$n_printed + 1
   # Stop if we've reached the max number of times printed desired
   if (counter_env$n_printed > opts$max_length) {
