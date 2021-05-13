@@ -61,43 +61,6 @@
       └─vec of long strings<chr [3]>: "a long
       and m...", "a fine length", "another long..."
 
-# Works with HTML tag structures
-
-    Code
-      tree(shiny::sliderInput("test", "Input Label", 0, 1, 0.5))
-    Output
-      S3<shiny.tag>
-      ├─name: "div"
-      ├─attribs: <list>
-      │ └─class: "form-group shiny-input-container"
-      └─children: <list>
-        ├─S3<shiny.tag>
-        │ ├─name: "label"
-        │ ├─attribs: <list>
-        │ │ ├─class: "control-label"
-        │ │ ├─id: "test-label"
-        │ │ └─for: "test"
-        │ └─children: <list>
-        │   └─"Input Label"
-        └─S3<shiny.tag>
-          ├─name: "input"
-          ├─attribs: <list>
-          │ ├─class: "js-range-slider"
-          │ ├─id: "test"
-          │ ├─data-skin: "shiny"
-          │ ├─data-min: "0"
-          │ ├─data-max: "1"
-          │ ├─data-from: "0.5"
-          │ ├─data-step: "0.01"
-          │ ├─data-grid: "true"
-          │ ├─data-grid-num: 10
-          │ ├─data-grid-snap: "false"
-          │ ├─data-prettify-separator: ","
-          │ ├─data-prettify-enabled: "true"
-          │ ├─data-keyboard: "true"
-          │ └─data-data-type: "number"
-          └─children: <list>
-
 # Max depth and length can be enforced
 
     Code

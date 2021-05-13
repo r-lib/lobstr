@@ -58,13 +58,6 @@ test_that("Large and multiline strings are handled gracefully", {
   })
 })
 
-test_that("Works with HTML tag structures", {
-  # sliderInput is a pretty complex structure all in one line
-  expect_snapshot(
-    tree(shiny::sliderInput("test", "Input Label", 0,1,0.5))
-  )
-})
-
 
 # Builds a regex that tests for the _lack_ of a substring
 doesNotExistRegex <- function(substring){
