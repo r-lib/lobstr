@@ -135,7 +135,6 @@ tree_internal <- function(
   if (counter_env$n_printed > opts$max_length) {
     return("early")
   }
-
   # Since self-loops can occur in environments check to see if we've seen any
   # environments before
   already_seen <- FALSE
@@ -154,7 +153,7 @@ tree_internal <- function(
   branch_chars <- rep_len("  ", depth)
 
   branch_chars[branch_hist == "child"] <- paste0(opts$tree_chars$v, " ")
-  branch_chars[branch_hist == "pre-attrs"] <- paste0(opts$tree_chars$vd, " ")
+  branch_chars[grepl("attr", branch_hist, fixed = TRUE)] <- paste0(opts$tree_chars$vd, " ")
 
   # Next update the final element (aka the current step) with the correct branch type
   last_step <- branch_hist[depth]
@@ -231,6 +230,9 @@ tree_internal <- function(
       child_type <- if (i < n_children) {
         "child"
       } else if (has_attributes) {
+        # We use "attrs" here instead of full "attribute" so a grep for
+        # attributes just gets plain "attribute" or "last-attribute" but a grep
+        # for "attr" gets all attribute related types
         "pre-attrs"
       } else {
         "last-child"
