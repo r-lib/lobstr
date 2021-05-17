@@ -6,7 +6,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>How much memory is currently used by R? — mem_used • lobstr</title>
+<title>Build element or node label in tree — tree_label • lobstr</title>
 
 <!-- favicons -->
 <link rel="icon" type="image/png" sizes="16x16" href="../favicon-16x16.png">
@@ -46,11 +46,9 @@
 
 
 
-<meta property="og:title" content="How much memory is currently used by R? — mem_used" />
-<meta property="og:description" content="mem_used() wraps around gc() and returns the exact number of bytes
-currently used by R. Note that changes will not match up exactly to
-obj_size() as session specific state (e.g. .Last.value) adds minor
-variations." />
+<meta property="og:title" content="Build element or node label in tree — tree_label" />
+<meta property="og:description" content="These methods control how the value of a given node is printed. New methods
+can be added if support is needed for a novel class" />
 <meta property="og:image" content="/logo.png" />
 
 
@@ -122,34 +120,34 @@ variations." />
 <div class="row">
   <div class="col-md-9 contents">
     <div class="page-header">
-    <h1>How much memory is currently used by R?</h1>
-    <small class="dont-index">Source: <a href='https://github.com/r-lib/lobstr/blob/master/R/mem.R'><code>R/mem.R</code></a></small>
-    <div class="hidden name"><code>mem_used.Rd</code></div>
+    <h1>Build element or node label in tree</h1>
+    <small class="dont-index">Source: <a href='https://github.com/r-lib/lobstr/blob/master/R/tree.R'><code>R/tree.R</code></a></small>
+    <div class="hidden name"><code>tree_label.Rd</code></div>
     </div>
 
     <div class="ref-description">
-    <p><code>mem_used()</code> wraps around <code><a href='https://rdrr.io/r/base/gc.html'>gc()</a></code> and returns the exact number of bytes
-currently used by R. Note that changes will not match up exactly to
-<code><a href='obj_size.html'>obj_size()</a></code> as session specific state (e.g. <a href='https://rdrr.io/r/base/Last.value.html'>.Last.value</a>) adds minor
-variations.</p>
+    <p>These methods control how the value of a given node is printed. New methods
+can be added if support is needed for a novel class</p>
     </div>
 
-    <pre class="usage"><span class='fu'>mem_used</span><span class='op'>(</span><span class='op'>)</span></pre>
+    <pre class="usage"><span class='fu'>tree_label</span><span class='op'>(</span><span class='va'>x</span>, <span class='va'>opts</span><span class='op'>)</span></pre>
+
+    <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
+    <table class="ref-arguments">
+    <colgroup><col class="name" /><col class="desc" /></colgroup>
+    <tr>
+      <th>x</th>
+      <td><p>A tree like object (list, etc.)</p></td>
+    </tr>
+    <tr>
+      <th>opts</th>
+      <td><p>A list of options that directly mirrors the named arguments of
+<a href='tree.html'>tree</a>. E.g. <code><a href='https://rdrr.io/r/base/list.html'>list(val_printer = crayon::red)</a></code> is equivalent to
+<code><a href='tree.html'>tree(..., val_printer = crayon::red)</a></code>.</p></td>
+    </tr>
+    </table>
 
 
-
-    <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='va'>prev_m</span> <span class='op'>&lt;-</span> <span class='fl'>0</span>; <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>mem_used</span><span class='op'>(</span><span class='op'>)</span>; <span class='va'>m</span> <span class='op'>-</span> <span class='va'>prev_m</span>
-</div><div class='output co'>#&gt; 52,582,920 B</div><div class='input'>
-<span class='va'>x</span> <span class='op'>&lt;-</span> <span class='fl'>1</span><span class='op'>:</span><span class='fl'>1e6</span>
-<span class='va'>prev_m</span> <span class='op'>&lt;-</span> <span class='va'>m</span>; <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>mem_used</span><span class='op'>(</span><span class='op'>)</span>; <span class='va'>m</span> <span class='op'>-</span> <span class='va'>prev_m</span>
-</div><div class='output co'>#&gt; 155,992 B</div><div class='input'><span class='fu'><a href='obj_size.html'>obj_size</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; 680 B</div><div class='input'>
-<span class='fu'><a href='https://rdrr.io/r/base/rm.html'>rm</a></span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-<span class='va'>prev_m</span> <span class='op'>&lt;-</span> <span class='va'>m</span>; <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>mem_used</span><span class='op'>(</span><span class='op'>)</span>; <span class='va'>m</span> <span class='op'>-</span> <span class='va'>prev_m</span>
-</div><div class='output co'>#&gt; 14,624 B</div><div class='input'>
-<span class='va'>prev_m</span> <span class='op'>&lt;-</span> <span class='va'>m</span>; <span class='va'>m</span> <span class='op'>&lt;-</span> <span class='fu'>mem_used</span><span class='op'>(</span><span class='op'>)</span>; <span class='va'>m</span> <span class='op'>-</span> <span class='va'>prev_m</span>
-</div><div class='output co'>#&gt; 464 B</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
