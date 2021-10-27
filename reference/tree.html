@@ -248,107 +248,107 @@ junction (or middle child).</p></td>
 
 <span class='co'># Basic usage</span>
 <span class='fu'>tree</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; <span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; ├─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │ ├─id: </span><span style='color: #0000BB;'>"a"</span><span>
-#&gt; │ └─val: </span><span style='color: #0000BB;'>2</span><span>
-#&gt; ├─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │ ├─id: </span><span style='color: #0000BB;'>"b"</span><span>
-#&gt; │ ├─val: </span><span style='color: #0000BB;'>1</span><span>
-#&gt; │ └─children: </span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │   ├─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │   │ ├─id: </span><span style='color: #0000BB;'>"b1"</span><span>
-#&gt; │   │ └─val: </span><span style='color: #0000BB;'>2.5</span><span>
-#&gt; │   └─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │     ├─id: </span><span style='color: #0000BB;'>"b2"</span><span>
-#&gt; │     ├─val: </span><span style='color: #0000BB;'>8</span><span>
-#&gt; │     └─children: </span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │       └─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │         ├─id: </span><span style='color: #0000BB;'>"b21"</span><span>
-#&gt; │         └─val: </span><span style='color: #0000BB;'>4</span><span>
-#&gt; └─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt;   ├─id: </span><span style='color: #0000BB;'>"c"</span><span>
-#&gt;   ├─val: </span><span style='color: #0000BB;'>8</span><span>
-#&gt;   └─children: </span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt;     ├─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt;     │ └─id: </span><span style='color: #0000BB;'>"c1"</span><span>
-#&gt;     └─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt;       ├─id: </span><span style='color: #0000BB;'>"c2"</span><span>
-#&gt;       └─val: </span><span style='color: #0000BB;'>1</span><span></div><div class='input'>
+</div><div class='output co'>#&gt; <span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; ├─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │ ├─id: <span style='color: #0000BB;'>"a"</span>
+#&gt; │ └─val: <span style='color: #0000BB;'>2</span>
+#&gt; ├─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │ ├─id: <span style='color: #0000BB;'>"b"</span>
+#&gt; │ ├─val: <span style='color: #0000BB;'>1</span>
+#&gt; │ └─children: <span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │   ├─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │   │ ├─id: <span style='color: #0000BB;'>"b1"</span>
+#&gt; │   │ └─val: <span style='color: #0000BB;'>2.5</span>
+#&gt; │   └─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │     ├─id: <span style='color: #0000BB;'>"b2"</span>
+#&gt; │     ├─val: <span style='color: #0000BB;'>8</span>
+#&gt; │     └─children: <span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │       └─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │         ├─id: <span style='color: #0000BB;'>"b21"</span>
+#&gt; │         └─val: <span style='color: #0000BB;'>4</span>
+#&gt; └─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt;   ├─id: <span style='color: #0000BB;'>"c"</span>
+#&gt;   ├─val: <span style='color: #0000BB;'>8</span>
+#&gt;   └─children: <span style='color: #555555;'>&lt;list&gt;</span>
+#&gt;     ├─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt;     │ └─id: <span style='color: #0000BB;'>"c1"</span>
+#&gt;     └─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt;       ├─id: <span style='color: #0000BB;'>"c2"</span>
+#&gt;       └─val: <span style='color: #0000BB;'>1</span></div><div class='input'>
 <span class='co'># Even cleaner output can be achieved by not printing indices</span>
 <span class='fu'>tree</span><span class='op'>(</span><span class='va'>x</span>, index_unnamed <span class='op'>=</span> <span class='cn'>FALSE</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; ├─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │ ├─id: </span><span style='color: #0000BB;'>"a"</span><span>
-#&gt; │ └─val: </span><span style='color: #0000BB;'>2</span><span>
-#&gt; ├─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │ ├─id: </span><span style='color: #0000BB;'>"b"</span><span>
-#&gt; │ ├─val: </span><span style='color: #0000BB;'>1</span><span>
-#&gt; │ └─children: </span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │   ├─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │   │ ├─id: </span><span style='color: #0000BB;'>"b1"</span><span>
-#&gt; │   │ └─val: </span><span style='color: #0000BB;'>2.5</span><span>
-#&gt; │   └─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │     ├─id: </span><span style='color: #0000BB;'>"b2"</span><span>
-#&gt; │     ├─val: </span><span style='color: #0000BB;'>8</span><span>
-#&gt; │     └─children: </span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │       └─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │         ├─id: </span><span style='color: #0000BB;'>"b21"</span><span>
-#&gt; │         └─val: </span><span style='color: #0000BB;'>4</span><span>
-#&gt; └─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt;   ├─id: </span><span style='color: #0000BB;'>"c"</span><span>
-#&gt;   ├─val: </span><span style='color: #0000BB;'>8</span><span>
-#&gt;   └─children: </span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt;     ├─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt;     │ └─id: </span><span style='color: #0000BB;'>"c1"</span><span>
-#&gt;     └─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt;       ├─id: </span><span style='color: #0000BB;'>"c2"</span><span>
-#&gt;       └─val: </span><span style='color: #0000BB;'>1</span><span></div><div class='input'>
+</div><div class='output co'>#&gt; <span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; ├─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │ ├─id: <span style='color: #0000BB;'>"a"</span>
+#&gt; │ └─val: <span style='color: #0000BB;'>2</span>
+#&gt; ├─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │ ├─id: <span style='color: #0000BB;'>"b"</span>
+#&gt; │ ├─val: <span style='color: #0000BB;'>1</span>
+#&gt; │ └─children: <span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │   ├─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │   │ ├─id: <span style='color: #0000BB;'>"b1"</span>
+#&gt; │   │ └─val: <span style='color: #0000BB;'>2.5</span>
+#&gt; │   └─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │     ├─id: <span style='color: #0000BB;'>"b2"</span>
+#&gt; │     ├─val: <span style='color: #0000BB;'>8</span>
+#&gt; │     └─children: <span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │       └─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │         ├─id: <span style='color: #0000BB;'>"b21"</span>
+#&gt; │         └─val: <span style='color: #0000BB;'>4</span>
+#&gt; └─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt;   ├─id: <span style='color: #0000BB;'>"c"</span>
+#&gt;   ├─val: <span style='color: #0000BB;'>8</span>
+#&gt;   └─children: <span style='color: #555555;'>&lt;list&gt;</span>
+#&gt;     ├─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt;     │ └─id: <span style='color: #0000BB;'>"c1"</span>
+#&gt;     └─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt;       ├─id: <span style='color: #0000BB;'>"c2"</span>
+#&gt;       └─val: <span style='color: #0000BB;'>1</span></div><div class='input'>
 <span class='co'># Limit depth if object is potentially very large</span>
 <span class='fu'>tree</span><span class='op'>(</span><span class='va'>x</span>, max_depth <span class='op'>=</span> <span class='fl'>2</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; ├─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │ ├─id: </span><span style='color: #0000BB;'>"a"</span><span>
-#&gt; │ └─val: </span><span style='color: #0000BB;'>2</span><span>
-#&gt; ├─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │ ├─id: </span><span style='color: #0000BB;'>"b"</span><span>
-#&gt; │ ├─val: </span><span style='color: #0000BB;'>1</span><span>
-#&gt; │ └─children: </span><span style='color: #555555;'>&lt;list&gt;</span><span>...
-#&gt; └─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt;   ├─id: </span><span style='color: #0000BB;'>"c"</span><span>
-#&gt;   ├─val: </span><span style='color: #0000BB;'>8</span><span>
-#&gt;   └─children: </span><span style='color: #555555;'>&lt;list&gt;</span><span>...</div><div class='input'>
+</div><div class='output co'>#&gt; <span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; ├─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │ ├─id: <span style='color: #0000BB;'>"a"</span>
+#&gt; │ └─val: <span style='color: #0000BB;'>2</span>
+#&gt; ├─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │ ├─id: <span style='color: #0000BB;'>"b"</span>
+#&gt; │ ├─val: <span style='color: #0000BB;'>1</span>
+#&gt; │ └─children: <span style='color: #555555;'>&lt;list&gt;</span>...
+#&gt; └─<span style='color: #555555;'>&lt;list&gt;</span>
+#&gt;   ├─id: <span style='color: #0000BB;'>"c"</span>
+#&gt;   ├─val: <span style='color: #0000BB;'>8</span>
+#&gt;   └─children: <span style='color: #555555;'>&lt;list&gt;</span>...</div><div class='input'>
 <span class='co'># You can customize how the values and classes are printed if desired</span>
 <span class='fu'>tree</span><span class='op'>(</span><span class='va'>x</span>, val_printer <span class='op'>=</span> <span class='kw'>function</span><span class='op'>(</span><span class='va'>x</span><span class='op'>)</span> <span class='op'>{</span>
   <span class='fu'><a href='https://rdrr.io/r/base/paste.html'>paste0</a></span><span class='op'>(</span><span class='st'>"_"</span>, <span class='va'>x</span>, <span class='st'>"_"</span><span class='op'>)</span>
 <span class='op'>}</span><span class='op'>)</span>
-</div><div class='output co'>#&gt; </span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; ├─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
+</div><div class='output co'>#&gt; <span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; ├─<span style='color: #555555;'>&lt;list&gt;</span>
 #&gt; │ ├─id: _"a"_
 #&gt; │ └─val: _2_
-#&gt; ├─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
+#&gt; ├─<span style='color: #555555;'>&lt;list&gt;</span>
 #&gt; │ ├─id: _"b"_
 #&gt; │ ├─val: _1_
-#&gt; │ └─children: </span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │   ├─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
+#&gt; │ └─children: <span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │   ├─<span style='color: #555555;'>&lt;list&gt;</span>
 #&gt; │   │ ├─id: _"b1"_
 #&gt; │   │ └─val: _2.5_
-#&gt; │   └─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
+#&gt; │   └─<span style='color: #555555;'>&lt;list&gt;</span>
 #&gt; │     ├─id: _"b2"_
 #&gt; │     ├─val: _8_
-#&gt; │     └─children: </span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt; │       └─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
+#&gt; │     └─children: <span style='color: #555555;'>&lt;list&gt;</span>
+#&gt; │       └─<span style='color: #555555;'>&lt;list&gt;</span>
 #&gt; │         ├─id: _"b21"_
 #&gt; │         └─val: _4_
-#&gt; └─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
+#&gt; └─<span style='color: #555555;'>&lt;list&gt;</span>
 #&gt;   ├─id: _"c"_
 #&gt;   ├─val: _8_
-#&gt;   └─children: </span><span style='color: #555555;'>&lt;list&gt;</span><span>
-#&gt;     ├─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
+#&gt;   └─children: <span style='color: #555555;'>&lt;list&gt;</span>
+#&gt;     ├─<span style='color: #555555;'>&lt;list&gt;</span>
 #&gt;     │ └─id: _"c1"_
-#&gt;     └─</span><span style='color: #555555;'>&lt;list&gt;</span><span>
+#&gt;     └─<span style='color: #555555;'>&lt;list&gt;</span>
 #&gt;       ├─id: _"c2"_
-#&gt;       └─val: _1_</div></span></pre>
+#&gt;       └─val: _1_</div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <nav id="toc" data-toggle="toc" class="sticky-top">
