@@ -131,16 +131,16 @@
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">1e6</span>
 <span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">x</span>, <span class="va">x</span><span class="op">)</span>
 <span class="fu"><a href="reference/ref.html">ref</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
-<span class="co">#&gt; █ [1:0x7fd4f2f8e6a8] &lt;list&gt; </span>
-<span class="co">#&gt; ├─[2:0x7fd502ac9db8] &lt;int&gt; </span>
-<span class="co">#&gt; ├─[2:0x7fd502ac9db8] </span>
-<span class="co">#&gt; └─[2:0x7fd502ac9db8]</span>
+<span class="co">#&gt; █ [1:0x7fed114eaea8] &lt;list&gt; </span>
+<span class="co">#&gt; ├─[2:0x7fed21f373b8] &lt;int&gt; </span>
+<span class="co">#&gt; ├─[2:0x7fed21f373b8] </span>
+<span class="co">#&gt; └─[2:0x7fed21f373b8]</span>
 
 <span class="va">e</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/env.html" class="external-link">env</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">e</span><span class="op">$</span><span class="va">self</span> <span class="op">&lt;-</span> <span class="va">e</span>
 <span class="fu"><a href="reference/ref.html">ref</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span>
-<span class="co">#&gt; █ [1:0x7fd4c3651100] &lt;env&gt; </span>
-<span class="co">#&gt; └─self = [1:0x7fd4c3651100]</span></code></pre></div>
+<span class="co">#&gt; █ [1:0x7fecf1856f00] &lt;env&gt; </span>
+<span class="co">#&gt; └─self = [1:0x7fecf1856f00]</span></code></pre></div>
 <p>A related tool is <code><a href="reference/obj_size.html">obj_size()</a></code>, which computes the size of an object taking these shared references into account:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/obj_size.html">obj_size</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
@@ -204,7 +204,7 @@
 <ul class="list-unstyled">
 <li><a href="https://cran.r-project.org/package=lobstr" class="external-link"><img src="https://www.r-pkg.org/badges/version/lobstr" alt="CRAN status"></a></li>
 <li><a href="https://github.com/r-lib/lobstr/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/r-lib/lobstr/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/gh/r-lib/lobstr?branch=master" class="external-link"><img src="https://codecov.io/gh/r-lib/lobstr/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="https://codecov.io/gh/r-lib/lobstr?branch=main" class="external-link"><img src="https://codecov.io/gh/r-lib/lobstr/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>
 </div>
 
