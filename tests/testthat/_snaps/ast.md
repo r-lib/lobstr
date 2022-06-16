@@ -1,7 +1,7 @@
 # can print complex expression
 
     Code
-      ast(function(x) if (x > 1) f(y$x, "x", g()))
+      ast(!!x)
     Output
       █─`function` 
       ├─█─x = `` 
@@ -20,7 +20,7 @@
 # can print complex expression without unicode
 
     Code
-      ast(function(x) if (x > 1) f(y$x, "x", g()))
+      ast(!!x)
     Output
       o-`function` 
       +-o-x = `` 
@@ -39,8 +39,7 @@
 # can print scalar expressions nicely
 
     Code
-      ast(list(logical = c(FALSE, TRUE, NA), integer = 1L, double = 1, character = "a",
-      complex = 0+1i))
+      ast(!!x)
     Output
       o-list 
       +-logical = o-c 
@@ -50,7 +49,5 @@
       +-integer = 1L 
       +-double = 1 
       +-character = "a" 
-      \-complex = o-`+` 
-                  +-0 
-                  \-1i 
+      \-complex = 1i 
 
