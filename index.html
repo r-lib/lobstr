@@ -29,6 +29,8 @@
 <![endif]-->
 </head>
 <body data-spy="scroll" data-target="#toc">
+    
+
     <div class="container template-home">
       <header><div class="navbar navbar-default navbar-fixed-top" role="navigation">
   <div class="container">
@@ -41,18 +43,12 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">lobstr</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">1.1.1.9000</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">1.1.1.9000</span>
       </span>
     </div>
 
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-<li>
-  <a href="index.html">
-    <span class="fas fa-home fa-lg"></span>
-     
-  </a>
-</li>
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
@@ -62,7 +58,7 @@
       </ul>
 <ul class="nav navbar-nav navbar-right">
 <li>
-  <a href="https://github.com/r-lib/lobstr/">
+  <a href="https://github.com/r-lib/lobstr/" class="external-link">
     <span class="fab fa-github fa-lg"></span>
      
   </a>
@@ -79,30 +75,28 @@
 
       </header><div class="row">
   <div class="contents col-md-9">
-<div id="lobstr-" class="section level1">
-<div class="page-header"><h1 class="hasAnchor">
-<a href="#lobstr-" class="anchor"></a>lobstr <img src="reference/figures/logo.png" align="right" height="139">
+<div class="section level1">
+<div class="page-header"><h1 id="lobstr-">lobstr <img src="reference/figures/logo.png" align="right" height="139"><a class="anchor" aria-label="anchor" href="#lobstr-"></a>
 </h1></div>
 <!-- badges: start -->
-
-<p>lobstr provides tools in the same vein as <code><a href="https://rdrr.io/r/utils/str.html">str()</a></code>, which allow you to dig into the detail of an object.</p>
-<div id="installation" class="section level2">
-<h2 class="hasAnchor">
-<a href="#installation" class="anchor"></a>Installation</h2>
+<p>lobstr provides tools in the same vein as <code><a href="https://rdrr.io/r/utils/str.html" class="external-link">str()</a></code>, which allow you to dig into the detail of an object.</p>
+<div class="section level2">
+<h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
+</h2>
 <p>Install the released version of lobstr from CRAN:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html">install.packages</a></span><span class="op">(</span><span class="st">"lobstr"</span><span class="op">)</span></code></pre></div>
+<code class="sourceCode R"><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"lobstr"</span><span class="op">)</span></code></pre></div>
 <p>You can install the development version with:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="co"># install.packages("devtools")</span>
 <span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"r-lib/lobstr"</span><span class="op">)</span></code></pre></div>
 </div>
-<div id="example" class="section level2">
-<h2 class="hasAnchor">
-<a href="#example" class="anchor"></a>Example</h2>
-<div id="abstract-syntax-trees" class="section level3">
-<h3 class="hasAnchor">
-<a href="#abstract-syntax-trees" class="anchor"></a>Abstract syntax trees</h3>
+<div class="section level2">
+<h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
+</h2>
+<div class="section level3">
+<h3 id="abstract-syntax-trees">Abstract syntax trees<a class="anchor" aria-label="anchor" href="#abstract-syntax-trees"></a>
+</h3>
 <p><code><a href="reference/ast.html">ast()</a></code> draws the abstract syntax tree of R expressions:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/ast.html">ast</a></span><span class="op">(</span><span class="va">a</span> <span class="op">+</span> <span class="va">b</span> <span class="op">+</span> <span class="va">c</span><span class="op">)</span>
@@ -113,7 +107,7 @@
 <span class="co">#&gt; └─c</span>
 
 <span class="fu"><a href="reference/ast.html">ast</a></span><span class="op">(</span><span class="kw">function</span><span class="op">(</span><span class="va">x</span> <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="op">{</span>
-  <span class="kw">if</span> <span class="op">(</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html">print</a></span><span class="op">(</span><span class="st">"Hi!"</span><span class="op">)</span>
+  <span class="kw">if</span> <span class="op">(</span><span class="va">x</span> <span class="op">&gt;</span> <span class="fl">0</span><span class="op">)</span> <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="st">"Hi!"</span><span class="op">)</span>
 <span class="op">}</span><span class="op">)</span>
 <span class="co">#&gt; █─`function` </span>
 <span class="co">#&gt; ├─█─x = 1 </span>
@@ -126,24 +120,24 @@
 <span class="co">#&gt; │     └─"Hi!" </span>
 <span class="co">#&gt; └─&lt;inline srcref&gt;</span></code></pre></div>
 </div>
-<div id="references" class="section level3">
-<h3 class="hasAnchor">
-<a href="#references" class="anchor"></a>References</h3>
+<div class="section level3">
+<h3 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h3>
 <p><code><a href="reference/ref.html">ref()</a></code> shows hows objects can be shared across data structures by digging into the underlying __ref__erences:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">1e6</span>
-<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html">list</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">x</span>, <span class="va">x</span><span class="op">)</span>
+<span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">x</span>, <span class="va">x</span><span class="op">)</span>
 <span class="fu"><a href="reference/ref.html">ref</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
-<span class="co">#&gt; █ [1:0x7fd174b0ea88] &lt;list&gt; </span>
-<span class="co">#&gt; ├─[2:0x7fd19545c878] &lt;int&gt; </span>
-<span class="co">#&gt; ├─[2:0x7fd19545c878] </span>
-<span class="co">#&gt; └─[2:0x7fd19545c878]</span>
+<span class="co">#&gt; █ [1:0x7fd4f2f8e6a8] &lt;list&gt; </span>
+<span class="co">#&gt; ├─[2:0x7fd502ac9db8] &lt;int&gt; </span>
+<span class="co">#&gt; ├─[2:0x7fd502ac9db8] </span>
+<span class="co">#&gt; └─[2:0x7fd502ac9db8]</span>
 
-<span class="va">e</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/env.html">env</a></span><span class="op">(</span><span class="op">)</span>
+<span class="va">e</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/env.html" class="external-link">env</a></span><span class="op">(</span><span class="op">)</span>
 <span class="va">e</span><span class="op">$</span><span class="va">self</span> <span class="op">&lt;-</span> <span class="va">e</span>
 <span class="fu"><a href="reference/ref.html">ref</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span>
-<span class="co">#&gt; █ [1:0x7fd174bc1bc0] &lt;env&gt; </span>
-<span class="co">#&gt; └─self = [1:0x7fd174bc1bc0]</span></code></pre></div>
+<span class="co">#&gt; █ [1:0x7fd4c3651100] &lt;env&gt; </span>
+<span class="co">#&gt; └─self = [1:0x7fd4c3651100]</span></code></pre></div>
 <p>A related tool is <code><a href="reference/obj_size.html">obj_size()</a></code>, which computes the size of an object taking these shared references into account:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="fu"><a href="reference/obj_size.html">obj_size</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
@@ -151,19 +145,19 @@
 <span class="fu"><a href="reference/obj_size.html">obj_size</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span>
 <span class="co">#&gt; 760 B</span></code></pre></div>
 </div>
-<div id="call-stack-trees" class="section level3">
-<h3 class="hasAnchor">
-<a href="#call-stack-trees" class="anchor"></a>Call stack trees</h3>
+<div class="section level3">
+<h3 id="call-stack-trees">Call stack trees<a class="anchor" aria-label="anchor" href="#call-stack-trees"></a>
+</h3>
 <p><code><a href="reference/cst.html">cst()</a></code> shows how frames on the call stack are connected:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">g</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="va">g</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="fu">h</span><span class="op">(</span><span class="va">x</span><span class="op">)</span>
 <span class="va">h</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="va">x</span>
 <span class="fu">f</span><span class="op">(</span><span class="fu"><a href="reference/cst.html">cst</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span>
-<span class="co">#&gt;     █</span>
-<span class="co">#&gt;  1. ├─global::f(cst())</span>
-<span class="co">#&gt;  2. │ └─global::g(x)</span>
-<span class="co">#&gt;  3. │   └─global::h(x)</span>
+<span class="co">#&gt;     ▆</span>
+<span class="co">#&gt;  1. ├─global f(cst())</span>
+<span class="co">#&gt;  2. │ └─global g(x)</span>
+<span class="co">#&gt;  3. │   └─global h(x)</span>
 <span class="co">#&gt;  4. └─lobstr::cst()</span></code></pre></div>
 </div>
 </div>
@@ -172,50 +166,59 @@
 
   <div class="col-md-3 hidden-xs hidden-sm" id="pkgdown-sidebar">
     <div class="links">
-<h2>Links</h2>
+<h2 data-toc-skip>Links</h2>
 <ul class="list-unstyled">
-<li>Download from CRAN at <br><a href="https://cloud.r-project.org/package=lobstr">https://​cloud.r-project.org/​package=lobstr</a>
-</li>
-<li>Browse source code at <br><a href="https://github.com/r-lib/lobstr/">https://​github.com/​r-lib/​lobstr/​</a>
-</li>
-<li>Report a bug at <br><a href="https://github.com/r-lib/lobstr/issues">https://​github.com/​r-lib/​lobstr/​issues</a>
-</li>
-</ul>
-</div>
-<div class="license">
-<h2>License</h2>
-<ul class="list-unstyled">
-<li><a href="LICENSE.html">Full license</a></li>
-<li><small><a href="https://opensource.org/licenses/mit-license.php">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
-</ul>
-</div>
-<div class="developers">
-<h2>Developers</h2>
-<ul class="list-unstyled">
-<li>
-<a href="http://hadley.nz">Hadley Wickham</a> <br><small class="roles"> Author, maintainer </small>  </li>
-<li><a href="authors.html">All authors...</a></li>
+<li><a href="https://cloud.r-project.org/package=lobstr" class="external-link">View on CRAN</a></li>
+<li><a href="https://github.com/r-lib/lobstr/" class="external-link">Browse source code</a></li>
+<li><a href="https://github.com/r-lib/lobstr/issues" class="external-link">Report a bug</a></li>
 </ul>
 </div>
 
-  <div class="dev-status">
-<h2>Dev status</h2>
+<div class="license">
+<h2 data-toc-skip>License</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=lobstr"><img src="https://www.r-pkg.org/badges/version/lobstr" alt="CRAN status"></a></li>
-<li><a href="https://github.com/r-lib/lobstr/actions"><img src="https://github.com/r-lib/lobstr/workflows/R-CMD-check/badge.svg" alt="R-CMD-check"></a></li>
-<li><a href="https://codecov.io/gh/r-lib/lobstr?branch=master"><img src="https://codecov.io/gh/r-lib/lobstr/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+<li><a href="LICENSE.html">Full license</a></li>
+<li><small><a href="https://opensource.org/licenses/mit-license.php" class="external-link">MIT</a> + file <a href="LICENSE-text.html">LICENSE</a></small></li>
 </ul>
 </div>
+
+
+<div class="citation">
+<h2 data-toc-skip>Citation</h2>
+<ul class="list-unstyled">
+<li><a href="authors.html#citation">Citing lobstr</a></li>
+</ul>
 </div>
+
+<div class="developers">
+<h2 data-toc-skip>Developers</h2>
+<ul class="list-unstyled">
+<li>Hadley Wickham <br><small class="roles"> Author, maintainer </small>  </li>
+<li><a href="authors.html">More about authors...</a></li>
+</ul>
+</div>
+
+<div class="dev-status">
+<h2 data-toc-skip>Dev status</h2>
+<ul class="list-unstyled">
+<li><a href="https://cran.r-project.org/package=lobstr" class="external-link"><img src="https://www.r-pkg.org/badges/version/lobstr" alt="CRAN status"></a></li>
+<li><a href="https://github.com/r-lib/lobstr/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/r-lib/lobstr/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
+<li><a href="https://codecov.io/gh/r-lib/lobstr?branch=master" class="external-link"><img src="https://codecov.io/gh/r-lib/lobstr/branch/master/graph/badge.svg" alt="Codecov test coverage"></a></li>
+</ul>
+</div>
+
+  </div>
 </div>
 
 
       <footer><div class="copyright">
-  <p>Developed by <a href="http://hadley.nz">Hadley Wickham</a>.</p>
+  <p></p>
+<p>Developed by Hadley Wickham.</p>
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.6.1.</p>
+  <p></p>
+<p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.0.4.</p>
 </div>
 
       </footer>
@@ -223,6 +226,8 @@
 
   
 
+
+  
 
   </body>
 </html>
