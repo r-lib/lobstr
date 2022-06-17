@@ -3,6 +3,7 @@
 
 
 #include "cpp11/declarations.hpp"
+#include <R_ext/Visibility.h>
 
 // address.cpp
 std::string obj_addr_(SEXP name, cpp11::environment env);
@@ -48,14 +49,6 @@ extern "C" SEXP _lobstr_obj_csize_(SEXP objects, SEXP base_env, SEXP sizeof_node
 }
 
 extern "C" {
-/* .Call calls */
-extern SEXP _lobstr_obj_addr_(SEXP, SEXP);
-extern SEXP _lobstr_obj_addrs_(SEXP);
-extern SEXP _lobstr_obj_csize_(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _lobstr_obj_inspect_(SEXP, SEXP, SEXP, SEXP, SEXP, SEXP, SEXP);
-extern SEXP _lobstr_obj_size_(SEXP, SEXP, SEXP, SEXP);
-extern SEXP _lobstr_v_size(SEXP, SEXP);
-
 static const R_CallMethodDef CallEntries[] = {
     {"_lobstr_obj_addr_",    (DL_FUNC) &_lobstr_obj_addr_,    2},
     {"_lobstr_obj_addrs_",   (DL_FUNC) &_lobstr_obj_addrs_,   1},
@@ -67,7 +60,7 @@ static const R_CallMethodDef CallEntries[] = {
 };
 }
 
-extern "C" void R_init_lobstr(DllInfo* dll){
+extern "C" attribute_visible void R_init_lobstr(DllInfo* dll){
   R_registerRoutines(dll, NULL, CallEntries, NULL, NULL);
   R_useDynamicSymbols(dll, FALSE);
   R_forceSymbols(dll, TRUE);
