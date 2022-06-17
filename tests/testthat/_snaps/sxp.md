@@ -73,3 +73,21 @@
         _data1 [7] <REALSXP[3]> ()
         _data2 <NILSXP>
 
+# can inspect cons cells
+
+    Code
+      cell <- new_node(1, 2)
+      sxp(cell)
+    Output
+      [1] <LISTSXP> ()
+        [2] <REALSXP[1]> ()
+        _cdr [3] <REALSXP[1]> ()
+    Code
+      non_nil_terminated_list <- new_node(1, new_node(2, 3))
+      sxp(non_nil_terminated_list)
+    Output
+      [1] <LISTSXP> ()
+        [2] <REALSXP[1]> ()
+        [3] <REALSXP[1]> ()
+        _cdr [4] <REALSXP[1]> ()
+
