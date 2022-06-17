@@ -17,6 +17,7 @@ Depends:
 Imports: 
     crayon,
     rlang (>= 0.3.0),
+    prettyunits,
     ellipsis,
     methods
 Suggests: 
