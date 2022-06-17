@@ -1,9 +1,0 @@
-o-list 
-+-logical = o-c 
-|           +-FALSE 
-|           +-TRUE 
-|           \-NA 
-+-integer = 1L 
-+-double = 1 
-+-character = "a" 
-\-complex = 1i 

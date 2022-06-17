@@ -1,5 +1,3 @@
-context("test-size.R")
-
 expect_same <- function(x, ...) {
   lab <- as.character(expr_text(enexpr(x)))
   act <- as.vector(obj_size(x))
@@ -13,8 +11,9 @@ expect_same <- function(x, ...) {
 # S3 methods --------------------------------------------------------------
 
 test_that("combined bytes are aligned", {
-  x <- new_bytes(c(400, 400000))
-  expect_known_output(print(x), "size-aligned.txt")
+  expect_snapshot({
+    new_bytes(c(400, 400000))
+  })
 })
 
 # Compatibility with base ---------------------------------------------------
@@ -171,3 +170,16 @@ test_that("support dots in closure environments", {
   expect_error(obj_size(fn), NA)
 })
 
+test_that("supports cons cells", {
+  cell <- new_node(1, 2)
+  expect_equal(
+    obj_size(cell),
+    obj_size(new_node(NULL, NULL)) + obj_size(1) + obj_size(2)
+  )
+
+  non_nil_terminated_list <- new_node(1, new_node(2, 3))
+  expect_equal(
+    obj_size(non_nil_terminated_list),
+    obj_size(new_node(1, NULL)) + obj_size(cell)
+  )
+})

@@ -7,9 +7,9 @@
 
 [![CRAN
 status](https://www.r-pkg.org/badges/version/lobstr)](https://cran.r-project.org/package=lobstr)
-[![R-CMD-check](https://github.com/r-lib/lobstr/workflows/R-CMD-check/badge.svg)](https://github.com/r-lib/lobstr/actions)
+[![R-CMD-check](https://github.com/r-lib/lobstr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/r-lib/lobstr/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
-coverage](https://codecov.io/gh/r-lib/lobstr/branch/master/graph/badge.svg)](https://codecov.io/gh/r-lib/lobstr?branch=master)
+coverage](https://codecov.io/gh/r-lib/lobstr/branch/main/graph/badge.svg)](https://codecov.io/gh/r-lib/lobstr?branch=main)
 <!-- badges: end -->
 
 lobstr provides tools in the same vein as `str()`, which allow you to
@@ -68,16 +68,16 @@ digging into the underlying \_\_ref\_\_erences:
 x <- 1:1e6
 y <- list(x, x, x)
 ref(y)
-#> █ [1:0x7fd174b0ea88] <list> 
-#> ├─[2:0x7fd19545c878] <int> 
-#> ├─[2:0x7fd19545c878] 
-#> └─[2:0x7fd19545c878]
+#> █ [1:0x7fed114eaea8] <list> 
+#> ├─[2:0x7fed21f373b8] <int> 
+#> ├─[2:0x7fed21f373b8] 
+#> └─[2:0x7fed21f373b8]
 
 e <- rlang::env()
 e$self <- e
 ref(e)
-#> █ [1:0x7fd174bc1bc0] <env> 
-#> └─self = [1:0x7fd174bc1bc0]
+#> █ [1:0x7fecf1856f00] <env> 
+#> └─self = [1:0x7fecf1856f00]
 ```
 
 A related tool is `obj_size()`, which computes the size of an object
@@ -99,9 +99,9 @@ f <- function(x) g(x)
 g <- function(x) h(x)
 h <- function(x) x
 f(cst())
-#>     █
-#>  1. ├─global::f(cst())
-#>  2. │ └─global::g(x)
-#>  3. │   └─global::h(x)
+#>     ▆
+#>  1. ├─global f(cst())
+#>  2. │ └─global g(x)
+#>  3. │   └─global h(x)
 #>  4. └─lobstr::cst()
 ```

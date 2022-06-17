@@ -1,5 +1,3 @@
-context("test-inspect")
-
 test_that("retrieves truelength", {
   skip_if_not(getRversion() >= "3.4")
 
@@ -67,10 +65,7 @@ test_that("can inspect all atomic vectors", {
     1i,
     raw(1)
   )
-  expect_known_output(
-    print(sxp(x)),
-    test_path("test-sxp-atomic.txt"),
-  )
+  expect_snapshot(sxp(x))
 })
 
 test_that("can inspect functions", {
@@ -78,10 +73,7 @@ test_that("can inspect functions", {
   attr(f, "srcref") <- NULL
   environment(f) <- globalenv()
 
-  expect_known_output(
-    print(sxp(f)),
-    test_path("test-sxp-function.txt"),
-  )
+  expect_snapshot(sxp(f))
 })
 
 test_that("can inspect environments", {
@@ -91,25 +83,29 @@ test_that("can inspect environments", {
 
   e2 <- new.env(parent = e1, size = 5L)
 
-  expect_known_output(
-    {
-      print(sxp(e2))
-      cat("\n\n")
-      print(sxp(e2, expand = "environment", max_depth = 5L))
-    },
-    test_path("test-sxp-environment.txt"),
-  )
+  expect_snapshot({
+    print(sxp(e2))
+    print(sxp(e2, expand = "environment", max_depth = 5L))
+  })
 })
 
 test_that("can expand altrep", {
   skip_if_not(getRversion() >= "3.5")
   skip_if_not(.Machine$sizeof.pointer == 8) # _class RAWSXP has different size
 
-  x <- 1:10
-  expect_known_output(
-    {
-      print(sxp(x, expand = "altrep", max_depth = 4L))
-    },
-    test_path("test-sxp-altrep.txt")
-  )
+
+  expect_snapshot({
+    x <- 1:10
+    print(sxp(x, expand = "altrep", max_depth = 4L))
+  })
+})
+
+test_that("can inspect cons cells", {
+  expect_snapshot({
+    cell <- new_node(1, 2)
+    sxp(cell)
+
+    non_nil_terminated_list <- new_node(1, new_node(2, 3))
+    sxp(non_nil_terminated_list)
+  })
 })
