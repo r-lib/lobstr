@@ -83,6 +83,13 @@ test_that("duplicated CHARSXPS only counted once", {
   expect_same(c("banana", "banana", "banana"))
 })
 
+test_that("obj_sizes computes relative size", {
+  x <- 1:10 + 1
+  out <- obj_sizes(x, x)
+  expect_equal(out[1], obj_size(x))
+  expect_equal(out[2], new_bytes(0))
+})
+
 # Improved behaviour for shared components ------------------------------------
 test_that("shared components only counted once", {
   x <- 1:1e3

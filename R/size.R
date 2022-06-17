@@ -97,7 +97,7 @@ format.lobstr_bytes <- function(x, ...) {
 
 #' @export
 print.lobstr_bytes <- function(x, digits = 3, ...) {
-  fx <- format(x, big.mark = ",", scientific = FALSE)
+  fx <- format(x)
 
   if (length(x) == 1) {
     cat_line(fx)
