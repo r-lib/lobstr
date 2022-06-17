@@ -1,5 +1,8 @@
 # lobstr (development version)
 
+* `ref()` lists all contents of environments even those with names beginning
+  with `.` (@krlmlr, #53).
+
 * `obj_size()` and `sxp()` now support non-nil terminated pairlists.
 
 * `obj_sizes()` no longer returns NA for objects larger than 2^31 bytes (#45)
