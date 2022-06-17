@@ -88,7 +88,7 @@ tree <- function(x,
                  show_attributes = FALSE,
                  remove_newlines = TRUE,
                  tree_chars = box_chars()) {
-  ellipsis::check_dots_empty()
+  rlang::check_dots_empty()
 
   # Pack up the unchanging arguments into a list and send to tree_internal
   termination_type <- tree_internal(
