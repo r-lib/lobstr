@@ -7,6 +7,12 @@
 
 * `obj_sizes()` no longer returns NA for objects larger than 2^31 bytes (#45)
 
+* Switched to cpp11 from Rcpp
+
+* Relicensed as MIT (#51)
+
+* New, experimental `tree()` function as alternative to `str()` (#56).
+
 # lobstr 1.1.1
 
 * Fix PROTECT error.
