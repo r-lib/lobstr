@@ -33,6 +33,15 @@
       ├─b = [2:0x002] 
       └─c = [1:0x001] 
 
+# environment shows objects beginning with .
+
+    Code
+      e <- env(. = 1:10)
+      ref(e)
+    Output
+      █ [1:0x001] <env> 
+      └─. = [2:0x002] <int> 
+
 # can display ref to global string pool on request
 
     Code

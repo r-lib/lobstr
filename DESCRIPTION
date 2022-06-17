@@ -16,9 +16,8 @@ Depends:
     R (>= 3.2)
 Imports: 
     crayon,
-    rlang (>= 0.3.0),
+    rlang (>= 1.0.0),
     prettyunits,
-    ellipsis,
     methods
 Suggests: 
     covr,

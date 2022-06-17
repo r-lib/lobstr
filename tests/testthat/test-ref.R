@@ -28,6 +28,17 @@ test_that("basic environment display", {
   })
 })
 
+test_that("environment shows objects beginning with .", {
+  skip_on_os("windows")
+
+  test_addr_reset()
+  expect_snapshot({
+    e <- env(. = 1:10)
+    ref(e)
+  })
+})
+
+
 test_that("can display ref to global string pool on request", {
   skip_on_os("windows")
 

@@ -2,9 +2,18 @@
 
 * `obj_size()` now displays large objects with KB, MB, etc (#57, #60).
 
+* `ref()` lists all contents of environments even those with names beginning
+  with `.` (@krlmlr, #53).
+
 * `obj_size()` and `sxp()` now support non-nil terminated pairlists.
 
 * `obj_sizes()` no longer returns NA for objects larger than 2^31 bytes (#45)
+
+* Switched to cpp11 from Rcpp
+
+* Relicensed as MIT (#51)
+
+* New, experimental `tree()` function as alternative to `str()` (#56).
 
 # lobstr 1.1.1
 
