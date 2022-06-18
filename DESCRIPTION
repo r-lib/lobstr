@@ -6,8 +6,8 @@ Authors@R: c(
     person("RStudio", role = "cph")
   )
 Description: A set of tools for inspecting and understanding R data
-    structures inspired by str(). Includes ast() for visualizing abstract 
-    syntax trees, ref() for showing shared references, cst() for showing 
+    structures inspired by str(). Includes ast() for visualizing abstract
+    syntax trees, ref() for showing shared references, cst() for showing
     call stack trees, and obj_size() for computing object sizes.
 License: MIT + file LICENSE
 URL: https://lobstr.r-lib.org/, https://github.com/r-lib/lobstr
@@ -16,8 +16,8 @@ Depends:
     R (>= 3.2)
 Imports: 
     crayon,
-    rlang (>= 1.0.0),
-    methods
+    methods,
+    rlang (>= 1.0.0)
 Suggests: 
     covr,
     pillar,
@@ -25,10 +25,10 @@ Suggests:
     testthat (>= 3.0.0)
 LinkingTo: 
     cpp11 (>= 0.4.2)
-SystemRequirements: C++11
+Config/Needs/website: tidyverse/tidytemplate
+Config/testthat/edition: 3
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.2.0
-Config/testthat/edition: 3
-Config/Needs/website: tidyverse/tidytemplate
+SystemRequirements: C++11
