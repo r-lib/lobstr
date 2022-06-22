@@ -11,3 +11,4 @@
 ^README\.Rmd$
 ^\.github$
 ^LICENSE\.md$
+^revdep$
