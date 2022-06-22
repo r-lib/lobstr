@@ -23,13 +23,17 @@ public:
   }
 
   void push_back(const char* string, SEXP x) {
+    int n_protected = 0;
+
     if (Rf_xlength(data_) == n_) {
-      data_ = Rf_xlengthgets(data_, n_ * 2);
-      names_ = Rf_xlengthgets(names_, n_ * 2);
+      data_ = PROTECT(Rf_xlengthgets(data_, n_ * 2)); n_protected++;
+      names_ = PROTECT(Rf_xlengthgets(names_, n_ * 2)); n_protected++;
     }
-    SET_STRING_ELT(names_, n_, Rf_mkChar(string));
+    SEXP string_ = PROTECT(Rf_mkChar(string)); n_protected++;
+    SET_STRING_ELT(names_, n_, string_);
     SET_VECTOR_ELT(data_, n_, x);
     n_++;
+    UNPROTECT(n_protected);
   }
 
   cpp11::list vector() {
@@ -272,8 +276,9 @@ SEXP obj_children_(
             children.push_back(name, active);
             UNPROTECT(2);
           } else {
-            SEXP obj = Rf_findVarInFrame(x, sym);
+            SEXP obj = PROTECT(Rf_findVarInFrame(x, sym));
             recurse(&children, seen, name, obj, max_depth, expand);
+            UNPROTECT(1);
           }
           UNPROTECT(1);
         }
