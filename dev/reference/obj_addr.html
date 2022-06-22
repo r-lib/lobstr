@@ -88,24 +88,24 @@ references to an object.</p>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">obj_addr</span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55649d47a7c8"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x556f1cc149d8"</span>
 <span class="r-in"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">y</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">obj_addrs</span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55649d47a7c8" "0x55649d47a7c8"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x556f1cc149d8" "0x556f1cc149d8"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1.0</span></span>
 <span class="r-in"><span class="fu">obj_addrs</span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55649d47a7c8" "0x55649d47a7c8"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x556f1cc149d8" "0x556f1cc149d8"</span>
 <span class="r-in"><span class="fu">obj_addr</span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55649d4382d8"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x556f1cbd2338"</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># The address of an object is different every time you create it:</span></span>
 <span class="r-in"><span class="fu">obj_addr</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55649e942d58"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x556f1e0c3d88"</span>
 <span class="r-in"><span class="fu">obj_addr</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55649e9a7fd0"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x556f1e129000"</span>
 <span class="r-in"><span class="fu">obj_addr</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55649ea0f168"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x556f1e190198"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
