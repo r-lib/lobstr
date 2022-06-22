@@ -114,31 +114,31 @@ elsewhere.</p>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span class="co"># obj_size correctly accounts for shared references</span></span>
 <span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">1e4</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">obj_size</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 80,048 B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80.05 kB</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>a <span class="op">=</span> <span class="va">x</span>, b <span class="op">=</span> <span class="va">x</span>, c <span class="op">=</span> <span class="va">x</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">obj_size</span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 80,488 B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80.49 kB</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># this means that object size is not transitive</span></span>
 <span class="r-in"><span class="fu">obj_size</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 80,048 B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80.05 kB</span>
 <span class="r-in"><span class="fu">obj_size</span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 80,488 B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80.49 kB</span>
 <span class="r-in"><span class="fu">obj_size</span><span class="op">(</span><span class="va">x</span>, <span class="va">z</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 80,488 B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 80.49 kB</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># use obj_size() to see the unique contribution of each component</span></span>
 <span class="r-in"><span class="fu">obj_sizes</span><span class="op">(</span><span class="va">x</span>, <span class="va">z</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * 80,048 B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> * 80.05 kB</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *    440 B</span>
 <span class="r-in"><span class="fu">obj_sizes</span><span class="op">(</span><span class="va">z</span>, <span class="va">x</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> * 80,488 B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> * 80.49 kB</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> *      0 B</span>
 <span class="r-in"><span class="fu">obj_sizes</span><span class="op">(</span><span class="op">!</span><span class="op">!</span><span class="op">!</span><span class="va">z</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> a: 80,048.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 B</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> b:      0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004641036 B</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> c:      0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000004641038 B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> a: 80.05 kB</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> b:      0 B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> c:      0 B</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># obj_size() also includes the size of environments</span></span>
 <span class="r-in"><span class="va">f</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="op">)</span> <span class="op">{</span></span>
@@ -146,7 +146,7 @@ elsewhere.</p>
 <span class="r-in">  <span class="va">a</span> <span class="op">~</span> <span class="va">b</span></span>
 <span class="r-in"><span class="op">}</span></span>
 <span class="r-in"><span class="fu">obj_size</span><span class="op">(</span><span class="fu">f</span><span class="op">(</span><span class="op">)</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 1,520 B</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1.52 kB</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co">#' # In R 3.5 and greater, `:` creates a special "ALTREP" object that only</span></span>
 <span class="r-in"><span class="co"># stores the first and last elements. This will make some vectors much</span></span>
