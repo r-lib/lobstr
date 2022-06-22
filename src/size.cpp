@@ -32,7 +32,8 @@ double v_size(double n, int element_size) {
 }
 
 bool is_namespace(cpp11::environment env) {
-  return Rf_findVarInFrame3(env, Rf_install(".__NAMESPACE__."), FALSE) != R_UnboundValue;
+  return env == R_BaseNamespace ||
+    Rf_findVarInFrame3(env, Rf_install(".__NAMESPACE__."), FALSE) != R_UnboundValue;
 }
 
 
