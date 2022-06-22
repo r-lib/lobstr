@@ -1,4 +1,4 @@
-# lobstr (development version)
+# lobstr 1.1.2
 
 * Switched to cpp11 from Rcpp.
 
