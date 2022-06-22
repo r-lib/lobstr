@@ -96,7 +96,7 @@ format.lobstr_bytes <- function(x, ...) {
 }
 
 #' @export
-print.lobstr_bytes <- function(x, digits = 3, ...) {
+print.lobstr_bytes <- function(x, ...) {
   fx <- format(x)
 
   if (length(x) == 1) {
