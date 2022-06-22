@@ -17,6 +17,7 @@ Depends:
 Imports: 
     crayon,
     methods,
+    prettyunits,
     rlang (>= 1.0.0)
 Suggests: 
     covr,

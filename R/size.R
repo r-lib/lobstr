@@ -91,18 +91,25 @@ new_bytes <- function(x) {
 }
 
 #' @export
-print.lobstr_bytes <- function(x, digits = 3, ...) {
-  fx <- format(x, big.mark = ",", scientific = FALSE)
+format.lobstr_bytes <- function(x, ...) {
+   prettyunits::pretty_bytes(unclass(x))
+}
+
+#' @export
+print.lobstr_bytes <- function(x, ...) {
+  fx <- format(x)
 
   if (length(x) == 1) {
-    cat_line(fx, " B")
+    cat_line(fx)
   } else {
     if (!is.null(names(x))) {
-      cat_line(format(names(x)), ": ", fx, " B")
+      cat_line(format(names(x)), ": ", fx)
     } else {
-      cat_line("* ", fx, " B")
+      cat_line("* ", fx)
     }
   }
+
+  invisible(x)
 }
 
 #' @export

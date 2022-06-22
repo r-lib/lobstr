@@ -1,5 +1,10 @@
 # lobstr (development version)
 
+* `obj_sizes()` now computes relative sizes correctly (without meaningless
+  floating point differences).
+
+* `obj_size()` now displays large objects with KB, MB, etc (#57, #60).
+
 * `ref()` lists all contents of environments even those with names beginning
   with `.` (@krlmlr, #53).
 

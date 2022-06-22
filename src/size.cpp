@@ -217,7 +217,7 @@ cpp11::doubles obj_csize_(cpp11::list objects, cpp11::environment base_env, int 
 
   cpp11::writable::doubles out(n);
   for (int i = 0; i < n; ++i) {
-    out[i] = out[i] + obj_size_tree(objects[i], base_env, sizeof_node, sizeof_vector, seen, 0);
+    out[i] = obj_size_tree(objects[i], base_env, sizeof_node, sizeof_vector, seen, 0);
   }
 
   return out;
