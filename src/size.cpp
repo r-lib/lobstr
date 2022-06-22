@@ -56,7 +56,7 @@ double obj_size_tree(SEXP x,
   if (!seen.insert(x).second) return 0;
 
   // Rcout << "\n" << std::string(depth * 2, ' ');
-  // Rprintf("type: %s", Rf_type2char(TYPEOF(x)));
+  // Rprintf("type: %s\n", Rf_type2char(TYPEOF(x)));
 
   // Use sizeof(SEXPREC) and sizeof(VECTOR_SEXPREC) computed in R.
   // CHARSXP are treated as vectors for this purpose
@@ -137,8 +137,15 @@ double obj_size_tree(SEXP x,
       if (cons != x) {
         size += sizeof_node;
       }
+
       size += obj_size_tree(TAG(cons), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-      size += obj_size_tree(CAR(cons), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+
+      // In immediate bindings, the literal value is stored inside the CAR() so
+      // we don't want to iterate into it
+      // https://github.com/wch/r-source/blob/master/doc/notes/immbnd.md
+      if (!BNDCELL_TAG(cons)) {
+        size += obj_size_tree(CAR(cons), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+      }
     }
     // Handle non-nil CDRs
     size += obj_size_tree(cons, base_env, sizeof_node, sizeof_vector, seen, depth + 1);

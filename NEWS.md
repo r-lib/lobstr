@@ -1,5 +1,8 @@
 # lobstr (development version)
 
+* `obj_size()` now works with "immediate bindings", which happen to be
+  used by sparklyr (#48).
+
 * `ref()` lists all contents of environments even those with names beginning
   with `.` (@krlmlr, #53).
 
