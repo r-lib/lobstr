@@ -223,6 +223,6 @@ test_that("Hidden lists dont cause infinite recursion", {
   testthat::skip_on_os("windows")
 
   expect_snapshot({
-    tree(packageVersion('lobstr'))
+    tree(package_version("1.2.3"))
   })
 })
