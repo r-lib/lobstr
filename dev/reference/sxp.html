@@ -20,7 +20,7 @@ details."><meta property="og:image" content="https://lobstr.r-lib.org/logo.png">
     
     <a class="navbar-brand me-2" href="../index.html">lobstr</a>
 
-    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.1.9000</small>
+    <small class="nav-text text-danger me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="In-development version">1.1.2.9000</small>
 
     
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,36 +111,36 @@ underlies all R objects.</p>
 <span class="r-in">  <span class="st">"3"</span></span>
 <span class="r-in"><span class="op">)</span></span>
 <span class="r-in"><span class="fu">sxp</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x55b91195e2f8</span>] &lt;<span style="color: #00BBBB;">VECSXP</span>[4]&gt; (named:4)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [<span style="font-weight: bold;">2</span>:<span style="color: #555555;">0x55b910df0350</span>] &lt;<span style="color: #00BBBB;">LGLSXP</span>[1]&gt; (named:3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [<span style="font-weight: bold;">3</span>:<span style="color: #555555;">0x55b910df0388</span>] &lt;<span style="color: #00BBBB;">INTSXP</span>[1]&gt; (named:3)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [<span style="font-weight: bold;">4</span>:<span style="color: #555555;">0x55b9114e96f0</span>] &lt;<span style="color: #00BBBB;">REALSXP</span>[100]&gt; (named:1)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [<span style="font-weight: bold;">5</span>:<span style="color: #555555;">0x55b910df03f8</span>] &lt;<span style="color: #00BBBB;">STRSXP</span>[1]&gt; (named:3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x5622750ad1b8</span>] &lt;<span style="color: #00BBBB;">VECSXP</span>[4]&gt; (named:4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [<span style="font-weight: bold;">2</span>:<span style="color: #555555;">0x562275a5b170</span>] &lt;<span style="color: #00BBBB;">LGLSXP</span>[1]&gt; (named:3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [<span style="font-weight: bold;">3</span>:<span style="color: #555555;">0x562275a5b1a8</span>] &lt;<span style="color: #00BBBB;">INTSXP</span>[1]&gt; (named:3)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [<span style="font-weight: bold;">4</span>:<span style="color: #555555;">0x562276b560e0</span>] &lt;<span style="color: #00BBBB;">REALSXP</span>[100]&gt; (named:1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [<span style="font-weight: bold;">5</span>:<span style="color: #555555;">0x562275a5b218</span>] &lt;<span style="color: #00BBBB;">STRSXP</span>[1]&gt; (named:3)</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Expand "character" to see underlying CHARSXP entries in the global</span></span>
 <span class="r-in"><span class="co"># string pool</span></span>
 <span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"banana"</span>, <span class="st">"banana"</span>, <span class="st">"apple"</span>, <span class="st">"banana"</span><span class="op">)</span></span>
 <span class="r-in"><span class="fu">sxp</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x55b91175bf88</span>] &lt;<span style="color: #00BBBB;">STRSXP</span>[4]&gt; (named:4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x562276474098</span>] &lt;<span style="color: #00BBBB;">STRSXP</span>[4]&gt; (named:4)</span>
 <span class="r-in"><span class="fu">sxp</span><span class="op">(</span><span class="va">x</span>, expand <span class="op">=</span> <span class="st">"character"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x55b91175bf88</span>] &lt;<span style="color: #00BBBB;">STRSXP</span>[4]&gt; (named:4)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [<span style="font-weight: bold;">2</span>:<span style="color: #555555;">0x55b910ef17c8</span>] &lt;<span style="color: #00BBBB;">CHARSXP</span>&gt; (named:10)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [2:<span style="color: #555555;">0x55b910ef17c8</span>]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [<span style="font-weight: bold;">3</span>:<span style="color: #555555;">0x55b910ef1870</span>] &lt;<span style="color: #00BBBB;">CHARSXP</span>&gt; (named:4)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   [2:<span style="color: #555555;">0x55b910ef17c8</span>]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x562276474098</span>] &lt;<span style="color: #00BBBB;">STRSXP</span>[4]&gt; (named:4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [<span style="font-weight: bold;">2</span>:<span style="color: #555555;">0x562275b30c20</span>] &lt;<span style="color: #00BBBB;">CHARSXP</span>&gt; (named:10)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2:<span style="color: #555555;">0x562275b30c20</span>]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [<span style="font-weight: bold;">3</span>:<span style="color: #555555;">0x562275b30cc8</span>] &lt;<span style="color: #00BBBB;">CHARSXP</span>&gt; (named:4)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2:<span style="color: #555555;">0x562275b30c20</span>]</span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Expand altrep to see underlying data</span></span>
 <span class="r-in"><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
 <span class="r-in"><span class="fu">sxp</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x55b90c975cb0</span>] &lt;<span style="color: #00BBBB;">INTSXP</span>[10]&gt; (altrep named:65535)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x5622715a5910</span>] &lt;<span style="color: #00BBBB;">INTSXP</span>[10]&gt; (altrep named:65535)</span>
 <span class="r-in"><span class="fu">sxp</span><span class="op">(</span><span class="va">x</span>, expand <span class="op">=</span> <span class="st">"altrep"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x55b90c975cb0</span>] &lt;<span style="color: #00BBBB;">INTSXP</span>[10]&gt; (altrep named:65535)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_class</span> [<span style="font-weight: bold;">2</span>:<span style="color: #555555;">0x55b90be25ea0</span>] &lt;<span style="color: #00BBBB;">RAWSXP</span>[144]&gt; (named:7163)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #555555; font-style: italic;">_attrib</span> [<span style="font-weight: bold;">3</span>:<span style="color: #555555;">0x55b90be5c138</span>] &lt;<span style="color: #00BBBB;">LISTSXP</span>&gt; (named:1)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       [<span style="font-weight: bold;">4</span>:<span style="color: #555555;">0x55b90be5c368</span>] &lt;<span style="color: #00BBBB;">SYMSXP</span>: compact_intseq&gt; (named:37)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       [<span style="font-weight: bold;">5</span>:<span style="color: #555555;">0x55b90be27560</span>] &lt;<span style="color: #00BBBB;">SYMSXP</span>: base&gt; (named:65535)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       [<span style="font-weight: bold;">6</span>:<span style="color: #555555;">0x55b90be5a3d8</span>] &lt;<span style="color: #00BBBB;">INTSXP</span>[1]&gt; (named:2)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_data1</span> [<span style="font-weight: bold;">7</span>:<span style="color: #555555;">0x55b9117aaad8</span>] &lt;<span style="color: #00BBBB;">REALSXP</span>[3]&gt; (named:1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x5622715a5910</span>] &lt;<span style="color: #00BBBB;">INTSXP</span>[10]&gt; (altrep named:65535)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_class</span> [<span style="font-weight: bold;">2</span>:<span style="color: #555555;">0x562270a55f30</span>] &lt;<span style="color: #00BBBB;">RAWSXP</span>[144]&gt; (named:7163)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #555555; font-style: italic;">_attrib</span> [<span style="font-weight: bold;">3</span>:<span style="color: #555555;">0x562270a8c1c8</span>] &lt;<span style="color: #00BBBB;">LISTSXP</span>&gt; (named:1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [<span style="font-weight: bold;">4</span>:<span style="color: #555555;">0x562270a8c3f8</span>] &lt;<span style="color: #00BBBB;">SYMSXP</span>: compact_intseq&gt; (named:37)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [<span style="font-weight: bold;">5</span>:<span style="color: #555555;">0x562270a575f0</span>] &lt;<span style="color: #00BBBB;">SYMSXP</span>: base&gt; (named:65535)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [<span style="font-weight: bold;">6</span>:<span style="color: #555555;">0x562270a8a468</span>] &lt;<span style="color: #00BBBB;">INTSXP</span>[1]&gt; (named:2)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_data1</span> [<span style="font-weight: bold;">7</span>:<span style="color: #555555;">0x562275528eb8</span>] &lt;<span style="color: #00BBBB;">REALSXP</span>[3]&gt; (named:1)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_data2</span> <span style="color: #555555;">&lt;NILSXP&gt;</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="co"># Expand environmnets to see the underlying implementation details</span></span>
@@ -149,24 +149,24 @@ underlies all R objects.</p>
 <span class="r-in"><span class="va">e1</span><span class="op">$</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">e2</span><span class="op">$</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">10</span></span>
 <span class="r-in"></span>
 <span class="r-in"><span class="fu">sxp</span><span class="op">(</span><span class="va">e1</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x55b910d44f80</span>] &lt;<span style="color: #00BBBB;">ENVSXP</span>&gt; (named:5)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">x</span> [<span style="font-weight: bold;">2</span>:<span style="color: #555555;">0x55b9112b4ce8</span>] &lt;<span style="color: #00BBBB;">INTSXP</span>[10]&gt; (altrep named:65535)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_enclos</span> [<span style="font-weight: bold;">3</span>:<span style="color: #555555;">0x55b90be28868</span>] &lt;<span style="color: #00BBBB;">ENVSXP</span>: empty&gt; (named:65535)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x562275c7ea00</span>] &lt;<span style="color: #00BBBB;">ENVSXP</span>&gt; (named:5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">x</span> [<span style="font-weight: bold;">2</span>:<span style="color: #555555;">0x562275ddbaa8</span>] &lt;<span style="color: #00BBBB;">INTSXP</span>[10]&gt; (altrep named:65535)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_enclos</span> [<span style="font-weight: bold;">3</span>:<span style="color: #555555;">0x562270a588f8</span>] &lt;<span style="color: #00BBBB;">ENVSXP</span>: empty&gt; (named:65535)</span>
 <span class="r-in"><span class="fu">sxp</span><span class="op">(</span><span class="va">e1</span>, expand <span class="op">=</span> <span class="st">"environment"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x55b910d44f80</span>] &lt;<span style="color: #00BBBB;">ENVSXP</span>&gt; (named:6)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_frame</span> [<span style="font-weight: bold;">2</span>:<span style="color: #555555;">0x55b9112b46c8</span>] &lt;<span style="color: #00BBBB;">LISTSXP</span>&gt; (named:1)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #555555; font-style: italic;">x</span> [<span style="font-weight: bold;">3</span>:<span style="color: #555555;">0x55b9112b4ce8</span>] &lt;<span style="color: #00BBBB;">INTSXP</span>[10]&gt; (altrep named:65535)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x562275c7ea00</span>] &lt;<span style="color: #00BBBB;">ENVSXP</span>&gt; (named:6)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_frame</span> [<span style="font-weight: bold;">2</span>:<span style="color: #555555;">0x562275ddb488</span>] &lt;<span style="color: #00BBBB;">LISTSXP</span>&gt; (named:1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #555555; font-style: italic;">x</span> [<span style="font-weight: bold;">3</span>:<span style="color: #555555;">0x562275ddbaa8</span>] &lt;<span style="color: #00BBBB;">INTSXP</span>[10]&gt; (altrep named:65535)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_hashtab</span> <span style="color: #555555;">&lt;NILSXP&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_enclos</span> [<span style="font-weight: bold;">5</span>:<span style="color: #555555;">0x55b90be28868</span>] &lt;<span style="color: #00BBBB;">ENVSXP</span>: empty&gt; (named:65535)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_enclos</span> [<span style="font-weight: bold;">5</span>:<span style="color: #555555;">0x562270a588f8</span>] &lt;<span style="color: #00BBBB;">ENVSXP</span>: empty&gt; (named:65535)</span>
 <span class="r-in"><span class="fu">sxp</span><span class="op">(</span><span class="va">e2</span>, expand <span class="op">=</span> <span class="st">"environment"</span><span class="op">)</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x55b910f7f890</span>] &lt;<span style="color: #00BBBB;">ENVSXP</span>&gt; (named:5)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:<span style="color: #555555;">0x562275991330</span>] &lt;<span style="color: #00BBBB;">ENVSXP</span>&gt; (named:5)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_frame</span> <span style="color: #555555;">&lt;NILSXP&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_hashtab</span> [<span style="font-weight: bold;">3</span>:<span style="color: #555555;">0x55b911a5d908</span>] &lt;<span style="color: #00BBBB;">VECSXP</span>[3/1]&gt; (named:1)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     [<span style="font-weight: bold;">4</span>:<span style="color: #555555;">0x55b9112b49d8</span>] &lt;<span style="color: #00BBBB;">LISTSXP</span>&gt; (named:1)</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #555555; font-style: italic;">x</span> [<span style="font-weight: bold;">5</span>:<span style="color: #555555;">0x55b9112b4ce8</span>] &lt;<span style="color: #00BBBB;">INTSXP</span>[10]&gt; (altrep named:65535)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_hashtab</span> [<span style="font-weight: bold;">3</span>:<span style="color: #555555;">0x5622769285f8</span>] &lt;<span style="color: #00BBBB;">VECSXP</span>[3/1]&gt; (named:1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>     [<span style="font-weight: bold;">4</span>:<span style="color: #555555;">0x562275ddb798</span>] &lt;<span style="color: #00BBBB;">LISTSXP</span>&gt; (named:1)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       <span style="color: #555555; font-style: italic;">x</span> [<span style="font-weight: bold;">5</span>:<span style="color: #555555;">0x562275ddbaa8</span>] &lt;<span style="color: #00BBBB;">INTSXP</span>[10]&gt; (altrep named:65535)</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #555555;">&lt;NILSXP&gt;</span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     <span style="color: #555555;">&lt;NILSXP&gt;</span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_enclos</span> [<span style="font-weight: bold;">6</span>:<span style="color: #555555;">0x55b90be28868</span>] &lt;<span style="color: #00BBBB;">ENVSXP</span>: empty&gt; (named:65535)</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   <span style="color: #555555; font-style: italic;">_enclos</span> [<span style="font-weight: bold;">6</span>:<span style="color: #555555;">0x562270a588f8</span>] &lt;<span style="color: #00BBBB;">ENVSXP</span>: empty&gt; (named:65535)</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
