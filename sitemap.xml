@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>/404.html</loc>
+    <loc>https://lobstr.r-lib.org/404.html</loc>
   </url>
   <url>
-    <loc>/LICENSE-text.html</loc>
+    <loc>https://lobstr.r-lib.org/LICENSE-text.html</loc>
   </url>
   <url>
-    <loc>/LICENSE.html</loc>
+    <loc>https://lobstr.r-lib.org/LICENSE.html</loc>
   </url>
   <url>
-    <loc>/authors.html</loc>
+    <loc>https://lobstr.r-lib.org/authors.html</loc>
   </url>
   <url>
-    <loc>/index.html</loc>
+    <loc>https://lobstr.r-lib.org/index.html</loc>
   </url>
   <url>
-    <loc>/news/index.html</loc>
+    <loc>https://lobstr.r-lib.org/news/index.html</loc>
   </url>
   <url>
-    <loc>/reference/ast.html</loc>
+    <loc>https://lobstr.r-lib.org/reference/ast.html</loc>
   </url>
   <url>
-    <loc>/reference/cst.html</loc>
+    <loc>https://lobstr.r-lib.org/reference/cst.html</loc>
   </url>
   <url>
-    <loc>/reference/index.html</loc>
+    <loc>https://lobstr.r-lib.org/reference/index.html</loc>
   </url>
   <url>
-    <loc>/reference/mem_used.html</loc>
+    <loc>https://lobstr.r-lib.org/reference/mem_used.html</loc>
   </url>
   <url>
-    <loc>/reference/obj_addr.html</loc>
+    <loc>https://lobstr.r-lib.org/reference/obj_addr.html</loc>
   </url>
   <url>
-    <loc>/reference/obj_size.html</loc>
+    <loc>https://lobstr.r-lib.org/reference/obj_size.html</loc>
   </url>
   <url>
-    <loc>/reference/ref.html</loc>
+    <loc>https://lobstr.r-lib.org/reference/ref.html</loc>
   </url>
   <url>
-    <loc>/reference/sxp.html</loc>
+    <loc>https://lobstr.r-lib.org/reference/sxp.html</loc>
   </url>
   <url>
-    <loc>/reference/tree.html</loc>
+    <loc>https://lobstr.r-lib.org/reference/tree.html</loc>
   </url>
   <url>
-    <loc>/reference/tree_label.html</loc>
+    <loc>https://lobstr.r-lib.org/reference/tree_label.html</loc>
   </url>
 </urlset>
