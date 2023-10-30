@@ -109,3 +109,9 @@ test_that("can inspect cons cells", {
     sxp(non_nil_terminated_list)
   })
 })
+
+test_that("fix error message when `expand` argument contains invalid classes", {
+  expect_snapshot(error = TRUE, {
+    sxp(1, expand = "invalid_class")
+  })
+})

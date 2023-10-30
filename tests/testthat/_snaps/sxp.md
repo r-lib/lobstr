@@ -91,3 +91,11 @@
         [3] <REALSXP[1]> ()
         _cdr [4] <REALSXP[1]> ()
 
+# fix error message when `expand` argument contains invalid classes
+
+    Code
+      sxp(1, expand = "invalid_class")
+    Condition
+      Error in `sxp()`:
+      ! `expand` must contain only values from: 'character', 'altrep', 'environment', 'call', 'bytecode'.
+

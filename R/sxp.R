@@ -55,7 +55,12 @@ sxp <- function(x, expand = character(), max_depth = 5L) {
 
   opts <- c("character", "altrep", "environment", "call", "bytecode")
   if (any(!expand %in% opts)) {
-    abort("`expand` must contain only values from ", paste("'", opts, "'", collapse = ","))
+    abort(
+        sprintf(
+            "`expand` must contain only values from: '%s'.",
+            paste(opts, collapse = "', '")
+        )
+    )
   }
 
   obj_inspect_(x,
