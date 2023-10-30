@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# lobstr <img src="man/figures/logo.png" align="right" height="139" />
+# lobstr <a href="https://lobstr.r-lib.org"><img src="man/figures/logo.png" align="right" height="138" alt="lobstr website" /></a>
 
 <!-- badges: start -->
 
@@ -68,16 +68,16 @@ digging into the underlying \_\_ref\_\_erences:
 x <- 1:1e6
 y <- list(x, x, x)
 ref(y)
-#> █ [1:0x7fed114eaea8] <list> 
-#> ├─[2:0x7fed21f373b8] <int> 
-#> ├─[2:0x7fed21f373b8] 
-#> └─[2:0x7fed21f373b8]
+#> █ [1:0x14de8eeb8] <list> 
+#> ├─[2:0x14f485ca0] <int> 
+#> ├─[2:0x14f485ca0] 
+#> └─[2:0x14f485ca0]
 
 e <- rlang::env()
 e$self <- e
 ref(e)
-#> █ [1:0x7fecf1856f00] <env> 
-#> └─self = [1:0x7fecf1856f00]
+#> █ [1:0x13e36d998] <env> 
+#> └─self = [1:0x13e36d998]
 ```
 
 A related tool is `obj_size()`, which computes the size of an object
@@ -100,8 +100,8 @@ g <- function(x) h(x)
 h <- function(x) x
 f(cst())
 #>     ▆
-#>  1. ├─global f(cst())
-#>  2. │ └─global g(x)
-#>  3. │   └─global h(x)
+#>  1. ├─f(cst())
+#>  2. │ └─g(x)
+#>  3. │   └─h(x)
 #>  4. └─lobstr::cst()
 ```
