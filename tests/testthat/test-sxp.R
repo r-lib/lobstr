@@ -109,3 +109,9 @@ test_that("can inspect cons cells", {
     sxp(non_nil_terminated_list)
   })
 })
+
+test_that("sensible error message with expand has invalid classes", {
+  expect_snapshot(error = TRUE, {
+    sxp(1, expand = "invalid_class")
+  })
+})
