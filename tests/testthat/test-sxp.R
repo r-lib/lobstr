@@ -110,7 +110,7 @@ test_that("can inspect cons cells", {
   })
 })
 
-test_that("sensible error message with expand has invalid classes", {
+test_that("fix error message when `expand` argument contains invalid classes", {
   expect_snapshot(error = TRUE, {
     sxp(1, expand = "invalid_class")
   })

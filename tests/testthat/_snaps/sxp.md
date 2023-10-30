@@ -91,7 +91,7 @@
         [3] <REALSXP[1]> ()
         _cdr [4] <REALSXP[1]> ()
 
-# sensible error message with expand has invalid classes
+# sensible error message when expand has invalid classes
 
     Code
       sxp(1, expand = "invalid_class")
