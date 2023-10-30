@@ -52,18 +52,13 @@
 #' sxp(e1, expand = "environment")
 #' sxp(e2, expand = "environment")
 sxp <- function(x, expand = character(), max_depth = 5L) {
+
   opts <- c("character", "altrep", "environment", "call", "bytecode")
   if (any(!expand %in% opts)) {
-    abort((
-      paste(
-        "`expand` must contain only values from:",
-        paste0("'", opts, "'", collapse = ", ")
-      )
-    ))
+    abort("`expand` must contain only values from ", paste("'", opts, "'", collapse = ","))
   }
 
-  obj_inspect_(
-    x,
+  obj_inspect_(x,
     max_depth - 1L,
     opts[[1]] %in% expand,
     opts[[2]] %in% expand,
@@ -153,16 +148,14 @@ sxp_view <- function(x, expand = character()) {
   old_fun <- env$.rs.explorer.objectDesc
   on.exit(env$.rs.addFunction("explorer.objectDesc", old_fun), add = TRUE)
 
-  assign(".rs.explorer.objectDesc",
-    envir = env,
+  assign(".rs.explorer.objectDesc", envir = env,
     function(x) {
-      if (inherits(x, "lobstr_inspector")) {
-        format.lobstr_inspector(x)
-      } else {
-        old_fun(x)
-      }
+    if (inherits(x, "lobstr_inspector")) {
+      format.lobstr_inspector(x)
+    } else {
+      old_fun(x)
     }
-  )
+  })
 
   obj <- sxp(x, expand = expand)
   env$.rs.viewHook(NULL, obj, "Object inspector")
@@ -210,3 +203,4 @@ SEXPTYPE <- c(
   "31" = "FREESXP",
   "99" = "FUNSXP"
 )
+
