@@ -35,8 +35,8 @@ install.packages("lobstr")
 You can install the development version with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("r-lib/lobstr")
+# install.packages("pak")
+pak::pak("r-lib/lobstr")
 ```
 ## Example
 

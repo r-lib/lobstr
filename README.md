@@ -26,8 +26,8 @@ install.packages("lobstr")
 You can install the development version with:
 
 ``` r
-# install.packages("devtools")
-devtools::install_github("r-lib/lobstr")
+# install.packages("pak")
+pak::pak("r-lib/lobstr")
 ```
 
 ## Example
@@ -68,16 +68,16 @@ digging into the underlying \_\_ref\_\_erences:
 x <- 1:1e6
 y <- list(x, x, x)
 ref(y)
-#> █ [1:0x14de8eeb8] <list> 
-#> ├─[2:0x14f485ca0] <int> 
-#> ├─[2:0x14f485ca0] 
-#> └─[2:0x14f485ca0]
+#> █ [1:0x1063ac468] <list> 
+#> ├─[2:0x11629ba38] <int> 
+#> ├─[2:0x11629ba38] 
+#> └─[2:0x11629ba38]
 
 e <- rlang::env()
 e$self <- e
 ref(e)
-#> █ [1:0x13e36d998] <env> 
-#> └─self = [1:0x13e36d998]
+#> █ [1:0x1068a2218] <env> 
+#> └─self = [1:0x1068a2218]
 ```
 
 A related tool is `obj_size()`, which computes the size of an object
