@@ -34,7 +34,7 @@
 #' h <- function() eval(quote(cst()), parent.frame(2))
 #' f()
 cst <- function() {
-  x <- rlang::trace_back(globalenv())
+  x <- rlang::trace_back()
   print(x, simplify = "none")
   invisible()
 }
