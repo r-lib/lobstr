@@ -92,7 +92,7 @@ new_bytes <- function(x) {
 
 #' @export
 format.lobstr_bytes <- function(x, ...) {
-   prettyunits::pretty_bytes(unclass(x))
+  prettyunits::pretty_bytes(unclass(x))
 }
 
 #' @export

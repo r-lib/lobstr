@@ -59,33 +59,30 @@ ast_tree <- function(x, layout = box_chars()) {
   if (n == 0) {
     character()
   } else if (n == 1) {
-    str_indent(subtrees[[1]],
-      paste0(layout$n, layout$h),
-      "  "
-    )
+    str_indent(subtrees[[1]], paste0(layout$n, layout$h), "  ")
   } else {
     c(
-      str_indent(subtrees[[1]],
+      str_indent(
+        subtrees[[1]],
         paste0(layout$n, layout$h),
-        paste0(layout$v,  " ")
+        paste0(layout$v, " ")
       ),
-      unlist(lapply(subtrees[-c(1, n)],
+      unlist(lapply(
+        subtrees[-c(1, n)],
         str_indent,
         paste0(layout$j, layout$h),
-        paste0(layout$v,  " ")
+        paste0(layout$v, " ")
       )),
-      str_indent(subtrees[[n]],
-        paste0(layout$l, layout$h),
-        "  "
-      )
+      str_indent(subtrees[[n]], paste0(layout$l, layout$h), "  ")
     )
   }
 }
 
 name_subtree <- function(x) {
   nm <- names(x)
-  if (is.null(nm))
+  if (is.null(nm)) {
     return(x)
+  }
 
   has_name <- nm != ""
   label <- paste0(crayon::italic(grey(nm)), " = ")

@@ -52,18 +52,18 @@
 #' sxp(e1, expand = "environment")
 #' sxp(e2, expand = "environment")
 sxp <- function(x, expand = character(), max_depth = 5L) {
-
   opts <- c("character", "altrep", "environment", "call", "bytecode")
   if (any(!expand %in% opts)) {
     abort(
-        sprintf(
-            "`expand` must contain only values from: '%s'.",
-            paste(opts, collapse = "', '")
-        )
+      sprintf(
+        "`expand` must contain only values from: '%s'.",
+        paste(opts, collapse = "', '")
+      )
     )
   }
 
-  obj_inspect_(x,
+  obj_inspect_(
+    x,
     max_depth - 1L,
     opts[[1]] %in% expand,
     opts[[2]] %in% expand,
@@ -92,7 +92,13 @@ format.lobstr_inspector <- function(x, ..., depth = 0, name = NA) {
     type <- sexp_type(attr(x, "type"))
     if (sexp_is_vector(type)) {
       if (!is.null(attr(x, "truelength"))) {
-        length <- paste0("[", attr(x, "length"), "/", attr(x, "truelength"), "]")
+        length <- paste0(
+          "[",
+          attr(x, "length"),
+          "/",
+          attr(x, "truelength"),
+          "]"
+        )
       } else {
         length <- paste0("[", attr(x, "length"), "]")
       }
@@ -113,9 +119,18 @@ format.lobstr_inspector <- function(x, ..., depth = 0, name = NA) {
     )
 
     desc <- paste0(
-      "[", id, addr, "] ",
-      "<", crayon::cyan(type), length, value, "> ",
-      "(", sxpinfo, ")"
+      "[",
+      id,
+      addr,
+      "] ",
+      "<",
+      crayon::cyan(type),
+      length,
+      value,
+      "> ",
+      "(",
+      sxpinfo,
+      ")"
     )
   }
 
@@ -153,8 +168,7 @@ sxp_view <- function(x, expand = character()) {
   old_fun <- env$.rs.explorer.objectDesc
   on.exit(env$.rs.addFunction("explorer.objectDesc", old_fun), add = TRUE)
 
-  assign(".rs.explorer.objectDesc", envir = env,
-    function(x) {
+  assign(".rs.explorer.objectDesc", envir = env, function(x) {
     if (inherits(x, "lobstr_inspector")) {
       format.lobstr_inspector(x)
     } else {
@@ -176,7 +190,17 @@ sexp_type <- function(x) {
 }
 
 sexp_is_vector <- function(x) {
-  x %in% c("LGLSXP", "INTSXP", "REALSXP", "STRSXP", "RAWSXP", "CPLXSXP", "VECSXP", "EXPRSXP")
+  x %in%
+    c(
+      "LGLSXP",
+      "INTSXP",
+      "REALSXP",
+      "STRSXP",
+      "RAWSXP",
+      "CPLXSXP",
+      "VECSXP",
+      "EXPRSXP"
+    )
 }
 
 SEXPTYPE <- c(
@@ -208,4 +232,3 @@ SEXPTYPE <- c(
   "31" = "FREESXP",
   "99" = "FUNSXP"
 )
-
