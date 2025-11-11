@@ -1,4 +1,3 @@
-
 test_that("Array-like indices can be shown or hidden", {
   testthat::skip_on_os("windows")
 
@@ -10,7 +9,7 @@ test_that("Array-like indices can be shown or hidden", {
   })
 })
 
-test_that("Atomic arrays have sensible defaults w/ truncation for longer than 10-elements",{
+test_that("Atomic arrays have sensible defaults w/ truncation for longer than 10-elements", {
   testthat::skip_on_os("windows")
 
   expect_snapshot(
@@ -33,7 +32,6 @@ test_that("Atomic arrays have sensible defaults w/ truncation for longer than 10
       hide_scalar_types = FALSE
     )
   )
-
 })
 
 test_that("Large and multiline strings are handled gracefully", {
@@ -71,7 +69,7 @@ test_that("Max depth and length can be enforced", {
         id = "b",
         val = 1,
         children = list(
-          list(id = "b1",val = 2.5),
+          list(id = "b1", val = 2.5),
           list(
             id = "b2",
             val = 8,
@@ -188,7 +186,6 @@ test_that("Can optionally recurse into environments", {
     sum(grepl(pattern = "<environment:", env_printing, fixed = TRUE)),
     1
   )
-
 })
 
 test_that("Function arguments get printed", {
@@ -197,9 +194,9 @@ test_that("Function arguments get printed", {
   expect_snapshot({
     tree(
       list(
-        no_args = function(){},
-        few_args = function(a,b,c){},
-        lots_of_args = function(d,e,f,g,h,i,j,k,l,m,n,o,p){}
+        no_args = function() {},
+        few_args = function(a, b, c) {},
+        lots_of_args = function(d, e, f, g, h, i, j, k, l, m, n, o, p) {}
       )
     )
   })
@@ -212,8 +209,8 @@ test_that("Handles expressions", {
     tree(
       list(
         a = quote(a),
-        b = quote(a+1),
-        c = y~mx+b
+        b = quote(a + 1),
+        c = y ~ mx + b
       )
     )
   })

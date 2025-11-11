@@ -76,18 +76,20 @@
 #'   paste0("_", x, "_")
 #' })
 #' @export
-tree <- function(x,
-                 ...,
-                 index_unnamed = FALSE,
-                 max_depth = 10L,
-                 max_length = 1000L,
-                 show_environments = TRUE,
-                 hide_scalar_types = TRUE,
-                 val_printer = crayon::blue,
-                 class_printer = crayon::silver,
-                 show_attributes = FALSE,
-                 remove_newlines = TRUE,
-                 tree_chars = box_chars()) {
+tree <- function(
+  x,
+  ...,
+  index_unnamed = FALSE,
+  max_depth = 10L,
+  max_length = 1000L,
+  show_environments = TRUE,
+  hide_scalar_types = TRUE,
+  val_printer = crayon::blue,
+  class_printer = crayon::silver,
+  show_attributes = FALSE,
+  remove_newlines = TRUE,
+  tree_chars = box_chars()
+) {
   rlang::check_dots_empty()
 
   # Pack up the unchanging arguments into a list and send to tree_internal
@@ -119,14 +121,16 @@ tree <- function(x,
 # static options arguments from the user-facing `tree()` into a single opts
 # list to make recursive calls cleaner. It also has arguments that as it is
 # called successively but the end-user shouldn't see or use.
-tree_internal <- function(x,
-                          x_id = NULL,
-                          branch_hist = character(0),
-                          opts,
-                          attr_mode = FALSE,
-                          counter_env = rlang::new_environment(
-                            data = list(n_printed = 0, envs_seen = c())
-                          )) {
+tree_internal <- function(
+  x,
+  x_id = NULL,
+  branch_hist = character(0),
+  opts,
+  attr_mode = FALSE,
+  counter_env = rlang::new_environment(
+    data = list(n_printed = 0, envs_seen = c())
+  )
+) {
   counter_env$n_printed <- counter_env$n_printed + 1
   # Stop if we've reached the max number of times printed desired
   if (counter_env$n_printed > opts$max_length) {
@@ -136,7 +140,12 @@ tree_internal <- function(x,
   # environments before
   already_seen <- FALSE
   if (rlang::is_environment(x)) {
-    already_seen <- any(vapply(counter_env$envs_seen, identical, x, FUN.VALUE = logical(1)))
+    already_seen <- any(vapply(
+      counter_env$envs_seen,
+      identical,
+      x,
+      FUN.VALUE = logical(1)
+    ))
     if (!already_seen) {
       # If this environment is new, add it to the seen
       counter_env$envs_seen[[length(counter_env$envs_seen) + 1]] <- x
@@ -150,7 +159,10 @@ tree_internal <- function(x,
   branch_chars <- rep_len("  ", depth)
 
   branch_chars[branch_hist == "child"] <- paste0(opts$tree_chars$v, " ")
-  branch_chars[grepl("attr", branch_hist, fixed = TRUE)] <- paste0(opts$tree_chars$vd, " ")
+  branch_chars[grepl("attr", branch_hist, fixed = TRUE)] <- paste0(
+    opts$tree_chars$vd,
+    " "
+  )
 
   # Next update the final element (aka the current step) with the correct branch type
   last_step <- branch_hist[depth]
@@ -161,7 +173,11 @@ tree_internal <- function(x,
   } else {
     paste0(
       if (grepl("last", last_step)) opts$tree_chars$l else opts$tree_chars$j,
-      if (grepl("attribute", last_step)) opts$tree_chars$hd else opts$tree_chars$h
+      if (grepl("attribute", last_step)) {
+        opts$tree_chars$hd
+      } else {
+        opts$tree_chars$h
+      }
     )
   }
   # Build label
@@ -222,7 +238,9 @@ tree_internal <- function(x,
     # If children have names, give them the names
     for (i in seq_along(children)) {
       id <- child_names[i]
-      if ((rlang::is_null(id) || id == "") && opts$index_unnamed) id <- crayon::italic(i)
+      if ((rlang::is_null(id) || id == "") && opts$index_unnamed) {
+        id <- crayon::italic(i)
+      }
 
       child_type <- if (i < n_children) {
         "child"
@@ -254,9 +272,16 @@ tree_internal <- function(x,
     for (i in seq_len(n_attributes)) {
       termination_type <- Recall(
         x = x_attributes[[i]],
-        x_id = crayon::italic(paste0("attr(,\"", names(x_attributes)[i], "\")")),
+        x_id = crayon::italic(paste0(
+          "attr(,\"",
+          names(x_attributes)[i],
+          "\")"
+        )),
         opts = opts,
-        branch_hist = c(branch_hist, paste0(if (i == n_attributes) "last-", "attribute")),
+        branch_hist = c(
+          branch_hist,
+          paste0(if (i == n_attributes) "last-", "attribute")
+        ),
         attr_mode = TRUE, # Let tree know this is an attribute
         counter_env = counter_env
       )
@@ -272,12 +297,10 @@ tree_internal <- function(x,
 # There are a few environments we don't want to recurse into
 is_printable_env <- function(x) {
   is_environment(x) &&
-    !(
-      identical(x, rlang::global_env()) ||
-        identical(x, rlang::empty_env()) ||
-        identical(x, rlang::base_env()) ||
-        rlang::is_namespace(x)
-    )
+    !(identical(x, rlang::global_env()) ||
+      identical(x, rlang::empty_env()) ||
+      identical(x, rlang::base_env()) ||
+      rlang::is_namespace(x))
 }
 
 #' Build element or node label in tree
@@ -313,7 +336,6 @@ tree_label.NULL <- function(x, opts) {
 
 #' @export
 tree_label.character <- function(x, opts) {
-
   # Get rid of new-line so they don't break tree flow
   if (opts$remove_newlines) {
     x <- gsub("\\n", replacement = "\u21B5", x = x, perl = TRUE)
@@ -383,7 +405,8 @@ make_type_abrev <- function(x, omit_scalars) {
     return("")
   }
 
-  type_abrev <- switch(typeof(x),
+  type_abrev <- switch(
+    typeof(x),
     logical = "lgl",
     integer = "int",
     double = "dbl",

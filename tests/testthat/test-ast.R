@@ -36,4 +36,3 @@ test_that("can print scalar expressions nicely", {
     ast(!!x)
   })
 })
-

@@ -93,7 +93,6 @@ test_that("can expand altrep", {
   skip_if_not(getRversion() >= "3.5")
   skip_if_not(.Machine$sizeof.pointer == 8) # _class RAWSXP has different size
 
-
   expect_snapshot({
     x <- 1:10
     print(sxp(x, expand = "altrep", max_depth = 4L))

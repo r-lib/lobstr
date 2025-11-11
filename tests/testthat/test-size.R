@@ -3,7 +3,13 @@ expect_same <- function(x, ...) {
   act <- as.vector(obj_size(x))
   exp <- as.vector(object.size(x))
 
-  msg <- sprintf("`obj_size(%s)` is %s, not %s (\u0394%+i)", lab, act, exp, act - exp)
+  msg <- sprintf(
+    "`obj_size(%s)` is %s, not %s (\u0394%+i)",
+    lab,
+    act,
+    exp,
+    act - exp
+  )
   expect(identical(act, exp), msg)
   invisible(act)
 }

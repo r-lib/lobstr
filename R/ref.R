@@ -40,8 +40,12 @@ ref <- function(..., character = FALSE) {
   new_raw(unlist(out))
 }
 
-ref_tree <- function(x, character = FALSE, seen = child_env(emptyenv()), layout = box_chars()) {
-
+ref_tree <- function(
+  x,
+  character = FALSE,
+  seen = child_env(emptyenv()),
+  layout = box_chars()
+) {
   addr <- obj_addr(x)
   has_seen <- env_has(seen, addr)
   id <- obj_id(seen, addr)
@@ -58,9 +62,21 @@ ref_tree <- function(x, character = FALSE, seen = child_env(emptyenv()), layout 
 
   # recursive cases
   if (is.list(x)) {
-    subtrees <- lapply(x, ref_tree, layout = layout, seen = seen, character = character)
+    subtrees <- lapply(
+      x,
+      ref_tree,
+      layout = layout,
+      seen = seen,
+      character = character
+    )
   } else if (is.environment(x)) {
-    subtrees <- lapply(as.list(x, all.names = TRUE), ref_tree, layout = layout, seen = seen, character = character)
+    subtrees <- lapply(
+      as.list(x, all.names = TRUE),
+      ref_tree,
+      layout = layout,
+      seen = seen,
+      character = character
+    )
   } else if (is.character(x)) {
     subtrees <- ref_tree_chr(x, layout = layout, seen = seen)
   }
@@ -74,15 +90,13 @@ ref_tree <- function(x, character = FALSE, seen = child_env(emptyenv()), layout 
   }
   c(
     self,
-    unlist(lapply(subtrees[-n],
+    unlist(lapply(
+      subtrees[-n],
       str_indent,
       paste0(layout$j, layout$h),
-      paste0(layout$v,  " ")
+      paste0(layout$v, " ")
     )),
-    str_indent(subtrees[[n]],
-      paste0(layout$l, layout$h),
-      "  "
-    )
+    str_indent(subtrees[[n]], paste0(layout$l, layout$h), "  ")
   )
 }
 
@@ -106,7 +120,11 @@ has_references <- function(x, character = FALSE) {
   is_list(x) || is.environment(x) || (character && is_character(x))
 }
 
-ref_tree_chr <- function(x, layout = box_chars(), seen = child_env(emptyenv())) {
+ref_tree_chr <- function(
+  x,
+  layout = box_chars(),
+  seen = child_env(emptyenv())
+) {
   addrs <- obj_addrs(x)
 
   has_seen <- logical(length(x))
