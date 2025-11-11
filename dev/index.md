@@ -46,7 +46,7 @@ ast(function(x = 1) {
 #> │   │ └─0 
 #> │   └─█─print 
 #> │     └─"Hi!" 
-#> └─<inline srcref>
+#> └─NULL
 ```
 
 ### References
@@ -59,16 +59,16 @@ underlying \_\_ref\_\_erences:
 x <- 1:1e6
 y <- list(x, x, x)
 ref(y)
-#> █ [1:0x1063ac468] <list> 
-#> ├─[2:0x11629ba38] <int> 
-#> ├─[2:0x11629ba38] 
-#> └─[2:0x11629ba38]
+#> █ [1:0x15746ab48] <list> 
+#> ├─[2:0x157222590] <int> 
+#> ├─[2:0x157222590] 
+#> └─[2:0x157222590]
 
 e <- rlang::env()
 e$self <- e
 ref(e)
-#> █ [1:0x1068a2218] <env> 
-#> └─self = [1:0x1068a2218]
+#> █ [1:0x157561e78] <env> 
+#> └─self = [1:0x157561e78]
 ```
 
 A related tool is

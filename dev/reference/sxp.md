@@ -63,36 +63,36 @@ x <- list(
   "3"
 )
 sxp(x)
-#> [1:0x556033e51508] <VECSXP[4]> (named:4)
-#>   [2:0x556031e63390] <LGLSXP[1]> (named:10)
-#>   [3:0x556031e631d0] <INTSXP[1]> (named:8)
-#>   [4:0x556030cdb280] <REALSXP[100]> (named:1)
-#>   [5:0x556031e62b40] <STRSXP[1]> (named:4)
+#> [1:0x55b29bc33e88] <VECSXP[4]> (named:4)
+#>   [2:0x55b29c978ad8] <LGLSXP[1]> (named:10)
+#>   [3:0x55b29c978918] <INTSXP[1]> (named:8)
+#>   [4:0x55b29c2eb5a0] <REALSXP[100]> (named:1)
+#>   [5:0x55b29c9782c0] <STRSXP[1]> (named:4)
 
 # Expand "character" to see underlying CHARSXP entries in the global
 # string pool
 x <- c("banana", "banana", "apple", "banana")
 sxp(x)
-#> [1:0x556031548688] <STRSXP[4]> (named:4)
+#> [1:0x55b29bc4e7c8] <STRSXP[4]> (named:4)
 sxp(x, expand = "character")
-#> [1:0x556031548688] <STRSXP[4]> (named:4)
-#>   [2:0x556030fa2030] <CHARSXP> (named:13)
-#>   [2:0x556030fa2030]
-#>   [3:0x55602d9ac6b8] <CHARSXP> (named:7)
-#>   [2:0x556030fa2030]
+#> [1:0x55b29bc4e7c8] <STRSXP[4]> (named:4)
+#>   [2:0x55b29c602588] <CHARSXP> (named:13)
+#>   [2:0x55b29c602588]
+#>   [3:0x55b2989cbb10] <CHARSXP> (named:7)
+#>   [2:0x55b29c602588]
 
 # Expand altrep to see underlying data
 x <- 1:10
 sxp(x)
-#> [1:0x556032114850] <INTSXP[10]> (altrep named:65535)
+#> [1:0x55b29cc2de20] <INTSXP[10]> (altrep named:65535)
 sxp(x, expand = "altrep")
-#> [1:0x556032114850] <INTSXP[10]> (altrep named:65535)
-#>   _class [2:0x55602b06ac20] <RAWSXP[144]> (named:9292)
-#>     _attrib [3:0x55602b0a0638] <LISTSXP> (named:1)
-#>       [4:0x55602b0a0868] <SYMSXP: compact_intseq> (named:46)
-#>       [5:0x55602b06c2c0] <SYMSXP: base> (named:65535)
-#>       [6:0x55602b09f128] <INTSXP[1]> (named:2)
-#>   _data1 [7:0x55602f7fc0e8] <REALSXP[3]> (named:1)
+#> [1:0x55b29cc2de20] <INTSXP[10]> (altrep named:65535)
+#>   _class [2:0x55b295b42c20] <RAWSXP[144]> (named:9366)
+#>     _attrib [3:0x55b295b78638] <LISTSXP> (named:1)
+#>       [4:0x55b295b78868] <SYMSXP: compact_intseq> (named:46)
+#>       [5:0x55b295b442c0] <SYMSXP: base> (named:65535)
+#>       [6:0x55b295b77128] <INTSXP[1]> (named:2)
+#>   _data1 [7:0x55b29b696f38] <REALSXP[3]> (named:1)
 #>   _data2 <NILSXP>
 
 # Expand environmnets to see the underlying implementation details
@@ -101,22 +101,22 @@ e2 <- new.env(hash = TRUE, parent = emptyenv(), size = 3L)
 e1$x <- e2$x <- 1:10
 
 sxp(e1)
-#> [1:0x556032381de8] <ENVSXP> (named:5)
-#>   x [2:0x5560323d6658] <INTSXP[10]> (altrep named:65535)
-#>   _enclos [3:0x55602b06d5c8] <ENVSXP: empty> (named:65535)
+#> [1:0x55b29ce9b3b8] <ENVSXP> (named:5)
+#>   x [2:0x55b29cef1b38] <INTSXP[10]> (altrep named:65535)
+#>   _enclos [3:0x55b295b455c8] <ENVSXP: empty> (named:65535)
 sxp(e1, expand = "environment")
-#> [1:0x556032381de8] <ENVSXP> (named:6)
-#>   _frame [2:0x5560323d9e68] <LISTSXP> (named:1)
-#>     x [3:0x5560323d6658] <INTSXP[10]> (altrep named:65535)
+#> [1:0x55b29ce9b3b8] <ENVSXP> (named:6)
+#>   _frame [2:0x55b29cef1518] <LISTSXP> (named:1)
+#>     x [3:0x55b29cef1b38] <INTSXP[10]> (altrep named:65535)
 #>   _hashtab <NILSXP>
-#>   _enclos [5:0x55602b06d5c8] <ENVSXP: empty> (named:65535)
+#>   _enclos [5:0x55b295b455c8] <ENVSXP: empty> (named:65535)
 sxp(e2, expand = "environment")
-#> [1:0x5560323ad330] <ENVSXP> (named:5)
+#> [1:0x55b29cec6900] <ENVSXP> (named:5)
 #>   _frame <NILSXP>
-#>   _hashtab [3:0x55602f5d6938] <VECSXP[3/1]> (named:1)
-#>     [4:0x5560323d6348] <LISTSXP> (named:1)
-#>       x [5:0x5560323d6658] <INTSXP[10]> (altrep named:65535)
+#>   _hashtab [3:0x55b2992087a8] <VECSXP[3/1]> (named:1)
+#>     [4:0x55b29cef1828] <LISTSXP> (named:1)
+#>       x [5:0x55b29cef1b38] <INTSXP[10]> (altrep named:65535)
 #>     <NILSXP>
 #>     <NILSXP>
-#>   _enclos [6:0x55602b06d5c8] <ENVSXP: empty> (named:65535)
+#>   _enclos [6:0x55b295b455c8] <ENVSXP: empty> (named:65535)
 ```
