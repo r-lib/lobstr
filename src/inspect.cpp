@@ -84,16 +84,10 @@ SEXP obj_inspect_(SEXP x,
   Rf_setAttrib(children, Rf_install("type"), PROTECT(Rf_ScalarInteger(TYPEOF(x))));
   Rf_setAttrib(children, Rf_install("length"), PROTECT(Rf_ScalarReal(sxp_length(x))));
   Rf_setAttrib(children, Rf_install("altrep"), PROTECT(Rf_ScalarLogical(is_altrep(x))));
-  Rf_setAttrib(children, Rf_install("named"), PROTECT(Rf_ScalarInteger(NAMED(x))));
+  Rf_setAttrib(children, Rf_install("maybe_shared"), PROTECT(Rf_ScalarInteger(MAYBE_SHARED(x))));
+  Rf_setAttrib(children, Rf_install("no_references"), PROTECT(Rf_ScalarInteger(NO_REFERENCES(x))));
   Rf_setAttrib(children, Rf_install("object"), PROTECT(Rf_ScalarInteger(Rf_isObject(x))));
-  UNPROTECT(8);
-
-  if (Rf_isVector(x)) {
-    if (TRUELENGTH(x) > 0) {
-      Rf_setAttrib(children, Rf_install("truelength"), PROTECT(Rf_ScalarReal(TRUELENGTH(x))));
-      UNPROTECT(1);
-    }
-  }
+  UNPROTECT(9);
 
   const char* value = NULL;
   if (TYPEOF(x) == SYMSXP && PRINTNAME(x) != R_NilValue) {
