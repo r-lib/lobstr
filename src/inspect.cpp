@@ -267,7 +267,7 @@ SEXP obj_children_(
         recurse(&children, seen, "_frame", CAR(x), max_depth, expand);
         recurse(&children, seen, "_hashtab", TAG(x), max_depth, expand);
       } else {
-        SEXP names = PROTECT(R_lsInternal(x, TRUE));
+        SEXP names = PROTECT(R_lsInternal3(x, /* all= */ TRUE, /* sorted= */ FALSE));
         for (R_xlen_t i = 0; i < XLENGTH(names); ++i) {
           const char* name = CHAR(STRING_ELT(names, i));
           SEXP sym = PROTECT(Rf_install(name));

@@ -31,9 +31,16 @@ double v_size(double n, int element_size) {
   return size;
 }
 
+bool r_env_has(SEXP env, SEXP symbol) {
+#if R_VERSION >= R_Version(4, 2, 0)
+    return R_existsVarInFrame(env, symbol);
+#else
+    return Rf_findVarInFrame3(env, symbol, FALSE) != R_UnboundValue;
+#endif
+}
+
 bool is_namespace(cpp11::environment env) {
-  return env == R_BaseNamespace ||
-    Rf_findVarInFrame3(env, Rf_install(".__NAMESPACE__."), FALSE) != R_UnboundValue;
+  return env == R_BaseNamespace || r_env_has(env, Rf_install(".__NAMESPACE__."));
 }
 
 

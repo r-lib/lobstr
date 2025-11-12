@@ -35,6 +35,7 @@ R_xlen_t sxp_length(SEXP x) {
 }
 
 #if R_VERSION < R_Version(4, 5, 0)
+static inline
 SEXP R_ParentEnv(SEXP x) {
   return ENCLOS(x);
 }
