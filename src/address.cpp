@@ -39,11 +39,14 @@ std::vector<std::string> obj_addrs_(SEXP x) {
     break;
 
   case ENVSXP: {
-    bool isHashed = HASHTAB(x) != R_NilValue;
+    // Using node-based object accessors: CAR for FRAME, and TAG for HASHTAB.
+    // TODO: Iterate over environments using environment accessors.
+    // We won't be able to provide an address for things like promises though.
+    bool isHashed = TAG(x) != R_NilValue;
     if (isHashed) {
-      hash_table_addresses(HASHTAB(x), &out);
+      hash_table_addresses(TAG(x), &out);
     } else {
-      frame_addresses(FRAME(x), &out);
+      frame_addresses(CAR(x), &out);
     }
     break;
   }

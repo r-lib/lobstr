@@ -85,7 +85,7 @@ SEXP obj_inspect_(SEXP x,
   Rf_setAttrib(children, Rf_install("length"), PROTECT(Rf_ScalarReal(sxp_length(x))));
   Rf_setAttrib(children, Rf_install("altrep"), PROTECT(Rf_ScalarLogical(is_altrep(x))));
   Rf_setAttrib(children, Rf_install("named"), PROTECT(Rf_ScalarInteger(NAMED(x))));
-  Rf_setAttrib(children, Rf_install("object"), PROTECT(Rf_ScalarInteger(OBJECT(x))));
+  Rf_setAttrib(children, Rf_install("object"), PROTECT(Rf_ScalarInteger(Rf_isObject(x))));
   UNPROTECT(8);
 
   if (Rf_isVector(x)) {
@@ -262,8 +262,10 @@ SEXP obj_children_(
         break;
 
       if (expand.env) {
-        recurse(&children, seen, "_frame", FRAME(x), max_depth, expand);
-        recurse(&children, seen, "_hashtab", HASHTAB(x), max_depth, expand);
+        // Using node-based object accessors: CAR for FRAME, and TAG for HASHTAB.
+        // TODO: Iterate manually over the environment using environment accessors.
+        recurse(&children, seen, "_frame", CAR(x), max_depth, expand);
+        recurse(&children, seen, "_hashtab", TAG(x), max_depth, expand);
       } else {
         SEXP names = PROTECT(R_lsInternal(x, TRUE));
         for (R_xlen_t i = 0; i < XLENGTH(names); ++i) {
@@ -285,25 +287,34 @@ SEXP obj_children_(
         UNPROTECT(1);
       }
 
-      recurse(&children, seen, "_enclos", ENCLOS(x), max_depth, expand);
+      recurse(&children, seen, "_enclos", R_ParentEnv(x), max_depth, expand);
       break;
 
     // Functions
     case CLOSXP:
+#if (R_VERSION >= R_Version(4, 5, 0))
+      recurse(&children, seen, "_formals", R_ClosureFormals(x), max_depth, expand);
+      recurse(&children, seen, "_body", R_ClosureBody(x), max_depth, expand);
+      recurse(&children, seen, "_env", R_ClosureEnv(x), max_depth, expand);
+#else
       recurse(&children, seen, "_formals", FORMALS(x), max_depth, expand);
       recurse(&children, seen, "_body", BODY(x), max_depth, expand);
       recurse(&children, seen, "_env", CLOENV(x), max_depth, expand);
+#endif
       break;
 
     case PROMSXP:
-      recurse(&children, seen, "_value", PRVALUE(x), max_depth, expand);
-      recurse(&children, seen, "_code", PRCODE(x), max_depth, expand);
-      recurse(&children, seen, "_env", PRENV(x), max_depth, expand);
+      // Using node-based object accessors: CAR for PRVALUE, CDR for PRCODE, and
+      // TAG for PRENV. TODO: Iterate manually over the environment using
+      // environment accessors.
+      recurse(&children, seen, "_value", CAR(x), max_depth, expand);
+      recurse(&children, seen, "_code", CDR(x), max_depth, expand);
+      recurse(&children, seen, "_env", TAG(x), max_depth, expand);
       break;
 
     case EXTPTRSXP:
-      recurse(&children, seen, "_prot", EXTPTR_PROT(x), max_depth, expand);
-      recurse(&children, seen, "_tag", EXTPTR_TAG(x), max_depth, expand);
+      recurse(&children, seen, "_prot", R_ExternalPtrProtected(x), max_depth, expand);
+      recurse(&children, seen, "_tag", R_ExternalPtrTag(x), max_depth, expand);
       break;
 
     case S4SXP:
