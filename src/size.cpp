@@ -157,29 +157,45 @@ double obj_size_tree(SEXP x,
     if (x == R_BaseEnv || x == R_GlobalEnv || x == R_EmptyEnv ||
       x == base_env || is_namespace(x)) return 0;
 
-    size += obj_size_tree(FRAME(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-    size += obj_size_tree(ENCLOS(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-    size += obj_size_tree(HASHTAB(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+    // Using node-based object accessors: CAR for FRAME, and TAG for HASHTAB.
+    // If these accessors type-check their inputs in the future, we'll need to
+    // iterate over environment elements using the environment API to collect
+    // the sizes of contained elements. Unfortunately this means we'll have to
+    // infer the size of the hash table frame itself using heuristics.
+    size += obj_size_tree(CAR(x), base_env, sizeof_node, sizeof_vector, seen,
+    depth + 1);
+    size += obj_size_tree(R_ParentEnv(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+    size += obj_size_tree(TAG(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
     break;
 
   // Functions
   case CLOSXP:
+#if (R_VERSION >= R_Version(4, 5, 0))
+    size += obj_size_tree(R_ClosureFormals(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+    // R_ClosureBody/BODY is either a bare expression or a byte code that wraps
+    // the expression along with other data.
+    size += obj_size_tree(R_ClosureBody(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+    size += obj_size_tree(R_ClosureEnv(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+#else
     size += obj_size_tree(FORMALS(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-    // BODY is either an expression or byte code
     size += obj_size_tree(BODY(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
     size += obj_size_tree(CLOENV(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+#endif
     break;
 
   case PROMSXP:
-    size += obj_size_tree(PRVALUE(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-    size += obj_size_tree(PRCODE(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-    size += obj_size_tree(PRENV(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+    // Using node-based object accessors: CAR for PRVALUE, CDR for PRCODE, and
+    // TAG for PRENV. TODO: Iterate manually over the environment using
+    // environment accessors.
+    size += obj_size_tree(CAR(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+    size += obj_size_tree(CDR(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+    size += obj_size_tree(TAG(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
     break;
 
   case EXTPTRSXP:
     size += sizeof(void *); // the actual pointer
-    size += obj_size_tree(EXTPTR_PROT(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-    size += obj_size_tree(EXTPTR_TAG(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+    size += obj_size_tree(R_ExternalPtrProtected(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+    size += obj_size_tree(R_ExternalPtrTag(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
     break;
 
   case S4SXP:
