@@ -39,6 +39,7 @@ ref(c("x", "x", "y"), character = TRUE)
 \seealso{
 Other object inspectors: 
 \code{\link{ast}()},
+\code{\link{src}()},
 \code{\link{sxp}()}
 }
 \concept{object inspectors}

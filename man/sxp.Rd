@@ -64,6 +64,7 @@ sxp(e, expand = "environment")
 \seealso{
 Other object inspectors: 
 \code{\link{ast}()},
-\code{\link{ref}()}
+\code{\link{ref}()},
+\code{\link{src}()}
 }
 \concept{object inspectors}

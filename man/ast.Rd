@@ -43,6 +43,7 @@ ast(!1 + !1)
 \seealso{
 Other object inspectors: 
 \code{\link{ref}()},
+\code{\link{src}()},
 \code{\link{sxp}()}
 }
 \concept{object inspectors}
