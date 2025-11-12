@@ -10,6 +10,7 @@ tree(
   index_unnamed = FALSE,
   max_depth = 10L,
   max_length = 1000L,
+  max_vec_len = 10L,
   show_environments = TRUE,
   hide_scalar_types = TRUE,
   val_printer = crayon::blue,

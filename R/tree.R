@@ -82,6 +82,7 @@ tree <- function(
   index_unnamed = FALSE,
   max_depth = 10L,
   max_length = 1000L,
+  max_vec_len = 10L,
   show_environments = TRUE,
   hide_scalar_types = TRUE,
   val_printer = crayon::blue,
@@ -99,6 +100,7 @@ tree <- function(
       index_unnamed = index_unnamed,
       max_depth = max_depth,
       max_length = max_length,
+      max_vec_len = max_vec_len,
       show_envs = show_environments,
       hide_scalar_types = hide_scalar_types,
       val_printer = val_printer,
@@ -354,7 +356,7 @@ tree_label.character <- function(x, opts) {
 #' @export
 tree_label.default <- function(x, opts) {
   if (rlang::is_atomic(x)) {
-    opts$val_printer(collapse_and_truncate_vec(x, 10))
+    opts$val_printer(collapse_and_truncate_vec(x, opts$max_vec_len))
   } else if (rlang::is_function(x)) {
     # Lots of times function-like functions don't actually trigger the s3 method
     # for function because they dont have function in their class-list. This
