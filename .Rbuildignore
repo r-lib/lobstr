@@ -15,3 +15,6 @@
 ^CRAN-SUBMISSION$
 ^[.]?air[.]toml$
 ^\.vscode$
+^.claude$
+^.cache$
+^\.AGENTS\.md$
