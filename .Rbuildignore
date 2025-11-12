@@ -17,4 +17,5 @@
 ^\.vscode$
 ^.claude$
 ^.cache$
-^\.AGENTS\.md$
+^AGENTS\.md$
+^compile_commands\.json$
