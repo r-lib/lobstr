@@ -91,17 +91,7 @@ format.lobstr_inspector <- function(x, ..., depth = 0, name = NA) {
   } else {
     type <- sexp_type(attr(x, "type"))
     if (sexp_is_vector(type)) {
-      if (!is.null(attr(x, "truelength"))) {
-        length <- paste0(
-          "[",
-          attr(x, "length"),
-          "/",
-          attr(x, "truelength"),
-          "]"
-        )
-      } else {
-        length <- paste0("[", attr(x, "length"), "]")
-      }
+      length <- paste0("[", attr(x, "length"), "]")
     } else {
       length <- NULL
     }
@@ -111,11 +101,26 @@ format.lobstr_inspector <- function(x, ..., depth = 0, name = NA) {
     } else {
       value <- NULL
     }
+
+    if (!is_testing()) {
+      no_references <- attr(x, "no_references")
+      maybe_shared <- attr(x, "maybe_shared")
+      if (no_references == 1) {
+        references <- "refs:0"
+      } else if (maybe_shared == 0) {
+        references <- "refs:1"
+      } else {
+        references <- "refs:2+"
+      }
+    } else {
+      references <- NULL
+    }
+
     # show altrep, object, named etc
     sxpinfo <- paste0(
       if (attr(x, "altrep")) "altrep ",
       if (attr(x, "object")) "object ",
-      if (!is_testing()) paste0("named:", attr(x, "named"))
+      references
     )
 
     desc <- paste0(

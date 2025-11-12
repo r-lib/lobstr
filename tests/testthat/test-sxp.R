@@ -1,16 +1,3 @@
-test_that("retrieves truelength", {
-  skip_if_not(getRversion() >= "3.4")
-
-  # true length is only updated after assignment
-  x <- runif(100)
-  x[101] <- 1
-  obj <- sxp(x)
-
-  # weak test because R doesn't make any guarantees about what the object
-  # will be
-  expect_true(attr(obj, "truelength") > length(obj))
-})
-
 test_that("computes spanning tree", {
   x <- 1:10
   y <- list(x, x, x)

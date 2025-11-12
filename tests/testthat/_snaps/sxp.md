@@ -48,7 +48,7 @@
           <NILSXP>
         _enclos [4] <ENVSXP> ()
           _frame <NILSXP>
-          _hashtab [5] <VECSXP[5/2]> ()
+          _hashtab [5] <VECSXP[5]> ()
             [6] <LISTSXP> ()
               x [7] <REALSXP[1]> ()
             [8] <LISTSXP> ()
