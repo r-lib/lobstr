@@ -113,16 +113,16 @@
 <code class="sourceCode R"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">1e6</span></span>
 <span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">x</span>, <span class="va">x</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/ref.html">ref</a></span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span>
-<span><span class="co">#&gt; █ [1:0x15746ab48] &lt;list&gt; </span></span>
-<span><span class="co">#&gt; ├─[2:0x157222590] &lt;int&gt; </span></span>
-<span><span class="co">#&gt; ├─[2:0x157222590] </span></span>
-<span><span class="co">#&gt; └─[2:0x157222590]</span></span>
+<span><span class="co">#&gt; █ [1:0x126225d88] &lt;list&gt; </span></span>
+<span><span class="co">#&gt; ├─[2:0x1114afb90] &lt;int&gt; </span></span>
+<span><span class="co">#&gt; ├─[2:0x1114afb90] </span></span>
+<span><span class="co">#&gt; └─[2:0x1114afb90]</span></span>
 <span></span>
 <span><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu">rlang</span><span class="fu">::</span><span class="fu"><a href="https://rlang.r-lib.org/reference/env.html" class="external-link">env</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="va">e</span><span class="op">$</span><span class="va">self</span> <span class="op">&lt;-</span> <span class="va">e</span></span>
 <span><span class="fu"><a href="reference/ref.html">ref</a></span><span class="op">(</span><span class="va">e</span><span class="op">)</span></span>
-<span><span class="co">#&gt; █ [1:0x157561e78] &lt;env&gt; </span></span>
-<span><span class="co">#&gt; └─self = [1:0x157561e78]</span></span></code></pre></div>
+<span><span class="co">#&gt; █ [1:0x126563548] &lt;env&gt; </span></span>
+<span><span class="co">#&gt; └─self = [1:0x126563548]</span></span></code></pre></div>
 <p>A related tool is <code><a href="reference/obj_size.html">obj_size()</a></code>, which computes the size of an object taking these shared references into account:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/obj_size.html">obj_size</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
