@@ -16,17 +16,18 @@
       │   ├─parseData<int [160]>: 1, 1, 1, ...
       │   ├─timestamp: "<scrubbed>"
       │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
-      └─body(): 
-        ├─attr("wholeSrcref"): <srcref>
-        │ ├─location: 1:0-3:1
-        │ └─attr("srcfile"): @008
-        └─attr("srcref"): <list>
-          ├─[[1]]: <srcref>
-          │ ├─location: 1:29-1:29
-          │ └─attr("srcfile"): @008
-          └─[[2]]: <srcref>
-            ├─location: 2:3-2:7
-            └─attr("srcfile"): @008
+      └─body(): <{>
+        ├─attr("srcref"): <list>
+        │ ├─[[1]]: <srcref>
+        │ │ ├─location: 1:29-1:29
+        │ │ └─attr("srcfile"): @008
+        │ └─[[2]]: <srcref>
+        │   ├─location: 2:3-2:7
+        │   └─attr("srcfile"): @008
+        ├─attr("srcfile"): @008
+        └─attr("wholeSrcref"): <srcref>
+          ├─location: 1:0-3:1
+          └─attr("srcfile"): @008
 
 # src() shows multi-statement function
 
@@ -46,26 +47,27 @@
       │   ├─parseData<int [352]>: 1, 1, 1, ...
       │   ├─timestamp: "<scrubbed>"
       │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
-      └─body(): 
-        ├─attr("wholeSrcref"): <srcref>
-        │ ├─location: 1:0-6:1
-        │ └─attr("srcfile"): @009
-        └─attr("srcref"): <list>
-          ├─[[1]]: <srcref>
-          │ ├─location: 1:27-1:27
-          │ └─attr("srcfile"): @009
-          ├─[[2]]: <srcref>
-          │ ├─location: 2:3-2:12
-          │ └─attr("srcfile"): @009
-          ├─[[3]]: <srcref>
-          │ ├─location: 3:3-3:12
-          │ └─attr("srcfile"): @009
-          ├─[[4]]: <srcref>
-          │ ├─location: 4:3-4:12
-          │ └─attr("srcfile"): @009
-          └─[[5]]: <srcref>
-            ├─location: 5:3-5:3
-            └─attr("srcfile"): @009
+      └─body(): <{>
+        ├─attr("srcref"): <list>
+        │ ├─[[1]]: <srcref>
+        │ │ ├─location: 1:27-1:27
+        │ │ └─attr("srcfile"): @009
+        │ ├─[[2]]: <srcref>
+        │ │ ├─location: 2:3-2:12
+        │ │ └─attr("srcfile"): @009
+        │ ├─[[3]]: <srcref>
+        │ │ ├─location: 3:3-3:12
+        │ │ └─attr("srcfile"): @009
+        │ ├─[[4]]: <srcref>
+        │ │ ├─location: 4:3-4:12
+        │ │ └─attr("srcfile"): @009
+        │ └─[[5]]: <srcref>
+        │   ├─location: 5:3-5:3
+        │   └─attr("srcfile"): @009
+        ├─attr("srcfile"): @009
+        └─attr("wholeSrcref"): <srcref>
+          ├─location: 1:0-6:1
+          └─attr("srcfile"): @009
 
 # src() shows quoted function with nested body
 
@@ -74,22 +76,26 @@
       scrub_src(src(x))
     Output
       <quoted_function>
-      └─[[3]]: <{>
-        ├─attr("srcref"): <list>
-        │ └─[[1]]: <srcref>
-        │   ├─location: 1:23-1:23
-        │   └─attr("srcfile"): <srcfilecopy> @010
-        │     ├─Enc: "unknown"
-        │     ├─filename: "<scrubbed>"
-        │     ├─fixedNewlines: TRUE
-        │     ├─isFile: TRUE
-        │     ├─lines: "x <- quote(function() {})"
-        │     ├─parseData<int [128]>: 1, 1, 1, ......
-        │     ├─timestamp: "<scrubbed>"
-        │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
-        └─attr("wholeSrcref"): <srcref>
-          ├─location: 1:0-1:24
-          └─attr("srcfile"): @010
+      ├─[[3]]: <{>
+      │ ├─attr("srcref"): <list>
+      │ │ └─[[1]]: <srcref>
+      │ │   ├─location: 1:23-1:23
+      │ │   └─attr("srcfile"): <srcfilecopy> @010
+      │ │     ├─Enc: "unknown"
+      │ │     ├─filename: "<scrubbed>"
+      │ │     ├─fixedNewlines: TRUE
+      │ │     ├─isFile: TRUE
+      │ │     ├─lines: "x <- quote(function() {})"
+      │ │     ├─parseData<int [128]>: 1, 1, 1, ......
+      │ │     ├─timestamp: "<scrubbed>"
+      │ │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │ ├─attr("srcfile"): @010
+      │ └─attr("wholeSrcref"): <srcref>
+      │   ├─location: 1:0-1:24
+      │   └─attr("srcfile"): @010
+      └─[[4]]: <srcref>
+        ├─location: 1:12-1:24
+        └─attr("srcfile"): @010
 
 # src() shows quoted function body directly
 
@@ -110,6 +116,7 @@
       │     ├─parseData<int [128]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
       │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      ├─attr("srcfile"): @011
       └─attr("wholeSrcref"): <srcref>
         ├─location: 1:0-1:24
         └─attr("srcfile"): @011
@@ -121,25 +128,29 @@
       scrub_src(src(x))
     Output
       <quoted_function>
-      └─[[3]]: <{>
-        ├─attr("srcref"): <list>
-        │ ├─[[1]]: <srcref>
-        │ │ ├─location: 1:27-1:27
-        │ │ └─attr("srcfile"): <srcfilecopy> @012
-        │ │   ├─Enc: "unknown"
-        │ │   ├─filename: "<scrubbed>"
-        │ │   ├─fixedNewlines: TRUE
-        │ │   ├─isFile: TRUE
-        │ │   ├─lines: "x <- quote(function(a, b) { a +..."
-        │ │   ├─parseData<int [200]>: 1, 1, 1, ......
-        │ │   ├─timestamp: "<scrubbed>"
-        │ │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
-        │ └─[[2]]: <srcref>
-        │   ├─location: 1:29-1:33
-        │   └─attr("srcfile"): @012
-        └─attr("wholeSrcref"): <srcref>
-          ├─location: 1:0-1:35
-          └─attr("srcfile"): @012
+      ├─[[3]]: <{>
+      │ ├─attr("srcref"): <list>
+      │ │ ├─[[1]]: <srcref>
+      │ │ │ ├─location: 1:27-1:27
+      │ │ │ └─attr("srcfile"): <srcfilecopy> @012
+      │ │ │   ├─Enc: "unknown"
+      │ │ │   ├─filename: "<scrubbed>"
+      │ │ │   ├─fixedNewlines: TRUE
+      │ │ │   ├─isFile: TRUE
+      │ │ │   ├─lines: "x <- quote(function(a, b) { a +..."
+      │ │ │   ├─parseData<int [200]>: 1, 1, 1, ......
+      │ │ │   ├─timestamp: "<scrubbed>"
+      │ │ │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │ │ └─[[2]]: <srcref>
+      │ │   ├─location: 1:29-1:33
+      │ │   └─attr("srcfile"): @012
+      │ ├─attr("srcfile"): @012
+      │ └─attr("wholeSrcref"): <srcref>
+      │   ├─location: 1:0-1:35
+      │   └─attr("srcfile"): @012
+      └─[[4]]: <srcref>
+        ├─location: 1:12-1:35
+        └─attr("srcfile"): @012
 
 # src() shows expression with single element
 
@@ -160,6 +171,7 @@
       │     ├─parseData<int [48]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
       │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      ├─attr("srcfile"): @013
       └─attr("wholeSrcref"): <srcref>
         ├─location: 1:0-2:0
         └─attr("srcfile"): @013
@@ -189,6 +201,7 @@
       │ └─[[3]]: <srcref>
       │   ├─location: 3:1-3:5
       │   └─attr("srcfile"): @014
+      ├─attr("srcfile"): @014
       └─attr("wholeSrcref"): <srcref>
         ├─location: 1:0-4:0
         └─attr("srcfile"): @014
@@ -212,6 +225,7 @@
       │     ├─parseData<int [40]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
       │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      ├─attr("srcfile"): @015
       ├─attr("wholeSrcref"): <srcref>
       │ ├─location: 1:0-4:0
       │ └─attr("srcfile"): @015
@@ -223,6 +237,7 @@
         │ └─[[2]]: <srcref>
         │   ├─location: 2:3-2:3
         │   └─attr("srcfile"): @015
+        ├─attr("srcfile"): @015
         └─attr("wholeSrcref"): <srcref>
           ├─location: 1:0-3:1
           └─attr("srcfile"): @015
@@ -249,6 +264,7 @@
       │ └─[[2]]: <srcref>
       │   ├─location: 2:3-2:3
       │   └─attr("srcfile"): @016
+      ├─attr("srcfile"): @016
       └─attr("wholeSrcref"): <srcref>
         ├─location: 1:0-3:1
         └─attr("srcfile"): @016
@@ -278,6 +294,7 @@
       │ └─[[3]]: <srcref>
       │   ├─location: 3:3-3:8
       │   └─attr("srcfile"): @017
+      ├─attr("srcfile"): @017
       └─attr("wholeSrcref"): <srcref>
         ├─location: 1:0-4:1
         └─attr("srcfile"): @017
@@ -348,6 +365,7 @@
       │ └─[[2]]: <srcref>
       │   ├─location: 1:25-1:25
       │   └─attr("srcfile"): @020
+      ├─attr("srcfile"): @020
       └─attr("wholeSrcref"): <srcref>
         ├─location: 1:0-1:27
         └─attr("srcfile"): @020
@@ -371,6 +389,7 @@
       │     ├─parseData<int [192]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
       │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      ├─attr("srcfile"): @021
       ├─attr("wholeSrcref"): <srcref>
       │ ├─location: 1:0-2:0
       │ └─attr("srcfile"): @021
@@ -382,6 +401,7 @@
         │ └─[[2]]: <srcref>
         │   ├─location: 1:7-1:23
         │   └─attr("srcfile"): @021
+        ├─attr("srcfile"): @021
         ├─attr("wholeSrcref"): <srcref>
         │ ├─location: 1:0-1:25
         │ └─attr("srcfile"): @021
@@ -393,6 +413,7 @@
           │ └─[[2]]: <srcref>
           │   ├─location: 1:20-1:20
           │   └─attr("srcfile"): @021
+          ├─attr("srcfile"): @021
           └─attr("wholeSrcref"): <srcref>
             ├─location: 1:0-1:22
             └─attr("srcfile"): @021
@@ -424,6 +445,7 @@
           │ └─[[2]]: <srcref>
           │   ├─location: 1:23-1:39
           │   └─attr("srcfile"): @022
+          ├─attr("srcfile"): @022
           ├─attr("wholeSrcref"): <srcref>
           │ ├─location: 1:0-1:41
           │ └─attr("srcfile"): @022
@@ -435,6 +457,7 @@
             │ └─[[2]]: <srcref>
             │   ├─location: 1:36-1:36
             │   └─attr("srcfile"): @022
+            ├─attr("srcfile"): @022
             └─attr("wholeSrcref"): <srcref>
               ├─location: 1:0-1:38
               └─attr("srcfile"): @022
@@ -457,17 +480,18 @@
       │   ├─parseData<int [160]>: 1, 1, 1, ...
       │   ├─timestamp: "<scrubbed>"
       │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
-      └─body(): 
-        ├─attr("wholeSrcref"): <srcref>
-        │ ├─location: 1:0-3:1
-        │ └─attr("srcfile"): @027
-        └─attr("srcref"): <list>
-          ├─[[1]]: <srcref>
-          │ ├─location: 1:29-1:29
-          │ └─attr("srcfile"): @027
-          └─[[2]]: <srcref>
-            ├─location: 2:3-2:7
-            └─attr("srcfile"): @027
+      └─body(): <{>
+        ├─attr("srcref"): <list>
+        │ ├─[[1]]: <srcref>
+        │ │ ├─location: 1:29-1:29
+        │ │ └─attr("srcfile"): @027
+        │ └─[[2]]: <srcref>
+        │   ├─location: 2:3-2:7
+        │   └─attr("srcfile"): @027
+        ├─attr("srcfile"): @027
+        └─attr("wholeSrcref"): <srcref>
+          ├─location: 1:0-3:1
+          └─attr("srcfile"): @027
 
 # src() shows many duplicate srcfiles in nested expression
 
@@ -488,6 +512,7 @@
       │     ├─parseData<int [56]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
       │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      ├─attr("srcfile"): @028
       ├─attr("wholeSrcref"): <srcref>
       │ ├─location: 1:0-5:0
       │ └─attr("srcfile"): @028
@@ -502,6 +527,7 @@
         │ └─[[3]]: <srcref>
         │   ├─location: 3:3-3:3
         │   └─attr("srcfile"): @028
+        ├─attr("srcfile"): @028
         └─attr("wholeSrcref"): <srcref>
           ├─location: 1:0-4:1
           └─attr("srcfile"): @028
@@ -525,6 +551,7 @@
       │     ├─parseData<int [24]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
       │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      ├─attr("srcfile"): @029
       └─attr("wholeSrcref"): <srcref>
         ├─location: 1:0-1:2
         └─attr("srcfile"): @029
@@ -547,17 +574,18 @@
       │   ├─parseData<int [104]>: 1, 1, 1, ...
       │   ├─timestamp: "<scrubbed>"
       │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
-      └─body(): 
-        ├─attr("wholeSrcref"): <srcref>
-        │ ├─location: 1:0-1:24
-        │ └─attr("srcfile"): @030
-        └─attr("srcref"): <list>
-          ├─[[1]]: <srcref>
-          │ ├─location: 1:17-1:17
-          │ └─attr("srcfile"): @030
-          └─[[2]]: <srcref>
-            ├─location: 1:19-1:22
-            └─attr("srcfile"): @030
+      └─body(): <{>
+        ├─attr("srcref"): <list>
+        │ ├─[[1]]: <srcref>
+        │ │ ├─location: 1:17-1:17
+        │ │ └─attr("srcfile"): @030
+        │ └─[[2]]: <srcref>
+        │   ├─location: 1:19-1:22
+        │   └─attr("srcfile"): @030
+        ├─attr("srcfile"): @030
+        └─attr("wholeSrcref"): <srcref>
+          ├─location: 1:0-1:24
+          └─attr("srcfile"): @030
 
 # src() handles if statement with blocks
 
@@ -578,6 +606,7 @@
       │     ├─parseData<int [136]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
       │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      ├─attr("srcfile"): @031
       ├─attr("wholeSrcref"): <srcref>
       │ ├─location: 1:0-2:0
       │ └─attr("srcfile"): @031
@@ -589,6 +618,7 @@
       │ │ └─[[2]]: <srcref>
       │ │   ├─location: 1:13-1:13
       │ │   └─attr("srcfile"): @031
+      │ ├─attr("srcfile"): @031
       │ └─attr("wholeSrcref"): <srcref>
       │   ├─location: 1:0-1:15
       │   └─attr("srcfile"): @031
@@ -600,6 +630,7 @@
         │ └─[[2]]: <srcref>
         │   ├─location: 1:24-1:24
         │   └─attr("srcfile"): @031
+        ├─attr("srcfile"): @031
         └─attr("wholeSrcref"): <srcref>
           ├─location: 1:0-1:26
           └─attr("srcfile"): @031
@@ -650,6 +681,7 @@
       │ └─[[10]]: <srcref>
       │   ├─location: 10:1-10:1
       │   └─attr("srcfile"): @032
+      ├─attr("srcfile"): @032
       └─attr("wholeSrcref"): <srcref>
         ├─location: 1:0-11:0
         └─attr("srcfile"): @032
@@ -672,17 +704,18 @@
       │   ├─parseData<int [160]>: 1, 1, 1, ...
       │   ├─timestamp: "<scrubbed>"
       │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
-      └─body(): 
-        ├─attr("wholeSrcref"): <srcref>
-        │ ├─location: 1:0-3:1
-        │ └─attr("srcfile"): @033
-        └─attr("srcref"): <list>
-          ├─[[1]]: <srcref>
-          │ ├─location: 1:29-1:29
-          │ └─attr("srcfile"): @033
-          └─[[2]]: <srcref>
-            ├─location: 2:3-2:7
-            └─attr("srcfile"): @033
+      └─body(): <{>
+        ├─attr("srcref"): <list>
+        │ ├─[[1]]: <srcref>
+        │ │ ├─location: 1:29-1:29
+        │ │ └─attr("srcfile"): @033
+        │ └─[[2]]: <srcref>
+        │   ├─location: 2:3-2:7
+        │   └─attr("srcfile"): @033
+        ├─attr("srcfile"): @033
+        └─attr("wholeSrcref"): <srcref>
+          ├─location: 1:0-3:1
+          └─attr("srcfile"): @033
 
 # src() shows expression with multiple nested blocks
 
@@ -703,6 +736,7 @@
       │     ├─parseData<int [104]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
       │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      ├─attr("srcfile"): @034
       ├─attr("wholeSrcref"): <srcref>
       │ ├─location: 1:0-9:0
       │ └─attr("srcfile"): @034
@@ -717,6 +751,7 @@
         │ └─[[3]]: <srcref>
         │   ├─location: 5:3-7:3
         │   └─attr("srcfile"): @034
+        ├─attr("srcfile"): @034
         ├─attr("wholeSrcref"): <srcref>
         │ ├─location: 1:0-8:1
         │ └─attr("srcfile"): @034
@@ -728,6 +763,7 @@
         │ │ └─[[2]]: <srcref>
         │ │   ├─location: 3:5-3:5
         │ │   └─attr("srcfile"): @034
+        │ ├─attr("srcfile"): @034
         │ └─attr("wholeSrcref"): <srcref>
         │   ├─location: 1:0-4:3
         │   └─attr("srcfile"): @034
@@ -739,6 +775,7 @@
           │ └─[[2]]: <srcref>
           │   ├─location: 6:5-6:5
           │   └─attr("srcfile"): @034
+          ├─attr("srcfile"): @034
           └─attr("wholeSrcref"): <srcref>
             ├─location: 1:0-7:3
             └─attr("srcfile"): @034
@@ -761,10 +798,7 @@
       │   ├─parseData<int [184]>: 1, 1, 1, ...
       │   ├─timestamp: "<scrubbed>"
       │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
-      └─body(): 
-        ├─attr("wholeSrcref"): <srcref>
-        │ ├─location: 1:0-5:1
-        │ └─attr("srcfile"): @035
+      └─body(): <{>
         ├─attr("srcref"): <list>
         │ ├─[[1]]: <srcref>
         │ │ ├─location: 1:18-1:18
@@ -772,6 +806,10 @@
         │ └─[[2]]: <srcref>
         │   ├─location: 2:3-4:3
         │   └─attr("srcfile"): @035
+        ├─attr("srcfile"): @035
+        ├─attr("wholeSrcref"): <srcref>
+        │ ├─location: 1:0-5:1
+        │ └─attr("srcfile"): @035
         └─[[2]][[3]]: <{>
           ├─attr("srcref"): <list>
           │ ├─[[1]]: <srcref>
@@ -780,6 +818,7 @@
           │ └─[[2]]: <srcref>
           │   ├─location: 3:5-3:5
           │   └─attr("srcfile"): @035
+          ├─attr("srcfile"): @035
           └─attr("wholeSrcref"): <srcref>
             ├─location: 1:0-4:3
             └─attr("srcfile"): @035
