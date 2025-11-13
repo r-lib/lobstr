@@ -16,11 +16,7 @@
 #' @param ... Additional arguments passed to [tree()]
 #'
 #' @return Invisibly returns a structured list containing the source reference
-#'   information. The list has components:
-#'   - `type`: Type of input object
-#'   - `name`: Name of object if applicable
-#'   - `srcfile`: Source file information
-#'   - `srcrefs`: List of source reference details
+#'   information
 #'
 #' @export
 #' @family object inspectors
@@ -43,18 +39,16 @@ src <- function(
   max_vec_len = 3L,
   ...
 ) {
-  # Initialize environment to track seen srcfiles for deduplication
   seen_srcfiles <- new.env(parent = emptyenv())
 
-  # Detect input type and extract data
-  result <- extract_src_data(
-    x,
-    max_lines_preview,
-    seen_srcfiles = seen_srcfiles
-  )
-
+  result <- src_extract(x, max_lines_preview, seen_srcfiles)
   if (is.null(result)) {
     return(invisible(NULL))
+  }
+
+  # Ensure result has proper type for tree display
+  if (is.null(attr(result, "srcref_type"))) {
+    result <- as_srcref_tree(result, from = x)
   }
 
   structure(
@@ -69,18 +63,17 @@ src <- function(
 
 #' @export
 print.lobstr_srcref <- function(x, ...) {
-  max_depth <- max_depth(x) %||% 5L
-  max_length <- max_length(x) %||% 100L
-  max_vec_len <- max_vec_len(x) %||% 3L
-  tree_args <- tree_args(x) %||% list()
+  max_depth <- attr(x, "max_depth") %||% 5L
+  max_length <- attr(x, "max_length") %||% 100L
+  max_vec_len <- attr(x, "max_vec_len") %||% 3L
+  tree_args <- attr(x, "tree_args") %||% list()
 
-  # Remove our attributes before printing but keep class for labelling
+  # Strip attributes before printing
   attr(x, "max_depth") <- NULL
   attr(x, "max_length") <- NULL
   attr(x, "max_vec_len") <- NULL
   attr(x, "tree_args") <- NULL
 
-  # Print using tree infrastructure
   inject(tree(
     x = x,
     max_depth = max_depth,
@@ -92,18 +85,47 @@ print.lobstr_srcref <- function(x, ...) {
   invisible(x)
 }
 
-extract_src_data <- function(
-  x,
-  max_lines_preview,
-  seen_srcfiles
-) {
-  # srcref object
+#' @export
+tree_label.lobstr_srcref <- function(x, opts) {
+  type <- attr(x, "srcref_type")
+
+  switch(
+    type,
+    body = "",
+    block = "<{>",
+    srcfile = srcfile_label(x),
+    paste0("<", type, ">")
+  )
+}
+
+#' @export
+tree_label.lobstr_srcref_location <- function(x, opts) {
+  as.character(x)
+}
+
+#' @export
+tree_label.srcref <- function(x, opts) {
+  loc <- srcref_location(x)
+  paste0("<srcref: ", loc, ">")
+}
+
+#' @export
+tree_label.srcfile <- function(x, opts) {
+  paste0("<", class(x)[1], ": ", getSrcFilename(x), ">")
+}
+
+#' @export
+tree_label.lobstr_srcfile_ref <- function(x, opts) {
+  paste0("@", as.character(x))
+}
+
+
+# Main extraction logic --------------------------------------------------------
+
+src_extract <- function(x, max_lines, seen_srcfiles) {
+  # Srcref object
   if (inherits(x, "srcref")) {
-    return(extract_single_srcref(
-      x,
-      max_lines_preview,
-      seen_srcfiles
-    ))
+    return(srcref_node(x, max_lines, seen_srcfiles))
   }
 
   # List of srcrefs
@@ -112,425 +134,199 @@ extract_src_data <- function(
       length(x) > 0 &&
       all(vapply(x, inherits, logical(1), "srcref"))
   ) {
-    return(extract_srcref_list(
-      x,
-      max_lines_preview,
-      seen_srcfiles
-    ))
+    return(srcref_list_node(x, max_lines, seen_srcfiles))
   }
 
-  # Closure
+  # Evaluated closures
   if (is_closure(x)) {
-    return(extract_function_srcref(
-      x,
-      max_lines_preview,
-      seen_srcfiles
-    ))
+    return(function_node(x, max_lines, seen_srcfiles))
   }
 
-  # Handle expressions and language objects (quoted functions, blocks, etc.)
+  # Expressions and language objects
   if (is.expression(x) || is.language(x)) {
-    srcref_attr <- attr(x, "srcref")
-    whole_srcref <- attr(x, "wholeSrcref")
-    srcfile_attr <- attr(x, "srcfile")
-
-    if (has_srcref(x)) {
-      result <- list()
-
-      # Determine type
-      type_label <- if (is.expression(x)) {
-        "expression"
-      } else if (
-        is.call(x) && length(x) > 0 && identical(x[[1]], as.symbol("function"))
-      ) {
-        "quoted_function"
-      } else if (is.call(x) && identical(x[[1]], as.symbol("{"))) {
-        "block"
-      } else {
-        "language"
-      }
-
-      # Add srcref attribute (could be single or list)
-      if (!is.null(srcref_attr)) {
-        if (inherits(srcref_attr, "srcref")) {
-          result$`attr("srcref")` <- extract_single_srcref(
-            srcref_attr,
-            max_lines_preview,
-            seen_srcfiles
-          )
-        } else if (is.list(srcref_attr)) {
-          srcref_list <- lapply(seq_along(srcref_attr), function(i) {
-            extract_single_srcref(
-              srcref_attr[[i]],
-              max_lines_preview,
-              seen_srcfiles
-            )
-          })
-          # Add index names to show [[1]], [[2]], etc.
-          names(srcref_list) <- paste0("[[", seq_along(srcref_list), "]]")
-          # Always show as list to reveal true structure
-          result$`attr("srcref")` <- new_lobstr_srcref(
-            srcref_list,
-            type = "list"
-          )
-        }
-      }
-
-      # Add wholeSrcref if present
-      if (!is.null(whole_srcref)) {
-        result$`attr("wholeSrcref")` <- extract_single_srcref(
-          whole_srcref,
-          max_lines_preview,
-          seen_srcfiles
-        )
-      }
-
-      # Add srcfile if present and not already included
-      if (
-        !is.null(srcfile_attr) && is.null(srcref_attr) && is.null(whole_srcref)
-      ) {
-        result$`attr("srcfile")` <- new_lobstr_srcref(
-          extract_srcfile_info(
-            srcfile_attr,
-            NULL,
-            max_lines_preview,
-            seen_srcfiles
-          )
-        )
-      }
-
-      # For expressions and language objects, recursively extract nested srcrefs
-      # Use deep traversal to skip intermediate nodes without srcrefs
-      if ((is.expression(x) || is.call(x)) && length(x) > 0) {
-        for (i in seq_along(x)) {
-          nested_results <- extract_nested_srcrefs(
-            x[[i]],
-            max_lines_preview,
-            seen_srcfiles,
-            path_prefix = paste0("[[", i, "]]")
-          )
-
-          if (!is.null(nested_results) && length(nested_results) > 0) {
-            # If the result is a simple srcref-bearing object, show it directly
-            if (!is.null(attr(nested_results, "srcref_type"))) {
-              result[[paste0("[[", i, "]]")]] <- nested_results
-            } else {
-              # It's a list of nested paths - merge them in
-              for (path_name in names(nested_results)) {
-                result[[path_name]] <- nested_results[[path_name]]
-              }
-            }
-          }
-        }
-      }
-
-      return(new_lobstr_srcref(result, type = type_label))
-    }
-
-    # No direct srcrefs - recursively search for nested srcref-bearing objects
-    if (is.call(x) && length(x) > 0) {
-      # Check if this is a quoted function - if so, look at the body
-      if (identical(x[[1]], as.symbol("function")) && length(x) >= 3) {
-        body_result <- extract_src_data(
-          x[[3]],
-          max_lines_preview,
-          seen_srcfiles = seen_srcfiles
-        )
-        if (!is.null(body_result)) {
-          result <- list()
-          result$`[[3]]` <- body_result
-          return(new_lobstr_srcref(result, type = "quoted_function"))
-        }
-      }
-
-      # For other calls, recursively check all elements
-      nested_results <- list()
-      for (i in seq_along(x)) {
-        elem_result <- extract_src_data(
-          x[[i]],
-          max_lines_preview,
-          seen_srcfiles = seen_srcfiles
-        )
-        if (!is.null(elem_result)) {
-          nested_results[[paste0("[[", i, "]]")]] <- elem_result
-        }
-      }
-
-      if (length(nested_results) > 0) {
-        type_label <- if (identical(x[[1]], as.symbol("{"))) {
-          "block"
-        } else {
-          "language"
-        }
-        return(new_lobstr_srcref(nested_results, type = type_label))
-      }
-    }
+    return(expr_node(x, max_lines, seen_srcfiles))
   }
 
   NULL
 }
 
-extract_nested_srcrefs <- function(
-  x,
-  max_lines_preview,
-  seen_srcfiles,
-  path_prefix = ""
-) {
-  if (has_srcref(x)) {
-    return(extract_src_data(
-      x,
-      max_lines_preview,
-      seen_srcfiles = seen_srcfiles
-    ))
-  }
+# Extract standard srcref-related attributes from any object
+extract_srcref_attrs <- function(x, max_lines, seen_srcfiles) {
+  attrs <- list()
 
-  # No direct srcrefs - recurse into children to find nested srcref-bearing objects
-  if (!is.call(x) && !is.pairlist(x)) {
-    return(NULL)
-  }
-
-  # Collect results from children
-  nested_results <- list()
-
-  for (i in seq_along(x)) {
-    child_result <- extract_nested_srcrefs(
-      x[[i]],
-      max_lines_preview,
-      seen_srcfiles,
-      path_prefix = paste0(path_prefix, "[[", i, "]]")
+  if (!is.null(srcref <- attr(x, "srcref"))) {
+    attrs$`attr("srcref")` <- process_srcref_attr(
+      srcref,
+      max_lines,
+      seen_srcfiles
     )
-
-    if (!is.null(child_result)) {
-      # If child has a srcref_type, it's a complete srcref-bearing object
-      if (!is.null(attr(child_result, "srcref_type"))) {
-        # Add it with the accumulated path
-        nested_results[[paste0(path_prefix, "[[", i, "]]")]] <- child_result
-      } else {
-        # Child returned a list of nested paths - merge them
-        for (path_name in names(child_result)) {
-          nested_results[[path_name]] <- child_result[[path_name]]
-        }
-      }
-    }
   }
 
-  if (length(nested_results) > 0) {
-    return(nested_results)
+  if (!is.null(srcfile <- attr(x, "srcfile"))) {
+    attrs$`attr("srcfile")` <- srcfile_node(
+      srcfile,
+      NULL,
+      max_lines,
+      seen_srcfiles
+    )
   }
 
-  return(NULL)
+  if (!is.null(whole <- attr(x, "wholeSrcref"))) {
+    attrs$`attr("wholeSrcref")` <- srcref_node(whole, max_lines, seen_srcfiles)
+  }
+
+  attrs
 }
 
-extract_single_srcref <- function(
-  srcref,
-  max_lines_preview,
-  seen_srcfiles
-) {
-  info <- extract_srcref_info(srcref)
-  srcfile <- attr(srcref, "srcfile")
+process_srcref_attr <- function(srcref_attr, max_lines, seen_srcfiles) {
+  if (inherits(srcref_attr, "srcref")) {
+    return(srcref_node(srcref_attr, max_lines, seen_srcfiles))
+  }
 
-  result <- new_lobstr_srcref(
-    list(
-      location = info$location
-    ),
-    type = "srcref"
-  )
+  if (is.list(srcref_attr)) {
+    srcrefs <- lapply(seq_along(srcref_attr), function(i) {
+      srcref_node(srcref_attr[[i]], max_lines, seen_srcfiles)
+    })
+    names(srcrefs) <- paste0("[[", seq_along(srcrefs), "]]")
+    return(new_srcref_tree(srcrefs, type = "list"))
+  }
+
+  stop("unreachable")
+}
+
+srcref_node <- function(srcref, max_lines, seen_srcfiles) {
+  info <- srcref_info(srcref)
+  node <- list(location = info$location)
 
   if (!is.null(info$bytes)) {
-    result$bytes <- info$bytes
+    node$bytes <- info$bytes
   }
-
   if (!is.null(info$parsed)) {
-    result$parsed <- info$parsed
+    node$parsed <- info$parsed
   }
 
-  if (!is.null(srcfile)) {
-    srcfile_info <- extract_srcfile_info(
-      srcfile,
-      srcref,
-      max_lines_preview,
-      seen_srcfiles
-    )
-    # Don't wrap lobstr_srcfile_ref objects (they're already complete)
-    if (inherits(srcfile_info, "lobstr_srcfile_ref")) {
-      result$`attr("srcfile")` <- srcfile_info
-    } else {
-      result$`attr("srcfile")` <- new_lobstr_srcref(srcfile_info)
-    }
-  }
+  # Just for completeness but we really don't expect srcref attributes on srcrefs
+  attrs <- extract_srcref_attrs(srcref, max_lines, seen_srcfiles)
+  node <- c(node, attrs)
 
-  new_lobstr_srcref(result)
+  new_srcref_tree(node, type = "srcref")
 }
 
-extract_srcref_list <- function(
-  srcref_list,
-  max_lines_preview,
-  seen_srcfiles
-) {
-  srcrefs <- lapply(srcref_list, function(sr) {
-    extract_single_srcref(
-      sr,
-      max_lines_preview,
-      seen_srcfiles
-    )
-  })
+srcref_list_node <- function(srcref_list, max_lines, seen_srcfiles) {
+  srcrefs <- lapply(srcref_list, srcref_node, max_lines, seen_srcfiles)
 
-  result <- new_lobstr_srcref(
-    list(
-      count = length(srcref_list),
-      srcrefs = new_lobstr_srcref(srcrefs, type = "list")
-    ),
-    type = "list"
+  node <- list(
+    count = length(srcref_list),
+    srcrefs = new_srcref_tree(srcrefs, type = "list")
   )
 
-  result
+  attrs <- extract_srcref_attrs(srcref_list, max_lines, seen_srcfiles)
+  node <- c(node, attrs)
+
+  new_srcref_tree(node, type = "list")
 }
 
-extract_function_srcref <- function(
-  fun,
-  max_lines_preview,
-  seen_srcfiles
-) {
-  srcref_attr <- attr(fun, "srcref")
-  whole_srcref <- attr(body(fun), "wholeSrcref")
-  srcfile_attr <- attr(fun, "srcfile")
+function_node <- function(fun, max_lines, seen_srcfiles) {
+  node <- extract_srcref_attrs(fun, max_lines, seen_srcfiles)
+  body <- src_extract(body(fun), max_lines, seen_srcfiles)
 
-  if (is.null(srcref_attr) && is.null(whole_srcref) && is.null(srcfile_attr)) {
+  if (!is.null(body)) {
+    node$`body()` <- as_srcref_tree(body, from = body(fun))
+  }
+
+  if (length(node) == 0) {
     return(NULL)
   }
 
-  result <- list()
+  new_srcref_tree(node, type = "closure")
+}
 
-  # Add srcref attribute from function
-  if (!is.null(srcref_attr)) {
-    if (inherits(srcref_attr, "srcref")) {
-      # Single srcref for whole function
-      result$`attr("srcref")` <- extract_single_srcref(
-        srcref_attr,
-        max_lines_preview,
-        seen_srcfiles
-      )
-    } else if (is.list(srcref_attr)) {
-      # List of statement srcrefs
-      block <- lapply(srcref_attr, function(sr) {
-        extract_single_srcref(
-          sr,
-          max_lines_preview,
-          seen_srcfiles
-        )
-      })
-      result$`attr("srcref")` <- new_lobstr_srcref(block, type = "block")
+expr_node <- function(x, max_lines, seen_srcfiles) {
+  attrs <- extract_srcref_attrs(x, max_lines, seen_srcfiles)
+  nested <- extract_nested_srcrefs(x, max_lines, seen_srcfiles)
+
+  if (length(attrs) > 0) {
+    # Node has attributes: wrap with proper type
+    node <- c(attrs, nested)
+    return(new_srcref_tree(node, type = node_type(x)))
+  }
+
+  # No attributes: return bare list for path collapsing, or NULL if empty
+  if (length(nested) > 0) {
+    nested
+  } else {
+    NULL
+  }
+}
+
+extract_nested_srcrefs <- function(x, max_lines, seen_srcfiles) {
+  if (!is_traversable(x)) {
+    return(list())
+  }
+
+  nested <- list()
+  for (i in seq_along(x)) {
+    child <- src_extract(x[[i]], max_lines, seen_srcfiles)
+
+    if (!is.null(child)) {
+      nested <- merge_child_result(nested, child, i)
     }
   }
 
-  # Add whole function srcref from body
-  if (!is.null(whole_srcref)) {
-    body_node <- list(
-      `attr("wholeSrcref")` = extract_single_srcref(
-        whole_srcref,
-        max_lines_preview,
-        seen_srcfiles
-      )
-    )
-    result$`body()` <- new_lobstr_srcref(body_node, type = "body")
-  }
+  nested
+}
 
-  # Recursively extract nested srcrefs from the function body
-  body_content <- body(fun)
-  if (!is.null(body_content)) {
-    body_result <- extract_src_data(
-      body_content,
-      max_lines_preview,
-      seen_srcfiles = seen_srcfiles
-    )
+merge_child_result <- function(nested, child, index) {
+  path <- paste0("[[", index, "]]")
 
-    # If we found nested srcrefs in the body, add them
-    if (!is.null(body_result)) {
-      # If we already have a body() node from wholeSrcref, merge the nested results into it
-      if ("body()" %in% names(result)) {
-        # Add the nested structure to the existing body node
-        body_names <- names(body_result)
-        for (name in body_names) {
-          result$`body()`[[name]] <- body_result[[name]]
-        }
-      } else {
-        # No wholeSrcref, so create a body() node with just the nested results
-        result$`body()` <- body_result
-      }
+  if (is_wrapped_node(child)) {
+    nested[[path]] <- child
+  } else {
+    # Collapse paths for bare lists
+    for (name in names(child)) {
+      nested[[paste0(path, name)]] <- child[[name]]
     }
   }
 
-  # Add srcfile if available and not already included
-  if (!is.null(srcfile_attr) && is.null(whole_srcref) && is.null(srcref_attr)) {
-    result$`attr("srcfile")` <- new_lobstr_srcref(
-      extract_srcfile_info(
-        srcfile_attr,
-        NULL,
-        max_lines_preview,
-        seen_srcfiles
-      )
-    )
-  }
-
-  new_lobstr_srcref(result, type = "closure")
+  nested
 }
 
-extract_srcref_info <- function(srcref) {
-  if (!inherits(srcref, "srcref")) {
-    abort("Expected a srcref object")
-  }
-
-  len <- length(srcref)
-
-  if (!len %in% c(4, 6, 8)) {
-    abort(
-      sprintf("Unexpected srcref length: %d (expected 4, 6, or 8)", len),
-      srcref = srcref
-    )
-  }
-
-  first_line <- srcref_first_line(srcref)
-  first_byte <- srcref_first_byte(srcref)
-  last_line <- srcref_last_line(srcref)
-  last_byte <- srcref_last_byte(srcref)
-  first_col <- srcref_first_col(srcref)
-  last_col <- srcref_last_col(srcref)
-  first_parsed <- srcref_first_parsed(srcref)
-  last_parsed <- srcref_last_parsed(srcref)
-
-  info <- list(
-    first_line = first_line,
-    first_byte = first_byte,
-    last_line = last_line,
-    last_byte = last_byte,
-    first_col = first_col,
-    last_col = last_col,
-    first_parsed = first_parsed,
-    last_parsed = last_parsed,
-    location = new_lobstr_srcref_location(
-      format_location(first_line, first_col, last_line, last_col)
-    )
-  )
-
-  # Add byte info if different from columns
-  if (first_byte != first_col || last_byte != last_col) {
-    info$bytes <- format_bytes(first_byte, last_byte)
-  }
-
-  # Add parsed info if different from actual lines
-  if (first_parsed != first_line || last_parsed != last_line) {
-    info$parsed <- format_parsed(first_parsed, first_col, last_parsed, last_col)
-  }
-
-  info
+is_traversable <- function(x) {
+  (is.expression(x) || is.call(x)) && length(x) > 0
 }
 
-extract_srcfile_info <- function(
-  srcfile,
-  srcref = NULL,
-  max_lines_preview = 3L,
-  seen_srcfiles
-) {
+is_wrapped_node <- function(x) {
+  !is.null(attr(x, "srcref_type"))
+}
+
+node_type <- function(x) {
+  if (is.expression(x)) {
+    "expression"
+  } else if (is.call(x) && length(x) > 0) {
+    if (identical(x[[1]], as.symbol("function"))) {
+      "quoted_function"
+    } else if (identical(x[[1]], as.symbol("{"))) {
+      "block"
+    } else {
+      "language"
+    }
+  } else {
+    "language"
+  }
+}
+
+as_srcref_tree <- function(data, ..., from) {
+  if (is_wrapped_node(data)) {
+    data
+  } else {
+    new_srcref_tree(data, type = node_type(from))
+  }
+}
+
+
+# Srcfile handling -------------------------------------------------------------
+
+srcfile_node <- function(srcfile, srcref, max_lines, seen_srcfiles) {
   if (is.null(srcfile)) {
     return(NULL)
   }
@@ -538,38 +334,36 @@ extract_srcfile_info <- function(
   addr <- obj_addr(srcfile)
   srcfile_class <- class(srcfile)[[1]]
 
-  # Check for deduplication
+  # Check if already seen
   id <- seen_srcfiles[[addr]]
   if (!is_null(id)) {
-    return(new_lobstr_srcfile_ref(id, srcfile_class))
+    return(new_srcfile_ref(id, srcfile_class))
   }
 
-  # First occurrence - assign ID (first 6 chars of hex address without 0x)
+  # First occurrence - assign ID
   id <- substr(addr, 3, 8)
   seen_srcfiles[[addr]] <- id
 
-  # Convert srcfile environment to list showing all fields as-is
   info <- as.list.environment(srcfile, all.names = TRUE, sorted = TRUE)
 
-  # Format timestamp if present for more ergonomic display
+  # Format timestamp for readability
   if (!is.null(info$timestamp)) {
     info$timestamp <- format(info$timestamp)
   }
 
-  # For plain srcfile (not srcfilecopy), show source lines preview
+  # Add source preview for plain srcfiles
   if (!inherits(srcfile, "srcfilecopy") && !is.null(srcref)) {
-    snippet <- extract_lines_from_srcfile(
-      srcfile,
-      srcref,
-      max_lines_preview,
-      embedded = FALSE
-    )
+    snippet <- srcfile_lines(srcfile, srcref, max_lines)
     if (length(snippet) > 0) {
       info$`lines (from file)` <- snippet
     }
   }
 
-  new_lobstr_srcref(
+  # Check for srcref attributes even on srcfile objects
+  attrs <- extract_srcref_attrs(srcfile, max_lines, seen_srcfiles)
+  info <- c(info, attrs)
+
+  new_srcref_tree(
     info,
     type = "srcfile",
     srcfile_class = srcfile_class %||% "srcfile",
@@ -577,32 +371,21 @@ extract_srcfile_info <- function(
   )
 }
 
-extract_lines_from_srcfile <- function(
-  srcfile,
-  srcref,
-  max_lines = 3L,
-  embedded = TRUE
-) {
+srcfile_lines <- function(srcfile, srcref, max_lines) {
   if (is.null(srcfile) || is.null(srcref)) {
     return(character(0))
   }
 
-  first_line <- srcref_first_line(srcref)
-  last_line <- srcref_last_line(srcref)
+  first_line <- srcref[[1]]
+  last_line <- min(srcref[[3]], first_line + max_lines - 1)
 
-  # Truncate if too many lines
-  if (last_line - first_line + 1 > max_lines) {
-    last_line <- first_line + max_lines - 1
-  }
-
-  # First check for lines in srcfile (srcfilecopy stores source)
+  # Try embedded lines first
   lines <- srcfile$lines
   if (!is.null(lines) && length(lines) >= last_line) {
     return(lines[first_line:last_line])
   }
 
-  # Now try reading from file
-  # For srcfilecopy with  isFile = TRUE`, or plain srcfile pointing to a real file
+  # Try reading from file
   filename <- srcfile$filename
   directory <- srcfile$wd
 
@@ -622,73 +405,14 @@ extract_lines_from_srcfile <- function(
     }
   }
 
-  # We tried
   character(0)
 }
 
-has_srcref <- function(x) {
-  !is.null(attr(x, "srcref")) ||
-    !is.null(attr(x, "wholeSrcref")) ||
-    !is.null(attr(x, "srcfile"))
-}
-
-
-# Formatting ---
-
-format_location <- function(first_line, first_col, last_line, last_col) {
-  sprintf("%d:%d-%d:%d", first_line, first_col, last_line, last_col)
-}
-
-format_bytes <- function(first_byte, last_byte) {
-  sprintf("%d-%d", first_byte, last_byte)
-}
-
-format_parsed <- function(first_parsed, first_col, last_parsed, last_col) {
-  sprintf("%d:%d-%d:%d", first_parsed, first_col, last_parsed, last_col)
-}
-
-#' @export
-tree_label.lobstr_srcref_location <- function(x, opts) {
-  as.character(x)
-}
-
-#' @export
-tree_label.srcref <- function(x, opts) {
-  location <- format_location(x[1], x[5] %||% x[2], x[3], x[6] %||% x[4])
-  paste0("<srcref: ", location, ">")
-}
-
-#' @export
-tree_label.srcfile <- function(x, opts) {
-  paste0("<", class(x)[1], ": ", getSrcFilename(x), ">")
-}
-
-#' @export
-tree_label.lobstr_srcfile_ref <- function(x, opts) {
-  # Show reference ID
-  paste0("@", as.character(x))
-}
-
-#' @export
-tree_label.lobstr_srcref <- function(x, opts) {
-  type <- srcref_type(x)
-
-  label <- switch(
-    type,
-    "body" = "",
-    "block" = "<{>",
-    "srcfile" = tree_label_srcfile(x),
-    paste0("<", type, ">")
-  )
-
-  label
-}
-
-tree_label_srcfile <- function(x) {
-  class <- srcfile_class(x)
+srcfile_label <- function(x) {
+  class <- attr(x, "srcfile_class")
   label <- paste0("<", class, ">")
 
-  id <- srcfile_id(x)
+  id <- attr(x, "srcfile_id")
   if (!is.null(id)) {
     label <- paste0(label, " @", id)
   }
@@ -697,10 +421,70 @@ tree_label_srcfile <- function(x) {
 }
 
 
-# Helper classes ---
+# Srcref information extraction ------------------------------------------------
 
-new_lobstr_srcref <- function(x, type = NULL, ..., class = NULL) {
-  type <- type %||% srcref_type(x)
+srcref_info <- function(srcref) {
+  if (!inherits(srcref, "srcref")) {
+    abort("Expected a srcref object")
+  }
+
+  len <- length(srcref)
+  if (!len %in% c(4, 6, 8)) {
+    abort(sprintf("Unexpected srcref length: %d", len))
+  }
+
+  first_line <- srcref[[1]]
+  first_byte <- srcref[[2]]
+  last_line <- srcref[[3]]
+  last_byte <- srcref[[4]]
+  first_col <- if (len >= 6) srcref[[5]] else first_byte
+  last_col <- if (len >= 6) srcref[[6]] else last_byte
+  first_parsed <- if (len == 8) srcref[[7]] else first_line
+  last_parsed <- if (len == 8) srcref[[8]] else last_line
+
+  info <- list(
+    location = new_srcref_location(srcref_location(srcref))
+  )
+
+  # Add byte info if different from columns
+  if (first_byte != first_col || last_byte != last_col) {
+    info$bytes <- sprintf("%d-%d", first_byte, last_byte)
+  }
+
+  # Add parsed info if different from actual lines
+  if (first_parsed != first_line || last_parsed != last_line) {
+    info$parsed <- sprintf(
+      "%d:%d-%d:%d",
+      first_parsed,
+      first_col,
+      last_parsed,
+      last_col
+    )
+  }
+
+  info
+}
+
+srcref_location <- function(x) {
+  first_line <- x[[1]]
+  last_line <- x[[3]]
+  first_col <- if (length(x) >= 6) x[[5]] else x[[2]]
+  last_col <- if (length(x) >= 6) x[[6]] else x[[4]]
+
+  sprintf("%d:%d-%d:%d", first_line, first_col, last_line, last_col)
+}
+
+
+# Helper functions -------------------------------------------------------------
+
+has_srcref <- function(x) {
+  !is.null(attr(x, "srcref")) ||
+    !is.null(attr(x, "wholeSrcref")) ||
+    !is.null(attr(x, "srcfile"))
+}
+
+new_srcref_tree <- function(x, type = NULL, ..., class = NULL) {
+  type <- type %||% attr(x, "srcref_type")
   type <- arg_match(
     type,
     c(
@@ -724,67 +508,14 @@ new_lobstr_srcref <- function(x, type = NULL, ..., class = NULL) {
   )
 }
 
-srcref_type <- function(x) {
-  attr(x, "srcref_type")
-}
-srcfile_class <- function(x) {
-  attr(x, "srcfile_class")
-}
-srcfile_id <- function(x) {
-  attr(x, "srcfile_id")
-}
-max_depth <- function(x) {
-  attr(x, "max_depth")
-}
-max_length <- function(x) {
-  attr(x, "max_length")
-}
-max_vec_len <- function(x) {
-  attr(x, "max_vec_len")
-}
-tree_args <- function(x) {
-  attr(x, "tree_args")
-}
-
-# The goal of this class is to provide a custom `tree_label()` method that shows
-# unquoted locations. This way we don't make it seem the location string is
-# literally stored in the srcref object.
-new_lobstr_srcref_location <- function(x) {
+new_srcref_location <- function(x) {
   structure(x, class = c("lobstr_srcref_location", "character"))
 }
 
-new_lobstr_srcfile_ref <- function(id, srcfile_class = "srcfile") {
+new_srcfile_ref <- function(id, srcfile_class = "srcfile") {
   structure(
     id,
     srcfile_class = srcfile_class,
     class = "lobstr_srcfile_ref"
   )
-}
-
-
-# srcref accessors ---
-
-srcref_first_line <- function(x) {
-  x[[1]]
-}
-srcref_first_byte <- function(x) {
-  x[[2]]
-}
-srcref_last_line <- function(x) {
-  x[[3]]
-}
-srcref_last_byte <- function(x) {
-  x[[4]]
-}
-srcref_first_col <- function(x) {
-  if (length(x) >= 6) x[[5]] else x[[2]]
-}
-srcref_last_col <- function(x) {
-  if (length(x) >= 6) x[[6]] else x[[4]]
-}
-srcref_first_parsed <- function(x) {
-  if (length(x) == 8) x[[7]] else x[[1]]
-}
-srcref_last_parsed <- function(x) {
-  if (length(x) == 8) x[[8]] else x[[3]]
 }

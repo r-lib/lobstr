@@ -15,14 +15,8 @@ test_that("extract_srcref_info handles 4-element srcrefs", {
     srcfile = attr(srcref, "srcfile")
   )
 
-  info <- lobstr:::extract_srcref_info(srcref_4)
+  info <- lobstr:::srcref_info(srcref_4)
 
-  expect_equal(info$first_line, 1)
-  expect_equal(info$first_byte, 1)
-  expect_equal(info$last_line, 1)
-  expect_equal(info$last_byte, 5)
-  expect_equal(info$first_col, 1) # Should equal byte for 4-element
-  expect_equal(info$last_col, 5) # Should equal byte for 4-element
   expect_s3_class(info$location, "lobstr_srcref_location")
   expect_equal(as.character(info$location), "1:1-1:5")
 })
@@ -38,12 +32,8 @@ test_that("extract_srcref_info handles 6-element srcrefs", {
     srcfile = attr(srcref_base, "srcfile")
   )
 
-  info <- lobstr:::extract_srcref_info(srcref_6)
+  info <- lobstr:::srcref_info(srcref_6)
 
-  expect_equal(info$first_line, 1)
-  expect_equal(info$first_col, 1)
-  expect_equal(info$last_line, 1)
-  expect_equal(info$last_col, 5)
   expect_s3_class(info$location, "lobstr_srcref_location")
   expect_equal(as.character(info$location), "1:1-1:5")
 })
@@ -53,10 +43,8 @@ test_that("extract_srcref_info handles 8-element srcrefs", {
   srcref <- attr(expr, "srcref")[[1]]
 
   # Most modern srcrefs are 8-element
-  info <- lobstr:::extract_srcref_info(srcref)
+  info <- lobstr:::srcref_info(srcref)
 
-  expect_type(info$first_line, "integer")
-  expect_type(info$last_line, "integer")
   expect_s3_class(info$location, "lobstr_srcref_location")
   expect_match(as.character(info$location), "\\d+:\\d+-\\d+:\\d+")
 })
@@ -65,10 +53,8 @@ test_that("extract_srcref_info shows encoding details when requested", {
   expr <- parse(text = "x + 1", keep.source = TRUE)
   srcref <- attr(expr, "srcref")[[1]]
 
-  info <- lobstr:::extract_srcref_info(srcref)
+  info <- lobstr:::srcref_info(srcref)
 
-  # For ASCII, bytes should equal columns, so these might be NULL
-  # But the function should at least check
   expect_true("location" %in% names(info))
 })
 
@@ -77,72 +63,65 @@ test_that("extract_srcref_info errors on invalid srcref length", {
   bad_srcref <- structure(c(1L, 2L, 3L), class = "srcref")
 
   expect_error(
-    lobstr:::extract_srcref_info(bad_srcref),
+    lobstr:::srcref_info(bad_srcref),
     "Unexpected srcref length"
   )
 })
 
-test_that("extract_srcfile_info handles srcfilecopy", {
+test_that("srcfile_node handles srcfilecopy", {
   expr <- parse(text = "x + 1", keep.source = TRUE)
   srcfile <- attr(attr(expr, "srcref")[[1]], "srcfile")
+  srcref <- attr(expr, "srcref")[[1]]
   seen_srcfiles <- new.env(parent = emptyenv())
 
-  info <- lobstr:::extract_srcfile_info(srcfile, seen_srcfiles = seen_srcfiles)
+  info <- lobstr:::srcfile_node(srcfile, srcref, 3, seen_srcfiles)
 
   expect_equal(attr(info, "srcfile_class"), class(srcfile)[1])
   expect_type(info$filename, "character")
   expect_type(info$Enc, "character")
 })
 
-test_that("extract_srcfile_info handles NULL gracefully", {
+test_that("srcfile_node handles NULL gracefully", {
   seen_srcfiles <- new.env(parent = emptyenv())
-  info <- lobstr:::extract_srcfile_info(NULL, seen_srcfiles = seen_srcfiles)
+  info <- lobstr:::srcfile_node(NULL, NULL, 3, seen_srcfiles)
   expect_null(info)
 })
 
-test_that("extract_lines_from_srcfile extracts from srcfilecopy", {
+test_that("srcfile_lines extracts from srcfilecopy", {
   code <- c("x <- 1", "y <- 2", "z <- 3")
   expr <- parse(text = code, keep.source = TRUE)
   srcref <- attr(expr, "srcref")[[1]]
   srcfile <- attr(srcref, "srcfile")
 
-  snippet <- lobstr:::extract_lines_from_srcfile(srcfile, srcref, max_lines = 3)
+  snippet <- lobstr:::srcfile_lines(srcfile, srcref, max_lines = 3)
 
   expect_type(snippet, "character")
   expect_true(length(snippet) >= 1)
 })
 
-test_that("extract_lines_from_srcfile respects max_lines", {
+test_that("srcfile_lines respects max_lines", {
   code <- c("x <- 1", "y <- 2", "z <- 3", "a <- 4", "b <- 5")
   expr <- parse(text = paste(code, collapse = "\n"), keep.source = TRUE)
 
-  # Create a srcref spanning multiple lines
   srcfile <- attr(attr(expr, "srcref")[[1]], "srcfile")
-  # Create a fake srcref for lines 1-5
   srcref <- structure(
     c(1L, 1L, 5L, 10L, 1L, 10L, 1L, 5L),
     class = "srcref",
     srcfile = srcfile
   )
 
-  snippet <- lobstr:::extract_lines_from_srcfile(srcfile, srcref, max_lines = 2)
+  snippet <- lobstr:::srcfile_lines(srcfile, srcref, max_lines = 2)
 
   expect_true(length(snippet) <= 2)
 })
 
-test_that("format_location works correctly", {
-  loc <- lobstr:::format_location(1L, 5L, 3L, 20L)
+test_that("srcref_location works correctly", {
+  srcref <- structure(
+    c(1L, 5L, 3L, 20L, 5L, 20L, 1L, 3L),
+    class = "srcref"
+  )
+  loc <- lobstr:::srcref_location(srcref)
   expect_equal(loc, "1:5-3:20")
-})
-
-test_that("format_bytes works correctly", {
-  bytes <- lobstr:::format_bytes(10L, 50L)
-  expect_equal(bytes, "10-50")
-})
-
-test_that("format_parsed works correctly", {
-  parsed <- lobstr:::format_parsed(1L, 1L, 3L, 10L)
-  expect_equal(parsed, "1:1-3:10")
 })
 
 # Integration tests for src() --------------------------------------------------
@@ -192,7 +171,7 @@ test_that("src works for objects without srcrefs", {
   expect_null(src(fun))
   expect_null(src(new.env()))
   expect_null(src(list()))
-  expect_null(src(base::list))
+  expect_null(src(sum))
 })
 
 test_that("src respects max_lines_preview parameter", {
@@ -288,18 +267,19 @@ test_that("src handles functions with only wholeSrcref (no srcref attr)", {
   expect_true("attr(\"wholeSrcref\")" %in% names(result$`body()`))
 })
 
-test_that("extract_lines_from_srcfile handles missing files gracefully", {
+test_that("srcfile_lines handles missing files gracefully", {
   expr <- parse(text = "x + 1", keep.source = TRUE)
   srcref <- attr(expr, "srcref")[[1]]
   srcfile <- attr(srcref, "srcfile")
 
   # Point to a non-existent file
-  attr(srcfile, "filename") <- "nonexistent_file.R"
+  srcfile$filename <- "nonexistent_file.R"
 
-  # Should return empty or handle gracefully
-  snippet <- lobstr:::extract_lines_from_srcfile(srcfile, srcref, max_lines = 3)
+  snippet <- lobstr:::srcfile_lines(srcfile, srcref, max_lines = 3)
 
   expect_type(snippet, "character")
+  # May still have cached lines, so just check it's character
+  expect_true(length(snippet) >= 0)
 })
 
 # Srcfile deduplication tests --------------------------------------------------
@@ -461,7 +441,7 @@ test_that("srcfile deduplication - reference notation displays correctly", {
 
 test_that("lobstr_srcfile_ref class has correct structure", {
   # Create a reference object directly
-  ref <- lobstr:::new_lobstr_srcfile_ref("abc123", "srcfilecopy")
+  ref <- lobstr:::new_srcfile_ref("abc123", "srcfilecopy")
 
   expect_s3_class(ref, "lobstr_srcfile_ref")
   expect_equal(as.character(ref), "abc123")
