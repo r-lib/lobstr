@@ -2,6 +2,14 @@
 
 ## lobstr (development version)
 
+- Changes for compliance with R’s public API. The main consequence is
+  that lobstr no longer reports the `truelength` property of vectors.
+
+  We also changed the `named` indicator to `refs:n`, where `n` can take
+  the values: `0` (corresponding to `NO_REFERENCES` returning 1), `1`
+  (corresponding to both `NO_REFERENCES` `MAYBE_SHARED` returning 0),
+  and `2+` (`MAYBE_SHARED` returning 1).
+
 ## lobstr 1.1.2
 
 CRAN release: 2022-06-22

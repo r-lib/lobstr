@@ -33,7 +33,11 @@
 
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="development version" id="lobstr-development-version">lobstr (development version)<a class="anchor" aria-label="anchor" href="#lobstr-development-version"></a></h2>
-</div>
+<ul><li>
+<p>Changes for compliance with R’s public API. The main consequence is that lobstr no longer reports the <code>truelength</code> property of vectors.</p>
+<p>We also changed the <code>named</code> indicator to <code>refs:n</code>, where <code>n</code> can take the values: <code>0</code> (corresponding to <code>NO_REFERENCES</code> returning 1), <code>1</code> (corresponding to both <code>NO_REFERENCES</code> <code>MAYBE_SHARED</code> returning 0), and <code>2+</code> (<code>MAYBE_SHARED</code> returning 1).</p>
+</li>
+</ul></div>
     <div class="section level2">
 <h2 class="pkg-version" data-toc-text="1.1.2" id="lobstr-112">lobstr 1.1.2<a class="anchor" aria-label="anchor" href="#lobstr-112"></a></h2><p class="text-muted">CRAN release: 2022-06-22</p>
 <ul><li><p>Switched to cpp11 from Rcpp.</p></li>
