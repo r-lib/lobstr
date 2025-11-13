@@ -68,16 +68,16 @@ digging into the underlying \_\_ref\_\_erences:
 x <- 1:1e6
 y <- list(x, x, x)
 ref(y)
-#> █ [1:0x15746ab48] <list> 
-#> ├─[2:0x157222590] <int> 
-#> ├─[2:0x157222590] 
-#> └─[2:0x157222590]
+#> █ [1:0x126225d88] <list> 
+#> ├─[2:0x1114afb90] <int> 
+#> ├─[2:0x1114afb90] 
+#> └─[2:0x1114afb90]
 
 e <- rlang::env()
 e$self <- e
 ref(e)
-#> █ [1:0x157561e78] <env> 
-#> └─self = [1:0x157561e78]
+#> █ [1:0x126563548] <env> 
+#> └─self = [1:0x126563548]
 ```
 
 A related tool is `obj_size()`, which computes the size of an object
