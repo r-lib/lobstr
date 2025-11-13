@@ -15,7 +15,7 @@ lobstr is a package for R developers that prints data structures and objects in 
 ## Key development commands
 
 General advice:
-* When running R from the console, always run it with `--quiet --vanilla`
+* When running R from the console, always run it with `--quiet`
 * Always run `air format .` after generating code
 
 ### Testing
