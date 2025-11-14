@@ -18,7 +18,7 @@ test_that("extract_srcref_info handles 4-element srcrefs", {
   info <- lobstr:::srcref_info(srcref_4)
 
   expect_s3_class(info$location, "lobstr_srcref_location")
-  expect_equal(as.character(info$location), "1:1-1:5")
+  expect_equal(as.character(info$location), "1:1 - 1:5")
 })
 
 test_that("extract_srcref_info handles 6-element srcrefs", {
@@ -35,7 +35,7 @@ test_that("extract_srcref_info handles 6-element srcrefs", {
   info <- lobstr:::srcref_info(srcref_6)
 
   expect_s3_class(info$location, "lobstr_srcref_location")
-  expect_equal(as.character(info$location), "1:1-1:5")
+  expect_equal(as.character(info$location), "1:1 - 1:5")
 })
 
 test_that("extract_srcref_info handles 8-element srcrefs", {
@@ -46,7 +46,7 @@ test_that("extract_srcref_info handles 8-element srcrefs", {
   info <- lobstr:::srcref_info(srcref)
 
   expect_s3_class(info$location, "lobstr_srcref_location")
-  expect_match(as.character(info$location), "\\d+:\\d+-\\d+:\\d+")
+  expect_match(as.character(info$location), "\\d+:\\d+ - \\d+:\\d+")
 })
 
 test_that("extract_srcref_info shows encoding details when requested", {
@@ -121,7 +121,7 @@ test_that("srcref_location works correctly", {
     class = "srcref"
   )
   loc <- lobstr:::srcref_location(srcref)
-  expect_equal(loc, "1:5-3:20")
+  expect_equal(loc, "1:5 - 3:20")
 })
 
 # Integration tests for src() --------------------------------------------------
@@ -219,7 +219,7 @@ test_that("tree_label.srcref formats correctly", {
 
   expect_type(label, "character")
   expect_match(label, "<srcref:")
-  expect_match(label, "\\d+:\\d+-\\d+:\\d+")
+  expect_match(label, "\\d+:\\d+ - \\d+:\\d+")
 })
 
 test_that("tree_label.srcfile formats correctly", {
