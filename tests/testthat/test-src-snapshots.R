@@ -61,8 +61,36 @@ test_that("src() shows quoted function body directly", {
 
 test_that("src() shows quoted function with arguments", {
   expect_snapshot({
-    with_srcref("x <- quote(function(a, b) { a + b })")
+    with_srcref("x <- quote(function(a, b) {})")
     scrub_src(src(x))
+  })
+})
+
+test_that("src() shows srcref with parsed field when positions differ", {
+  expect_snapshot({
+    # Create a synthetic 8-element srcref where parsed positions differ
+    # Format: c(first_line, first_byte, last_line, last_byte,
+    #           first_col, last_col, first_parsed, last_parsed)
+    # This simulates a case where R's parser reports different positions
+    # than the actual source locations (e.g., due to string continuations)
+    srcfile <- srcfilecopy(
+      "test.R",
+      c(
+        "x <- function() {",
+        "  # A long comment that spans",
+        "  # multiple lines",
+        "  y <- 1",
+        "}"
+      )
+    )
+
+    synthetic_srcref <- structure(
+      c(2L, 3L, 4L, 8L, 3L, 8L, 1L, 5L),
+      class = "srcref",
+      srcfile = srcfile
+    )
+
+    scrub_src(src(synthetic_srcref))
   })
 })
 

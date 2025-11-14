@@ -448,18 +448,18 @@ srcref_info <- function(srcref) {
 
   # Add byte info if different from columns
   if (first_byte != first_col || last_byte != last_col) {
-    info$bytes <- sprintf("%d-%d", first_byte, last_byte)
+    info$bytes <- sprintf("%d - %d", first_byte, last_byte)
   }
 
   # Add parsed info if different from actual lines
   if (first_parsed != first_line || last_parsed != last_line) {
-    info$parsed <- sprintf(
-      "%d:%d-%d:%d",
+    info$parsed <- new_srcref_location(sprintf(
+      "%d:%d - %d:%d",
       first_parsed,
       first_col,
       last_parsed,
       last_col
-    )
+    ))
   }
 
   info
@@ -471,7 +471,7 @@ srcref_location <- function(x) {
   first_col <- if (length(x) >= 6) x[[5]] else x[[2]]
   last_col <- if (length(x) >= 6) x[[6]] else x[[4]]
 
-  sprintf("%d:%d-%d:%d", first_line, first_col, last_line, last_col)
+  sprintf("%d:%d - %d:%d", first_line, first_col, last_line, last_col)
 }
 
 
