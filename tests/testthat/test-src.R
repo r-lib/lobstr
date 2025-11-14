@@ -349,14 +349,13 @@ test_that("srcfile deduplication - IDs are stable within a single src() call", {
   result_g <- src(g)
   id_g <- attr(result_g$`attr("srcref")`$`attr("srcfile")`, "srcfile_id")
 
-  # IDs should be different because they're from different src() calls
-  # and different srcfile objects
+  # IDs are sequential and start fresh for each src() call
   expect_type(id_f, "character")
   expect_type(id_g, "character")
 
-  # Both should be hex IDs (up to 6 chars)
-  expect_true(nchar(id_f) >= 1 && nchar(id_f) <= 6)
-  expect_true(nchar(id_g) >= 1 && nchar(id_g) <= 6)
+  # Both should be 3-digit sequential IDs starting at "001"
+  expect_equal(id_f, "001")
+  expect_equal(id_g, "001")
 })
 
 test_that("srcfile deduplication - multiple files means no cross-file deduplication", {
@@ -384,8 +383,10 @@ test_that("srcfile deduplication - multiple files means no cross-file deduplicat
   id_f <- attr(result_f$`attr("srcref")`$`attr("srcfile")`, "srcfile_id")
   id_g <- attr(result_g$`attr("srcref")`$`attr("srcfile")`, "srcfile_id")
 
-  # IDs are derived from addresses, so different addresses = different IDs
-  expect_false(id_f == id_g)
+  # IDs are sequential and start fresh for each src() call, so both get "001"
+  # This ensures deterministic snapshots
+  expect_equal(id_f, "001")
+  expect_equal(id_g, "001")
 })
 
 test_that("srcfile deduplication - nested functions from same file", {

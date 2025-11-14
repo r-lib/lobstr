@@ -40,6 +40,7 @@ src <- function(
   ...
 ) {
   seen_srcfiles <- new.env(parent = emptyenv())
+  seen_srcfiles$.counter <- 0L
 
   result <- src_extract(x, max_lines_preview, seen_srcfiles)
   if (is.null(result)) {
@@ -340,8 +341,9 @@ srcfile_node <- function(srcfile, srcref, max_lines, seen_srcfiles) {
     return(new_srcfile_ref(id, srcfile_class))
   }
 
-  # First occurrence - assign ID
-  id <- substr(addr, 3, 8)
+  # First occurrence - assign sequential ID
+  seen_srcfiles$.counter <- seen_srcfiles$.counter + 1L
+  id <- sprintf("%03d", seen_srcfiles$.counter)
   seen_srcfiles[[addr]] <- id
 
   info <- as.list.environment(srcfile, all.names = TRUE, sorted = TRUE)
