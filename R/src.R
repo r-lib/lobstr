@@ -353,6 +353,11 @@ srcfile_node <- function(srcfile, srcref, max_lines, seen_srcfiles) {
     info$timestamp <- format(info$timestamp)
   }
 
+  # Process nested srcfile objects (e.g., 'original' in srcfilealias)
+  if (!is.null(info$original) && inherits(info$original, "srcfile")) {
+    info$original <- srcfile_node(info$original, NULL, max_lines, seen_srcfiles)
+  }
+
   # Add source preview for plain srcfiles
   if (!inherits(srcfile, "srcfilecopy") && !is.null(srcref)) {
     snippet <- srcfile_lines(srcfile, srcref, max_lines)
