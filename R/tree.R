@@ -9,6 +9,7 @@
 #' @param max_depth How far down the tree structure should be printed. E.g. `1`
 #'   means only direct children of the root element will be shown. Useful for
 #'   very deep lists.
+#' @param max_vec_len How many elements should be printed for vectors?
 #' @param show_environments Should environments be treated like normal lists and
 #'   recursed into?
 #' @param hide_scalar_types Should atomic scalars be printed with type and

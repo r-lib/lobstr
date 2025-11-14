@@ -2,18 +2,9 @@
 % Please edit documentation in R/src.R
 \name{src}
 \alias{src}
-\title{Display tree of source references}
+\title{Show structure of source reference objects: srcfile and srcref}
 \usage{
-src(
-  x,
-  max_depth = 5L,
-  show_source_lines = TRUE,
-  max_lines_preview = 3L,
-  show_encoding_details = FALSE,
-  max_length = 100L,
-  max_vec_len = 3L,
-  ...
-)
+src(x, max_depth = 5L, max_length = 100L, ...)
 }
 \arguments{
 \item{x}{An R object with source references. Can be:
@@ -22,17 +13,9 @@ src(
 \item A list of \code{srcref} objects
 \item A function (closure) with source references
 \item An expression with source references
-\item A primitive/builtin function (will show informative message)
 }}
 
 \item{max_depth}{Maximum depth to traverse nested structures (default 5)}
-
-\item{show_source_lines}{Whether to show actual source code snippets (default TRUE)}
-
-\item{max_lines_preview}{Maximum lines of source to show per srcref (default 3)}
-
-\item{show_encoding_details}{Show byte-level details when they differ from
-columns due to multibyte characters (default FALSE)}
 
 \item{max_length}{Maximum number of srcref nodes to display (default 100)}
 
@@ -40,35 +23,164 @@ columns due to multibyte characters (default FALSE)}
 }
 \value{
 Invisibly returns a structured list containing the source reference
-information. The list has components:
-\itemize{
-\item \code{type}: Type of input object
-\item \code{name}: Name of object if applicable
-\item \code{srcfile}: Source file information
-\item \code{srcrefs}: List of source reference details
-}
+information
 }
 \description{
+Display tree of source references
+
 Visualizes source reference metadata attached to R objects in a tree structure.
-Shows source file information, line/column locations, and optionally the
-actual source code.
+Shows source file information, line/column locations, and lines of source code.
 }
-\examples{
-# Create a function with source references
-f <- function(x) {
-  x + 1
+\section{Overview}{
+
+
+Source references are made of two kinds of objects:
+\itemize{
+\item \code{srcref} objects, which contain information about a specific
+location within the source file, such as the line and column numbers.
+\item \code{srcfile} objects, which contain metadata about the source file
+such as its name, path, and encoding.
+}
+\subsection{\code{srcref} objects}{
+
+\code{srcref} objects are compact integer vectors describing a character range
+in a source. It records start/end lines and byte/column positions and,
+optionally, the parsed-line numbers if \verb{#line} directives were used.
+
+Lengths of 4, 6, or 8 are allowed:
+\itemize{
+\item 4: basic (first_line, first_byte, last_line, last_byte)
+\item 6: adds columns (first_col, last_col)
+\item 8: adds parsed-line numbers (first_parsed, last_parsed)
 }
 
-# Display source reference information
-src(f)
+\code{srcref} objects are attached as attributes (e.g. \code{attr(x, "srcref")}
+or \code{attr(x, "wholeSrcref")}) to parsed expressions and closures when
+\code{keep.source = TRUE}. The parser also stores parse/token data on the
+associated \code{srcfile} when requested.
 
-# Show encoding details
-src(f, show_encoding_details = TRUE)
-
-# Limit source preview
-src(f, max_lines_preview = 1)
+Methods:
+\itemize{
+\item \code{as.character()}: Retrieves relevant source lines from the \code{srcfile}
+reference.
 }
+
+They have a \code{srcfile} attribute that points to the source file.
+}
+
+\subsection{\code{srcfile} objects}{
+
+\code{srcfile} objects are environments representing information about a
+source file that a source reference points to. They typically refer to
+a file on disk and store the filename, working directory, a timestamp,
+and encoding information. A plain \code{srcfile} is lightweight and opens
+the underlying file lazily when content is needed.
+
+There are multiple subclasses of \code{srcfile}.
+\subsection{\code{srcfile}}{
+
+Fields common to all \code{srcfile} objects:
+\itemize{
+\item \code{filename}: The filename of the source file. If relative, the path is
+resolved against \code{wd}.
+\item \code{wd}: The working directory (\code{getwd()}) at the time the srcfile was created
+(generally at the time of parsing).
+\item \code{timestamp}: The timestamp of the source file. Retrieved from \code{filename}
+with \code{file.mtime()}.
+\item \code{encoding}: The encoding of the source file.
+\item \code{Enc}: The encoding of output lines. Used by \code{getSrcLines()}, which
+calls \code{iconv()} when \code{Enc} does not match \code{encoding}.
+}
+
+Implementations:
+\itemize{
+\item \code{print()} and \code{summary()} to print information about the source file.
+\item \code{open()} and \code{close()} to access the underlying file as a connection.
+}
+
+Helpers:
+\itemize{
+\item \code{getSrcLines()}: Retrieves source lines from a \code{srcfile}.
+}
+}
+
+\subsection{\code{srcfilecopy}}{
+
+A \code{srcfilecopy} stores the actual source lines in memory in \verb{$lines}.
+It is produced when code is parsed while \code{keep.source = TRUE} or when
+text is parsed from a character vector. \code{srcfilecopy} is useful when
+the original file may change or not exist, because it preserves the
+exact text used by the parser.
+
+This type of srcfile is the most common. It's created by:
+\itemize{
+\item The R-level \code{parse()} function when \code{text} is supplied:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{# Creates a `"<text>"` non-file `srcfilecopy`
+parse(text = "...", keep.source = TRUE)
+}\if{html}{\out{</div>}}
+\item The console's input parser when \code{getOption("keep.source")} is \code{TRUE}.
+\item \code{sys.source()} when \code{keep.source = TRUE}:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{sys.source(file, keep.source = TRUE)
+}\if{html}{\out{</div>}}
+
+The \code{srcfilecopy} object is timestamped with the file's last modification time.
+\url{https://github.com/r-devel/r-svn/blob/52affc16/src/library/base/R/source.R#L273-L276}
+}
+
+Fields:
+\itemize{
+\item \code{filename}: The filename of the source file. If \code{ifFile} is \code{FALSE},
+the field is non meaningful. For instance \code{parse(text = )} sets it to
+\code{"<text>"}, and the console input parser sets it to \code{""}.
+\item \code{isFile}: A logical indicating whether the source file exists.
+\item \code{fixedNewlines}: If \code{TRUE}, \code{lines} is a character vector of lines with
+no embedded \verb{\\n} characters. The \code{getSrcLines()} helper regularises \code{lines}
+in this way and sets \code{fixedNewlines} to \code{TRUE}.
+}
+}
+
+\subsection{\code{srcfilealias}}{
+
+This object wraps an existing \code{srcfile} object (stored in \code{original}).  It
+allows exposing a different \code{filename} while delegating the open/close/get
+lines operations to the \code{srcfile} stored in \code{original}.
+
+The typical way aliases are created is via \verb{#line *line* *filename*}
+directives where \verb{*filename*} is supplied. These directives remap the srcref
+and srcfile of parsed code to a different location, for example from a
+temporary file or generated file to the original location on disk.
+
+Called by \code{install.packages()} when installing a \emph{source} package with \code{keep.source.pkgs} set to \code{TRUE} (see
+\url{https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/install.R#L545}), but
+\href{https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/admin.R#L308}{only when}:
+\itemize{
+\item \code{Encoding} was supplied in \code{DESCRIPTION}
+\item The system locale is not "C" or "POSIX".
+}
+
+The source files are converted to the encoding of the system locale, then
+collated in a single source file with \verb{#line} directives mapping them to their
+original file names (with full paths):
+\url{https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/admin.R#L342}
+
+Fields:
+\itemize{
+\item \code{filename}: The virtual file name (or full path) of the parsed code.
+\item \code{original}: The actual \code{srcfile} the code was parsed from.
+}
+}
+
+}
+}
+
 \seealso{
+\itemize{
+\item \code{\link[=srcfile]{srcfile()}}: Base documentation for \code{srcref} and \code{srcfile} objects.
+\item \code{\link[=getParseData]{getParseData()}}: Parse information stored when \code{keep.source.data} is \code{TRUE}.
+}
+
 Other object inspectors: 
 \code{\link{ast}()},
 \code{\link{ref}()},
