@@ -1,51 +1,21 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://lobstr.r-lib.org/404.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/index.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/news/index.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/reference/ast.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/reference/cst.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/reference/mem_used.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/reference/obj_addr.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/reference/obj_size.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/reference/ref.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/reference/sxp.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/reference/tree.html</loc>
-  </url>
-  <url>
-    <loc>https://lobstr.r-lib.org/reference/tree_label.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://lobstr.r-lib.org/404.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/CODE_OF_CONDUCT.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/LICENSE-text.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/LICENSE.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/authors.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/index.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/news/index.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/reference/ast.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/reference/cst.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/reference/index.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/reference/lobstr-package.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/reference/mem_used.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/reference/obj_addr.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/reference/obj_size.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/reference/ref.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/reference/sxp.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/reference/tree.html</loc></url>
+<url><loc>https://lobstr.r-lib.org/reference/tree_label.html</loc></url>
 </urlset>
+
