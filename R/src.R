@@ -1,15 +1,16 @@
+#' Show structure of source reference objects: srcfile and srcref
+#'
+#' @description
 #' Display tree of source references
 #'
 #' Visualizes source reference metadata attached to R objects in a tree structure.
-#' Shows source file information, line/column locations, and optionally the
-#' actual source code.
+#' Shows source file information, line/column locations, and lines of source code.
 #'
 #' @param x An R object with source references. Can be:
 #'   - A `srcref` object
 #'   - A list of `srcref` objects
 #'   - A function (closure) with source references
 #'   - An expression with source references
-#'   - A primitive/builtin function (will show informative message)
 #' @param max_depth Maximum depth to traverse nested structures (default 5)
 #' @param max_lines_preview Maximum lines of source to show per srcref (default 3)
 #' @param max_length Maximum number of srcref nodes to display (default 100)
@@ -18,19 +19,149 @@
 #' @return Invisibly returns a structured list containing the source reference
 #'   information
 #'
+#' @section Overview:
+#'
+#' Source references are made of two kinds of objects:
+#' - `srcref` objects, which contain information about a specific
+#'   location within the source file, such as the line and column numbers.
+#' - `srcfile` objects, which contain metadata about the source file
+#'   such as its name, path, and encoding.
+#'
+#' ## `srcref` objects
+#'
+#' `srcref` objects are compact integer vectors describing a character range
+#' in a source. It records start/end lines and byte/column positions and,
+#' optionally, the parsed-line numbers if `#line` directives were used.
+#'
+#' Lengths of 4, 6, or 8 are allowed:
+#' - 4: basic (first_line, first_byte, last_line, last_byte)
+#' - 6: adds columns (first_col, last_col)
+#' - 8: adds parsed-line numbers (first_parsed, last_parsed)
+#'
+#' `srcref` objects are attached as attributes (e.g. `attr(x, "srcref")`
+#' or `attr(x, "wholeSrcref")`) to parsed expressions and closures when
+#' `keep.source = TRUE`. The parser also stores parse/token data on the
+#' associated `srcfile` when requested.
+#'
+#' Methods:
+#' - `as.character()`: Retrieves relevant source lines from the `srcfile`
+#'   reference.
+#'
+#' They have a `srcfile` attribute that points to the source file.
+#'
+#' ## `srcfile` objects
+#'
+#' `srcfile` objects are environments representing information about a
+#' source file that a source reference points to. They typically refer to
+#' a file on disk and store the filename, working directory, a timestamp,
+#' and encoding information. A plain `srcfile` is lightweight and opens
+#' the underlying file lazily when content is needed.
+#'
+#' There are multiple subclasses of `srcfile`.
+#'
+#'
+#' ### `srcfile`
+#'
+#' Fields common to all `srcfile` objects:
+#'
+#' - `filename`: The filename of the source file. If relative, the path is
+#'   resolved against `wd`.
+#'
+#' - `wd`: The working directory (`getwd()`) at the time the srcfile was created
+#'   (generally at the time of parsing).
+#'
+#' - `timestamp`: The timestamp of the source file. Retrieved from `filename`
+#'   with `file.mtime()`.
+#'
+#' - `encoding`: The encoding of the source file.
+#'
+#' - `Enc`: The encoding of output lines. Used by `getSrcLines()`, which
+#'   calls `iconv()` when `Enc` does not match `encoding`.
+#'
+#' Implementations:
+#' - `print()` and `summary()` to print information about the source file.
+#' - `open()` and `close()` to access the underlying file as a connection.
+#'
+#' Helpers:
+#' - `getSrcLines()`: Retrieves source lines from a `srcfile`.
+#'
+#'
+#' ### `srcfilecopy`
+#'
+#' A `srcfilecopy` stores the actual source lines in memory in `$lines`.
+#' It is produced when code is parsed while `keep.source = TRUE` or when
+#' text is parsed from a character vector. `srcfilecopy` is useful when
+#' the original file may change or not exist, because it preserves the
+#' exact text used by the parser.
+#'
+#' This type of srcfile is the most common. It's created by:
+#'
+#' - The R-level `parse()` function when `text` is supplied:
+#'
+#'   ```r
+#'   # Creates a `"<text>"` non-file `srcfilecopy`
+#'   parse(text = "...", keep.source = TRUE)
+#'   ```
+#'
+#' - The console's input parser when `getOption("keep.source")` is `TRUE`.
+#'
+#' - `sys.source()` when `keep.source = TRUE`:
+#'
+#'   ```r
+#'   sys.source(file, keep.source = TRUE)
+#'   ```
+#'
+#'    The `srcfilecopy` object is timestamped with the file's last modification time.
+#'    <https://github.com/r-devel/r-svn/blob/52affc16/src/library/base/R/source.R#L273-L276>
+#'
+#' Fields:
+#'
+#' - `filename`: The filename of the source file. If `ifFile` is `FALSE`,
+#'   the field is non meaningful. For instance `parse(text = )` sets it to
+#'   `"<text>"`, and the console input parser sets it to `""`.
+#'
+#' - `isFile`: A logical indicating whether the source file exists.
+#'
+#' - `fixedNewlines`: If `TRUE`, `lines` is a character vector of lines with
+#'   no embedded `\n` characters. The `getSrcLines()` helper regularises `lines`
+#'   in this way and sets `fixedNewlines` to `TRUE`.
+#'
+#'
+#' ### `srcfilealias`
+#'
+#' This object wraps an existing `srcfile` object (stored in `original`).  It
+#' allows exposing a different `filename` while delegating the open/close/get
+#' lines operations to the `srcfile` stored in `original`.
+#'
+#' The typical way aliases are created is via `#line *line* *filename*`
+#' directives where `*filename*` is supplied. These directives remap the srcref
+#' and srcfile of parsed code to a different location, for example from a
+#' temporary file or generated file to the original location on disk.
+#'
+#' Called by `install.packages()` when installing a _source_ package with `keep.source.pkgs` set to `TRUE` (see
+#' <https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/install.R#L545>), but
+#' [only when](https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/admin.R#L308):
+#'
+#' - `Encoding` was supplied in `DESCRIPTION`
+#' - The system locale is not "C" or "POSIX".
+#'
+#' The source files are converted to the encoding of the system locale, then
+#' collated in a single source file with `#line` directives mapping them to their
+#' original file names (with full paths):
+#' <https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/admin.R#L342>
+#'
+#'
+#' Fields:
+#'
+#' - `filename`: The virtual file name (or full path) of the parsed code.
+#' - `original`: The actual `srcfile` the code was parsed from.
+#'
+#' @seealso
+#' - [srcfile()]: Base documentation for `srcref` and `srcfile` objects.
+#' - [getParseData()]: Parse information stored when `keep.source.data` is `TRUE`.
+#'
 #' @export
 #' @family object inspectors
-#' @examples
-#' # Create a function with source references
-#' f <- function(x) {
-#'   x + 1
-#' }
-#'
-#' # Display source reference information
-#' src(f)
-#'
-#' # Limit source preview
-#' src(f, max_lines_preview = 1)
 src <- function(
   x,
   max_depth = 5L,

@@ -35,6 +35,8 @@ very deep lists.}
 \item{max_length}{How many elements should be printed? This is useful in case
 you try and print an object with 100,000 items in it.}
 
+\item{max_vec_len}{How many elements should be printed for vectors?}
+
 \item{show_environments}{Should environments be treated like normal lists and
 recursed into?}
 
