@@ -22,7 +22,7 @@ prev_m <- 0; m <- mem_used(); m - prev_m
 
 x <- 1:1e6
 prev_m <- m; m <- mem_used(); m - prev_m
-#> 83.90 kB
+#> 84.11 kB
 obj_size(x)
 #> 680 B
 

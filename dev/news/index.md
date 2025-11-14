@@ -2,6 +2,10 @@
 
 ## lobstr (development version)
 
+## lobstr 1.1.3
+
+CRAN release: 2025-11-14
+
 - Changes for compliance with R’s public API. The main consequence is
   that lobstr no longer reports the `truelength` property of vectors.
 

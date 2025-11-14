@@ -13,12 +13,12 @@ Source:
 [`DESCRIPTION`](https://github.com/r-lib/lobstr/blob/main/DESCRIPTION)
 
 Wickham H (2025). *lobstr: Visualize R Data Structures with Trees*. R
-package version 1.1.2.9000, <https://lobstr.r-lib.org/>.
+package version 1.1.3.9000, <https://lobstr.r-lib.org/>.
 
     @Manual{,
       title = {lobstr: Visualize R Data Structures with Trees},
       author = {Hadley Wickham},
       year = {2025},
-      note = {R package version 1.1.2.9000},
+      note = {R package version 1.1.3.9000},
       url = {https://lobstr.r-lib.org/},
     }
