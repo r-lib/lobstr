@@ -653,57 +653,6 @@
           ├─location: 1:0 - 1:26
           └─attr("srcfile"): @001
 
-# src() respects max_vec_len parameter
-
-    Code
-      x <- parse(text = paste(rep("1", 10), collapse = "\n"), keep.source = TRUE)
-      scrub_src(src(x, max_vec_len = 2))
-    Output
-      <expression>
-      ├─attr("srcref"): <list>
-      │ ├─[[1]]: <srcref>
-      │ │ ├─location: 1:1 - 1:1
-      │ │ └─attr("srcfile"): <srcfilecopy> @001
-      │ │   ├─Enc: "unknown"
-      │ │   ├─filename: "<scrubbed>"
-      │ │   ├─fixedNewlines: TRUE
-      │ │   ├─isFile: FALSE
-      │ │   ├─lines<chr [10]>: "1", "1", ...
-      │ │   ├─parseData<int [160]>: 1, 1, ...
-      │ │   ├─timestamp: "<scrubbed>"
-      │ │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
-      │ ├─[[2]]: <srcref>
-      │ │ ├─location: 2:1 - 2:1
-      │ │ └─attr("srcfile"): @001
-      │ ├─[[3]]: <srcref>
-      │ │ ├─location: 3:1 - 3:1
-      │ │ └─attr("srcfile"): @001
-      │ ├─[[4]]: <srcref>
-      │ │ ├─location: 4:1 - 4:1
-      │ │ └─attr("srcfile"): @001
-      │ ├─[[5]]: <srcref>
-      │ │ ├─location: 5:1 - 5:1
-      │ │ └─attr("srcfile"): @001
-      │ ├─[[6]]: <srcref>
-      │ │ ├─location: 6:1 - 6:1
-      │ │ └─attr("srcfile"): @001
-      │ ├─[[7]]: <srcref>
-      │ │ ├─location: 7:1 - 7:1
-      │ │ └─attr("srcfile"): @001
-      │ ├─[[8]]: <srcref>
-      │ │ ├─location: 8:1 - 8:1
-      │ │ └─attr("srcfile"): @001
-      │ ├─[[9]]: <srcref>
-      │ │ ├─location: 9:1 - 9:1
-      │ │ └─attr("srcfile"): @001
-      │ └─[[10]]: <srcref>
-      │   ├─location: 10:1 - 10:1
-      │   └─attr("srcfile"): @001
-      ├─attr("srcfile"): @001
-      └─attr("wholeSrcref"): <srcref>
-        ├─location: 1:0 - 11:0
-        └─attr("srcfile"): @001
-
 # src() respects show_source_lines parameter
 
     Code

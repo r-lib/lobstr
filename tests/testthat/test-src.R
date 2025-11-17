@@ -74,7 +74,7 @@ test_that("srcfile_node handles srcfilecopy", {
   srcref <- attr(expr, "srcref")[[1]]
   seen_srcfiles <- new.env(parent = emptyenv())
 
-  info <- lobstr:::srcfile_node(srcfile, srcref, 3, seen_srcfiles)
+  info <- lobstr:::srcfile_node(srcfile, srcref, seen_srcfiles)
 
   expect_equal(attr(info, "srcfile_class"), class(srcfile)[1])
   expect_type(info$filename, "character")
@@ -83,7 +83,7 @@ test_that("srcfile_node handles srcfilecopy", {
 
 test_that("srcfile_node handles NULL gracefully", {
   seen_srcfiles <- new.env(parent = emptyenv())
-  info <- lobstr:::srcfile_node(NULL, NULL, 3, seen_srcfiles)
+  info <- lobstr:::srcfile_node(NULL, NULL, seen_srcfiles)
   expect_null(info)
 })
 
@@ -93,7 +93,7 @@ test_that("srcfile_lines extracts from srcfilecopy", {
   srcref <- attr(expr, "srcref")[[1]]
   srcfile <- attr(srcref, "srcfile")
 
-  snippet <- lobstr:::srcfile_lines(srcfile, srcref, max_lines = 3)
+  snippet <- lobstr:::srcfile_lines(srcfile, srcref)
 
   expect_type(snippet, "character")
   expect_true(length(snippet) >= 1)
@@ -110,9 +110,10 @@ test_that("srcfile_lines respects max_lines", {
     srcfile = srcfile
   )
 
-  snippet <- lobstr:::srcfile_lines(srcfile, srcref, max_lines = 2)
+  snippet <- lobstr:::srcfile_lines(srcfile, srcref)
 
-  expect_true(length(snippet) <= 2)
+  expect_type(snippet, "character")
+  expect_lte(length(snippet), 3)
 })
 
 test_that("srcref_location works correctly", {
@@ -275,11 +276,9 @@ test_that("srcfile_lines handles missing files gracefully", {
   # Point to a non-existent file
   srcfile$filename <- "nonexistent_file.R"
 
-  snippet <- lobstr:::srcfile_lines(srcfile, srcref, max_lines = 3)
+  snippet <- lobstr:::srcfile_lines(srcfile, srcref)
 
   expect_type(snippet, "character")
-  # May still have cached lines, so just check it's character
-  expect_true(length(snippet) >= 0)
 })
 
 # Srcfile deduplication tests --------------------------------------------------
