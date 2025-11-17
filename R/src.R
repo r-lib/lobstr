@@ -26,6 +26,7 @@
 #' - `srcfile` objects, which contain metadata about the source file
 #'   such as its name, path, and encoding.
 #'
+#'
 #' ## `srcref` objects
 #'
 #' `srcref` objects are compact integer vectors describing a character range
@@ -48,6 +49,26 @@
 #'
 #' They have a `srcfile` attribute that points to the source file.
 #'
+#'
+#' ### `wholeSrcref` attributes
+#'
+#' These are `srcref` objects stored in the `wholeSrcref` attributes of:
+#'
+#' - Expression vectors returned by `parse()`, which seems to be the intended
+#'   usage.
+#' - `{` calls, which seems unintended.
+#'
+#' For expression vectors, the `wholeSrcref` spans from the first position
+#' to the last position and represents the entire document. For braces, they
+#' span from the first position to the location of the closing brace. There is
+#' no way to know the location of the opening brace without reparsing, which
+#' seems odd. It's probably an overlook from `xxexprlist()` calling
+#' `attachSrcrefs()` in
+#' <https://github.com/r-devel/r-svn/blob/52affc16/src/main/gram.y#L1380>. That
+#' function is also called at the end of parsing, where it's intended for the
+#' `wholeSrcref` attribute to be attached.
+#'
+#'
 #' ## `srcfile` objects
 #'
 #' `srcfile` objects are environments representing information about a
@@ -56,7 +77,8 @@
 #' and encoding information. A plain `srcfile` is lightweight and opens
 #' the underlying file lazily when content is needed.
 #'
-#' There are multiple subclasses of `srcfile`.
+#' While it is possible to create bare `srcfile` objects, specialized subclasses
+#' are much more common.
 #'
 #'
 #' ### `srcfile`
