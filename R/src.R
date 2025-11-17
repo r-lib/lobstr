@@ -321,38 +321,31 @@ extract_srcref_attrs <- function(x, seen_srcfiles) {
   attrs <- list()
 
   if (!is.null(srcref <- attr(x, "srcref"))) {
-    attrs$`attr("srcref")` <- process_srcref_attr(
+    attrs$`attr("srcref")` <- srcref_attr_node(
       srcref,
       seen_srcfiles
     )
   }
 
   if (!is.null(srcfile <- attr(x, "srcfile"))) {
-    attrs$`attr("srcfile")` <- srcfile_node(
-      srcfile,
-      NULL,
-      seen_srcfiles
-    )
+    attrs$`attr("srcfile")` <- srcfile_node(srcfile, seen_srcfiles)
   }
 
   if (!is.null(whole <- attr(x, "wholeSrcref"))) {
-    attrs$`attr("wholeSrcref")` <- srcref_node(whole, seen_srcfiles)
+    attrs$`attr("wholeSrcref")` <- srcref_attr_node(whole, seen_srcfiles)
   }
 
   attrs
 }
 
-process_srcref_attr <- function(srcref_attr, seen_srcfiles) {
-  if (inherits(srcref_attr, "srcref")) {
-    return(srcref_node(srcref_attr, seen_srcfiles))
+# A srcref attribute may be a srcref object or a list of srcref objects
+srcref_attr_node <- function(srcref, seen_srcfiles) {
+  if (inherits(srcref, "srcref")) {
+    return(srcref_node(srcref, seen_srcfiles))
   }
 
-  if (is.list(srcref_attr)) {
-    srcrefs <- lapply(seq_along(srcref_attr), function(i) {
-      srcref_node(srcref_attr[[i]], seen_srcfiles)
-    })
-    names(srcrefs) <- paste0("[[", seq_along(srcrefs), "]]")
-    return(new_srcref_tree(srcrefs, type = "list"))
+  if (is.list(srcref)) {
+    return(srcref_list_node(srcref, seen_srcfiles))
   }
 
   NULL
@@ -378,14 +371,10 @@ srcref_node <- function(srcref, seen_srcfiles) {
 
 srcref_list_node <- function(srcref_list, seen_srcfiles) {
   srcrefs <- lapply(srcref_list, srcref_node, seen_srcfiles)
-
-  node <- list(
-    count = length(srcref_list),
-    srcrefs = new_srcref_tree(srcrefs, type = "list")
-  )
+  names(srcrefs) <- paste0("[[", seq_along(srcrefs), "]]")
 
   attrs <- extract_srcref_attrs(srcref_list, seen_srcfiles)
-  node <- c(node, attrs)
+  node <- c(srcrefs, attrs)
 
   new_srcref_tree(node, type = "list")
 }
@@ -490,7 +479,7 @@ as_srcref_tree <- function(data, ..., from) {
 
 # Srcfile handling -------------------------------------------------------------
 
-srcfile_node <- function(srcfile, srcref, seen_srcfiles) {
+srcfile_node <- function(srcfile, seen_srcfiles) {
   if (is.null(srcfile)) {
     return(NULL)
   }
@@ -518,7 +507,7 @@ srcfile_node <- function(srcfile, srcref, seen_srcfiles) {
 
   # Process nested srcfile objects (e.g., 'original' in srcfilealias)
   if (!is.null(info$original) && inherits(info$original, "srcfile")) {
-    info$original <- srcfile_node(info$original, NULL, seen_srcfiles)
+    info$original <- srcfile_node(info$original, seen_srcfiles)
   }
 
   # Add source preview for plain srcfiles

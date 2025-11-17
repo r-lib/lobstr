@@ -344,22 +344,20 @@
       scrub_src(src(sr_list))
     Output
       <list>
-      ├─count: 2
-      └─srcrefs: <list>
-        ├─<srcref>
-        │ ├─location: 1:1 - 1:5
-        │ └─attr("srcfile"): <srcfilecopy> @001
-        │   ├─Enc: "unknown"
-        │   ├─filename: "<scrubbed>"
-        │   ├─fixedNewlines: TRUE
-        │   ├─isFile: FALSE
-        │   ├─lines<chr [2]>: "x + 1", "y + 2"
-        │   ├─parseData<int [96]>: 1, 1, 1, ...
-        │   ├─timestamp: "<scrubbed>"
-        │   └─wd: "<scrubbed>"
-        └─<srcref>
-          ├─location: 2:1 - 2:5
-          └─attr("srcfile"): @001
+      ├─[[1]]: <srcref>
+      │ ├─location: 1:1 - 1:5
+      │ └─attr("srcfile"): <srcfilecopy> @001
+      │   ├─Enc: "unknown"
+      │   ├─filename: "<scrubbed>"
+      │   ├─fixedNewlines: TRUE
+      │   ├─isFile: FALSE
+      │   ├─lines<chr [2]>: "x + 1", "y + 2"
+      │   ├─parseData<int [96]>: 1, 1, 1, ...
+      │   ├─timestamp: "<scrubbed>"
+      │   └─wd: "<scrubbed>"
+      └─[[2]]: <srcref>
+        ├─location: 2:1 - 2:5
+        └─attr("srcfile"): @001
 
 # src() reveals srcref list structure with index notation
 
