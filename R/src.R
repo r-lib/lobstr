@@ -565,9 +565,8 @@ srcfile_lines <- function(srcfile, srcref) {
     filepath <- file.path(directory, filename)
 
     if (file.exists(filepath)) {
-      encoding <- srcfile$Enc %||% "unknown"
       all_lines <- tryCatch(
-        readLines(filepath, encoding = encoding, warn = FALSE),
+        readLines(filepath, warn = FALSE),
         error = function(e) NULL
       )
 
