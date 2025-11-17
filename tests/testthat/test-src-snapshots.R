@@ -245,13 +245,6 @@ test_that("src() handles if statement with blocks", {
 
 # Test: Parameters --------------------------------------------------------------
 
-test_that("src() respects max_vec_len parameter", {
-  expect_snapshot({
-    x <- parse(text = paste(rep("1", 10), collapse = "\n"), keep.source = TRUE)
-    scrub_src(src(x, max_vec_len = 2))
-  })
-})
-
 test_that("src() respects show_source_lines parameter", {
   expect_snapshot({
     f <- simple_function_with_srcref()
