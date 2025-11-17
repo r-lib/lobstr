@@ -163,7 +163,10 @@ Called by \code{install.packages()} when installing a \emph{source} package with
 The source files are converted to the encoding of the system locale, then
 collated in a single source file with \verb{#line} directives mapping them to their
 original file names (with full paths):
-\url{https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/admin.R#L342}
+\url{https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/admin.R#L342}.
+
+Note that the \code{filename} of the \code{original} srcfile incorrectly points to the
+package path in the install destination.
 
 Fields:
 \itemize{

@@ -147,7 +147,10 @@
 #' The source files are converted to the encoding of the system locale, then
 #' collated in a single source file with `#line` directives mapping them to their
 #' original file names (with full paths):
-#' <https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/admin.R#L342>
+#' <https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/admin.R#L342>.
+#'
+#' Note that the `filename` of the `original` srcfile incorrectly points to the
+#' package path in the install destination.
 #'
 #'
 #' Fields:
