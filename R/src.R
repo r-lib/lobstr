@@ -239,7 +239,7 @@ tree_label.srcref <- function(x, opts) {
 
 #' @export
 tree_label.srcfile <- function(x, opts) {
-  paste0("<", class(x)[1], ": ", getSrcFilename(x), ">")
+  paste0("<", class(x)[1], ": ", utils::getSrcFilename(x), ">")
 }
 
 #' @export
