@@ -15,7 +15,7 @@
       │   ├─lines<chr [3]>: "test_func <-...", "  x + y", "}"
       │   ├─parseData<int [160]>: 1, 1, 1, ...
       │   ├─timestamp: "<scrubbed>"
-      │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │   └─wd: "<scrubbed>"
       └─body(): <{>
         ├─attr("srcref"): <list>
         │ ├─[[1]]: <srcref>
@@ -46,7 +46,7 @@
       │   ├─lines<chr [6]>: "multi_func <...", "  a <- x + 1", "  b <- a * 2", ...
       │   ├─parseData<int [352]>: 1, 1, 1, ...
       │   ├─timestamp: "<scrubbed>"
-      │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │   └─wd: "<scrubbed>"
       └─body(): <{>
         ├─attr("srcref"): <list>
         │ ├─[[1]]: <srcref>
@@ -88,7 +88,7 @@
       │ │     ├─lines: "x <- quote(function() {})"
       │ │     ├─parseData<int [128]>: 1, 1, 1, ......
       │ │     ├─timestamp: "<scrubbed>"
-      │ │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │ │     └─wd: "<scrubbed>"
       │ ├─attr("srcfile"): @001
       │ └─attr("wholeSrcref"): <srcref>
       │   ├─location: 1:0 - 1:24
@@ -115,7 +115,7 @@
       │     ├─lines: "x <- quote(function() {})"
       │     ├─parseData<int [128]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
-      │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │     └─wd: "<scrubbed>"
       ├─attr("srcfile"): @001
       └─attr("wholeSrcref"): <srcref>
         ├─location: 1:0 - 1:24
@@ -140,7 +140,7 @@
       │ │     ├─lines: "x <- quote(function(a, b) {})"
       │ │     ├─parseData<int [152]>: 1, 1, 1, ......
       │ │     ├─timestamp: "<scrubbed>"
-      │ │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │ │     └─wd: "<scrubbed>"
       │ ├─attr("srcfile"): @001
       │ └─attr("wholeSrcref"): <srcref>
       │   ├─location: 1:0 - 1:28
@@ -168,7 +168,7 @@
         ├─isFile: FALSE
         ├─lines<chr [5]>: "x <- functio...", "  # A long c...", "  # multiple...", ...
         ├─timestamp: "<scrubbed>"
-        └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+        └─wd: "<scrubbed>"
 
 # src() shows expression with single element
 
@@ -188,7 +188,7 @@
       │     ├─lines: "x + 1"
       │     ├─parseData<int [48]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
-      │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │     └─wd: "<scrubbed>"
       ├─attr("srcfile"): @001
       └─attr("wholeSrcref"): <srcref>
         ├─location: 1:0 - 2:0
@@ -212,7 +212,7 @@
       │ │   ├─lines<chr [3]>: "x + 1", "y + 2", "z + 3"
       │ │   ├─parseData<int [144]>: 1, 1, 1, ...
       │ │   ├─timestamp: "<scrubbed>"
-      │ │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │ │   └─wd: "<scrubbed>"
       │ ├─[[2]]: <srcref>
       │ │ ├─location: 2:1 - 2:5
       │ │ └─attr("srcfile"): @001
@@ -242,7 +242,7 @@
       │     ├─lines<chr [3]>: "{", "  1", "}"
       │     ├─parseData<int [40]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
-      │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │     └─wd: "<scrubbed>"
       ├─attr("srcfile"): @001
       ├─attr("wholeSrcref"): <srcref>
       │ ├─location: 1:0 - 4:0
@@ -278,7 +278,7 @@
       │ │   ├─lines<chr [3]>: "{", "  1", "}"
       │ │   ├─parseData<int [40]>: 1, 1, 1, ...
       │ │   ├─timestamp: "<scrubbed>"
-      │ │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │ │   └─wd: "<scrubbed>"
       │ └─[[2]]: <srcref>
       │   ├─location: 2:3 - 2:3
       │   └─attr("srcfile"): @001
@@ -305,7 +305,7 @@
       │ │   ├─lines<chr [4]>: "{", "  a <- 1", "  b <- 2", ...
       │ │   ├─parseData<int [120]>: 1, 1, 1, ...
       │ │   ├─timestamp: "<scrubbed>"
-      │ │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │ │   └─wd: "<scrubbed>"
       │ ├─[[2]]: <srcref>
       │ │ ├─location: 2:3 - 2:8
       │ │ └─attr("srcfile"): @001
@@ -334,7 +334,7 @@
         ├─lines: "x + 1"
         ├─parseData<int [48]>: 1, 1, 1, ...
         ├─timestamp: "<scrubbed>"
-        └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+        └─wd: "<scrubbed>"
 
 # src() shows list of srcrefs with count
 
@@ -356,7 +356,7 @@
         │   ├─lines<chr [2]>: "x + 1", "y + 2"
         │   ├─parseData<int [96]>: 1, 1, 1, ...
         │   ├─timestamp: "<scrubbed>"
-        │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+        │   └─wd: "<scrubbed>"
         └─<srcref>
           ├─location: 2:1 - 2:5
           └─attr("srcfile"): @001
@@ -379,7 +379,7 @@
       │ │   ├─lines: "x <- quote(function() { 1 })"
       │ │   ├─parseData<int [144]>: 1, 1, 1, ...
       │ │   ├─timestamp: "<scrubbed>"
-      │ │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │ │   └─wd: "<scrubbed>"
       │ └─[[2]]: <srcref>
       │   ├─location: 1:25 - 1:25
       │   └─attr("srcfile"): @001
@@ -406,7 +406,7 @@
       │     ├─lines: "foo({ if (1) bar({ 2 }) })"
       │     ├─parseData<int [192]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
-      │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │     └─wd: "<scrubbed>"
       ├─attr("srcfile"): @001
       ├─attr("wholeSrcref"): <srcref>
       │ ├─location: 1:0 - 2:0
@@ -453,7 +453,7 @@
       │   ├─lines: "f <- function() foo({ if (1) bar..."
       │   ├─parseData<int [256]>: 1, 1, 1, ...
       │   ├─timestamp: "<scrubbed>"
-      │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │   └─wd: "<scrubbed>"
       └─body(): <language>
         └─[[2]]: <{>
           ├─attr("srcref"): <list>
@@ -497,7 +497,7 @@
       │   ├─lines<chr [3]>: "test_func <-...", "  x + y", "}"
       │   ├─parseData<int [160]>: 1, 1, 1, ...
       │   ├─timestamp: "<scrubbed>"
-      │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │   └─wd: "<scrubbed>"
       └─body(): <{>
         ├─attr("srcref"): <list>
         │ ├─[[1]]: <srcref>
@@ -529,7 +529,7 @@
       │     ├─lines<chr [4]>: "{", "  1", "  2", ...
       │     ├─parseData<int [56]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
-      │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │     └─wd: "<scrubbed>"
       ├─attr("srcfile"): @001
       ├─attr("wholeSrcref"): <srcref>
       │ ├─location: 1:0 - 5:0
@@ -568,7 +568,7 @@
       │     ├─lines: "{}"
       │     ├─parseData<int [24]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
-      │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │     └─wd: "<scrubbed>"
       ├─attr("srcfile"): @001
       └─attr("wholeSrcref"): <srcref>
         ├─location: 1:0 - 1:2
@@ -591,7 +591,7 @@
       │   ├─lines: "f <- function() { NULL }"
       │   ├─parseData<int [104]>: 1, 1, 1, ...
       │   ├─timestamp: "<scrubbed>"
-      │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │   └─wd: "<scrubbed>"
       └─body(): <{>
         ├─attr("srcref"): <list>
         │ ├─[[1]]: <srcref>
@@ -623,7 +623,7 @@
       │     ├─lines: "if (TRUE) { 1 } else { 2 }"
       │     ├─parseData<int [136]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
-      │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │     └─wd: "<scrubbed>"
       ├─attr("srcfile"): @001
       ├─attr("wholeSrcref"): <srcref>
       │ ├─location: 1:0 - 2:0
@@ -670,7 +670,7 @@
       │   ├─lines<chr [3]>: "test_func <-...", "  x + y", "}"
       │   ├─parseData<int [160]>: 1, 1, 1, ...
       │   ├─timestamp: "<scrubbed>"
-      │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │   └─wd: "<scrubbed>"
       └─body(): <{>
         ├─attr("srcref"): <list>
         │ ├─[[1]]: <srcref>
@@ -702,7 +702,7 @@
       │     ├─lines<chr [8]>: "{", "  {", "    1", ...
       │     ├─parseData<int [104]>: 1, 1, 1, ...
       │     ├─timestamp: "<scrubbed>"
-      │     └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │     └─wd: "<scrubbed>"
       ├─attr("srcfile"): @001
       ├─attr("wholeSrcref"): <srcref>
       │ ├─location: 1:0 - 9:0
@@ -764,7 +764,7 @@
       │   ├─lines<chr [5]>: "f <- functio...", "  if (x) {", "    1", ...
       │   ├─parseData<int [184]>: 1, 1, 1, ...
       │   ├─timestamp: "<scrubbed>"
-      │   └─wd: "/Users/lionel/Sync/Projects/R/r-..."
+      │   └─wd: "<scrubbed>"
       └─body(): <{>
         ├─attr("srcref"): <list>
         │ ├─[[1]]: <srcref>

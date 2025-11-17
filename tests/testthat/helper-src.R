@@ -1,4 +1,18 @@
-# Helper functions for testing source reference functionality
+#' Scrub src() output for deterministic snapshots
+scrub_src <- function(x) {
+  # Capture the output as text
+  output <- capture.output(print(x))
+
+  output <- gsub('filename: "[^"]+"', 'filename: "<scrubbed>"', output)
+  output <- gsub('directory: "[^"]+"', 'directory: "<scrubbed>"', output)
+  output <- gsub('timestamp: "[^"]+"', 'timestamp: "<scrubbed>"', output)
+  output <- gsub('wd: "[^"]+"', 'wd: "<scrubbed>"', output)
+
+  # Print the scrubbed output
+  cat(output, sep = "\n")
+
+  invisible(x)
+}
 
 #' Create a function or expression with source references
 #'
