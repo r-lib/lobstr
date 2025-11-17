@@ -54,18 +54,31 @@ Lengths of 4, 6, or 8 are allowed:
 \item 8: adds parsed-line numbers (first_parsed, last_parsed)
 }
 
-\code{srcref} objects are attached as attributes (e.g. \code{attr(x, "srcref")}
-or \code{attr(x, "wholeSrcref")}) to parsed expressions and closures when
-\code{keep.source = TRUE}. The parser also stores parse/token data on the
-associated \code{srcfile} when requested.
+They are attached as attributes (e.g. \code{attr(x, "srcref")} or \code{attr(x, "wholeSrcref")}), possibly wrapped in a list, to the following objects:
+\itemize{
+\item Expression vectors returned by \code{parse()} (wrapped in a list)
+\item Quoted function calls (unwrapped)
+\item Quoted \verb{\{} calls (wrapped in a list)
+\item Evaluated closures (unwrapped)
+}
+
+By default source references are not created but can be enabled by:
+\itemize{
+\item Passing \code{keep.source = TRUE} explicitly to \code{parse()}, \code{source()}, or
+\code{sys.source()}.
+\item Setting \code{options(keep.source = TRUE)}. This affects the default arguments
+of the aforementioned functions, as well as the console input parser.
+\item Setting \code{options(keep.source.pkgs = TRUE)}. This affects loading a package
+from source, and installing a package from source.
+}
+
+They have a \code{srcfile} attribute that points to the source file.
 
 Methods:
 \itemize{
 \item \code{as.character()}: Retrieves relevant source lines from the \code{srcfile}
 reference.
 }
-
-They have a \code{srcfile} attribute that points to the source file.
 \subsection{\code{wholeSrcref} attributes}{
 
 These are \code{srcref} objects stored in the \code{wholeSrcref} attributes of:
@@ -93,12 +106,14 @@ function is also called at the end of parsing, where it's intended for the
 \code{srcfile} objects are environments representing information about a
 source file that a source reference points to. They typically refer to
 a file on disk and store the filename, working directory, a timestamp,
-and encoding information. A plain \code{srcfile} is lightweight and opens
-the underlying file lazily when content is needed.
+and encoding information.
 
 While it is possible to create bare \code{srcfile} objects, specialized subclasses
 are much more common.
 \subsection{\code{srcfile}}{
+
+A bare \code{srcfile} object does not contain any data apart from the file path.
+It lazily loads lines from the file on disk, without any caching.
 
 Fields common to all \code{srcfile} objects:
 \itemize{
@@ -128,10 +143,8 @@ Helpers:
 \subsection{\code{srcfilecopy}}{
 
 A \code{srcfilecopy} stores the actual source lines in memory in \verb{$lines}.
-It is produced when code is parsed while \code{keep.source = TRUE} or when
-text is parsed from a character vector. \code{srcfilecopy} is useful when
-the original file may change or not exist, because it preserves the
-exact text used by the parser.
+\code{srcfilecopy} is useful when the original file may change or does not
+exist, because it preserves the exact text used by the parser.
 
 This type of srcfile is the most common. It's created by:
 \itemize{
@@ -169,9 +182,10 @@ allows exposing a different \code{filename} while delegating the open/close/get
 lines operations to the \code{srcfile} stored in \code{original}.
 
 The typical way aliases are created is via \verb{#line *line* *filename*}
-directives where \verb{*filename*} is supplied. These directives remap the srcref
-and srcfile of parsed code to a different location, for example from a
-temporary file or generated file to the original location on disk.
+directives where the optional \verb{*filename*} argument is supplied. These
+directives remap the srcref and srcfile of parsed code to a different
+location, for example from a temporary file or generated file to the original
+location on disk.
 
 Called by \code{install.packages()} when installing a \emph{source} package with \code{keep.source.pkgs} set to \code{TRUE} (see
 \url{https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/install.R#L545}), but
