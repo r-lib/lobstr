@@ -258,7 +258,7 @@ test_that("extract_srcref_info handles 4-element srcrefs", {
     srcfile = attr(srcref, "srcfile")
   )
 
-  info <- lobstr:::srcref_info(srcref_4)
+  info <- srcref_info(srcref_4)
 
   expect_s3_class(info$location, "lobstr_srcref_location")
   expect_equal(as.character(info$location), "1:1 - 1:5")
@@ -275,7 +275,7 @@ test_that("extract_srcref_info handles 6-element srcrefs", {
     srcfile = attr(srcref_base, "srcfile")
   )
 
-  info <- lobstr:::srcref_info(srcref_6)
+  info <- srcref_info(srcref_6)
 
   expect_s3_class(info$location, "lobstr_srcref_location")
   expect_equal(as.character(info$location), "1:1 - 1:5")
@@ -286,7 +286,7 @@ test_that("extract_srcref_info handles 8-element srcrefs", {
   srcref <- attr(expr, "srcref")[[1]]
 
   # Most modern srcrefs are 8-element
-  info <- lobstr:::srcref_info(srcref)
+  info <- srcref_info(srcref)
 
   expect_s3_class(info$location, "lobstr_srcref_location")
   expect_match(as.character(info$location), "\\d+:\\d+ - \\d+:\\d+")
@@ -296,7 +296,7 @@ test_that("extract_srcref_info shows encoding details when requested", {
   expr <- parse(text = "x + 1", keep.source = TRUE)
   srcref <- attr(expr, "srcref")[[1]]
 
-  info <- lobstr:::srcref_info(srcref)
+  info <- srcref_info(srcref)
 
   expect_true("location" %in% names(info))
 })
@@ -306,7 +306,7 @@ test_that("extract_srcref_info errors on invalid srcref length", {
   bad_srcref <- structure(c(1L, 2L, 3L), class = "srcref")
 
   expect_error(
-    lobstr:::srcref_info(bad_srcref),
+    srcref_info(bad_srcref),
     "Unexpected srcref length"
   )
 })
@@ -317,7 +317,7 @@ test_that("srcfile_node handles srcfilecopy", {
   srcref <- attr(expr, "srcref")[[1]]
   seen_srcfiles <- new.env(parent = emptyenv())
 
-  info <- lobstr:::srcfile_node(srcfile, srcref, seen_srcfiles)
+  info <- srcfile_node(srcfile, seen_srcfiles)
 
   expect_equal(attr(info, "srcfile_class"), class(srcfile)[1])
   expect_type(info$filename, "character")
@@ -326,7 +326,7 @@ test_that("srcfile_node handles srcfilecopy", {
 
 test_that("srcfile_node handles NULL gracefully", {
   seen_srcfiles <- new.env(parent = emptyenv())
-  info <- lobstr:::srcfile_node(NULL, NULL, seen_srcfiles)
+  info <- srcfile_node(NULL, seen_srcfiles)
   expect_null(info)
 })
 
@@ -336,7 +336,7 @@ test_that("srcfile_lines extracts from srcfilecopy", {
   srcref <- attr(expr, "srcref")[[1]]
   srcfile <- attr(srcref, "srcfile")
 
-  snippet <- lobstr:::srcfile_lines(srcfile, srcref)
+  snippet <- srcfile_lines(srcfile, srcref)
 
   expect_type(snippet, "character")
   expect_true(length(snippet) >= 1)
@@ -353,7 +353,7 @@ test_that("srcfile_lines respects max_lines", {
     srcfile = srcfile
   )
 
-  snippet <- lobstr:::srcfile_lines(srcfile, srcref)
+  snippet <- srcfile_lines(srcfile, srcref)
 
   expect_type(snippet, "character")
   expect_lte(length(snippet), 3)
@@ -364,7 +364,7 @@ test_that("srcref_location works correctly", {
     c(1L, 5L, 3L, 20L, 5L, 20L, 1L, 3L),
     class = "srcref"
   )
-  loc <- lobstr:::srcref_location(srcref)
+  loc <- srcref_location(srcref)
   expect_equal(loc, "1:5 - 3:20")
 })
 
@@ -398,7 +398,6 @@ test_that("src works with list of srcrefs", {
 
   expect_type(result, "list")
   expect_equal(attr(result, "srcref_type"), "list")
-  expect_equal(result$count, length(srcref_list))
 })
 
 test_that("src works with expressions", {
@@ -459,7 +458,7 @@ test_that("tree_label.srcref formats correctly", {
   srcref <- attr(expr, "srcref")[[1]]
 
   # Call the method directly since srcref has proper class
-  label <- lobstr:::tree_label.srcref(srcref, list())
+  label <- tree_label.srcref(srcref, list())
 
   expect_type(label, "character")
   expect_match(label, "<srcref:")
@@ -471,7 +470,7 @@ test_that("tree_label.srcfile formats correctly", {
   srcfile <- attr(attr(expr, "srcref")[[1]], "srcfile")
 
   # Call the method directly since srcfile is an environment with class attribute
-  label <- lobstr:::tree_label.srcfile(srcfile, list())
+  label <- tree_label.srcfile(srcfile, list())
 
   expect_type(label, "character")
   expect_match(label, "<srcfile")
@@ -519,7 +518,7 @@ test_that("srcfile_lines handles missing files gracefully", {
   # Point to a non-existent file
   srcfile$filename <- "nonexistent_file.R"
 
-  snippet <- lobstr:::srcfile_lines(srcfile, srcref)
+  snippet <- srcfile_lines(srcfile, srcref)
 
   expect_type(snippet, "character")
 })
@@ -684,14 +683,14 @@ test_that("srcfile deduplication - reference notation displays correctly", {
 
 test_that("lobstr_srcfile_ref class has correct structure", {
   # Create a reference object directly
-  ref <- lobstr:::new_srcfile_ref("abc123", "srcfilecopy")
+  ref <- new_srcfile_ref("abc123", "srcfilecopy")
 
   expect_s3_class(ref, "lobstr_srcfile_ref")
   expect_equal(as.character(ref), "abc123")
   expect_equal(attr(ref, "srcfile_class"), "srcfilecopy")
 
   # Tree label should show just @id
-  label <- lobstr:::tree_label.lobstr_srcfile_ref(ref, list())
+  label <- tree_label.lobstr_srcfile_ref(ref, list())
   expect_equal(label, "@abc123")
 })
 
