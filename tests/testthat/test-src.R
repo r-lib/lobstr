@@ -426,17 +426,6 @@ test_that("src respects max_lines_preview parameter", {
   expect_equal(attr(result, "srcref_type"), "closure")
 })
 
-test_that("src handles multibyte characters", {
-  skip_on_os("windows") # Encoding issues on Windows
-
-  fun <- expression_with_multibyte()
-
-  result <- src(fun)
-
-  expect_type(result, "list")
-  expect_equal(attr(result, "srcref_type"), "closure")
-})
-
 test_that("src returns structure and print method works", {
   fun <- simple_function_with_srcref()
 

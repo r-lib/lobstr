@@ -86,23 +86,3 @@ multi_statement_function_with_srcref <- function() {
   with_srcref(code, env = env)
   env$multi_func
 }
-
-#' Create expression with multibyte characters
-#'
-#' Creates source code with multibyte characters (e.g., "é") to test
-#' byte vs column handling.
-#'
-#' @return Parsed expression with multibyte characters
-#' @noRd
-expression_with_multibyte <- function() {
-  code <- c(
-    "# Créer une fonction",
-    "café <- function() {",
-    "  'résumé'",
-    "}"
-  )
-
-  env <- new.env(parent = baseenv())
-  with_srcref(code, env = env)
-  env$café
-}
