@@ -38,16 +38,28 @@
 #' - 6: adds columns (first_col, last_col)
 #' - 8: adds parsed-line numbers (first_parsed, last_parsed)
 #'
-#' `srcref` objects are attached as attributes (e.g. `attr(x, "srcref")`
-#' or `attr(x, "wholeSrcref")`) to parsed expressions and closures when
-#' `keep.source = TRUE`. The parser also stores parse/token data on the
-#' associated `srcfile` when requested.
+#' They are attached as attributes (e.g. `attr(x, "srcref")` or `attr(x,
+#' "wholeSrcref")`), possibly wrapped in a list, to the following objects:
+#'
+#' - Expression vectors returned by `parse()` (wrapped in a list)
+#' - Quoted function calls (unwrapped)
+#' - Quoted `{` calls (wrapped in a list)
+#' - Evaluated closures (unwrapped)
+#'
+#' By default source references are not created but can be enabled by:
+#'
+#' - Passing `keep.source = TRUE` explicitly to `parse()`, `source()`, or
+#'   `sys.source()`.
+#' - Setting `options(keep.source = TRUE)`. This affects the default arguments
+#'   of the aforementioned functions, as well as the console input parser.
+#' - Setting `options(keep.source.pkgs = TRUE)`. This affects loading a package
+#'   from source, and installing a package from source.
+#'
+#' They have a `srcfile` attribute that points to the source file.
 #'
 #' Methods:
 #' - `as.character()`: Retrieves relevant source lines from the `srcfile`
 #'   reference.
-#'
-#' They have a `srcfile` attribute that points to the source file.
 #'
 #'
 #' ### `wholeSrcref` attributes
@@ -74,14 +86,16 @@
 #' `srcfile` objects are environments representing information about a
 #' source file that a source reference points to. They typically refer to
 #' a file on disk and store the filename, working directory, a timestamp,
-#' and encoding information. A plain `srcfile` is lightweight and opens
-#' the underlying file lazily when content is needed.
+#' and encoding information.
 #'
 #' While it is possible to create bare `srcfile` objects, specialized subclasses
 #' are much more common.
 #'
 #'
 #' ### `srcfile`
+#'
+#' A bare `srcfile` object does not contain any data apart from the file path.
+#' It lazily loads lines from the file on disk, without any caching.
 #'
 #' Fields common to all `srcfile` objects:
 #'
@@ -110,10 +124,8 @@
 #' ### `srcfilecopy`
 #'
 #' A `srcfilecopy` stores the actual source lines in memory in `$lines`.
-#' It is produced when code is parsed while `keep.source = TRUE` or when
-#' text is parsed from a character vector. `srcfilecopy` is useful when
-#' the original file may change or not exist, because it preserves the
-#' exact text used by the parser.
+#' `srcfilecopy` is useful when the original file may change or does not
+#' exist, because it preserves the exact text used by the parser.
 #'
 #' This type of srcfile is the most common. It's created by:
 #'
@@ -155,9 +167,10 @@
 #' lines operations to the `srcfile` stored in `original`.
 #'
 #' The typical way aliases are created is via `#line *line* *filename*`
-#' directives where `*filename*` is supplied. These directives remap the srcref
-#' and srcfile of parsed code to a different location, for example from a
-#' temporary file or generated file to the original location on disk.
+#' directives where the optional `*filename*` argument is supplied. These
+#' directives remap the srcref and srcfile of parsed code to a different
+#' location, for example from a temporary file or generated file to the original
+#' location on disk.
 #'
 #' Called by `install.packages()` when installing a _source_ package with `keep.source.pkgs` set to `TRUE` (see
 #' <https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/install.R#L545>), but
