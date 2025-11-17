@@ -355,7 +355,7 @@ process_srcref_attr <- function(srcref_attr, seen_srcfiles) {
     return(new_srcref_tree(srcrefs, type = "list"))
   }
 
-  stop("unreachable")
+  NULL
 }
 
 srcref_node <- function(srcref, seen_srcfiles) {
