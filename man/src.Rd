@@ -66,6 +66,26 @@ reference.
 }
 
 They have a \code{srcfile} attribute that points to the source file.
+\subsection{\code{wholeSrcref} attributes}{
+
+These are \code{srcref} objects stored in the \code{wholeSrcref} attributes of:
+\itemize{
+\item Expression vectors returned by \code{parse()}, which seems to be the intended
+usage.
+\item \verb{\{} calls, which seems unintended.
+}
+
+For expression vectors, the \code{wholeSrcref} spans from the first position
+to the last position and represents the entire document. For braces, they
+span from the first position to the location of the closing brace. There is
+no way to know the location of the opening brace without reparsing, which
+seems odd. It's probably an overlook from \code{xxexprlist()} calling
+\code{attachSrcrefs()} in
+\url{https://github.com/r-devel/r-svn/blob/52affc16/src/main/gram.y#L1380}. That
+function is also called at the end of parsing, where it's intended for the
+\code{wholeSrcref} attribute to be attached.
+}
+
 }
 
 \subsection{\code{srcfile} objects}{
@@ -76,7 +96,8 @@ a file on disk and store the filename, working directory, a timestamp,
 and encoding information. A plain \code{srcfile} is lightweight and opens
 the underlying file lazily when content is needed.
 
-There are multiple subclasses of \code{srcfile}.
+While it is possible to create bare \code{srcfile} objects, specialized subclasses
+are much more common.
 \subsection{\code{srcfile}}{
 
 Fields common to all \code{srcfile} objects:
