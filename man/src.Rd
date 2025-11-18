@@ -2,7 +2,7 @@
 % Please edit documentation in R/src.R
 \name{src}
 \alias{src}
-\title{Show structure of source reference objects: srcfile and srcref}
+\title{Display tree of source references}
 \usage{
 src(x, max_depth = 5L, max_length = 100L, ...)
 }
@@ -11,8 +11,9 @@ src(x, max_depth = 5L, max_length = 100L, ...)
 \itemize{
 \item A \code{srcref} object
 \item A list of \code{srcref} objects
-\item A function (closure) with source references
-\item An expression with source references
+\item A expression vector with attached source references
+\item An evaluated closure with attached source references
+\item A quoted call with attached source references
 }}
 
 \item{max_depth}{Maximum depth to traverse nested structures (default 5)}
@@ -22,13 +23,11 @@ src(x, max_depth = 5L, max_length = 100L, ...)
 \item{...}{Additional arguments passed to \code{\link[=tree]{tree()}}}
 }
 \value{
-Invisibly returns a structured list containing the source reference
-information
+Returns a structured list containing the source reference
+information. Print it to view the formatted tree.
 }
 \description{
-Display tree of source references
-
-Visualizes source reference metadata attached to R objects in a tree structure.
+View source reference metadata attached to R objects in a tree structure.
 Shows source file information, line/column locations, and lines of source code.
 }
 \section{Overview}{
@@ -50,9 +49,13 @@ optionally, the parsed-line numbers if \verb{#line} directives were used.
 Lengths of 4, 6, or 8 are allowed:
 \itemize{
 \item 4: basic (first_line, first_byte, last_line, last_byte)
-\item 6: adds columns (first_col, last_col)
+\item 6: adds columns in Unicode codepoints (first_col, last_col)
 \item 8: adds parsed-line numbers (first_parsed, last_parsed)
 }
+
+The "column" information does not represent grapheme clusters, but Unicode
+codepoints. The column cursor is incremented at every UTF-8 lead byte and
+there is no support for encodings other than UTF-8.
 
 They are attached as attributes (e.g. \code{attr(x, "srcref")} or \code{attr(x, "wholeSrcref")}), possibly wrapped in a list, to the following objects:
 \itemize{
@@ -119,8 +122,8 @@ Fields common to all \code{srcfile} objects:
 \itemize{
 \item \code{filename}: The filename of the source file. If relative, the path is
 resolved against \code{wd}.
-\item \code{wd}: The working directory (\code{getwd()}) at the time the srcfile was created
-(generally at the time of parsing).
+\item \code{wd}: The working directory (\code{getwd()}) at the time the srcfile was created,
+generally at the time of parsing).
 \item \code{timestamp}: The timestamp of the source file. Retrieved from \code{filename}
 with \code{file.mtime()}.
 \item \code{encoding}: The encoding of the source file.
@@ -165,7 +168,7 @@ The \code{srcfilecopy} object is timestamped with the file's last modification t
 
 Fields:
 \itemize{
-\item \code{filename}: The filename of the source file. If \code{ifFile} is \code{FALSE},
+\item \code{filename}: The filename of the source file. If \code{isFile} is \code{FALSE},
 the field is non meaningful. For instance \code{parse(text = )} sets it to
 \code{"<text>"}, and the console input parser sets it to \code{""}.
 \item \code{isFile}: A logical indicating whether the source file exists.
