@@ -199,6 +199,10 @@ the field is non meaningful. For instance \code{parse(text = )} sets it to
 no embedded \verb{\\n} characters. The \code{getSrcLines()} helper regularises \code{lines}
 in this way and sets \code{fixedNewlines} to \code{TRUE}.
 }
+
+Note that the C-level parser (used directly mainly when parsing console input)
+does not call the R-level constructor and only instantiates the \code{filename}
+(set to \code{""}) and \code{lines} fields.
 }
 
 \subsection{\code{srcfilealias}}{
