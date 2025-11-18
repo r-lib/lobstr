@@ -1,5 +1,10 @@
 # Test: Closures (evaluated functions) ------------------------------------------
 
+if (utils::packageVersion("base") < "4.2.0") {
+  # Tree characters are ASCII on old Windows R
+  skip_on_os("windows")
+}
+
 test_that("src() shows closure with srcref and wholeSrcref", {
   expect_snapshot({
     f <- simple_function_with_srcref()
