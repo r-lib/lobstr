@@ -31,7 +31,7 @@
 #' to the parser are:
 #' - The R function `parse()`.
 #' - The frontend hook `ReadConsole`, which powers the console input parser in
-#'   the R CLI and in IDEs.
+#'   the R CLI and in IDEs. This C-level parser can also be accessed from C code #'   via `R_ParseVector()`.
 #'
 #' In principle, anything that calls `parse()` may create source references, but
 #' here are the important direct and indirect callers:
