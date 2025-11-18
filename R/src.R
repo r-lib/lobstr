@@ -25,6 +25,33 @@
 #'   such as its name, path, and encoding.
 #'
 #'
+#' ## Where and when are source references created?
+#'
+#' Ultimately the R parser creates source references. The main two entry points
+#' to the parser are:
+#' - The R function `parse()`.
+#' - The frontend hook `ReadConsole`, which powers the console input parser in
+#'   the R CLI and in IDEs.
+#'
+#' In principle, anything that calls `parse()` may create source references, but
+#' here are the important direct and indirect callers:
+#' - `source()` and `sys.source()` which parse and evaluate code.
+#' - `loadNamespace()` calls `sys.source()` when loading a _source_ package:
+#'    <https://github.com/r-devel/r-svn/blob/acd196be/src/library/base/R/namespace.R#L573>.
+#' - `R CMD install` creates a lazy-load database from a source package.
+#'   The first step is to call `loadNamespace()`:
+#'   <https://github.com/r-devel/r-svn/blob/acd196be/src/library/tools/R/makeLazyLoad.R#L32>
+#'
+#' By default source references are not created but can be enabled by:
+#'
+#' - Passing `keep.source = TRUE` explicitly to `parse()`, `source()`,
+#'   `sys.source()`, or `loadNamespace()`.
+#' - Setting `options(keep.source = TRUE)`. This affects the default arguments
+#'   of the aforementioned functions, as well as the console input parser.
+#' - Setting `options(keep.source.pkgs = TRUE)`. This affects loading a package
+#'   from source, and installing a package from source.
+#'
+#'
 #' ## `srcref` objects
 #'
 #' `srcref` objects are compact integer vectors describing a character range
@@ -47,15 +74,6 @@
 #' - Quoted function calls (unwrapped)
 #' - Quoted `{` calls (wrapped in a list)
 #' - Evaluated closures (unwrapped)
-#'
-#' By default source references are not created but can be enabled by:
-#'
-#' - Passing `keep.source = TRUE` explicitly to `parse()`, `source()`, or
-#'   `sys.source()`.
-#' - Setting `options(keep.source = TRUE)`. This affects the default arguments
-#'   of the aforementioned functions, as well as the console input parser.
-#' - Setting `options(keep.source.pkgs = TRUE)`. This affects loading a package
-#'   from source, and installing a package from source.
 #'
 #' They have a `srcfile` attribute that points to the source file.
 #'
