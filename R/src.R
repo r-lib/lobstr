@@ -1,22 +1,20 @@
-#' Show structure of source reference objects: srcfile and srcref
-#'
-#' @description
 #' Display tree of source references
 #'
-#' Visualizes source reference metadata attached to R objects in a tree structure.
+#' View source reference metadata attached to R objects in a tree structure.
 #' Shows source file information, line/column locations, and lines of source code.
 #'
 #' @param x An R object with source references. Can be:
 #'   - A `srcref` object
 #'   - A list of `srcref` objects
-#'   - A function (closure) with source references
-#'   - An expression with source references
+#'   - A expression vector with attached source references
+#'   - An evaluated closure with attached source references
+#'   - A quoted call with attached source references
 #' @param max_depth Maximum depth to traverse nested structures (default 5)
 #' @param max_length Maximum number of srcref nodes to display (default 100)
 #' @param ... Additional arguments passed to [tree()]
 #'
-#' @return Invisibly returns a structured list containing the source reference
-#'   information
+#' @return Returns a structured list containing the source reference
+#'   information. Print it to view the formatted tree.
 #'
 #' @section Overview:
 #'
@@ -35,8 +33,12 @@
 #'
 #' Lengths of 4, 6, or 8 are allowed:
 #' - 4: basic (first_line, first_byte, last_line, last_byte)
-#' - 6: adds columns (first_col, last_col)
+#' - 6: adds columns in Unicode codepoints (first_col, last_col)
 #' - 8: adds parsed-line numbers (first_parsed, last_parsed)
+#'
+#' The "column" information does not represent grapheme clusters, but Unicode
+#' codepoints. The column cursor is incremented at every UTF-8 lead byte and
+#' there is no support for encodings other than UTF-8.
 #'
 #' They are attached as attributes (e.g. `attr(x, "srcref")` or `attr(x,
 #' "wholeSrcref")`), possibly wrapped in a list, to the following objects:
@@ -102,8 +104,8 @@
 #' - `filename`: The filename of the source file. If relative, the path is
 #'   resolved against `wd`.
 #'
-#' - `wd`: The working directory (`getwd()`) at the time the srcfile was created
-#'   (generally at the time of parsing).
+#' - `wd`: The working directory (`getwd()`) at the time the srcfile was created,
+#'   generally at the time of parsing).
 #'
 #' - `timestamp`: The timestamp of the source file. Retrieved from `filename`
 #'   with `file.mtime()`.
@@ -149,7 +151,7 @@
 #'
 #' Fields:
 #'
-#' - `filename`: The filename of the source file. If `ifFile` is `FALSE`,
+#' - `filename`: The filename of the source file. If `isFile` is `FALSE`,
 #'   the field is non meaningful. For instance `parse(text = )` sets it to
 #'   `"<text>"`, and the console input parser sets it to `""`.
 #'
