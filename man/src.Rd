@@ -40,6 +40,38 @@ location within the source file, such as the line and column numbers.
 \item \code{srcfile} objects, which contain metadata about the source file
 such as its name, path, and encoding.
 }
+\subsection{Where and when are source references created?}{
+
+Ultimately the R parser creates source references. The main two entry points
+to the parser are:
+\itemize{
+\item The R function \code{parse()}.
+\item The frontend hook \code{ReadConsole}, which powers the console input parser in
+the R CLI and in IDEs.
+}
+
+In principle, anything that calls \code{parse()} may create source references, but
+here are the important direct and indirect callers:
+\itemize{
+\item \code{source()} and \code{sys.source()} which parse and evaluate code.
+\item \code{loadNamespace()} calls \code{sys.source()} when loading a \emph{source} package:
+\url{https://github.com/r-devel/r-svn/blob/acd196be/src/library/base/R/namespace.R#L573}.
+\item \verb{R CMD install} creates a lazy-load database from a source package.
+The first step is to call \code{loadNamespace()}:
+\url{https://github.com/r-devel/r-svn/blob/acd196be/src/library/tools/R/makeLazyLoad.R#L32}
+}
+
+By default source references are not created but can be enabled by:
+\itemize{
+\item Passing \code{keep.source = TRUE} explicitly to \code{parse()}, \code{source()},
+\code{sys.source()}, or \code{loadNamespace()}.
+\item Setting \code{options(keep.source = TRUE)}. This affects the default arguments
+of the aforementioned functions, as well as the console input parser.
+\item Setting \code{options(keep.source.pkgs = TRUE)}. This affects loading a package
+from source, and installing a package from source.
+}
+}
+
 \subsection{\code{srcref} objects}{
 
 \code{srcref} objects are compact integer vectors describing a character range
@@ -63,16 +95,6 @@ They are attached as attributes (e.g. \code{attr(x, "srcref")} or \code{attr(x, 
 \item Quoted function calls (unwrapped)
 \item Quoted \verb{\{} calls (wrapped in a list)
 \item Evaluated closures (unwrapped)
-}
-
-By default source references are not created but can be enabled by:
-\itemize{
-\item Passing \code{keep.source = TRUE} explicitly to \code{parse()}, \code{source()}, or
-\code{sys.source()}.
-\item Setting \code{options(keep.source = TRUE)}. This affects the default arguments
-of the aforementioned functions, as well as the console input parser.
-\item Setting \code{options(keep.source.pkgs = TRUE)}. This affects loading a package
-from source, and installing a package from source.
 }
 
 They have a \code{srcfile} attribute that points to the source file.
