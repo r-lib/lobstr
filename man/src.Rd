@@ -129,6 +129,7 @@ with \code{file.mtime()}.
 \item \code{encoding}: The encoding of the source file.
 \item \code{Enc}: The encoding of output lines. Used by \code{getSrcLines()}, which
 calls \code{iconv()} when \code{Enc} does not match \code{encoding}.
+\item \code{parseData} (optional): Parser information saved when \code{keep.source.data} is #'   set to \code{TRUE}.
 }
 
 Implementations:

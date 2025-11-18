@@ -115,6 +115,8 @@
 #' - `Enc`: The encoding of output lines. Used by `getSrcLines()`, which
 #'   calls `iconv()` when `Enc` does not match `encoding`.
 #'
+#' - `parseData` (optional): Parser information saved when `keep.source.data` is #'   set to `TRUE`.
+#'
 #' Implementations:
 #' - `print()` and `summary()` to print information about the source file.
 #' - `open()` and `close()` to access the underlying file as a connection.
