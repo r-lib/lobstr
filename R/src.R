@@ -182,6 +182,10 @@
 #'   in this way and sets `fixedNewlines` to `TRUE`.
 #'
 #'
+#' Note that the C-level parser (used directly mainly when parsing console input)
+#' does not call the R-level constructor and only instantiates the `filename`
+#' (set to `""`) and `lines` fields.
+#'
 #' ### `srcfilealias`
 #'
 #' This object wraps an existing `srcfile` object (stored in `original`).  It
