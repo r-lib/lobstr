@@ -553,7 +553,7 @@ srcfile_node <- function(srcfile, seen_srcfiles) {
 }
 
 srcfile_lines <- function(srcfile, srcref) {
-  if (is.null(srcfile) || is.null(srcref)) {
+  if (is.null(srcfile) || !is_srcref(srcref)) {
     return(character(0))
   }
 
@@ -700,4 +700,8 @@ new_srcfile_ref <- function(id, srcfile_class = "srcfile") {
     srcfile_class = srcfile_class,
     class = "lobstr_srcfile_ref"
   )
+}
+
+is_srcref <- function(x) {
+  is.integer(x) && inherits(x, "srcref") && length(x) %in% c(4L, 6L, 8L)
 }
