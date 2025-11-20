@@ -67,6 +67,8 @@ By default source references are not created but can be enabled by:
 \code{sys.source()}, or \code{loadNamespace()}.
 \item Setting \code{options(keep.source = TRUE)}. This affects the default arguments
 of the aforementioned functions, as well as the console input parser.
+In interactive sessions, \code{keep.source} is set to \code{TRUE} by default:
+\url{https://github.com/r-devel/r-svn/blob/3a4745af/src/library/profile/Common.R#L26}.
 \item Setting \code{options(keep.source.pkgs = TRUE)}. This affects loading a package
 from source, and installing a package from source.
 }
