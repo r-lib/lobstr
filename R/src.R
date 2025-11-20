@@ -48,6 +48,8 @@
 #'   `sys.source()`, or `loadNamespace()`.
 #' - Setting `options(keep.source = TRUE)`. This affects the default arguments
 #'   of the aforementioned functions, as well as the console input parser.
+#'   In interactive sessions, `keep.source` is set to `TRUE` by default:
+#'   <https://github.com/r-devel/r-svn/blob/3a4745af/src/library/profile/Common.R#L26>.
 #' - Setting `options(keep.source.pkgs = TRUE)`. This affects loading a package
 #'   from source, and installing a package from source.
 #'
