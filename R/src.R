@@ -103,6 +103,9 @@
 #' function is also called at the end of parsing, where it's intended for the
 #' `wholeSrcref` attribute to be attached.
 #'
+#' For evaluated closures, the `wholeSrcref` attribute on the body has the same
+#' unreliable start positions as `{` nodes.
+#'
 #'
 #' ## `srcfile` objects
 #'

@@ -125,6 +125,9 @@ seems odd. It's probably an overlook from \code{xxexprlist()} calling
 \url{https://github.com/r-devel/r-svn/blob/52affc16/src/main/gram.y#L1380}. That
 function is also called at the end of parsing, where it's intended for the
 \code{wholeSrcref} attribute to be attached.
+
+For evaluated closures, the \code{wholeSrcref} attribute on the body has the same
+unreliable start positions as \verb{\{} nodes.
 }
 
 }
