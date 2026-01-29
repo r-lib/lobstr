@@ -6,44 +6,44 @@ if (utils::packageVersion("base") < "4.2.0") {
 }
 
 test_that("src() shows closure with srcref and wholeSrcref", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     f <- simple_function_with_srcref()
-    scrub_src(src(f))
+    src(f)
   })
 })
 
 test_that("src() shows multi-statement function", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     f <- multi_statement_function_with_srcref()
-    scrub_src(src(f))
+    src(f)
   })
 })
 
 # Test: Quoted functions --------------------------------------------------------
 
 test_that("src() shows quoted function with nested body", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     with_srcref("x <- quote(function() {})")
-    scrub_src(src(x))
+    src(x)
   })
 })
 
 test_that("src() shows quoted function body directly", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     with_srcref("x <- quote(function() {})")
-    scrub_src(src(x[[3]]))
+    src(x[[3]])
   })
 })
 
 test_that("src() shows quoted function with arguments", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     with_srcref("x <- quote(function(a, b) {})")
-    scrub_src(src(x))
+    src(x)
   })
 })
 
 test_that("src() shows srcref with parsed field when positions differ", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     # Create a synthetic 8-element srcref where parsed positions differ
     # Format: c(first_line, first_byte, last_line, last_byte,
     #           first_col, last_col, first_parsed, last_parsed)
@@ -66,89 +66,89 @@ test_that("src() shows srcref with parsed field when positions differ", {
       srcfile = srcfile
     )
 
-    scrub_src(src(synthetic_srcref))
+    src(synthetic_srcref)
   })
 })
 
 # Test: Expression objects ------------------------------------------------------
 
 test_that("src() shows expression with single element", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     x <- parse(text = "x + 1", keep.source = TRUE)
-    scrub_src(src(x))
+    src(x)
   })
 })
 
 test_that("src() shows expression with multiple elements", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     x <- parse(text = c("x + 1", "y + 2", "z + 3"), keep.source = TRUE)
-    scrub_src(src(x))
+    src(x)
   })
 })
 
 test_that("src() shows expression with nested block and wholeSrcref", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     x <- parse(text = "{\n  1\n}", keep.source = TRUE)
-    scrub_src(src(x))
+    src(x)
   })
 })
 
 test_that("src() shows nested block element directly", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     x <- parse(text = "{\n  1\n}", keep.source = TRUE)
-    scrub_src(src(x[[1]]))
+    src(x[[1]])
   })
 })
 
 # Test: Blocks with wholeSrcref -------------------------------------------------
 
 test_that("src() shows block with srcref list and wholeSrcref", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     x <- parse(text = "{\n  a <- 1\n  b <- 2\n}", keep.source = TRUE)
-    scrub_src(src(x[[1]]))
+    src(x[[1]])
   })
 })
 
 # Test: Single srcref objects ---------------------------------------------------
 
 test_that("src() shows single srcref", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     x <- parse(text = "x + 1", keep.source = TRUE)
     sr <- attr(x, "srcref")[[1]]
-    scrub_src(src(sr))
+    src(sr)
   })
 })
 
 # Test: List of srcrefs ---------------------------------------------------------
 
 test_that("src() shows list of srcrefs with count", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     x <- parse(text = c("x + 1", "y + 2"), keep.source = TRUE)
     sr_list <- attr(x, "srcref")
-    scrub_src(src(sr_list))
+    src(sr_list)
   })
 })
 
 # Test: Srcref lists shown as <list> with [[1]], [[2]] notation ----------------
 
 test_that("src() reveals srcref list structure with index notation", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     with_srcref("x <- quote(function() { 1 })")
-    scrub_src(src(x[[3]]))
+    src(x[[3]])
   })
 })
 
 test_that("src() handles srcrefs nested in language calls", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     x <- parse(text = "foo({ if (1) bar({ 2 }) })", keep.source = TRUE)
-    scrub_src(src(x, max_depth = 10))
+    src(x, max_depth = 10)
   })
 })
 
 test_that("src() handles srcrefs nested in function bodies", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     with_srcref("f <- function() foo({ if (1) bar({ 2 }) })")
-    scrub_src(src(f, max_depth = 10))
+    src(f, max_depth = 10)
   })
 })
 
@@ -179,71 +179,71 @@ test_that("src() uses correct type labels", {
 # Test: Srcfile duplication (current behavior - will change in Phase 1) --------
 
 test_that("src() currently shows duplicate srcfile objects", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     # Current behavior: srcfile appears twice (in srcref and wholeSrcref)
     # After Phase 1: should use reference notation like @abc123
     f <- simple_function_with_srcref()
-    scrub_src(src(f))
+    src(f)
   })
 })
 
 test_that("src() shows many duplicate srcfiles in nested expression", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     # Current behavior: same srcfile appears many times
     # After Phase 1: these should be deduplicated
     x <- parse(text = "{\n  1\n  2\n}", keep.source = TRUE)
-    scrub_src(src(x))
+    src(x)
   })
 })
 
 # Test: Edge cases --------------------------------------------------------------
 
 test_that("src() handles empty block", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     x <- parse(text = "{}", keep.source = TRUE)
-    scrub_src(src(x[[1]]))
+    src(x[[1]])
   })
 })
 
 test_that("src() handles function without arguments", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     with_srcref("f <- function() { NULL }")
-    scrub_src(src(f))
+    src(f)
   })
 })
 
 test_that("src() handles if statement with blocks", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     x <- parse(text = "if (TRUE) { 1 } else { 2 }", keep.source = TRUE)
-    scrub_src(src(x))
+    src(x)
   })
 })
 
 # Test: Parameters --------------------------------------------------------------
 
 test_that("src() respects show_source_lines parameter", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     f <- simple_function_with_srcref()
-    scrub_src(src(f))
+    src(f)
   })
 })
 
 # Test: Complex nested structures -----------------------------------------------
 
 test_that("src() shows expression with multiple nested blocks", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     x <- parse(
       text = "{\n  {\n    1\n  }\n  {\n    2\n  }\n}",
       keep.source = TRUE
     )
-    scrub_src(src(x))
+    src(x)
   })
 })
 
 test_that("src() shows function with nested block in body", {
-  expect_snapshot({
+  expect_snapshot(transform = scrub_src_transform, {
     with_srcref("f <- function(x) {\n  if (x) {\n    1\n  }\n}")
-    scrub_src(src(f))
+    src(f)
   })
 })
 # Tests for src() function and helpers

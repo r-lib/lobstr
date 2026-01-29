@@ -2,7 +2,7 @@
 
     Code
       f <- simple_function_with_srcref()
-      scrub_src(src(f))
+      src(f)
     Output
       <closure>
       ├─attr("srcref"): <srcref>
@@ -33,7 +33,7 @@
 
     Code
       f <- multi_statement_function_with_srcref()
-      scrub_src(src(f))
+      src(f)
     Output
       <closure>
       ├─attr("srcref"): <srcref>
@@ -73,7 +73,7 @@
 
     Code
       with_srcref("x <- quote(function() {})")
-      scrub_src(src(x))
+      src(x)
     Output
       <quoted_function>
       ├─[[3]]: <{>
@@ -101,7 +101,7 @@
 
     Code
       with_srcref("x <- quote(function() {})")
-      scrub_src(src(x[[3]]))
+      src(x[[3]])
     Output
       <{>
       ├─attr("srcref"): <list>
@@ -125,7 +125,7 @@
 
     Code
       with_srcref("x <- quote(function(a, b) {})")
-      scrub_src(src(x))
+      src(x)
     Output
       <quoted_function>
       ├─[[3]]: <{>
@@ -156,7 +156,7 @@
         "  # A long comment that spans", "  # multiple lines", "  y <- 1", "}"))
       synthetic_srcref <- structure(c(2L, 3L, 4L, 8L, 3L, 8L, 1L, 5L), class = "srcref",
       srcfile = srcfile)
-      scrub_src(src(synthetic_srcref))
+      src(synthetic_srcref)
     Output
       <srcref>
       ├─location: 2:3 - 4:8
@@ -174,7 +174,7 @@
 
     Code
       x <- parse(text = "x + 1", keep.source = TRUE)
-      scrub_src(src(x))
+      src(x)
     Output
       <expression>
       ├─attr("srcref"): <list>
@@ -198,7 +198,7 @@
 
     Code
       x <- parse(text = c("x + 1", "y + 2", "z + 3"), keep.source = TRUE)
-      scrub_src(src(x))
+      src(x)
     Output
       <expression>
       ├─attr("srcref"): <list>
@@ -228,7 +228,7 @@
 
     Code
       x <- parse(text = "{\n  1\n}", keep.source = TRUE)
-      scrub_src(src(x))
+      src(x)
     Output
       <expression>
       ├─attr("srcref"): <list>
@@ -264,7 +264,7 @@
 
     Code
       x <- parse(text = "{\n  1\n}", keep.source = TRUE)
-      scrub_src(src(x[[1]]))
+      src(x[[1]])
     Output
       <{>
       ├─attr("srcref"): <list>
@@ -291,7 +291,7 @@
 
     Code
       x <- parse(text = "{\n  a <- 1\n  b <- 2\n}", keep.source = TRUE)
-      scrub_src(src(x[[1]]))
+      src(x[[1]])
     Output
       <{>
       ├─attr("srcref"): <list>
@@ -322,7 +322,7 @@
     Code
       x <- parse(text = "x + 1", keep.source = TRUE)
       sr <- attr(x, "srcref")[[1]]
-      scrub_src(src(sr))
+      src(sr)
     Output
       <srcref>
       ├─location: 1:1 - 1:5
@@ -341,7 +341,7 @@
     Code
       x <- parse(text = c("x + 1", "y + 2"), keep.source = TRUE)
       sr_list <- attr(x, "srcref")
-      scrub_src(src(sr_list))
+      src(sr_list)
     Output
       <list>
       ├─[[1]]: <srcref>
@@ -363,7 +363,7 @@
 
     Code
       with_srcref("x <- quote(function() { 1 })")
-      scrub_src(src(x[[3]]))
+      src(x[[3]])
     Output
       <{>
       ├─attr("srcref"): <list>
@@ -390,7 +390,7 @@
 
     Code
       x <- parse(text = "foo({ if (1) bar({ 2 }) })", keep.source = TRUE)
-      scrub_src(src(x, max_depth = 10))
+      src(x, max_depth = 10)
     Output
       <expression>
       ├─attr("srcref"): <list>
@@ -438,7 +438,7 @@
 
     Code
       with_srcref("f <- function() foo({ if (1) bar({ 2 }) })")
-      scrub_src(src(f, max_depth = 10))
+      src(f, max_depth = 10)
     Output
       <closure>
       ├─attr("srcref"): <srcref>
@@ -482,7 +482,7 @@
 
     Code
       f <- simple_function_with_srcref()
-      scrub_src(src(f))
+      src(f)
     Output
       <closure>
       ├─attr("srcref"): <srcref>
@@ -513,7 +513,7 @@
 
     Code
       x <- parse(text = "{\n  1\n  2\n}", keep.source = TRUE)
-      scrub_src(src(x))
+      src(x)
     Output
       <expression>
       ├─attr("srcref"): <list>
@@ -552,7 +552,7 @@
 
     Code
       x <- parse(text = "{}", keep.source = TRUE)
-      scrub_src(src(x[[1]]))
+      src(x[[1]])
     Output
       <{>
       ├─attr("srcref"): <list>
@@ -576,7 +576,7 @@
 
     Code
       with_srcref("f <- function() { NULL }")
-      scrub_src(src(f))
+      src(f)
     Output
       <closure>
       ├─attr("srcref"): <srcref>
@@ -607,7 +607,7 @@
 
     Code
       x <- parse(text = "if (TRUE) { 1 } else { 2 }", keep.source = TRUE)
-      scrub_src(src(x))
+      src(x)
     Output
       <expression>
       ├─attr("srcref"): <list>
@@ -655,7 +655,7 @@
 
     Code
       f <- simple_function_with_srcref()
-      scrub_src(src(f))
+      src(f)
     Output
       <closure>
       ├─attr("srcref"): <srcref>
@@ -686,7 +686,7 @@
 
     Code
       x <- parse(text = "{\n  {\n    1\n  }\n  {\n    2\n  }\n}", keep.source = TRUE)
-      scrub_src(src(x))
+      src(x)
     Output
       <expression>
       ├─attr("srcref"): <list>
@@ -749,7 +749,7 @@
 
     Code
       with_srcref("f <- function(x) {\n  if (x) {\n    1\n  }\n}")
-      scrub_src(src(f))
+      src(f)
     Output
       <closure>
       ├─attr("srcref"): <srcref>
