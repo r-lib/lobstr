@@ -70,6 +70,11 @@
 #' codepoints. The column cursor is incremented at every UTF-8 lead byte and
 #' there is no support for encodings other than UTF-8.
 #'
+#' The srcref columns are right-boundary positions, meaning that for an
+#' expression starting at the start of the file, the column will be 1. Note that
+#' `wholeSrcref` (see below) on the other hand starts at 0, before the first
+#' character. It might also end 1 character after the last srcref column.
+#'
 #' They are attached as attributes (e.g. `attr(x, "srcref")` or `attr(x,
 #' "wholeSrcref")`), possibly wrapped in a list, to the following objects:
 #'
