@@ -19,3 +19,4 @@
 ^.cache$
 ^AGENTS\.md$
 ^compile_commands\.json$
+^\.claude$
