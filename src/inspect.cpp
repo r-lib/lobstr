@@ -320,9 +320,39 @@ SEXP obj_children_(
     }
   }
 
-  // CHARSXPs have fake attriibutes
-  if (max_depth > 0 && TYPEOF(x) != CHARSXP && !Rf_isNull(ATTRIB(x))) {
-    recurse(&children, seen, "_attrib", ATTRIB(x), max_depth, expand);
+  // CHARSXPs have fake attributes
+  if (max_depth > 0 && TYPEOF(x) != CHARSXP && ANY_ATTRIB(x)) {
+    // Count attributes
+    R_xlen_t n_attribs = 0;
+    R_mapAttrib(x, [](SEXP tag, SEXP val, void* data) -> SEXP {
+      (*(R_xlen_t*)data)++;
+      return NULL;
+    }, &n_attribs);
+
+    // Build a list of attribute values
+    struct CollectData { SEXP vals; SEXP names; R_xlen_t i; bool any_named; };
+    SEXP attrib_vals = PROTECT(Rf_allocVector(VECSXP, n_attribs));
+    SEXP attrib_names = PROTECT(Rf_allocVector(STRSXP, n_attribs));
+    CollectData cd = {attrib_vals, attrib_names, 0, false};
+
+    R_mapAttrib(x, [](SEXP tag, SEXP val, void* data) -> SEXP {
+      CollectData* d = (CollectData*)data;
+      SET_VECTOR_ELT(d->vals, d->i, val);
+      if (TYPEOF(tag) == SYMSXP) {
+        SET_STRING_ELT(d->names, d->i, PRINTNAME(tag));
+        d->any_named = true;
+      }
+      d->i++;
+      return NULL;
+    }, &cd);
+
+    // Only set names when attributes have tags, to avoid adding a
+    // spurious names attribute to the container
+    if (cd.any_named) {
+      Rf_setAttrib(attrib_vals, R_NamesSymbol, attrib_names);
+    }
+    recurse(&children, seen, "_attrib", attrib_vals, max_depth, expand);
+    UNPROTECT(2);
   }
 
   SEXP out = PROTECT(children.vector());
