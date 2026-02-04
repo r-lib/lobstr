@@ -41,6 +41,29 @@ test_that("can inspect active bindings", {
   expect_named(x, c("f", "_enclos"))
 })
 
+test_that("snapshots environment binding types", {
+  e <- new.env(parent = emptyenv(), hash = FALSE)
+
+  # value
+  e$value <- 1
+
+  # missing argument binding
+  env_bind(e, missing = missing_arg())
+
+  # delayed and forced promise bindings
+  delayedAssign("delayed", 1 + 1, assign.env = e)
+  delayedAssign("forced", 1 + 1, assign.env = e)
+  invisible(e$forced)
+
+  # active binding
+  env_bind_active(e, active = function() 42)
+
+  expect_snapshot({
+    print(sxp(e))
+    print(sxp(e, expand = "environment", max_depth = 6L))
+  })
+})
+
 # Regression tests --------------------------------------------------------
 
 test_that("can inspect all atomic vectors", {

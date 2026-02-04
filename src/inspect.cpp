@@ -1,9 +1,14 @@
 #include <cpp11/environment.hpp>
 #include <cpp11/list.hpp>
+#include <cpp11/sexp.hpp>
 #include <cpp11/strings.hpp>
 #include <Rversion.h>
 #include <map>
 #include "utils.h"
+
+extern "C" {
+#include <rlang.h>
+}
 
 struct Expand {
   bool alrep;
@@ -50,6 +55,30 @@ public:
 SEXP collect_attribs(SEXP x);
 bool is_namespace(cpp11::environment env);
 SEXP obj_children_(SEXP x, std::map<SEXP, int>& seen, double max_depth, Expand expand);
+
+// Create a placeholder inspector node for synthetic entries (e.g. promise bindings)
+SEXP new_placeholder_inspector(int type, std::map<SEXP, int>& seen) {
+  SEXP out = PROTECT(Rf_allocVector(VECSXP, 0));
+
+  int id = seen.size() + 1;
+
+  // Placeholder address. Causes a more bare bones display in the tree.
+  Rf_setAttrib(out, Rf_install("addr"), PROTECT(Rf_mkString("")));
+
+  // Placeholder properties
+  Rf_setAttrib(out, Rf_install("has_seen"), PROTECT(Rf_ScalarLogical(false)));
+  Rf_setAttrib(out, Rf_install("id"), PROTECT(Rf_ScalarInteger(id)));
+  Rf_setAttrib(out, Rf_install("type"), PROTECT(Rf_ScalarInteger(type)));
+  Rf_setAttrib(out, Rf_install("length"), PROTECT(Rf_ScalarReal(0)));
+  Rf_setAttrib(out, Rf_install("altrep"), PROTECT(Rf_ScalarLogical(false)));
+  Rf_setAttrib(out, Rf_install("maybe_shared"), PROTECT(Rf_ScalarInteger(0)));
+  Rf_setAttrib(out, Rf_install("no_references"), PROTECT(Rf_ScalarInteger(0)));
+  Rf_setAttrib(out, Rf_install("object"), PROTECT(Rf_ScalarInteger(0)));
+  Rf_setAttrib(out, Rf_install("class"), PROTECT(Rf_mkString("lobstr_inspector")));
+
+  UNPROTECT(11);
+  return out;
+}
 
 bool is_altrep(SEXP x) {
 #if defined(R_VERSION) && R_VERSION >= R_Version(3, 5, 0)
@@ -252,38 +281,75 @@ SEXP obj_children_(
       break;
 
     // Environments
-    case ENVSXP:
+    case ENVSXP: {
       if (x == R_BaseEnv || x == R_GlobalEnv || x == R_EmptyEnv || is_namespace(x))
         break;
 
-      if (expand.env) {
-        // Using node-based object accessors: CAR for FRAME, and TAG for HASHTAB.
-        // TODO: Iterate manually over the environment using environment accessors.
-        recurse(&children, seen, "_frame", CAR(x), max_depth, expand);
-        recurse(&children, seen, "_hashtab", TAG(x), max_depth, expand);
-      } else {
-        SEXP names = PROTECT(R_lsInternal3(x, /* all= */ TRUE, /* sorted= */ FALSE));
-        for (R_xlen_t i = 0; i < XLENGTH(names); ++i) {
-          const char* name = CHAR(STRING_ELT(names, i));
-          SEXP sym = PROTECT(Rf_install(name));
+      cpp11::sexp syms(r_env_syms(x));
+      R_xlen_t n_bindings = Rf_xlength(syms);
 
-          if (R_BindingIsActive(sym, x)) {
-            SEXP sym = PROTECT(Rf_install("_active_binding"));
-            SEXP active = PROTECT(obj_inspect_(sym, seen, max_depth, expand));
-            children.push_back(name, active);
-            UNPROTECT(2);
-          } else {
-            SEXP obj = PROTECT(Rf_findVarInFrame(x, sym));
-            recurse(&children, seen, name, obj, max_depth, expand);
-            UNPROTECT(1);
-          }
-          UNPROTECT(1);
+      for (R_xlen_t i = 0; i < n_bindings; ++i) {
+        SEXP sym = VECTOR_ELT(syms, i);
+        const char* name = CHAR(PRINTNAME(sym));
+        enum r_env_binding_type type = r_env_binding_type(x, sym);
+
+        switch (type) {
+        case R_ENV_BINDING_TYPE_value:
+          recurse(&children, seen, name, r_env_get(x, sym), max_depth, expand);
+          break;
+
+        case R_ENV_BINDING_TYPE_missing: {
+          SEXP missing = PROTECT(new_placeholder_inspector(SYMSXP, seen));
+          Rf_setAttrib(missing, Rf_install("value"), PROTECT(Rf_mkString("<missing>")));
+          children.push_back(name, missing);
+          UNPROTECT(2);
+          break;
         }
-        UNPROTECT(1);
+
+        case R_ENV_BINDING_TYPE_delayed: {
+          SEXP promise = PROTECT(new_placeholder_inspector(PROMSXP, seen));
+          children.push_back(name, promise);
+          UNPROTECT(1);
+
+          if (expand.env) {
+            recurse(&children, seen, "_code", r_env_binding_delayed_expr(x, sym), max_depth, expand);
+            recurse(&children, seen, "_env", r_env_binding_delayed_env(x, sym), max_depth, expand);
+          }
+          break;
+        }
+
+        case R_ENV_BINDING_TYPE_forced: {
+          SEXP promise = PROTECT(new_placeholder_inspector(PROMSXP, seen));
+          children.push_back(name, promise);
+          UNPROTECT(1);
+
+          if (expand.env) {
+            recurse(&children, seen, "_value", r_env_binding_forced_value(x, sym), max_depth, expand);
+            recurse(&children, seen, "_code", r_env_binding_forced_expr(x, sym), max_depth, expand);
+          }
+          break;
+        }
+
+        case R_ENV_BINDING_TYPE_active: {
+          SEXP active = PROTECT(new_placeholder_inspector(CLOSXP, seen));
+          Rf_setAttrib(active, Rf_install("value"), PROTECT(Rf_mkString("active")));
+          children.push_back(name, active);
+          UNPROTECT(2);
+
+          if (expand.env) {
+            recurse(&children, seen, "_fn", r_env_binding_active_fn(x, sym), max_depth, expand);
+          }
+          break;
+        }
+
+        case R_ENV_BINDING_TYPE_unbound:
+          break;
+        }
       }
 
-      recurse(&children, seen, "_enclos", R_ParentEnv(x), max_depth, expand);
+      recurse(&children, seen, "_enclos", r_env_parent(x), max_depth, expand);
       break;
+    }
 
     // Functions
     case CLOSXP:
