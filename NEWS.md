@@ -1,5 +1,9 @@
 # lobstr (development version)
 
+* `obj_size()` no longer errors with "bad binding access" when inspecting
+  environments with non-standard bindings such as those created by `for` loops
+  or immediate bindings (#48).
+
 # lobstr 1.1.3
 
 * Changes for compliance with R's public API. The main consequence is that lobstr no longer reports the `truelength` property of vectors.

@@ -1,6 +1,7 @@
 #include <cpp11/environment.hpp>
 #include <cpp11/doubles.hpp>
 #include <cpp11/list.hpp>
+#include <cpp11/sexp.hpp>
 #include <Rversion.h>
 #include <set>
 #include "utils.h"
@@ -163,20 +164,63 @@ double obj_size_tree(SEXP x,
     break;
 
   // Environments
-  case ENVSXP:
+  case ENVSXP: {
     if (x == R_BaseEnv || x == R_GlobalEnv || x == R_EmptyEnv ||
       x == base_env || is_namespace(x)) return 0;
 
-    // Using node-based object accessors: CAR for FRAME, and TAG for HASHTAB.
-    // If these accessors type-check their inputs in the future, we'll need to
-    // iterate over environment elements using the environment API to collect
-    // the sizes of contained elements. Unfortunately this means we'll have to
-    // infer the size of the hash table frame itself using heuristics.
-    size += obj_size_tree(CAR(x), base_env, sizeof_node, sizeof_vector, seen,
-    depth + 1);
-    size += obj_size_tree(R_ParentEnv(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-    size += obj_size_tree(TAG(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+    // Iterate over bindings using the environment API (r-lib/lobstr#48)
+    cpp11::sexp syms(r_env_syms(x));
+    R_xlen_t n = Rf_xlength(syms);
+
+    // Estimate hash table size: VECSXP with capacity slots. Hash table has
+    // minimum size 29 and resizes at 85% load factor. Non-hashed environments
+    // (e.g. function environments) are smaller but we ignore that here.
+    R_xlen_t capacity = std::max((R_xlen_t)29, (R_xlen_t)std::ceil(n / 0.85));
+    size += sizeof_vector + v_size(capacity, sizeof(SEXP));
+
+    // Each binding is stored in a pairlist node within the hash chain
+    size += n * sizeof_node;
+
+    for (R_xlen_t i = 0; i < n; ++i) {
+      SEXP sym = VECTOR_ELT(syms, i);
+      size += obj_size_tree(sym, base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+
+      enum r_env_binding_type type = r_env_binding_type(x, sym);
+
+      switch (type) {
+      case R_ENV_BINDING_TYPE_missing:
+        break;
+
+      case R_ENV_BINDING_TYPE_value:
+        size += obj_size_tree(r_env_get(x, sym), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+        break;
+
+      case R_ENV_BINDING_TYPE_delayed:
+        // Promise node
+        size += sizeof_node;
+        size += obj_size_tree(r_env_binding_delayed_expr(x, sym), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+        size += obj_size_tree(r_env_binding_delayed_env(x, sym), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+        break;
+
+      case R_ENV_BINDING_TYPE_forced:
+        // Promise node
+        size += sizeof_node;
+        size += obj_size_tree(r_env_binding_forced_expr(x, sym), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+        size += obj_size_tree(r_env_binding_forced_value(x, sym), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+        break;
+
+      case R_ENV_BINDING_TYPE_active:
+        size += obj_size_tree(r_env_binding_active_fn(x, sym), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+        break;
+
+      case R_ENV_BINDING_TYPE_unbound:
+        break;
+      }
+    }
+
+    size += obj_size_tree(r_env_parent(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
     break;
+  }
 
   // Functions
   case CLOSXP:
