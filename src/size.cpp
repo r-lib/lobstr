@@ -5,6 +5,10 @@
 #include <set>
 #include "utils.h"
 
+extern "C" {
+#include <rlang.h>
+}
+
 [[cpp11::register]]
 double v_size(double n, int element_size) {
   if (n == 0)
@@ -29,14 +33,6 @@ double v_size(double n, int element_size) {
 
   // Size is pointer to struct  + struct size
   return size;
-}
-
-bool r_env_has(SEXP env, SEXP symbol) {
-#if R_VERSION >= R_Version(4, 2, 0)
-    return R_existsVarInFrame(env, symbol);
-#else
-    return Rf_findVarInFrame3(env, symbol, FALSE) != R_UnboundValue;
-#endif
 }
 
 bool is_namespace(cpp11::environment env) {
