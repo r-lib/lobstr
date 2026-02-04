@@ -47,8 +47,9 @@ public:
   }
 };
 
-SEXP obj_children_(SEXP x, std::map<SEXP, int>& seen, double max_depth, Expand expand);
+SEXP collect_attribs(SEXP x);
 bool is_namespace(cpp11::environment env);
+SEXP obj_children_(SEXP x, std::map<SEXP, int>& seen, double max_depth, Expand expand);
 
 bool is_altrep(SEXP x) {
 #if defined(R_VERSION) && R_VERSION >= R_Version(3, 5, 0)
@@ -320,39 +321,10 @@ SEXP obj_children_(
     }
   }
 
-  // CHARSXPs have fake attributes
+  // CHARSXPs have fake attributes so don't inspecct them
   if (max_depth > 0 && TYPEOF(x) != CHARSXP && ANY_ATTRIB(x)) {
-    // Count attributes
-    R_xlen_t n_attribs = 0;
-    R_mapAttrib(x, [](SEXP tag, SEXP val, void* data) -> SEXP {
-      (*(R_xlen_t*)data)++;
-      return NULL;
-    }, &n_attribs);
-
-    // Build a list of attribute values
-    struct CollectData { SEXP vals; SEXP names; R_xlen_t i; bool any_named; };
-    SEXP attrib_vals = PROTECT(Rf_allocVector(VECSXP, n_attribs));
-    SEXP attrib_names = PROTECT(Rf_allocVector(STRSXP, n_attribs));
-    CollectData cd = {attrib_vals, attrib_names, 0, false};
-
-    R_mapAttrib(x, [](SEXP tag, SEXP val, void* data) -> SEXP {
-      CollectData* d = (CollectData*)data;
-      SET_VECTOR_ELT(d->vals, d->i, val);
-      if (TYPEOF(tag) == SYMSXP) {
-        SET_STRING_ELT(d->names, d->i, PRINTNAME(tag));
-        d->any_named = true;
-      }
-      d->i++;
-      return NULL;
-    }, &cd);
-
-    // Only set names when attributes have tags, to avoid adding a
-    // spurious names attribute to the container
-    if (cd.any_named) {
-      Rf_setAttrib(attrib_vals, R_NamesSymbol, attrib_names);
-    }
-    recurse(&children, seen, "_attrib", attrib_vals, max_depth, expand);
-    UNPROTECT(2);
+    recurse(&children, seen, "_attrib", PROTECT(collect_attribs(x)), max_depth, expand);
+    UNPROTECT(1);
   }
 
   SEXP out = PROTECT(children.vector());
@@ -363,6 +335,40 @@ SEXP obj_children_(
   UNPROTECT(1);
 
   return out;
+}
+
+// Collect attributes into a named list
+SEXP collect_attribs(SEXP x) {
+  R_xlen_t n_attribs = 0;
+  R_mapAttrib(x, [](SEXP tag, SEXP val, void* data) -> SEXP {
+    (*(R_xlen_t*)data)++;
+    return NULL;
+  }, &n_attribs);
+
+  struct CollectData { SEXP vals; SEXP names; R_xlen_t i; bool any_named; };
+  SEXP attrib_vals = PROTECT(Rf_allocVector(VECSXP, n_attribs));
+  SEXP attrib_names = PROTECT(Rf_allocVector(STRSXP, n_attribs));
+  CollectData cd = {attrib_vals, attrib_names, 0, false};
+
+  R_mapAttrib(x, [](SEXP tag, SEXP val, void* data) -> SEXP {
+    CollectData* d = (CollectData*)data;
+    SET_VECTOR_ELT(d->vals, d->i, val);
+    if (TYPEOF(tag) == SYMSXP) {
+      SET_STRING_ELT(d->names, d->i, PRINTNAME(tag));
+      d->any_named = true;
+    }
+    d->i++;
+    return NULL;
+  }, &cd);
+
+  // Only set names when attributes have tags, to avoid adding a
+  // spurious names attribute to the container
+  if (cd.any_named) {
+    Rf_setAttrib(attrib_vals, R_NamesSymbol, attrib_names);
+  }
+
+  UNPROTECT(2);
+  return attrib_vals;
 }
 
 

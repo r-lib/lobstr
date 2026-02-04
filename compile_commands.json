@@ -1,22 +1,22 @@
 [
     {
-        "command": "clang++ -arch arm64 -std=gnu++17 -I\"/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/include\" -DNDEBUG  -I\"/Users/hadleywickham/Library/R/arm64/4.5/library/cpp11/include\" -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c address.cpp -o address.o",
+        "command": "clang++ -I\"/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/include\" -DNDEBUG  -I\"/Users/lionel/R/Library/4.5-aarch64/cpp11/include\" -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  \"-I/opt/homebrew/include\"  -Wall -pedantic -Wstrict-prototypes -g -O0  -c address.cpp -o address.o",
         "file": "address.cpp",
-        "directory": "/Users/hadleywickham/Documents/r-lib/lobstr/src"
+        "directory": "/Users/lionel/Sync/Projects/R/r-lib/lobstr/src"
     },
     {
-        "command": "clang++ -arch arm64 -std=gnu++17 -I\"/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/include\" -DNDEBUG  -I\"/Users/hadleywickham/Library/R/arm64/4.5/library/cpp11/include\" -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c cpp11.cpp -o cpp11.o",
+        "command": "clang++ -I\"/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/include\" -DNDEBUG  -I\"/Users/lionel/R/Library/4.5-aarch64/cpp11/include\" -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  \"-I/opt/homebrew/include\"  -Wall -pedantic -Wstrict-prototypes -g -O0  -c cpp11.cpp -o cpp11.o",
         "file": "cpp11.cpp",
-        "directory": "/Users/hadleywickham/Documents/r-lib/lobstr/src"
+        "directory": "/Users/lionel/Sync/Projects/R/r-lib/lobstr/src"
     },
     {
-        "command": "clang++ -arch arm64 -std=gnu++17 -I\"/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/include\" -DNDEBUG  -I\"/Users/hadleywickham/Library/R/arm64/4.5/library/cpp11/include\" -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c inspect.cpp -o inspect.o",
+        "command": "clang++ -I\"/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/include\" -DNDEBUG  -I\"/Users/lionel/R/Library/4.5-aarch64/cpp11/include\" -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  \"-I/opt/homebrew/include\"  -Wall -pedantic -Wstrict-prototypes -g -O0  -c inspect.cpp -o inspect.o",
         "file": "inspect.cpp",
-        "directory": "/Users/hadleywickham/Documents/r-lib/lobstr/src"
+        "directory": "/Users/lionel/Sync/Projects/R/r-lib/lobstr/src"
     },
     {
-        "command": "clang++ -arch arm64 -std=gnu++17 -I\"/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/include\" -DNDEBUG  -I\"/Users/hadleywickham/Library/R/arm64/4.5/library/cpp11/include\" -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2   -c size.cpp -o size.o",
+        "command": "clang++ -I\"/Library/Frameworks/R.framework/Versions/4.5-arm64/Resources/include\" -DNDEBUG  -I\"/Users/lionel/R/Library/4.5-aarch64/cpp11/include\" -I/opt/R/arm64/include    -fPIC  -falign-functions=64 -Wall -g -O2  \"-I/opt/homebrew/include\"  -Wall -pedantic -Wstrict-prototypes -g -O0  -c size.cpp -o size.o",
         "file": "size.cpp",
-        "directory": "/Users/hadleywickham/Documents/r-lib/lobstr/src"
+        "directory": "/Users/lionel/Sync/Projects/R/r-lib/lobstr/src"
     }
 ]
