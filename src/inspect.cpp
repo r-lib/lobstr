@@ -337,38 +337,24 @@ SEXP obj_children_(
   return out;
 }
 
-// Collect attributes into a named list
+// Collect attributes into a pairlist
 SEXP collect_attribs(SEXP x) {
-  R_xlen_t n_attribs = 0;
-  R_mapAttrib(x, [](SEXP tag, SEXP val, void* data) -> SEXP {
-    (*(R_xlen_t*)data)++;
-    return NULL;
-  }, &n_attribs);
-
-  struct CollectData { SEXP vals; SEXP names; R_xlen_t i; bool any_named; };
-  SEXP attrib_vals = PROTECT(Rf_allocVector(VECSXP, n_attribs));
-  SEXP attrib_names = PROTECT(Rf_allocVector(STRSXP, n_attribs));
-  CollectData cd = {attrib_vals, attrib_names, 0, false};
+  SEXP sentinel = PROTECT(Rf_cons(R_NilValue, R_NilValue));
+  SEXP tail = sentinel;
 
   R_mapAttrib(x, [](SEXP tag, SEXP val, void* data) -> SEXP {
-    CollectData* d = (CollectData*)data;
-    SET_VECTOR_ELT(d->vals, d->i, val);
-    if (TYPEOF(tag) == SYMSXP) {
-      SET_STRING_ELT(d->names, d->i, PRINTNAME(tag));
-      d->any_named = true;
-    }
-    d->i++;
+    SEXP* tail = (SEXP*)data;
+
+    SEXP node = Rf_cons(val, R_NilValue);
+    SETCDR(*tail, node);
+    SET_TAG(node, tag);
+
+    *tail = node;
     return NULL;
-  }, &cd);
+  }, &tail);
 
-  // Only set names when attributes have tags, to avoid adding a
-  // spurious names attribute to the container
-  if (cd.any_named) {
-    Rf_setAttrib(attrib_vals, R_NamesSymbol, attrib_names);
-  }
-
-  UNPROTECT(2);
-  return attrib_vals;
+  UNPROTECT(1);
+  return CDR(sentinel);
 }
 
 

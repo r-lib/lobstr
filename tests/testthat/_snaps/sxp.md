@@ -66,7 +66,7 @@
     Output
       [1] <INTSXP[10]> (altrep )
         _class [2] <RAWSXP[144]> ()
-          _attrib [3] <VECSXP[3]> ()
+          _attrib [3] <LISTSXP> ()
             [4] <SYMSXP: compact_intseq> ()
             [5] <SYMSXP: base> ()
             [6] <INTSXP[1]> ()
