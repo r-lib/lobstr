@@ -7,7 +7,7 @@
         active [2] <CLOSXP: active> ()
         forced [2] <PROMSXP> ()
         delayed [2] <PROMSXP> ()
-        missing [2] <SYMSXP: <missing>> ()
+        missing [2] <missing> ()
         value [2] <REALSXP[1]> ()
         _enclos [3] <ENVSXP: empty> ()
     Code
@@ -16,7 +16,7 @@
       [1] <ENVSXP> ()
         active [2] <CLOSXP: active> ()
         _fn [2] <CLOSXP> ()
-          _formals <NILSXP>
+          _formals [3] <NILSXP> ()
           _body [4] <REALSXP[1]> ()
           _env [5] <ENVSXP> ()
             e [1]
@@ -39,7 +39,7 @@
         _code [16] <LANGSXP> ()
           ...
         _env [5]
-        missing [17] <SYMSXP: <missing>> ()
+        missing [17] <missing> ()
         value [17] <REALSXP[1]> ()
         _enclos [18] <ENVSXP: empty> ()
 
@@ -102,7 +102,7 @@
             [5] <SYMSXP: base> ()
             [6] <INTSXP[1]> ()
         _data1 [7] <REALSXP[3]> ()
-        _data2 <NILSXP>
+        _data2 [8] <NILSXP> ()
 
 # can inspect cons cells
 

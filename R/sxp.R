@@ -83,12 +83,11 @@ format.lobstr_inspector <- function(x, ..., depth = 0, name = NA) {
     addr <- ""
   }
 
-  if (attr(x, "type") == 0) {
-    desc <- crayon::silver("<NILSXP>")
-  } else if (attr(x, "has_seen")) {
+  type <- attr(x, "type")
+
+  if (attr(x, "has_seen")) {
     desc <- paste0("[", attr(x, "id"), addr, "]")
   } else {
-    type <- sexp_type(attr(x, "type"))
     if (sexp_is_vector(type)) {
       length <- paste0("[", attr(x, "length"), "]")
     } else {
@@ -189,10 +188,6 @@ sxp_view <- function(x, expand = character()) {
 
 # helpers -----------------------------------------------------------------
 
-sexp_type <- function(x) {
-  unname(SEXPTYPE[as.character(x)])
-}
-
 sexp_is_vector <- function(x) {
   x %in%
     c(
@@ -206,36 +201,6 @@ sexp_is_vector <- function(x) {
       "EXPRSXP"
     )
 }
-
-SEXPTYPE <- c(
-  "0" = "NILSXP",
-  "1" = "SYMSXP",
-  "2" = "LISTSXP",
-  "3" = "CLOSXP",
-  "4" = "ENVSXP",
-  "5" = "PROMSXP",
-  "6" = "LANGSXP",
-  "7" = "SPECIALSXP",
-  "8" = "BUILTINSXP",
-  "9" = "CHARSXP",
-  "10" = "LGLSXP",
-  "13" = "INTSXP",
-  "14" = "REALSXP",
-  "15" = "CPLXSXP",
-  "16" = "STRSXP",
-  "17" = "DOTSXP",
-  "18" = "ANYSXP",
-  "19" = "VECSXP",
-  "20" = "EXPRSXP",
-  "21" = "BCODESXP",
-  "22" = "EXTPTRSXP",
-  "23" = "WEAKREFSXP",
-  "24" = "RAWSXP",
-  "25" = "S4SXP",
-  "30" = "NEWSXP",
-  "31" = "FREESXP",
-  "99" = "FUNSXP"
-)
 
 # Placeholder nodes do not have any inspectable properties such as refcount or
 # address
