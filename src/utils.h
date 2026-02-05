@@ -71,3 +71,5 @@ SEXP R_mapAttrib(SEXP x, SEXP (*FUN)(SEXP, SEXP, void *), void *data) {
   return val;
 }
 #endif
+
+SEXP collect_attribs(SEXP x);

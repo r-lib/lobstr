@@ -84,23 +84,13 @@ double obj_size_tree(SEXP x,
 
   // CHARSXPs have fake attributes
   if (TYPEOF(x) != CHARSXP && ANY_ATTRIB(x)) {
-    struct attrib_size_data {
-      double* size;
-      SEXP base_env;
-      int sizeof_node;
-      int sizeof_vector;
-      std::set<SEXP>* seen;
-      int depth;
-    };
-    attrib_size_data cb_data = {&size, base_env, sizeof_node, sizeof_vector, &seen, depth};
-    R_mapAttrib(x, [](SEXP tag, SEXP val, void* data) -> SEXP {
-      attrib_size_data* d = (attrib_size_data*)data;
-      // Account for the pairlist cons cell
-      *(d->size) += d->sizeof_node;
-      *(d->size) += obj_size_tree(tag, d->base_env, d->sizeof_node, d->sizeof_vector, *(d->seen), d->depth + 1);
-      *(d->size) += obj_size_tree(val, d->base_env, d->sizeof_node, d->sizeof_vector, *(d->seen), d->depth + 1);
-      return NULL;
-    }, &cb_data);
+    SEXP attribs = PROTECT(collect_attribs(x));
+    for (SEXP node = attribs; node != R_NilValue; node = CDR(node)) {
+      size += sizeof_node;
+      size += obj_size_tree(TAG(node), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+      size += obj_size_tree(CAR(node), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+    }
+    UNPROTECT(1);
   }
 
   switch (TYPEOF(x)) {
