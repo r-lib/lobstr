@@ -121,20 +121,33 @@ format.lobstr_inspector <- function(x, ..., depth = 0, name = NA) {
       references
     )
 
-    desc <- paste0(
-      "[",
-      id,
-      addr,
-      "] ",
-      "<",
-      crayon::cyan(type),
-      length,
-      value,
-      "> ",
-      "(",
-      sxpinfo,
-      ")"
-    )
+    # Placeholders don't show sxpinfo
+    if (is_placeholder(x)) {
+      desc <- paste0(
+        "[",
+        id,
+        "] ",
+        "<",
+        crayon::cyan(type),
+        value,
+        ">"
+      )
+    } else {
+      desc <- paste0(
+        "[",
+        id,
+        addr,
+        "] ",
+        "<",
+        crayon::cyan(type),
+        length,
+        value,
+        "> ",
+        "(",
+        sxpinfo,
+        ")"
+      )
+    }
   }
 
   name <- if (!identical(name, "")) {
@@ -205,5 +218,5 @@ sexp_is_vector <- function(x) {
 # Placeholder nodes do not have any inspectable properties such as refcount or
 # address
 is_placeholder <- function(x) {
-  !nzchar(attr(x, "addr"))
+  !nzchar(attr(x, "addr")) || identical(attr(x, "type"), "NILSXP")
 }
