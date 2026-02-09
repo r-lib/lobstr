@@ -83,8 +83,15 @@ double obj_size_tree(SEXP x,
 #endif
 
   // CHARSXPs have fake attributes
-  if (TYPEOF(x) != CHARSXP )
-    size += obj_size_tree(ATTRIB(x), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+  if (TYPEOF(x) != CHARSXP && ANY_ATTRIB(x)) {
+    SEXP attribs = PROTECT(collect_attribs(x));
+    for (SEXP node = attribs; node != R_NilValue; node = CDR(node)) {
+      size += sizeof_node;
+      size += obj_size_tree(TAG(node), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+      size += obj_size_tree(CAR(node), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+    }
+    UNPROTECT(1);
+  }
 
   switch (TYPEOF(x)) {
   // Vectors -------------------------------------------------------------------

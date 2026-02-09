@@ -2,3 +2,4 @@
 .Rhistory
 .RData
 docs
+compile_commands.json

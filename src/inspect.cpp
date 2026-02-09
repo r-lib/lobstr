@@ -47,8 +47,9 @@ public:
   }
 };
 
-SEXP obj_children_(SEXP x, std::map<SEXP, int>& seen, double max_depth, Expand expand);
+SEXP collect_attribs(SEXP x);
 bool is_namespace(cpp11::environment env);
+SEXP obj_children_(SEXP x, std::map<SEXP, int>& seen, double max_depth, Expand expand);
 
 bool is_altrep(SEXP x) {
 #if defined(R_VERSION) && R_VERSION >= R_Version(3, 5, 0)
@@ -320,9 +321,10 @@ SEXP obj_children_(
     }
   }
 
-  // CHARSXPs have fake attriibutes
-  if (max_depth > 0 && TYPEOF(x) != CHARSXP && !Rf_isNull(ATTRIB(x))) {
-    recurse(&children, seen, "_attrib", ATTRIB(x), max_depth, expand);
+  // CHARSXPs have fake attributes so don't inspecct them
+  if (max_depth > 0 && TYPEOF(x) != CHARSXP && ANY_ATTRIB(x)) {
+    recurse(&children, seen, "_attrib", PROTECT(collect_attribs(x)), max_depth, expand);
+    UNPROTECT(1);
   }
 
   SEXP out = PROTECT(children.vector());
@@ -333,6 +335,26 @@ SEXP obj_children_(
   UNPROTECT(1);
 
   return out;
+}
+
+// Collect attributes into a pairlist
+SEXP collect_attribs(SEXP x) {
+  SEXP sentinel = PROTECT(Rf_cons(R_NilValue, R_NilValue));
+  SEXP tail = sentinel;
+
+  R_mapAttrib(x, [](SEXP tag, SEXP val, void* data) -> SEXP {
+    SEXP* tail = (SEXP*)data;
+
+    SEXP node = Rf_cons(val, R_NilValue);
+    SETCDR(*tail, node);
+    SET_TAG(node, tag);
+
+    *tail = node;
+    return NULL;
+  }, &tail);
+
+  UNPROTECT(1);
+  return CDR(sentinel);
 }
 
 
