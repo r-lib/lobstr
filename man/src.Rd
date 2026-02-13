@@ -263,7 +263,7 @@ Fields:
 \itemize{
 \item \code{\link[=srcfile]{srcfile()}}: Base documentation for \code{srcref} and \code{srcfile} objects.
 \item \code{\link[=getParseData]{getParseData()}}: Parse information stored when \code{keep.source.data} is \code{TRUE}.
-\item Source References (R Journal): \url{https://journal.r-project.org/articles/RJ-2010-010}
+\item Source References (R Journal): \url{https://journal.r-project.org/articles/RJ-2010-010/}
 }
 
 Other object inspectors: 
