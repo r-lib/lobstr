@@ -12,6 +12,10 @@ obj_inspect_ <- function(x, max_depth, expand_char, expand_altrep, expand_env, e
   .Call(`_lobstr_obj_inspect_`, x, max_depth, expand_char, expand_altrep, expand_env, expand_call, expand_bytecode)
 }
 
+init_library <- function(env) {
+  invisible(.Call(`_lobstr_init_library`, env))
+}
+
 v_size <- function(n, element_size) {
   .Call(`_lobstr_v_size`, n, element_size)
 }

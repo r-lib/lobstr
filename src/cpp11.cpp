@@ -26,6 +26,14 @@ extern "C" SEXP _lobstr_obj_inspect_(SEXP x, SEXP max_depth, SEXP expand_char, S
     return cpp11::as_sexp(obj_inspect_(cpp11::as_cpp<cpp11::decay_t<SEXP>>(x), cpp11::as_cpp<cpp11::decay_t<double>>(max_depth), cpp11::as_cpp<cpp11::decay_t<bool>>(expand_char), cpp11::as_cpp<cpp11::decay_t<bool>>(expand_altrep), cpp11::as_cpp<cpp11::decay_t<bool>>(expand_env), cpp11::as_cpp<cpp11::decay_t<bool>>(expand_call), cpp11::as_cpp<cpp11::decay_t<bool>>(expand_bytecode)));
   END_CPP11
 }
+// lobstr.cpp
+void init_library(SEXP env);
+extern "C" SEXP _lobstr_init_library(SEXP env) {
+  BEGIN_CPP11
+    init_library(cpp11::as_cpp<cpp11::decay_t<SEXP>>(env));
+    return R_NilValue;
+  END_CPP11
+}
 // size.cpp
 double v_size(double n, int element_size);
 extern "C" SEXP _lobstr_v_size(SEXP n, SEXP element_size) {
@@ -50,6 +58,7 @@ extern "C" SEXP _lobstr_obj_csize_(SEXP objects, SEXP base_env, SEXP sizeof_node
 
 extern "C" {
 static const R_CallMethodDef CallEntries[] = {
+    {"_lobstr_init_library", (DL_FUNC) &_lobstr_init_library, 1},
     {"_lobstr_obj_addr_",    (DL_FUNC) &_lobstr_obj_addr_,    2},
     {"_lobstr_obj_addrs_",   (DL_FUNC) &_lobstr_obj_addrs_,   1},
     {"_lobstr_obj_csize_",   (DL_FUNC) &_lobstr_obj_csize_,   4},

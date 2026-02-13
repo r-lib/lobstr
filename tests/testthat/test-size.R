@@ -196,3 +196,18 @@ test_that("supports cons cells", {
     obj_size(new_node(1, NULL)) + obj_size(cell)
   )
 })
+
+test_that("can size environment with loop binding (#48)", {
+  fn <- function() {
+    for (i in 1) {
+      lobstr::obj_size(environment(), env = globalenv())
+    }
+  }
+
+  # Compiling causes `i` to be an immediate binding
+  fn <- compiler::cmpfun(fn)
+
+  # Loop bindings use internal representation that previously caused
+  # "bad binding access" errors when using CAR/TAG accessors
+  expect_no_error(fn())
+})
