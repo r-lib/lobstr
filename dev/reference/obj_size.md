@@ -99,7 +99,7 @@ f <- function() {
   a ~ b
 }
 obj_size(f())
-#> 1.52 kB
+#> 1.80 kB
 
 #' # In R 3.5 and greater, `:` creates a special "ALTREP" object that only
 # stores the first and last elements. This will make some vectors much

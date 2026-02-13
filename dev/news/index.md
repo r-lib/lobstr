@@ -2,6 +2,12 @@
 
 ## lobstr (development version)
 
+- [`obj_size()`](https://lobstr.r-lib.org/dev/reference/obj_size.md) no
+  longer errors with “bad binding access” when inspecting environments
+  with non-standard bindings such as those created by `for` loops or
+  immediate bindings
+  ([\#48](https://github.com/r-lib/lobstr/issues/48)).
+
 ## lobstr 1.1.3
 
 CRAN release: 2025-11-14
