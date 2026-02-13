@@ -53,7 +53,7 @@ std::vector<std::string> obj_addrs_(SEXP x) {
         break;
 
       case R_ENV_BINDING_TYPE_forced:
-        out.push_back(obj_addr_(r_env_binding_forced_value(x, sym)));
+        out.push_back(obj_addr_(r_env_binding_delayed_expr(x, sym)));
         break;
 
       case R_ENV_BINDING_TYPE_active:
