@@ -191,9 +191,11 @@ double obj_size_tree(SEXP x,
       case R_ENV_BINDING_TYPE_missing:
         break;
 
-      case R_ENV_BINDING_TYPE_value:
-        size += obj_size_tree(r_env_get(x, sym), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+      case R_ENV_BINDING_TYPE_value: {
+        size += obj_size_tree(PROTECT(r_env_get(x, sym)), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+        UNPROTECT(1);
         break;
+      }
 
       case R_ENV_BINDING_TYPE_delayed:
         // Promise node

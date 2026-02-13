@@ -357,9 +357,11 @@ SEXP obj_children_(
         enum r_env_binding_type type = r_env_binding_type(x, sym);
 
         switch (type) {
-        case R_ENV_BINDING_TYPE_value:
-          recurse(&children, seen, name, r_env_get(x, sym), max_depth, expand);
+        case R_ENV_BINDING_TYPE_value: {
+          recurse(&children, seen, name, PROTECT(r_env_get(x, sym)), max_depth, expand);
+          UNPROTECT(1);
           break;
+        }
 
         case R_ENV_BINDING_TYPE_missing: {
           SEXP missing = PROTECT(new_placeholder_inspector("missing", seen));
