@@ -1,4 +1,4 @@
-# lobstr (development version)
+# lobstr 1.2.0
 
 * New `src()` function for exploring srcref and srcfile objects. We've
   documented all we know about srcrefs in `?src`.
