@@ -20,6 +20,7 @@ ast(x)
 
 Other object inspectors:
 [`ref()`](https://lobstr.r-lib.org/dev/reference/ref.md),
+[`src()`](https://lobstr.r-lib.org/dev/reference/src.md),
 [`sxp()`](https://lobstr.r-lib.org/dev/reference/sxp.md)
 
 ## Examples

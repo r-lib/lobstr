@@ -27,6 +27,7 @@ ref(..., character = FALSE)
 
 Other object inspectors:
 [`ast()`](https://lobstr.r-lib.org/dev/reference/ast.md),
+[`src()`](https://lobstr.r-lib.org/dev/reference/src.md),
 [`sxp()`](https://lobstr.r-lib.org/dev/reference/sxp.md)
 
 ## Examples
@@ -34,40 +35,40 @@ Other object inspectors:
 ``` r
 x <- 1:100
 ref(x)
-#> [1:0x561df9d812a0] <int> 
+#> [1:0x55d6070f4e30] <int> 
 
 y <- list(x, x, x)
 ref(y)
-#> █ [1:0x561dfda6ac48] <list> 
-#> ├─[2:0x561df9d812a0] <int> 
-#> ├─[2:0x561df9d812a0] 
-#> └─[2:0x561df9d812a0] 
+#> █ [1:0x55d60ab76588] <list> 
+#> ├─[2:0x55d6070f4e30] <int> 
+#> ├─[2:0x55d6070f4e30] 
+#> └─[2:0x55d6070f4e30] 
 ref(x, y)
-#> [1:0x561df9d812a0] <int> 
+#> [1:0x55d6070f4e30] <int> 
 #>  
-#> █ [2:0x561dfda6ac48] <list> 
-#> ├─[1:0x561df9d812a0] 
-#> ├─[1:0x561df9d812a0] 
-#> └─[1:0x561df9d812a0] 
+#> █ [2:0x55d60ab76588] <list> 
+#> ├─[1:0x55d6070f4e30] 
+#> ├─[1:0x55d6070f4e30] 
+#> └─[1:0x55d6070f4e30] 
 
 e <- new.env()
 e$e <- e
 e$x <- x
 e$y <- list(x, e)
 ref(e)
-#> █ [1:0x561dfe4b7ff0] <env> 
-#> ├─x = [2:0x561df9d812a0] <int> 
-#> ├─y = █ [3:0x561dfe5b3b88] <list> 
-#> │     ├─[2:0x561df9d812a0] 
-#> │     └─[1:0x561dfe4b7ff0] 
-#> └─e = [1:0x561dfe4b7ff0] 
+#> █ [1:0x55d604e44a50] <env> 
+#> ├─x = [2:0x55d6070f4e30] <int> 
+#> ├─y = █ [3:0x55d60c70e4b8] <list> 
+#> │     ├─[2:0x55d6070f4e30] 
+#> │     └─[1:0x55d604e44a50] 
+#> └─e = [1:0x55d604e44a50] 
 
 # Can also show references to global string pool if requested
 ref(c("x", "x", "y"))
-#> [1:0x561dfe257928] <chr> 
+#> [1:0x55d60c808fe8] <chr> 
 ref(c("x", "x", "y"), character = TRUE)
-#> █ [1:0x561dfe254588] <chr> 
-#> ├─[2:0x561df7b47f00] <string: "x"> 
-#> ├─[2:0x561df7b47f00] 
-#> └─[3:0x561df7c72208] <string: "y"> 
+#> █ [1:0x55d60c7d5548] <chr> 
+#> ├─[2:0x55d604c82f00] <string: "x"> 
+#> ├─[2:0x55d604c82f00] 
+#> └─[3:0x55d604dad208] <string: "y"> 
 ```

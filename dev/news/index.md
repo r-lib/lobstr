@@ -2,6 +2,11 @@
 
 ## lobstr (development version)
 
+- New [`src()`](https://lobstr.r-lib.org/dev/reference/src.md) function
+  for exploring srcref and srcfile objects. We’ve documented all we know
+  about srcrefs in
+  [`?src`](https://lobstr.r-lib.org/dev/reference/src.md).
+
 - [`obj_size()`](https://lobstr.r-lib.org/dev/reference/obj_size.md),
   [`obj_addrs()`](https://lobstr.r-lib.org/dev/reference/obj_addr.md),
   and [`sxp()`](https://lobstr.r-lib.org/dev/reference/sxp.md) no longer

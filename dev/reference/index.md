@@ -16,6 +16,8 @@
   Calculate the size of an object.
 - [`ref()`](https://lobstr.r-lib.org/dev/reference/ref.md) : Display
   tree of references
+- [`src()`](https://lobstr.r-lib.org/dev/reference/src.md) : Display
+  tree of source references
 - [`sxp()`](https://lobstr.r-lib.org/dev/reference/sxp.md) : Inspect an
   object
 - [`tree()`](https://lobstr.r-lib.org/dev/reference/tree.md) : Pretty
