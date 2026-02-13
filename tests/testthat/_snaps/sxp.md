@@ -4,19 +4,19 @@
       print(sxp(e))
     Output
       [1] <ENVSXP> ()
-        active [2] <CLOSXP: active>
-        forced [2] <PROMSXP>
-        delayed [2] <PROMSXP>
-        missing [2] <missing>
+        active <CLOSXP: active>
+        forced <PROMSXP>
+        delayed <PROMSXP>
+        missing <missing>
         value [2] <REALSXP[1]> ()
         _enclos [3] <ENVSXP: empty> ()
     Code
       print(sxp(e, expand = "environment", max_depth = 6L))
     Output
       [1] <ENVSXP> ()
-        active [2] <CLOSXP: active>
+        active <CLOSXP: active>
         _fn [2] <CLOSXP> ()
-          _formals [3] <NILSXP>
+          _formals <NILSXP>
           _body [4] <REALSXP[1]> ()
           _env [5] <ENVSXP> ()
             e [1]
@@ -31,15 +31,15 @@
                   ...
                 class [13] <STRSXP[1]> ()
                   ...
-        forced [14] <PROMSXP>
+        forced <PROMSXP>
         _value [14] <REALSXP[1]> ()
         _code [15] <LANGSXP> ()
           ...
-        delayed [16] <PROMSXP>
+        delayed <PROMSXP>
         _code [16] <LANGSXP> ()
           ...
         _env [5]
-        missing [17] <missing>
+        missing <missing>
         value [17] <REALSXP[1]> ()
         _enclos [18] <ENVSXP: empty> ()
 
@@ -102,7 +102,7 @@
             [5] <SYMSXP: base> ()
             [6] <INTSXP[1]> ()
         _data1 [7] <REALSXP[3]> ()
-        _data2 [8] <NILSXP>
+        _data2 <NILSXP>
 
 # can inspect cons cells
 

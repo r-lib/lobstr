@@ -121,12 +121,9 @@ format.lobstr_inspector <- function(x, ..., depth = 0, name = NA) {
       references
     )
 
-    # Placeholders don't show sxpinfo
+    # Placeholders don't show sxpinfo or id (they can't be referenced)
     if (is_placeholder(x)) {
       desc <- paste0(
-        "[",
-        id,
-        "] ",
         "<",
         crayon::cyan(type),
         value,
