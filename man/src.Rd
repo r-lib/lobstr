@@ -102,7 +102,10 @@ They are attached as attributes (e.g. \code{attr(x, "srcref")} or \code{attr(x, 
 \itemize{
 \item Expression vectors returned by \code{parse()} (wrapped in a list)
 \item Quoted function calls (unwrapped)
-\item Quoted \verb{\{} calls (wrapped in a list)
+\item Quoted \verb{\{} calls (wrapped in a list). This is crucial for debugging: when R
+steps through brace lists, the srcref for the current expression is saved to
+a global variable (\code{R_Srcref}) so the IDE knows exactly where execution is
+paused. See: \url{https://github.com/r-devel/r-svn/blob/fa0b47c5/src/main/eval.c#L2986}.
 \item Evaluated closures (unwrapped)
 }
 

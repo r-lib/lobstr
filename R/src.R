@@ -81,7 +81,10 @@
 #'
 #' - Expression vectors returned by `parse()` (wrapped in a list)
 #' - Quoted function calls (unwrapped)
-#' - Quoted `{` calls (wrapped in a list)
+#' - Quoted `{` calls (wrapped in a list). This is crucial for debugging: when R
+#'   steps through brace lists, the srcref for the current expression is saved to
+#'   a global variable (`R_Srcref`) so the IDE knows exactly where execution is
+#'   paused. See: <https://github.com/r-devel/r-svn/blob/fa0b47c5/src/main/eval.c#L2986>.
 #' - Evaluated closures (unwrapped)
 #'
 #' They have a `srcfile` attribute that points to the source file.
