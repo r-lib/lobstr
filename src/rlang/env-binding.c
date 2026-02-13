@@ -5,14 +5,12 @@
 // https://bugs.r-project.org/show_bug.cgi?id=18928
 #define RLANG_HAS_R_BINDING_API 0
 
+#if !RLANG_HAS_R_BINDING_API
+static inline r_obj* env_find(r_obj* env, r_obj* sym) {
+  return Rf_findVarInFrame3(env, sym, FALSE);
+}
+#endif
 
-bool r_env_binding_is_promise(r_obj* env, r_obj* sym) {
-  r_obj* obj = r_env_find(env, sym);
-  return r_typeof(obj) == R_TYPE_promise && PRVALUE(obj) == r_syms.unbound;
-}
-bool r_env_binding_is_active(r_obj* env, r_obj* sym) {
-  return R_BindingIsActive(sym, env);
-}
 
 static r_obj* new_binding_types(r_ssize n) {
   r_obj* types = r_alloc_integer(n);
@@ -23,19 +21,7 @@ static r_obj* new_binding_types(r_ssize n) {
   return types;
 }
 
-static enum r_env_binding_type which_env_binding(r_obj* env, r_obj* sym) {
-  if (r_env_binding_is_active(env, sym)) {
-    // Check for active bindings first, since promise detection triggers
-    // active bindings through `r_env_find()` (#1376)
-    return R_ENV_BINDING_TYPE_active;
-  }
 
-  if (r_env_binding_is_promise(env, sym)) {
-    return R_ENV_BINDING_TYPE_delayed;
-  }
-
-  return R_ENV_BINDING_TYPE_value;
-}
 
 static inline r_obj* binding_as_sym(bool list, r_obj* bindings, r_ssize i) {
   if (list) {
@@ -58,7 +44,8 @@ static r_ssize detect_special_binding(r_obj* env,
 
   for (r_ssize i = 0; i < n; ++i) {
     r_obj* sym = binding_as_sym(symbols, bindings, i);
-    if (which_env_binding(env, sym)) {
+    enum r_env_binding_type type = r_env_binding_type(env, sym);
+    if (type == R_ENV_BINDING_TYPE_active || type == R_ENV_BINDING_TYPE_delayed) {
       return i;
     }
   }
@@ -86,11 +73,17 @@ r_obj* r_env_binding_types(r_obj* env, r_obj* bindings) {
 
   r_ssize n = r_length(bindings);
   r_obj* types = KEEP(new_binding_types(n));
-  int* types_ptr = r_int_begin(types) + i;
+  int* types_ptr = r_int_begin(types);
+
+  // Fill value type for bindings before first special binding
+  for (r_ssize j = 0; j < i; ++j) {
+    *types_ptr = R_ENV_BINDING_TYPE_value;
+    ++types_ptr;
+  }
 
   while (i < n) {
     r_obj* sym = binding_as_sym(symbols, bindings, i);
-    *types_ptr = which_env_binding(env, sym);
+    *types_ptr = r_env_binding_type(env, sym);
 
     ++i;
     ++types_ptr;
@@ -137,7 +130,7 @@ enum r_env_binding_type r_env_binding_type(r_obj* env, r_obj* sym) {
     return R_ENV_BINDING_TYPE_active;
   }
 
-  r_obj* value = r_env_find(env, sym);
+  r_obj* value = env_find(env, sym);
 
   if (value == r_syms.unbound) {
     return R_ENV_BINDING_TYPE_unbound;
@@ -173,14 +166,12 @@ void r_env_bind_delayed(r_obj* env, r_obj* sym, r_obj* expr, r_obj* eval_env) {
 #if RLANG_HAS_R_BINDING_API
   R_MakeDelayedBinding(sym, expr, eval_env, env);
 #else
-  KEEP(expr);
-  r_obj* name = KEEP(r_sym_as_utf8_character(sym));
-
-  r_node_poke_car(bind_delayed_value_node, expr);
-  r_eval_with_xyz(bind_delayed_call, name, env, eval_env, rlang_ns_env);
-  r_node_poke_car(bind_delayed_value_node, r_null);
-
-  FREE(2);
+  r_obj* promise = KEEP(Rf_allocSExp(PROMSXP));
+  SET_PRCODE(promise, expr);
+  SET_PRENV(promise, eval_env);
+  SET_PRVALUE(promise, r_syms.unbound);
+  Rf_defineVar(sym, promise, env);
+  FREE(1);
 #endif
 }
 
@@ -188,13 +179,12 @@ void r_env_bind_forced(r_obj* env, r_obj* sym, r_obj* expr, r_obj* value) {
 #if RLANG_HAS_R_BINDING_API
   R_MakeForcedBinding(sym, expr, value, env);
 #else
-  // Creating an evaluated promise requires internal R API (`R_mkEVPROMISE`).
-  // Create a delayed binding and force it manually.
-  r_env_bind_delayed(env, sym, expr, r_envs.empty);
-
-  r_obj* promise = r_env_find(env, sym);
-  SET_PRVALUE(promise, value);
+  r_obj* promise = KEEP(Rf_allocSExp(PROMSXP));
+  SET_PRCODE(promise, expr);
   SET_PRENV(promise, r_null);
+  SET_PRVALUE(promise, value);
+  Rf_defineVar(sym, promise, env);
+  FREE(1);
 #endif
 }
 
@@ -213,7 +203,7 @@ r_obj* r_env_binding_delayed_expr(r_obj* env, r_obj* sym) {
 #if RLANG_HAS_R_BINDING_API
   return R_DelayedBindingExpression(sym, env);
 #else
-  r_obj* value = r_env_find(env, sym);
+  r_obj* value = env_find(env, sym);
 
   if (r_typeof(value) != R_TYPE_promise) {
     r_abort("Not a promise binding.");
@@ -230,7 +220,7 @@ r_obj* r_env_binding_delayed_env(r_obj* env, r_obj* sym) {
 #if RLANG_HAS_R_BINDING_API
   return R_DelayedBindingEnvironment(sym, env);
 #else
-  r_obj* value = r_env_find(env, sym);
+  r_obj* value = env_find(env, sym);
 
   if (r_typeof(value) != R_TYPE_promise) {
     r_abort("Not a promise binding.");
@@ -250,7 +240,7 @@ r_obj* r_env_binding_forced_expr(r_obj* env, r_obj* sym) {
 #if RLANG_HAS_R_BINDING_API
   return R_ForcedBindingExpression(sym, env);
 #else
-  r_obj* value = r_env_find(env, sym);
+  r_obj* value = env_find(env, sym);
 
   if (r_typeof(value) != R_TYPE_promise) {
     r_abort("Not a promise binding.");
@@ -263,30 +253,11 @@ r_obj* r_env_binding_forced_expr(r_obj* env, r_obj* sym) {
 #endif
 }
 
-r_obj* r_env_binding_forced_value(r_obj* env, r_obj* sym) {
-  r_obj* value = r_env_find(env, sym);
-
-  if (r_typeof(value) != R_TYPE_promise) {
-    r_abort("Not a promise binding.");
-  }
-  if (PRVALUE(value) == r_syms.unbound) {
-    r_abort("Not a forced binding.");
-  }
-
-  return PRVALUE(value);
-}
+// Use `r_env_get()` to get the value of a forced binding
 
 
 // Active binding accessors
 
 r_obj* r_env_binding_active_fn(r_obj* env, r_obj* sym) {
   return R_ActiveBindingFunction(sym, env);
-}
-
-
-void r_init_library_env_binding(void) {
-  bind_delayed_call = r_parse("delayedAssign(x, value = NULL, assign.env = y, eval.env = z)");
-  r_preserve(bind_delayed_call);
-
-  bind_delayed_value_node = r_node_cddr(bind_delayed_call);
 }

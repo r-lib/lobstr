@@ -15,24 +15,23 @@ enum r_env_binding_type {
 };
 
 enum r_env_binding_type r_env_binding_type(r_obj* env, r_obj* sym);
-
-bool r_env_binding_is_promise(r_obj* env, r_obj* sym);
-bool r_env_binding_is_active(r_obj* env, r_obj* sym);
-r_obj* r_env_binding_types(r_obj* env, r_obj* bindings);
+r_obj* r_env_binding_types(r_obj* env, r_obj* syms);
 
 r_obj* r_env_syms(r_obj* env);
 
 // Binding constructors
 static inline
 void r_env_bind(r_obj* env, r_obj* sym, r_obj* value) {
+  // See rchk concerns in https://github.com/r-lib/rlang/commit/28ce7b01
   KEEP(value);
   Rf_defineVar(sym, value, env);
   FREE(1);
 }
 
+// Silently ignores bindings that are not defined in `env`.
 static inline
-void r_env_poke(r_obj* env, r_obj* sym, r_obj* value) {
-  r_env_bind(env, sym, value);
+void r_env_unbind(r_obj* env, r_obj* sym) {
+  R_removeVarFromFrame(sym, env);
 }
 
 void r_env_bind_active(r_obj* env, r_obj* sym, r_obj* fn);
