@@ -1,24 +1,18 @@
 #include "utils.h"
 #include <cpp11/environment.hpp>
+#include <cpp11/sexp.hpp>
 #include <vector>
+
+extern "C" {
+#include <rlang.h>
+}
 
 [[cpp11::register]]
 std::string obj_addr_(SEXP name, cpp11::environment env) {
   return obj_addr_(Rf_eval(name, env));
 }
 
-void frame_addresses(SEXP frame, std::vector<std::string>* refs) {
-  for(SEXP cur = frame; cur != R_NilValue; cur = CDR(cur)) {
-    SEXP obj = CAR(cur);
-    if (obj != R_UnboundValue)
-      refs->push_back(obj_addr_(obj));
-  }
-}
-void hash_table_addresses(SEXP table, std::vector<std::string>* refs) {
-  int n = Rf_length(table);
-  for (int i = 0; i < n; ++i)
-    frame_addresses(VECTOR_ELT(table, i), refs);
-}
+
 
 [[cpp11::register]]
 std::vector<std::string> obj_addrs_(SEXP x) {
@@ -39,14 +33,36 @@ std::vector<std::string> obj_addrs_(SEXP x) {
     break;
 
   case ENVSXP: {
-    // Using node-based object accessors: CAR for FRAME, and TAG for HASHTAB.
-    // TODO: Iterate over environments using environment accessors.
-    // We won't be able to provide an address for things like promises though.
-    bool isHashed = TAG(x) != R_NilValue;
-    if (isHashed) {
-      hash_table_addresses(TAG(x), &out);
-    } else {
-      frame_addresses(CAR(x), &out);
+    cpp11::sexp syms(r_env_syms(x));
+    R_xlen_t n_bindings = Rf_xlength(syms);
+
+    for (R_xlen_t i = 0; i < n_bindings; ++i) {
+      SEXP sym = VECTOR_ELT(syms, i);
+      enum r_env_binding_type type = r_env_binding_type(x, sym);
+
+      switch (type) {
+      case R_ENV_BINDING_TYPE_missing:
+        break;
+
+      case R_ENV_BINDING_TYPE_value:
+        out.push_back(obj_addr_(r_env_get(x, sym)));
+        break;
+
+      case R_ENV_BINDING_TYPE_delayed:
+        out.push_back(obj_addr_(r_env_binding_delayed_expr(x, sym)));
+        break;
+
+      case R_ENV_BINDING_TYPE_forced:
+        out.push_back(obj_addr_(r_env_binding_delayed_expr(x, sym)));
+        break;
+
+      case R_ENV_BINDING_TYPE_active:
+        out.push_back(obj_addr_(r_env_binding_active_fn(x, sym)));
+        break;
+
+      case R_ENV_BINDING_TYPE_unbound:
+        break;
+      }
     }
     break;
   }

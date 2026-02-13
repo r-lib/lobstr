@@ -1,3 +1,48 @@
+# snapshots environment binding types
+
+    Code
+      print(sxp(e))
+    Output
+      [1] <ENVSXP> ()
+        active <CLOSXP: active>
+        forced <PROMSXP>
+        delayed <PROMSXP>
+        missing <missing>
+        value [2] <REALSXP[1]> ()
+        _enclos [3] <ENVSXP: empty> ()
+    Code
+      print(sxp(e, expand = "environment", max_depth = 6L))
+    Output
+      [1] <ENVSXP> ()
+        active <CLOSXP: active>
+        _fn [2] <CLOSXP> ()
+          _formals <NILSXP>
+          _body [4] <REALSXP[1]> ()
+          _env [5] <ENVSXP> ()
+            e [1]
+            _enclos [6] <ENVSXP> ()
+              _enclos [7] <ENVSXP> ()
+                _enclos [8] <ENVSXP> ()
+                  ...
+          _attrib [9] <LISTSXP> ()
+            srcref [10] <INTSXP[8]> (object )
+              _attrib [11] <LISTSXP> ()
+                srcfile [12] <ENVSXP> (object )
+                  ...
+                class [13] <STRSXP[1]> ()
+                  ...
+        forced <PROMSXP>
+        _value [14] <REALSXP[1]> ()
+        _code [15] <LANGSXP> ()
+          ...
+        delayed <PROMSXP>
+        _code [16] <LANGSXP> ()
+          ...
+        _env [5]
+        missing <missing>
+        value [17] <REALSXP[1]> ()
+        _enclos [18] <ENVSXP: empty> ()
+
 # can inspect all atomic vectors
 
     Code
@@ -39,24 +84,10 @@
       print(sxp(e2, expand = "environment", max_depth = 5L))
     Output
       [1] <ENVSXP> ()
-        _frame <NILSXP>
-        _hashtab [3] <VECSXP[5]> ()
-          <NILSXP>
-          <NILSXP>
-          <NILSXP>
-          <NILSXP>
-          <NILSXP>
-        _enclos [4] <ENVSXP> ()
-          _frame <NILSXP>
-          _hashtab [5] <VECSXP[5]> ()
-            [6] <LISTSXP> ()
-              x [7] <REALSXP[1]> ()
-            [8] <LISTSXP> ()
-              y [4]
-            <NILSXP>
-            <NILSXP>
-            <NILSXP>
-          _enclos [9] <ENVSXP: empty> ()
+        _enclos [2] <ENVSXP> ()
+          x [3] <REALSXP[1]> ()
+          y [2]
+          _enclos [4] <ENVSXP: empty> ()
 
 # can expand altrep
 
