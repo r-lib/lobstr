@@ -82,7 +82,11 @@ const char* sexptype_name(SEXPTYPE type) {
     case EXTPTRSXP:  return "EXTPTRSXP";
     case WEAKREFSXP: return "WEAKREFSXP";
     case RAWSXP:     return "RAWSXP";
+#if R_VERSION >= R_Version(4, 5, 0)
+    case OBJSXP:     return "OBJSXP";
+#else
     case S4SXP:      return "S4SXP";
+#endif
     default:         return "UNKNOWN";
   }
 }
