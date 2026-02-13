@@ -74,42 +74,42 @@ global string pool</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fl">1</span><span class="op">:</span><span class="fl">100</span></span></span>
 <span class="r-in"><span><span class="fu">ref</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:0x565538196ce0] &lt;int&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:0x561df9d812a0] &lt;int&gt; </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">x</span>, <span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ref</span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAF00;">█</span> [<span style="font-weight: bold;">1</span>:0x56553c433ec8] &lt;list&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ├─[<span style="font-weight: bold;">2</span>:0x565538196ce0] &lt;int&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ├─[<span style="color: #808080;">2:0x565538196ce0</span>] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> └─[<span style="color: #808080;">2:0x565538196ce0</span>] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAF00;">█</span> [<span style="font-weight: bold;">1</span>:0x561dfda6ac48] &lt;list&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├─[<span style="font-weight: bold;">2</span>:0x561df9d812a0] &lt;int&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├─[<span style="color: #808080;">2:0x561df9d812a0</span>] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> └─[<span style="color: #808080;">2:0x561df9d812a0</span>] </span>
 <span class="r-in"><span><span class="fu">ref</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:0x565538196ce0] &lt;int&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:0x561df9d812a0] &lt;int&gt; </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAF00;">█</span> [<span style="font-weight: bold;">2</span>:0x56553c433ec8] &lt;list&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ├─[<span style="color: #808080;">1:0x565538196ce0</span>] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ├─[<span style="color: #808080;">1:0x565538196ce0</span>] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> └─[<span style="color: #808080;">1:0x565538196ce0</span>] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAF00;">█</span> [<span style="font-weight: bold;">2</span>:0x561dfda6ac48] &lt;list&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├─[<span style="color: #808080;">1:0x561df9d812a0</span>] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├─[<span style="color: #808080;">1:0x561df9d812a0</span>] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> └─[<span style="color: #808080;">1:0x561df9d812a0</span>] </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/environment.html" class="external-link">new.env</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">e</span><span class="op">$</span><span class="va">e</span> <span class="op">&lt;-</span> <span class="va">e</span></span></span>
 <span class="r-in"><span><span class="va">e</span><span class="op">$</span><span class="va">x</span> <span class="op">&lt;-</span> <span class="va">x</span></span></span>
 <span class="r-in"><span><span class="va">e</span><span class="op">$</span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">x</span>, <span class="va">e</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ref</span><span class="op">(</span><span class="va">e</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAF00;">█</span> [<span style="font-weight: bold;">1</span>:0x56553c05ba18] &lt;env&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ├─<span style="color: #808080; font-style: italic;">x</span> = [<span style="font-weight: bold;">2</span>:0x565538196ce0] &lt;int&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ├─<span style="color: #808080; font-style: italic;">y</span> = <span style="color: #FFAF00;">█</span> [<span style="font-weight: bold;">3</span>:0x56553c3b4fa8] &lt;list&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> │     ├─[<span style="color: #808080;">2:0x565538196ce0</span>] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> │     └─[<span style="color: #808080;">1:0x56553c05ba18</span>] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> └─<span style="color: #808080; font-style: italic;">e</span> = [<span style="color: #808080;">1:0x56553c05ba18</span>] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAF00;">█</span> [<span style="font-weight: bold;">1</span>:0x561dfe4b7ff0] &lt;env&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├─<span style="color: #808080; font-style: italic;">x</span> = [<span style="font-weight: bold;">2</span>:0x561df9d812a0] &lt;int&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├─<span style="color: #808080; font-style: italic;">y</span> = <span style="color: #FFAF00;">█</span> [<span style="font-weight: bold;">3</span>:0x561dfe5b3b88] &lt;list&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │     ├─[<span style="color: #808080;">2:0x561df9d812a0</span>] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> │     └─[<span style="color: #808080;">1:0x561dfe4b7ff0</span>] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> └─<span style="color: #808080; font-style: italic;">e</span> = [<span style="color: #808080;">1:0x561dfe4b7ff0</span>] </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Can also show references to global string pool if requested</span></span></span>
 <span class="r-in"><span><span class="fu">ref</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:0x56553bba12f8] &lt;chr&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [<span style="font-weight: bold;">1</span>:0x561dfe257928] &lt;chr&gt; </span>
 <span class="r-in"><span><span class="fu">ref</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"x"</span>, <span class="st">"x"</span>, <span class="st">"y"</span><span class="op">)</span>, character <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAF00;">█</span> [<span style="font-weight: bold;">1</span>:0x56553bb9b908] &lt;chr&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ├─[<span style="font-weight: bold;">2</span>:0x565535e21f00] &lt;string: "x"&gt; </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> ├─[<span style="color: #808080;">2:0x565535e21f00</span>] </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> └─[<span style="font-weight: bold;">3</span>:0x565535f4c208] &lt;string: "y"&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> <span style="color: #FFAF00;">█</span> [<span style="font-weight: bold;">1</span>:0x561dfe254588] &lt;chr&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├─[<span style="font-weight: bold;">2</span>:0x561df7b47f00] &lt;string: "x"&gt; </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> ├─[<span style="color: #808080;">2:0x561df7b47f00</span>] </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> └─[<span style="font-weight: bold;">3</span>:0x561df7c72208] &lt;string: "y"&gt; </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

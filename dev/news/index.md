@@ -2,11 +2,18 @@
 
 ## lobstr (development version)
 
-- [`obj_size()`](https://lobstr.r-lib.org/dev/reference/obj_size.md) no
-  longer errors with “bad binding access” when inspecting environments
-  with non-standard bindings such as those created by `for` loops or
+- [`obj_size()`](https://lobstr.r-lib.org/dev/reference/obj_size.md),
+  [`obj_addrs()`](https://lobstr.r-lib.org/dev/reference/obj_addr.md),
+  and [`sxp()`](https://lobstr.r-lib.org/dev/reference/sxp.md) no longer
+  error with “bad binding access” when inspecting environments with
+  non-standard bindings such as those created by `for` loops or
   immediate bindings
   ([\#48](https://github.com/r-lib/lobstr/issues/48)).
+
+- `sxp(expand = "environment")` no longer shows the internal `_frame`
+  and `_hashtab` structures. Instead, it now shows promise expressions
+  without forcing them. This change was necessary to make lobstr
+  compliant with R’s public C API.
 
 ## lobstr 1.1.3
 
