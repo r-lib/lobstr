@@ -1,5 +1,8 @@
 # lobstr (development version)
 
+* New `src()` function for exploring srcref and srcfile objects. We've
+  documented all we know about srcrefs in `?src`.
+
 * `obj_size()`, `obj_addrs()`, and `sxp()` no longer error with "bad binding
   access" when inspecting environments with non-standard bindings such as
   those created by `for` loops or immediate bindings (#48).
