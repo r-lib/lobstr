@@ -62,7 +62,8 @@
 #' optionally, the parsed-line numbers if `#line` directives were used.
 #'
 #' Lengths of 4, 6, or 8 are allowed:
-#' - 4: basic (first_line, first_byte, last_line, last_byte)
+#' - 4: basic (first_line, first_byte, last_line, last_byte). Byte positions
+#'   are within the line.
 #' - 6: adds columns in Unicode codepoints (first_col, last_col)
 #' - 8: adds parsed-line numbers (first_parsed, last_parsed)
 #'
@@ -71,7 +72,7 @@
 #' there is no support for encodings other than UTF-8.
 #'
 #' The srcref columns are right-boundary positions, meaning that for an
-#' expression starting at the start of the file, the column will be 1. Note that
+#' expression starting at the start of a line, the column will be 1.
 #' `wholeSrcref` (see below) on the other hand starts at 0, before the first
 #' character. It might also end 1 character after the last srcref column.
 #'
@@ -144,7 +145,8 @@
 #' - `Enc`: The encoding of output lines. Used by `getSrcLines()`, which
 #'   calls `iconv()` when `Enc` does not match `encoding`.
 #'
-#' - `parseData` (optional): Parser information saved when `keep.source.data` is #'   set to `TRUE`.
+#' - `parseData` (optional): Parser information saved when `keep.source.data` is
+#'    set to `TRUE`.
 #'
 #' Implementations:
 #' - `print()` and `summary()` to print information about the source file.
@@ -209,7 +211,7 @@
 #' location, for example from a temporary file or generated file to the original
 #' location on disk.
 #'
-#' Called by `install.packages()` when installing a _source_ package with `keep.source.pkgs` set to `TRUE` (see
+#' Created by `install.packages()` when installing a _source_ package with `keep.source.pkgs` set to `TRUE` (see
 #' <https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/install.R#L545>), but
 #' [only when](https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/admin.R#L308):
 #'

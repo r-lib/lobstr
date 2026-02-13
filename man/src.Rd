@@ -83,7 +83,8 @@ optionally, the parsed-line numbers if \verb{#line} directives were used.
 
 Lengths of 4, 6, or 8 are allowed:
 \itemize{
-\item 4: basic (first_line, first_byte, last_line, last_byte)
+\item 4: basic (first_line, first_byte, last_line, last_byte). Byte positions
+are within the line.
 \item 6: adds columns in Unicode codepoints (first_col, last_col)
 \item 8: adds parsed-line numbers (first_parsed, last_parsed)
 }
@@ -93,7 +94,7 @@ codepoints. The column cursor is incremented at every UTF-8 lead byte and
 there is no support for encodings other than UTF-8.
 
 The srcref columns are right-boundary positions, meaning that for an
-expression starting at the start of the file, the column will be 1. Note that
+expression starting at the start of a line, the column will be 1.
 \code{wholeSrcref} (see below) on the other hand starts at 0, before the first
 character. It might also end 1 character after the last srcref column.
 
@@ -162,7 +163,8 @@ with \code{file.mtime()}.
 \item \code{encoding}: The encoding of the source file.
 \item \code{Enc}: The encoding of output lines. Used by \code{getSrcLines()}, which
 calls \code{iconv()} when \code{Enc} does not match \code{encoding}.
-\item \code{parseData} (optional): Parser information saved when \code{keep.source.data} is #'   set to \code{TRUE}.
+\item \code{parseData} (optional): Parser information saved when \code{keep.source.data} is
+set to \code{TRUE}.
 }
 
 Implementations:
@@ -228,7 +230,7 @@ directives remap the srcref and srcfile of parsed code to a different
 location, for example from a temporary file or generated file to the original
 location on disk.
 
-Called by \code{install.packages()} when installing a \emph{source} package with \code{keep.source.pkgs} set to \code{TRUE} (see
+Created by \code{install.packages()} when installing a \emph{source} package with \code{keep.source.pkgs} set to \code{TRUE} (see
 \url{https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/install.R#L545}), but
 \href{https://github.com/r-devel/r-svn/blob/52affc16/src/library/tools/R/admin.R#L308}{only when}:
 \itemize{
