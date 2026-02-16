@@ -12,6 +12,8 @@
   forcing them. This change was necessary to make lobstr compliant with R's
   public C API.
 
+* General progress towards conformance to the public C API of R.
+
 # lobstr 1.1.3
 
 * Changes for compliance with R's public API. The main consequence is that lobstr no longer reports the `truelength` property of vectors.
