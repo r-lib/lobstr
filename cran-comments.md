@@ -1,10 +1,3 @@
-## R CMD check results
+Lots of progress towards C API conformance.
 
-0 errors | 0 warnings | 0 note
-
-## revdepcheck results
-
-We checked 22 reverse dependencies, comparing R CMD check results across CRAN and dev versions of this package.
-
- * We saw 0 new problems
- * We failed to check 0 packages
+The rest is blocked by https://bugs.r-project.org/show_bug.cgi?id=18928
