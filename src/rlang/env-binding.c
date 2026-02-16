@@ -152,6 +152,29 @@ enum r_env_binding_type r_env_binding_type(r_obj* env, r_obj* sym) {
 #endif
 }
 
+r_obj* r_env_get(r_obj* env, r_obj* sym) {
+  enum r_env_binding_type type = r_env_binding_type(env, sym);
+
+  if (type == R_ENV_BINDING_TYPE_unbound) {
+    r_abort("object '%s' not found", r_sym_c_string(sym));
+  }
+  if (type == R_ENV_BINDING_TYPE_missing) {
+    return r_missing_arg;
+  }
+
+#if R_VERSION >= R_Version(4, 5, 0)
+  return R_getVar(sym, env, TRUE);
+#else
+  r_obj* value = env_find(env, sym);
+  if (r_typeof(value) == R_TYPE_dots) {
+    return value;
+  }
+
+  // Handles value, delayed, forced, and active bindings
+  return Rf_eval(sym, env);
+#endif
+}
+
 
 // Binding constructors
 

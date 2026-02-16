@@ -19,6 +19,8 @@ r_obj* r_env_binding_types(r_obj* env, r_obj* syms);
 
 r_obj* r_env_syms(r_obj* env);
 
+r_obj* r_env_get(r_obj* env, r_obj* sym);
+
 // Binding constructors
 static inline
 void r_env_bind(r_obj* env, r_obj* sym, r_obj* value) {
@@ -45,7 +47,6 @@ r_obj* r_env_binding_delayed_env(r_obj* env, r_obj* sym);
 
 // Forced binding accessors
 r_obj* r_env_binding_forced_expr(r_obj* env, r_obj* sym);
-r_obj* r_env_binding_forced_value(r_obj* env, r_obj* sym);
 
 // Active binding accessors
 r_obj* r_env_binding_active_fn(r_obj* env, r_obj* sym);

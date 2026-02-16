@@ -50,21 +50,7 @@ bool r_is_namespace(r_obj* x) {
   return R_IsNamespaceEnv(x);
 }
 
-static inline
-r_obj* r_env_get(r_obj* env, r_obj* sym) {
-  enum r_env_binding_type type = r_env_binding_type(env, sym);
-
-  if (type == R_ENV_BINDING_TYPE_unbound) {
-    r_abort("object '%s' not found", r_sym_c_string(sym));
-  }
-  if (type == R_ENV_BINDING_TYPE_missing) {
-    return r_missing_arg;
-  }
-
-  // Handles value, delayed, forced, and active bindings
-  // `R_getVar()` only available on R < 4.5.0
-  return Rf_eval(sym, env);
-}
+r_obj* r_env_get(r_obj* env, r_obj* sym);
 
 r_obj* r_env_until(r_obj* env, r_obj* sym, r_obj* last);
 
