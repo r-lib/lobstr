@@ -35,40 +35,40 @@ Other object inspectors:
 ``` r
 x <- 1:100
 ref(x)
-#> [1:0x55baad042b90] <int> 
+#> [1:0x5632ebac8378] <int> 
 
 y <- list(x, x, x)
 ref(y)
-#> █ [1:0x55bab0b3c7b8] <list> 
-#> ├─[2:0x55baad042b90] <int> 
-#> ├─[2:0x55baad042b90] 
-#> └─[2:0x55baad042b90] 
+#> █ [1:0x5632ef5cf3f8] <list> 
+#> ├─[2:0x5632ebac8378] <int> 
+#> ├─[2:0x5632ebac8378] 
+#> └─[2:0x5632ebac8378] 
 ref(x, y)
-#> [1:0x55baad042b90] <int> 
+#> [1:0x5632ebac8378] <int> 
 #>  
-#> █ [2:0x55bab0b3c7b8] <list> 
-#> ├─[1:0x55baad042b90] 
-#> ├─[1:0x55baad042b90] 
-#> └─[1:0x55baad042b90] 
+#> █ [2:0x5632ef5cf3f8] <list> 
+#> ├─[1:0x5632ebac8378] 
+#> ├─[1:0x5632ebac8378] 
+#> └─[1:0x5632ebac8378] 
 
 e <- new.env()
 e$e <- e
 e$x <- x
 e$y <- list(x, e)
 ref(e)
-#> █ [1:0x55baaad92a18] <env> 
-#> ├─x = [2:0x55baad042b90] <int> 
-#> ├─y = █ [3:0x55bab0cbe838] <list> 
-#> │     ├─[2:0x55baad042b90] 
-#> │     └─[1:0x55baaad92a18] 
-#> └─e = [1:0x55baaad92a18] 
+#> █ [1:0x5632e981c030] <env> 
+#> ├─x = [2:0x5632ebac8378] <int> 
+#> ├─y = █ [3:0x5632ef7435d8] <list> 
+#> │     ├─[2:0x5632ebac8378] 
+#> │     └─[1:0x5632e981c030] 
+#> └─e = [1:0x5632e981c030] 
 
 # Can also show references to global string pool if requested
 ref(c("x", "x", "y"))
-#> [1:0x55bab27dc3e8] <chr> 
+#> [1:0x5632f1214ca8] <chr> 
 ref(c("x", "x", "y"), character = TRUE)
-#> █ [1:0x55bab13fcad8] <chr> 
-#> ├─[2:0x55baaabd0f00] <string: "x"> 
-#> ├─[2:0x55baaabd0f00] 
-#> └─[3:0x55baaacfb208] <string: "y"> 
+#> █ [1:0x5632f11b60c8] <chr> 
+#> ├─[2:0x5632e9656f00] <string: "x"> 
+#> ├─[2:0x5632e9656f00] 
+#> └─[3:0x5632e9781208] <string: "y"> 
 ```
