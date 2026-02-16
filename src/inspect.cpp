@@ -388,7 +388,8 @@ SEXP obj_children_(
           UNPROTECT(1);
 
           if (expand.env) {
-            recurse(&children, seen, "_value", r_env_get(x, sym), max_depth, expand);
+            recurse(&children, seen, "_value", PROTECT(r_env_get(x, sym)), max_depth, expand);
+            UNPROTECT(1);
             recurse(&children, seen, "_code", r_env_binding_forced_expr(x, sym), max_depth, expand);
           }
           break;

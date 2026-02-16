@@ -204,12 +204,14 @@ double obj_size_tree(SEXP x,
         size += obj_size_tree(r_env_binding_delayed_env(x, sym), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
         break;
 
-      case R_ENV_BINDING_TYPE_forced:
+      case R_ENV_BINDING_TYPE_forced: {
         // Promise node
         size += sizeof_node;
         size += obj_size_tree(r_env_binding_forced_expr(x, sym), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
-        size += obj_size_tree(r_env_get(x, sym), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+        size += obj_size_tree(PROTECT(r_env_get(x, sym)), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
+        UNPROTECT(1);
         break;
+      }
 
       case R_ENV_BINDING_TYPE_active:
         size += obj_size_tree(r_env_binding_active_fn(x, sym), base_env, sizeof_node, sizeof_vector, seen, depth + 1);
