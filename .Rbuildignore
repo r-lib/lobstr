@@ -20,3 +20,4 @@
 ^AGENTS\.md$
 ^compile_commands\.json$
 ^\.claude$
+^dev-notes$
