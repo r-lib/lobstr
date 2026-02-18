@@ -5,10 +5,8 @@
 
 #include "rlang-types.h"
 #include "cnd.h"
-#include "env-binding.h"
 #include "globals.h"
 #include "obj.h"
-#include "sym.h"
 
 #define RLANG_USE_R_EXISTS (R_VERSION < R_Version(4, 2, 0))
 
