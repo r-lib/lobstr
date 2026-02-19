@@ -2,6 +2,10 @@
 
 ## lobstr (development version)
 
+## lobstr 1.2.0
+
+CRAN release: 2026-02-18
+
 - New [`src()`](https://lobstr.r-lib.org/dev/reference/src.md) function
   for exploring srcref and srcfile objects. We’ve documented all we know
   about srcrefs in
@@ -19,6 +23,8 @@
   and `_hashtab` structures. Instead, it now shows promise expressions
   without forcing them. This change was necessary to make lobstr
   compliant with R’s public C API.
+
+- General progress towards conformance to the public C API of R.
 
 ## lobstr 1.1.3
 

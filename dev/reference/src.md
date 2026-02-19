@@ -315,7 +315,7 @@ Fields:
   information stored when `keep.source.data` is `TRUE`.
 
 - Source References (R Journal):
-  <https://journal.r-project.org/articles/RJ-2010-010>
+  <https://journal.r-project.org/articles/RJ-2010-010/>
 
 Other object inspectors:
 [`ast()`](https://lobstr.r-lib.org/dev/reference/ast.md),
