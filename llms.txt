@@ -117,6 +117,8 @@ f(cst())
   Calculate the size of an object.
 - [`ref()`](https://lobstr.r-lib.org/reference/ref.md) : Display tree of
   references
+- [`src()`](https://lobstr.r-lib.org/reference/src.md) : Display tree of
+  source references
 - [`sxp()`](https://lobstr.r-lib.org/reference/sxp.md) : Inspect an
   object
 - [`tree()`](https://lobstr.r-lib.org/reference/tree.md) : Pretty

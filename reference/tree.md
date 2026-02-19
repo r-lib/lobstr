@@ -12,6 +12,7 @@ tree(
   index_unnamed = FALSE,
   max_depth = 10L,
   max_length = 1000L,
+  max_vec_len = 10L,
   show_environments = TRUE,
   hide_scalar_types = TRUE,
   val_printer = crayon::blue,
@@ -47,6 +48,10 @@ tree(
 
   How many elements should be printed? This is useful in case you try
   and print an object with 100,000 items in it.
+
+- max_vec_len:
+
+  How many elements should be printed for vectors?
 
 - show_environments:
 

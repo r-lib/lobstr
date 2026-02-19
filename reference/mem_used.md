@@ -18,11 +18,11 @@ mem_used()
 
 ``` r
 prev_m <- 0; m <- mem_used(); m - prev_m
-#> 69.78 MB
+#> 69.75 MB
 
 x <- 1:1e6
 prev_m <- m; m <- mem_used(); m - prev_m
-#> 84.94 kB
+#> 83.90 kB
 obj_size(x)
 #> 680 B
 

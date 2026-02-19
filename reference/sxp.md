@@ -26,7 +26,8 @@ sxp(x, expand = character(), max_depth = 5L)
 
   - "character" to show underlying entries in the global string pool.
 
-  - "environment" to show the underlying hashtables.
+  - "environment" to show binding components without any side effects
+    (e.g. promises or active bindings).
 
   - "altrep" to show the underlying data.
 
@@ -51,7 +52,8 @@ underlies all R objects.
 
 Other object inspectors:
 [`ast()`](https://lobstr.r-lib.org/reference/ast.md),
-[`ref()`](https://lobstr.r-lib.org/reference/ref.md)
+[`ref()`](https://lobstr.r-lib.org/reference/ref.md),
+[`src()`](https://lobstr.r-lib.org/reference/src.md)
 
 ## Examples
 
@@ -63,60 +65,70 @@ x <- list(
   "3"
 )
 sxp(x)
-#> [1:0x561b6cbba428] <VECSXP[4]> (refs:2+)
-#>   [2:0x561b6abc37c8] <LGLSXP[1]> (refs:2+)
-#>   [3:0x561b6abc3608] <INTSXP[1]> (refs:2+)
-#>   [4:0x561b69da2af0] <REALSXP[100]> (refs:1)
-#>   [5:0x561b6abc2fb0] <STRSXP[1]> (refs:2+)
+#> [1:0x55b1a2d33f18] <VECSXP[4]> (refs:2+)
+#>   [2:0x55b1a305b320] <LGLSXP[1]> (refs:2+)
+#>   [3:0x55b1a305b160] <INTSXP[1]> (refs:2+)
+#>   [4:0x55b1a32f83b0] <REALSXP[100]> (refs:1)
+#>   [5:0x55b1a306c318] <STRSXP[1]> (refs:2+)
 
 # Expand "character" to see underlying CHARSXP entries in the global
 # string pool
 x <- c("banana", "banana", "apple", "banana")
 sxp(x)
-#> [1:0x561b6a53b8a8] <STRSXP[4]> (refs:2+)
+#> [1:0x55b1a050e9c8] <STRSXP[4]> (refs:2+)
 sxp(x, expand = "character")
-#> [1:0x561b6a53b8a8] <STRSXP[4]> (refs:2+)
-#>   [2:0x561b6a4a0540] <CHARSXP> (refs:2+)
-#>   [2:0x561b6a4a0540]
-#>   [3:0x561b670af300] <CHARSXP> (refs:2+)
-#>   [2:0x561b6a4a0540]
+#> [1:0x55b1a050e9c8] <STRSXP[4]> (refs:2+)
+#>   [2:0x55b1a2d05628] <CHARSXP> (refs:2+)
+#>   [2:0x55b1a2d05628]
+#>   [3:0x55b19feb7b78] <CHARSXP> (refs:2+)
+#>   [2:0x55b1a2d05628]
 
 # Expand altrep to see underlying data
 x <- 1:10
 sxp(x)
-#> [1:0x561b6ae59408] <INTSXP[10]> (altrep refs:2+)
+#> [1:0x55b19ff38de0] <INTSXP[10]> (altrep refs:2+)
 sxp(x, expand = "altrep")
-#> [1:0x561b6ae59408] <INTSXP[10]> (altrep refs:2+)
-#>   _class [2:0x561b63da2c20] <RAWSXP[144]> (refs:2+)
-#>     _attrib [3:0x561b63dd8638] <LISTSXP> (refs:1)
-#>       [4:0x561b63dd8868] <SYMSXP: compact_intseq> (refs:2+)
-#>       [5:0x561b63da42c0] <SYMSXP: base> (refs:2+)
-#>       [6:0x561b63dd7128] <INTSXP[1]> (refs:2+)
-#>   _data1 [7:0x561b692bd668] <REALSXP[3]> (refs:1)
+#> [1:0x55b19ff38de0] <INTSXP[10]> (altrep refs:2+)
+#>   _class [2:0x55b19aabe860] <RAWSXP[144]> (refs:2+)
+#>     _attrib [3:0x55b19fe5cad0] <LISTSXP> (refs:1)
+#>       [4:0x55b19aaf4928] <SYMSXP: compact_intseq> (refs:2+)
+#>       [5:0x55b19aac0380] <SYMSXP: base> (refs:2+)
+#>       [6:0x55b19aaf31e8] <INTSXP[1]> (refs:2+)
+#>   _data1 [7:0x55b1a03d1008] <REALSXP[3]> (refs:1)
 #>   _data2 <NILSXP>
 
-# Expand environmnets to see the underlying implementation details
-e1 <- new.env(hash = FALSE, parent = emptyenv(), size = 3L)
-e2 <- new.env(hash = TRUE, parent = emptyenv(), size = 3L)
-e1$x <- e2$x <- 1:10
+# Expand environments to see promise expressions without forcing
+e <- new.env(parent = emptyenv())
+delayedAssign("x", 1 + 1, assign.env = e)
 
-sxp(e1)
-#> [1:0x561b6b0c0fa0] <ENVSXP> (refs:2+)
-#>   x [2:0x561b6b11a020] <INTSXP[10]> (altrep refs:2+)
-#>   _enclos [3:0x561b63da55c8] <ENVSXP: empty> (refs:2+)
-sxp(e1, expand = "environment")
-#> [1:0x561b6b0c0fa0] <ENVSXP> (refs:2+)
-#>   _frame [2:0x561b6b119a00] <LISTSXP> (refs:1)
-#>     x [3:0x561b6b11a020] <INTSXP[10]> (altrep refs:2+)
-#>   _hashtab <NILSXP>
-#>   _enclos [5:0x561b63da55c8] <ENVSXP: empty> (refs:2+)
-sxp(e2, expand = "environment")
-#> [1:0x561b6b0ec918] <ENVSXP> (refs:2+)
-#>   _frame <NILSXP>
-#>   _hashtab [3:0x561b6a1cbae8] <VECSXP[3]> (refs:1)
-#>     [4:0x561b6b119d10] <LISTSXP> (refs:1)
-#>       x [5:0x561b6b11a020] <INTSXP[10]> (altrep refs:2+)
-#>     <NILSXP>
-#>     <NILSXP>
-#>   _enclos [6:0x561b63da55c8] <ENVSXP: empty> (refs:2+)
+sxp(e)
+#> [1:0x55b19f8a9538] <ENVSXP> (refs:2+)
+#>   x <PROMSXP>
+#>   _enclos [2:0x55b19aac1688] <ENVSXP: empty> (refs:2+)
+sxp(e, expand = "environment")
+#> [1:0x55b19f8a9538] <ENVSXP> (refs:2+)
+#>   x <PROMSXP>
+#>   _code [2:0x55b1a3609848] <LANGSXP> (refs:2+)
+#>     ...
+#>   _env [3:0x55b1a361d618] <ENVSXP> (refs:2+)
+#>     x [4:0x55b19ff38de0] <INTSXP[10]> (altrep refs:2+)
+#>     e [1:0x55b19f8a9538]
+#>     _enclos [5:0x55b1a3322cc0] <ENVSXP> (refs:2+)
+#>       DONTSHOW [6:0x55b1a3328578] <CLOSXP> (refs:1)
+#>         _formals [7:0x55b19eaf2708] <LISTSXP> (refs:2+)
+#>           ...
+#>         _body [8:0x55b19eaf26d0] <BCODESXP> (refs:2+)
+#>           ...
+#>         _env [9:0x55b1a32c4ae0] <ENVSXP> (refs:2+)
+#>           ...
+#>       TESTONLY [10:0x55b1a3328508] <CLOSXP> (refs:1)
+#>         _formals [11:0x55b19eaf2200] <LISTSXP> (refs:2+)
+#>           ...
+#>         _body [12:0x55b19eaf21c8] <BCODESXP> (refs:2+)
+#>           ...
+#>         _env [9:0x55b1a32c4ae0]
+#>       _enclos [13:0x55b1a32c4d48] <ENVSXP> (refs:2+)
+#>         _enclos [14:0x55b19c7c4a60] <ENVSXP> (refs:2+)
+#>           ...
+#>   _enclos [15:0x55b19aac1688] <ENVSXP: empty> (refs:2+)
 ```
