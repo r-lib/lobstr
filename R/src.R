@@ -238,7 +238,7 @@
 #' @seealso
 #' - [srcfile()]: Base documentation for `srcref` and `srcfile` objects.
 #' - [getParseData()]: Parse information stored when `keep.source.data` is `TRUE`.
-#' - Source References (R Journal): <https://journal.r-project.org/articles/RJ-2010-010>
+#' - Source References (R Journal): <https://journal.r-project.org/articles/RJ-2010-010/>
 #'
 #' @export
 #' @family object inspectors

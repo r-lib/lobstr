@@ -1,4 +1,4 @@
-# lobstr (development version)
+# lobstr 1.2.0
 
 * New `src()` function for exploring srcref and srcfile objects. We've
   documented all we know about srcrefs in `?src`.
@@ -11,6 +11,8 @@
   `_hashtab` structures. Instead, it now shows promise expressions without
   forcing them. This change was necessary to make lobstr compliant with R's
   public C API.
+
+* General progress towards conformance to the public C API of R.
 
 # lobstr 1.1.3
 
