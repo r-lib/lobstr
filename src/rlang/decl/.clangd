@@ -1,0 +1,7 @@
+# These declaration headers can't be parsed standalone.
+# Disable the error limit so that clang doesn't stop
+# parsing, and suppress all resulting diagnostics.
+CompileFlags:
+  Add: [-ferror-limit=0]
+Diagnostics:
+  Suppress: '*'

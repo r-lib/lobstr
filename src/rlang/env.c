@@ -6,12 +6,10 @@ r_obj* rlang_ns_env;
 
 
 r_obj* r_ns_env(const char* pkg) {
-  r_obj* pkg_sym = r_sym(pkg);
-  if (!r_env_has(R_NamespaceRegistry, pkg_sym)) {
-    r_abort("Can't find namespace `%s`", pkg);
-  }
-
-  return r_env_get(R_NamespaceRegistry, pkg_sym);
+  r_obj* pkg_str = KEEP(r_chr(pkg));
+  r_obj* ns = R_FindNamespace(pkg_str);
+  FREE(1);
+  return ns;
 }
 
 r_obj* r_base_ns_get(const char* name) {
@@ -155,6 +153,10 @@ r_obj* r_list_as_environment(r_obj* x, r_obj* parent) {
 
 #if RLANG_USE_R_EXISTS
 bool r__env_has(r_obj* env, r_obj* sym) {
+  // `exists("")` errors on older R
+  if (sym == R_MissingArg) {
+    return Rf_findVarInFrame3(env, sym, FALSE) != R_UnboundValue;
+  }
   r_obj* nm = KEEP(r_sym_as_utf8_character(sym));
   r_obj* out = eval_with_xyz(exists_call, env, nm, r_false);
   FREE(1);
@@ -162,6 +164,10 @@ bool r__env_has(r_obj* env, r_obj* sym) {
 }
 
 bool r__env_has_anywhere(r_obj* env, r_obj* sym) {
+  // `exists("")` errors on older R
+  if (sym == R_MissingArg) {
+    return Rf_findVar(sym, env) != R_UnboundValue;
+  }
   r_obj* nm = KEEP(r_sym_as_utf8_character(sym));
   r_obj* out = eval_with_xyz(exists_call, env, nm, r_true);
   FREE(1);
