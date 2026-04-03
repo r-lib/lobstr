@@ -21,3 +21,4 @@
 ^compile_commands\.json$
 ^\.claude$
 ^dev-notes$
+(^|/)\.clangd$
