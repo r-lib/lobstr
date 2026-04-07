@@ -12,7 +12,17 @@ bool r_attrib_has_any(r_obj* x) {
   return ANY_ATTRIB(x);
 }
 
+// Collect attributes into a fresh pairlist
 r_obj* r_attrib_collect(r_obj* x);
+
+typedef r_obj* (r_attrib_map_fn)(r_obj* tag, r_obj* value, void* data);
+
+// Map a callback to each attribute of an object. Prefer this to collecting for
+// performance-critical applications.
+static inline
+r_obj* r_attrib_map(r_obj* x, r_attrib_map_fn* fn, void* data) {
+  return R_mapAttrib(x, fn, data);
+}
 
 static inline
 void r_attrib_zap(r_obj* x, r_obj* tag) {
@@ -24,7 +34,7 @@ void r_attrib_zap_all(r_obj* x) {
 }
 
 static inline
-void r_attrib_poke_from(r_obj* to, r_obj* from) {
+void r_attrib_clone_from(r_obj* to, r_obj* from) {
   SHALLOW_DUPLICATE_ATTRIB(to, from);
 }
 
