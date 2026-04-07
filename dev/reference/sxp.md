@@ -65,36 +65,36 @@ x <- list(
   "3"
 )
 sxp(x)
-#> [1:0x5623054995a8] <VECSXP[4]> (refs:2+)
-#>   [2:0x562305828bb8] <LGLSXP[1]> (refs:2+)
-#>   [3:0x5623058289f8] <INTSXP[1]> (refs:2+)
-#>   [4:0x562305fa8b20] <REALSXP[100]> (refs:1)
-#>   [5:0x5623058283a0] <STRSXP[1]> (refs:2+)
+#> [1:0x555595a58ca8] <VECSXP[4]> (refs:2+)
+#>   [2:0x555595e03e90] <LGLSXP[1]> (refs:2+)
+#>   [3:0x555595e03cd0] <INTSXP[1]> (refs:2+)
+#>   [4:0x55559376f360] <REALSXP[100]> (refs:1)
+#>   [5:0x555595e03640] <STRSXP[1]> (refs:2+)
 
 # Expand "character" to see underlying CHARSXP entries in the global
 # string pool
 x <- c("banana", "banana", "apple", "banana")
 sxp(x)
-#> [1:0x56230394d198] <STRSXP[4]> (refs:2+)
+#> [1:0x5555942cb0d8] <STRSXP[4]> (refs:2+)
 sxp(x, expand = "character")
-#> [1:0x56230394d198] <STRSXP[4]> (refs:2+)
-#>   [2:0x562305491340] <CHARSXP> (refs:2+)
-#>   [2:0x562305491340]
-#>   [3:0x56230261fba0] <CHARSXP> (refs:2+)
-#>   [2:0x562305491340]
+#> [1:0x5555942cb0d8] <STRSXP[4]> (refs:2+)
+#>   [2:0x555595a66060] <CHARSXP> (refs:2+)
+#>   [2:0x555595a66060]
+#>   [3:0x555592c73dd0] <CHARSXP> (refs:2+)
+#>   [2:0x555595a66060]
 
 # Expand altrep to see underlying data
 x <- 1:10
 sxp(x)
-#> [1:0x5623025e8a80] <INTSXP[10]> (altrep refs:2+)
+#> [1:0x555592b86af8] <INTSXP[10]> (altrep refs:2+)
 sxp(x, expand = "altrep")
-#> [1:0x5623025e8a80] <INTSXP[10]> (altrep refs:2+)
-#>   _class [2:0x5622fd241860] <RAWSXP[144]> (refs:2+)
-#>     _attrib [3:0x56230249edb0] <LISTSXP> (refs:1)
-#>       [4:0x5622fd277928] <SYMSXP: compact_intseq> (refs:2+)
-#>       [5:0x5622fd243380] <SYMSXP: base> (refs:2+)
-#>       [6:0x5622fd2761e8] <INTSXP[1]> (refs:2+)
-#>   _data1 [7:0x562303935d08] <REALSXP[3]> (refs:1)
+#> [1:0x555592b86af8] <INTSXP[10]> (altrep refs:2+)
+#>   _class [2:0x55558d7fe860] <RAWSXP[144]> (refs:2+)
+#>     _attrib [3:0x555592a580f8] <LISTSXP> (refs:1)
+#>       [4:0x55558d834928] <SYMSXP: compact_intseq> (refs:2+)
+#>       [5:0x55558d800380] <SYMSXP: base> (refs:2+)
+#>       [6:0x55558d8331e8] <INTSXP[1]> (refs:2+)
+#>   _data1 [7:0x5555942b3ce8] <REALSXP[3]> (refs:1)
 #>   _data2 <NILSXP>
 
 # Expand environments to see promise expressions without forcing
@@ -102,33 +102,33 @@ e <- new.env(parent = emptyenv())
 delayedAssign("x", 1 + 1, assign.env = e)
 
 sxp(e)
-#> [1:0x562301f46c88] <ENVSXP> (refs:2+)
+#> [1:0x5555924ec480] <ENVSXP> (refs:2+)
 #>   x <PROMSXP>
-#>   _enclos [2:0x5622fd244688] <ENVSXP: empty> (refs:2+)
+#>   _enclos [2:0x55558d801688] <ENVSXP: empty> (refs:2+)
 sxp(e, expand = "environment")
-#> [1:0x562301f46c88] <ENVSXP> (refs:2+)
+#> [1:0x5555924ec480] <ENVSXP> (refs:2+)
 #>   x <PROMSXP>
-#>   _code [2:0x562303760068] <LANGSXP> (refs:2+)
+#>   _code [2:0x555595f52d60] <LANGSXP> (refs:2+)
 #>     ...
-#>   _env [3:0x562305a33930] <ENVSXP> (refs:2+)
-#>     x [4:0x5623025e8a80] <INTSXP[10]> (altrep refs:2+)
-#>     e [1:0x562301f46c88]
-#>     _enclos [5:0x562305b41ab8] <ENVSXP> (refs:2+)
-#>       DONTSHOW [6:0x562305b41620] <CLOSXP> (refs:1)
-#>         _formals [7:0x5622ffc52ab0] <LISTSXP> (refs:2+)
+#>   _env [3:0x5555931a7a68] <ENVSXP> (refs:2+)
+#>     x [4:0x555592b86af8] <INTSXP[10]> (altrep refs:2+)
+#>     e [1:0x5555924ec480]
+#>     _enclos [5:0x5555958759d0] <ENVSXP> (refs:2+)
+#>       DONTSHOW [6:0x555595879368] <CLOSXP> (refs:1)
+#>         _formals [7:0x55558fde9550] <LISTSXP> (refs:2+)
 #>           ...
-#>         _body [8:0x5622ffc52ae8] <BCODESXP> (refs:2+)
+#>         _body [8:0x55558fde9588] <BCODESXP> (refs:2+)
 #>           ...
-#>         _env [9:0x562305adab60] <ENVSXP> (refs:2+)
+#>         _env [9:0x5555960d1950] <ENVSXP> (refs:2+)
 #>           ...
-#>       TESTONLY [10:0x562305b415b0] <CLOSXP> (refs:1)
-#>         _formals [11:0x5622ffc52d88] <LISTSXP> (refs:2+)
+#>       TESTONLY [10:0x5555958792f8] <CLOSXP> (refs:1)
+#>         _formals [11:0x55558fde98d0] <LISTSXP> (refs:2+)
 #>           ...
-#>         _body [12:0x5622ffc52dc0] <BCODESXP> (refs:2+)
+#>         _body [12:0x55558fde9908] <BCODESXP> (refs:2+)
 #>           ...
-#>         _env [9:0x562305adab60]
-#>       _enclos [13:0x562305adadc8] <ENVSXP> (refs:2+)
-#>         _enclos [14:0x562301c73b48] <ENVSXP> (refs:2+)
+#>         _env [9:0x5555960d1950]
+#>       _enclos [13:0x5555960d1bf0] <ENVSXP> (refs:2+)
+#>         _enclos [14:0x5555922e2cc0] <ENVSXP> (refs:2+)
 #>           ...
-#>   _enclos [15:0x5622fd244688] <ENVSXP: empty> (refs:2+)
+#>   _enclos [15:0x55558d801688] <ENVSXP: empty> (refs:2+)
 ```
