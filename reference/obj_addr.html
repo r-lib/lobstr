@@ -32,7 +32,7 @@ environment, and character vector x point to."><meta property="og:image" content
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Find memory location of objects and their children.</h1>
-      <small class="dont-index">Source: <a href="https://github.com/r-lib/lobstr/blob/main/R/address.R" class="external-link"><code>R/address.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/r-lib/lobstr/blob/v1.2.1/R/address.R" class="external-link"><code>R/address.R</code></a></small>
       <div class="d-none name"><code>obj_addr.Rd</code></div>
     </div>
 
@@ -77,24 +77,24 @@ references to an object.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">obj_addr</span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55e358a6e288"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55ef59c9c918"</span>
 <span class="r-in"><span><span class="va">z</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="va">y</span>, <span class="va">y</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">obj_addrs</span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55e358a6e288" "0x55e358a6e288"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55ef59c9c918" "0x55ef59c9c918"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">y</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fl">1.0</span></span></span>
 <span class="r-in"><span><span class="fu">obj_addrs</span><span class="op">(</span><span class="va">z</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55e358a6e288" "0x55e358a6e288"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55ef59c9c918" "0x55ef59c9c918"</span>
 <span class="r-in"><span><span class="fu">obj_addr</span><span class="op">(</span><span class="va">y</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55e358a6f518"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55ef59c9daf8"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># The address of an object is different every time you create it:</span></span></span>
 <span class="r-in"><span><span class="fu">obj_addr</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55e35b358030"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55ef5c5376a0"</span>
 <span class="r-in"><span><span class="fu">obj_addr</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55e35b3ad800"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55ef5c58ce70"</span>
 <span class="r-in"><span><span class="fu">obj_addr</span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55e35b408d20"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "0x55ef5c5e8390"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

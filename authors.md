@@ -10,7 +10,7 @@
 ## Citation
 
 Source:
-[`DESCRIPTION`](https://github.com/r-lib/lobstr/blob/main/DESCRIPTION)
+[`DESCRIPTION`](https://github.com/r-lib/lobstr/blob/v1.2.1/DESCRIPTION)
 
 Wickham H (2026). *lobstr: Visualize R Data Structures with Trees*. R
 package version 1.2.1, <https://lobstr.r-lib.org/>.
