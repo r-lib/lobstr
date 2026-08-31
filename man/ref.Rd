@@ -37,9 +37,9 @@ ref(c("x", "x", "y"))
 ref(c("x", "x", "y"), character = TRUE)
 }
 \seealso{
-Other object inspectors: 
-\code{\link{ast}()},
-\code{\link{src}()},
-\code{\link{sxp}()}
+Other object inspectors:
+\code{\link[=ast]{ast()}},
+\code{\link[=src]{src()}},
+\code{\link[=sxp]{sxp()}}
 }
 \concept{object inspectors}

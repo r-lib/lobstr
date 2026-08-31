@@ -266,9 +266,9 @@ Fields:
 \item Source References (R Journal): \url{https://journal.r-project.org/articles/RJ-2010-010/}
 }
 
-Other object inspectors: 
-\code{\link{ast}()},
-\code{\link{ref}()},
-\code{\link{sxp}()}
+Other object inspectors:
+\code{\link[=ast]{ast()}},
+\code{\link[=ref]{ref()}},
+\code{\link[=sxp]{sxp()}}
 }
 \concept{object inspectors}

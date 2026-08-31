@@ -62,9 +62,9 @@ sxp(e)
 sxp(e, expand = "environment")
 }
 \seealso{
-Other object inspectors: 
-\code{\link{ast}()},
-\code{\link{ref}()},
-\code{\link{src}()}
+Other object inspectors:
+\code{\link[=ast]{ast()}},
+\code{\link[=ref]{ref()}},
+\code{\link[=src]{src()}}
 }
 \concept{object inspectors}
