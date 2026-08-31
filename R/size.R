@@ -129,6 +129,3 @@ comp <- function(x) {
   lobstr <- obj_size(x)
   c(base = base, lobstr = lobstr, diff = base - lobstr)
 }
-insp <- function(x) {
-  eval(quote(.Internal(inspect(x))))
-}
