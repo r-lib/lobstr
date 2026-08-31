@@ -2,6 +2,8 @@
 
 ## lobstr (development version)
 
+- Fixes for CRAN checks.
+
 ## lobstr 1.2.1
 
 CRAN release: 2026-04-04

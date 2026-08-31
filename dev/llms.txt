@@ -9,12 +9,14 @@ the detail of an object.
 Install the released version of lobstr from CRAN:
 
 ``` r
+
 install.packages("lobstr")
 ```
 
 You can install the development version with:
 
 ``` r
+
 # install.packages("pak")
 pak::pak("r-lib/lobstr")
 ```
@@ -27,6 +29,7 @@ pak::pak("r-lib/lobstr")
 abstract syntax tree of R expressions:
 
 ``` r
+
 ast(a + b + c)
 #> █─`+` 
 #> ├─█─`+` 
@@ -56,6 +59,7 @@ objects can be shared across data structures by digging into the
 underlying \_\_ref\_\_erences:
 
 ``` r
+
 x <- 1:1e6
 y <- list(x, x, x)
 ref(y)
@@ -77,6 +81,7 @@ which computes the size of an object taking these shared references into
 account:
 
 ``` r
+
 obj_size(x)
 #> 680 B
 obj_size(y)
@@ -89,6 +94,7 @@ obj_size(y)
 frames on the call stack are connected:
 
 ``` r
+
 f <- function(x) g(x)
 g <- function(x) h(x)
 h <- function(x) x

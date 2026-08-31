@@ -98,6 +98,7 @@ console output of structure
 ## Examples
 
 ``` r
+
 x <- list(
   list(id = "a", val = 2),
   list(
