@@ -2,6 +2,8 @@
 
 ## lobstr (development version)
 
+## lobstr 1.2.2
+
 - Fixes for CRAN checks.
 
 ## lobstr 1.2.1
