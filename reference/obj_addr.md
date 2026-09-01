@@ -38,22 +38,22 @@ obj_addr(x) == obj_addr(y)
 
 y <- runif(10)
 obj_addr(y)
-#> [1] "0x55ef59c9c918"
+#> [1] "0x556ebc362618"
 z <- list(y, y)
 obj_addrs(z)
-#> [1] "0x55ef59c9c918" "0x55ef59c9c918"
+#> [1] "0x556ebc362618" "0x556ebc362618"
 
 y[2] <- 1.0
 obj_addrs(z)
-#> [1] "0x55ef59c9c918" "0x55ef59c9c918"
+#> [1] "0x556ebc362618" "0x556ebc362618"
 obj_addr(y)
-#> [1] "0x55ef59c9daf8"
+#> [1] "0x556ebc7c5158"
 
 # The address of an object is different every time you create it:
 obj_addr(1:10)
-#> [1] "0x55ef5c5376a0"
+#> [1] "0x556ebe6d75e0"
 obj_addr(1:10)
-#> [1] "0x55ef5c58ce70"
+#> [1] "0x556ebe730b00"
 obj_addr(1:10)
-#> [1] "0x55ef5c5e8390"
+#> [1] "0x556ebe788110"
 ```
